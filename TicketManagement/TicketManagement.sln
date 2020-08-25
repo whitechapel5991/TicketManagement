@@ -11,7 +11,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{38ED7004
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TicketManagement.UnitTests", "Tests\TicketManagement.UnitTests\TicketManagement.UnitTests.csproj", "{69514001-D753-463F-A98B-7A1B8BFB7306}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TicketManagement.IntegrationTests", "TicketManagement.IntegrationTests\TicketManagement.IntegrationTests.csproj", "{35A86524-47CA-4598-83D5-C276F94688D5}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TicketManagement.IntegrationTests", "Tests\TicketManagement.IntegrationTests\TicketManagement.IntegrationTests.csproj", "{35A86524-47CA-4598-83D5-C276F94688D5}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
