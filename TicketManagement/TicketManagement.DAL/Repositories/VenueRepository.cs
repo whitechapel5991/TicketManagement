@@ -7,91 +7,98 @@
 
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Data.Common;
 using TicketManagement.DAL.Extensions;
 using TicketManagement.DAL.Models;
-using TicketManagement.DAL.Repositories.Abstract;
+using TicketManagement.DAL.Repositories.Base;
 
 namespace TicketManagement.DAL.Repositories
 {
-    internal class VenueRepository : AbstractRepository<Venue>
+    internal class VenueRepository : RepositoryBase<Venue>
     {
         public VenueRepository(string connectionString, string provider)
             : base(connectionString, provider)
         {
         }
 
-        protected override void DeleteCommandParameters(int id, DbCommand cmd)
+        protected override void InsertCommandParameters(Venue entity, IDbCommand cmd)
         {
-            cmd.CommandText = "DeleteVenue";
-            cmd.AddParameterWithValue("@Id", id);
-        }
-
-        protected override void GetAllCommandParameters(DbCommand cmd)
-        {
-            cmd.CommandText = "GetAllVenue";
-        }
-
-        protected override void GetByIdCommandParameters(int id, DbCommand cmd)
-        {
-            cmd.CommandText = "GetByIdVenue";
-            cmd.AddParameterWithValue("@Id", id);
-        }
-
-        protected override void InsertCommandParameters(Venue entity, DbCommand cmd)
-        {
-            cmd.CommandText = "InsertVenue";
+            cmd.CommandText = "CreateVenue";
 
             cmd.AddParameterWithValue("@Description", entity.Description);
             cmd.AddParameterWithValue("@Address", entity.Address);
             cmd.AddParameterWithValue("@Phone", entity.Phone);
+            cmd.AddParameterWithValue("@Name", entity.Name);
         }
 
-        protected override Venue Map(DbDataReader reader)
+        protected override void UpdateCommandParameters(Venue entity, IDbCommand cmd)
+        {
+            cmd.CommandText = "UpdateVenue";
+
+            cmd.AddParameterWithValue("@Id", entity.Id);
+            cmd.AddParameterWithValue("@Description", entity.Description);
+            cmd.AddParameterWithValue("@Address", entity.Address);
+            cmd.AddParameterWithValue("@Phone", entity.Phone);
+            cmd.AddParameterWithValue("@Name", entity.Name);
+        }
+
+        protected override void DeleteCommandParameters(int id, IDbCommand cmd)
+        {
+            cmd.CommandText = "DeleteVenue";
+
+            cmd.AddParameterWithValue("@Id", id);
+        }
+
+        protected override void GetAllCommandParameters(IDbCommand cmd)
+        {
+            cmd.CommandText = "select * from Venues";
+        }
+
+        protected override void GetByIdCommandParameters(int id, IDbCommand cmd)
+        {
+            cmd.CommandText = string.Format("SELECT * FROM Venues WHERE Id = {0}", id);
+        }
+
+        protected override Venue Map(IDataReader reader)
         {
             Venue venue = new Venue();
-            if (reader.HasRows)
+
+            while (reader.Read())
             {
-                while (reader.Read())
-                {
-                    venue.Id = Convert.ToInt32(reader["Id"].ToString());
-                    venue.Description = reader["Description"].ToString();
-                    venue.Address = reader["Address"].ToString();
-                    venue.Phone = reader["Phone"].ToString();
-                }
+                int index = 0;
+                venue.Id = reader.GetInt32(index++);
+                venue.Description = reader.GetString(index++);
+                venue.Address = reader.GetString(index++);
+                venue.Phone = reader.GetString(index++);
+                venue.Name = reader.GetString(index++);
             }
 
             return venue;
         }
 
-        protected override List<Venue> Maps(DbDataReader reader)
+        protected override IEnumerable<Venue> Maps(IDataReader reader)
         {
-            List<Venue> venues = new List<Venue>();
-            if (reader.HasRows)
+            ICollection<Venue> venues = new List<Venue>();
+            for (int i = 0; i < reader.FieldCount; i++)
             {
                 while (reader.Read())
                 {
+                    int index = 0;
+
                     Venue venue = new Venue
                     {
-                        Id = Convert.ToInt32(reader["Id"].ToString()),
-                        Description = reader["Description"].ToString(),
-                        Address = reader["Address"].ToString(),
-                        Phone = reader["Phone"].ToString(),
+                        Id = reader.GetInt32(index++),
+                        Description = reader.GetString(index++),
+                        Address = reader.GetString(index++),
+                        Phone = reader.GetString(index++),
+                        Name = reader.GetString(index++),
                     };
                     venues.Add(venue);
                 }
             }
 
             return venues;
-        }
-
-        protected override void UpdateCommandParameters(Venue entity, DbCommand cmd)
-        {
-            cmd.CommandText = "UpdateVenue";
-            cmd.AddParameterWithValue("@Id", entity.Id);
-            cmd.AddParameterWithValue("@Description", entity.Description);
-            cmd.AddParameterWithValue("@Address", entity.Address);
-            cmd.AddParameterWithValue("@Phone", entity.Phone);
         }
     }
 }

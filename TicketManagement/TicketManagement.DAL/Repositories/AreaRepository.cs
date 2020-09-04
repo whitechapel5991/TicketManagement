@@ -6,7 +6,7 @@
 // ****************************************************************************
 
 using TicketManagement.DAL.Models;
-using TicketManagement.DAL.Repositories.Abstract;
+using TicketManagement.DAL.Repositories.Base;
 
 namespace TicketManagement.DAL.Repositories
 {
