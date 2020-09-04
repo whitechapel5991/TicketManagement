@@ -7,6 +7,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Data.Common;
 using System.Linq;
 using System.Text;
@@ -16,7 +17,7 @@ namespace TicketManagement.DAL.Extensions
 {
     public static class DbCommandExtension
     {
-        public static void AddParameterWithValue(this DbCommand command, string paramName, object paramValue)
+        public static void AddParameterWithValue(this IDbCommand command, string paramName, object paramValue)
         {
             var param = command.CreateParameter();
             param.ParameterName = paramName;
