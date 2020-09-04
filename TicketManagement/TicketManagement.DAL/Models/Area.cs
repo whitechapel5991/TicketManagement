@@ -5,7 +5,7 @@
 // </copyright>
 // ****************************************************************************
 
-using TicketManagement.DAL.Models.Abstract;
+using TicketManagement.DAL.Models.Base;
 
 namespace TicketManagement.DAL.Models
 {

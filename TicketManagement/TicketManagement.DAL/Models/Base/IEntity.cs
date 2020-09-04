@@ -5,7 +5,7 @@
 // </copyright>
 // ****************************************************************************
 
-namespace TicketManagement.DAL.Models.Abstract
+namespace TicketManagement.DAL.Models.Base
 {
     public interface IEntity
     {

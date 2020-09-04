@@ -5,13 +5,15 @@
 // </copyright>
 // ****************************************************************************
 
-using TicketManagement.DAL.Models.Abstract;
+using TicketManagement.DAL.Models.Base;
 
 namespace TicketManagement.DAL.Models
 {
     public class Venue : IEntity
     {
         public int Id { get; set; }
+
+        public string Name { get; set; }
 
         public string Description { get; set; }
 
