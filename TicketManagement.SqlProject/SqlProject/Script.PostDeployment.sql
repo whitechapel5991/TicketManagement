@@ -1,10 +1,10 @@
 ﻿SET IDENTITY_INSERT [dbo].[Venues] ON
 GO
 
-INSERT INTO [dbo].[Venues] ([Id], [Description], [Address], [Phone]) VALUES (1, N'First venue', N'First venue address', N'123 45 678 90 12')
+INSERT INTO [dbo].[Venues] ([Id], [Description], [Address], [Phone], [Name]) VALUES (1, N'First venue', N'First venue address', N'123 45 678 90 12', N'first')
 GO
 
-INSERT INTO [dbo].[Venues] ([Id], [Description], [Address], [Phone]) VALUES (2, N'Second venue', N'Second venue address', N'123 45 678 90 12')
+INSERT INTO [dbo].[Venues] ([Id], [Description], [Address], [Phone], [Name]) VALUES (2, N'Second venue', N'Second venue address', N'123 45 678 90 12', N'second')
 GO
 
 SET IDENTITY_INSERT [dbo].[Venues] OFF
@@ -13,16 +13,16 @@ GO
 SET IDENTITY_INSERT [dbo].[Layouts] ON
 GO
 
-INSERT INTO [dbo].[Layouts] ([Id], [VenueId], [Description]) VALUES (1, 1, N'First layout')
+INSERT INTO [dbo].[Layouts] ([Id], [VenueId], [Description], [Name]) VALUES (1, 1, N'First layout', N'first')
 GO
 
-INSERT INTO [dbo].[Layouts] ([Id], [VenueId], [Description]) VALUES (2, 1, N'Second layout')
+INSERT INTO [dbo].[Layouts] ([Id], [VenueId], [Description], [Name]) VALUES (2, 1, N'Second layout', N'second')
 GO
 
-INSERT INTO [dbo].[Layouts] ([Id], [VenueId], [Description]) VALUES (3, 2, N'First layout')
+INSERT INTO [dbo].[Layouts] ([Id], [VenueId], [Description], [Name]) VALUES (3, 2, N'First layout', N'third')
 GO
 
-INSERT INTO [dbo].[Layouts] ([Id], [VenueId], [Description]) VALUES (4, 2, N'Second layout')
+INSERT INTO [dbo].[Layouts] ([Id], [VenueId], [Description], [Name]) VALUES (4, 2, N'Second layout', N'forth')
 GO
 
 SET IDENTITY_INSERT [dbo].[Layouts] OFF
@@ -187,10 +187,10 @@ GO
 SET IDENTITY_INSERT [dbo].[Events] ON
 GO
 
-INSERT INTO [dbo].[Events] ([Id], [Name], [Description], [LayoutId]) VALUES (1, N'First event', N'First', 1)
+INSERT INTO [dbo].[Events] ([Id], [Name], [Description], [LayoutId], [BeginDate], [EndDate]) VALUES (1, N'First event', N'First', 1, N'2025-12-12 12:00:00', N'2025-12-12 13:00:00')
 GO
 
-INSERT INTO [dbo].[Events] ([Id], [Name], [Description], [LayoutId]) VALUES (2, N'Second event', N'Second', 2)
+INSERT INTO [dbo].[Events] ([Id], [Name], [Description], [LayoutId], [BeginDate], [EndDate]) VALUES (2, N'Second event', N'Second', 2, N'2025-12-12 12:00:00', N'2025-12-12 13:00:00')
 GO
 
 SET IDENTITY_INSERT [dbo].[Events] OFF
