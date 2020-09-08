@@ -50,15 +50,15 @@ namespace TicketManagement.IntegrationTests.ServiceTests
         {
             VenueDto venueDto = new VenueDto
             {
-                Id = 10,
+                Id = 2,
                 Description = "3",
-                Name = "333",
+                Name = "3",
                 Address = "3",
                 Phone = "3",
             };
             this.venueService.UpdateVenue(venueDto);
 
-            VenueDto venueDtoTemp = this.venueService.GetVenue(1);
+            VenueDto venueDtoTemp = this.venueService.GetVenue(2);
 
             Assert.AreEqual("3", venueDtoTemp.Description);
             Assert.AreEqual("3", venueDtoTemp.Name);
@@ -69,7 +69,7 @@ namespace TicketManagement.IntegrationTests.ServiceTests
         [Test]
         public void DeleteVenue_VenueId_GetVenuesCount()
         {
-            this.venueService.DeleteVenue(3);
+            this.venueService.DeleteVenue(1);
 
             int venueCount = this.venueService.GetVenues().Count();
             Assert.AreEqual(1, venueCount);
@@ -78,7 +78,7 @@ namespace TicketManagement.IntegrationTests.ServiceTests
         [Test]
         public void GetVenue_VenueId_GetVenue()
         {
-            VenueDto venueDtoTemp = this.venueService.GetVenue(10);
+            VenueDto venueDtoTemp = this.venueService.GetVenue(1);
 
             Assert.AreEqual("First venue", venueDtoTemp.Description);
             Assert.AreEqual("first", venueDtoTemp.Name);

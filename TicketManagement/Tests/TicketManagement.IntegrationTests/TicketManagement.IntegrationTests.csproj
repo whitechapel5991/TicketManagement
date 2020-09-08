@@ -64,7 +64,14 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Infrastructure\RestorDb.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ServiceTests\AreaServiceTests.cs" />
+    <Compile Include="ServiceTests\EventAreaServiceTests.cs" />
+    <Compile Include="ServiceTests\EventSeatServiceTests.cs" />
+    <Compile Include="ServiceTests\EventServiceTests.cs" />
+    <Compile Include="ServiceTests\LayoutServiceTests.cs" />
+    <Compile Include="ServiceTests\SeatServiceTests.cs" />
     <Compile Include="ServiceTests\VenueServiceTests.cs" />
     <Compile Include="TestBase\TestBase.cs" />
     <Compile Include="Util\ConfigIocContainer.cs" />
@@ -90,6 +97,9 @@
       <Project>{6ADBB0C8-8A69-4F66-A817-FC79D2995799}</Project>
       <Name>TicketManagement.DAL</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Infrastructure\Sql\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

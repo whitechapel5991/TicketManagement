@@ -8,6 +8,7 @@
 using System;
 using Autofac;
 using NUnit.Framework;
+using TicketManagement.IntegrationTests.Infrastructure;
 using TicketManagement.IntegrationTests.Util;
 
 namespace TicketManagement.IntegrationTests.TestBase
@@ -19,6 +20,9 @@ namespace TicketManagement.IntegrationTests.TestBase
         [SetUp]
         public void InitBase()
         {
+            RestorDb restoreDb = new RestorDb();
+            restoreDb.Execute(AppDomain.CurrentDomain.BaseDirectory + @"\..\..\Infrastructure\Sql\script.txt");
+
             this.Container = ConfigIocContainer.GetIocContainer();
         }
 

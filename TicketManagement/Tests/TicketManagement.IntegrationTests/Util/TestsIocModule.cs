@@ -20,8 +20,8 @@ namespace TicketManagement.IntegrationTests.Util
 
         public TestsIocModule()
         {
-            this.connectionString = ConfigurationManager.ConnectionStrings["TicketManagement"].ConnectionString;
-            this.providerName = ConfigurationManager.ConnectionStrings["TicketManagement"].ProviderName;
+            this.connectionString = ConfigurationManager.ConnectionStrings["TicketManagementTest"].ConnectionString;
+            this.providerName = ConfigurationManager.ConnectionStrings["TicketManagementTest"].ProviderName;
         }
 
         protected override void Load(ContainerBuilder builder)
