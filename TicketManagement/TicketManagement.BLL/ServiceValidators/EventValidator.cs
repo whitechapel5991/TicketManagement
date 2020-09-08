@@ -33,24 +33,22 @@ namespace TicketManagement.BLL.ServiceValidators
         private readonly IRepository<Event> eventRepository;
         private readonly IRepository<EventArea> eventAreaRepository;
         private readonly IRepository<EventSeat> eventSeatRepository;
-        private readonly IRepository<Area> areaRepository;
-        private readonly IRepository<Seat> seatRepository;
 
-        public EventValidator(IRepository<Event> eventRepository, IRepository<EventArea> eventAreaRepository, IRepository<EventSeat> eventSeatRepository, IRepository<Area> areaRepository, IRepository<Seat> seatRepository)
+        public EventValidator(IRepository<Event> eventRepository, IRepository<EventArea> eventAreaRepository, IRepository<EventSeat> eventSeatRepository)
         {
-            this.exceptionMessagies = new Dictionary<string, string>();
-            this.exceptionMessagies.Add(EventIsNotDeletingException, "event is not deleting, because one or more ticket have been sold");
-            this.exceptionMessagies.Add(LayoutNotHasAreasException, "event doesn't create because layout does not has areas");
-            this.exceptionMessagies.Add(AreasNotHasSeatsException, "event doesn't create because areas does not has seats");
-            this.exceptionMessagies.Add(CreateInPastException, "can not create an event in the past");
-            this.exceptionMessagies.Add(BeginDateLongerEndDateException, "begin date cannot be longer than end date");
-            this.exceptionMessagies.Add(CreateEventInSameTimeException, "event can not be created in same time with other event");
+            this.exceptionMessagies = new Dictionary<string, string>
+            {
+                { EventIsNotDeletingException, "event is not deleting, because one or more ticket have been sold" },
+                { LayoutNotHasAreasException, "event doesn't create because layout does not has areas" },
+                { AreasNotHasSeatsException, "event doesn't create because areas does not has seats" },
+                { CreateInPastException, "can not create an event in the past" },
+                { BeginDateLongerEndDateException, "begin date cannot be longer than end date" },
+                { CreateEventInSameTimeException, "event can not be created in same time with other event" },
+            };
 
             this.eventRepository = eventRepository;
             this.eventAreaRepository = eventAreaRepository;
             this.eventSeatRepository = eventSeatRepository;
-            this.areaRepository = areaRepository;
-            this.seatRepository = seatRepository;
         }
 
         public void SoldTicketExist(int eventId)

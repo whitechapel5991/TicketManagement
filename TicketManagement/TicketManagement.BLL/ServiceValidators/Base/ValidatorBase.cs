@@ -22,9 +22,11 @@ namespace TicketManagement.BLL.ServiceValidators.Base
 
         public ValidatorBase()
         {
-            this.exceptionMessagies = new Dictionary<string, string>();
-            this.exceptionMessagies.Add(NotFound, "{0} not found");
-            this.exceptionMessagies.Add(ConcreteNotFound, "{0} with id={1} not found");
+            this.exceptionMessagies = new Dictionary<string, string>
+            {
+                { NotFound, "{0} not found" },
+                { ConcreteNotFound, "{0} with id={1} not found" },
+            };
         }
 
         public void QueryResultValidate<T>(T result, int id)

@@ -38,7 +38,7 @@ namespace TicketManagement.BLL.Services
 
             eventSeat.State = eventSeatDto.State;
 
-            var result = this.eventSeatRepository.Update(eventSeat);
+            this.eventSeatRepository.Update(eventSeat);
         }
 
         public EventSeatDto GetEventSeat(int id)
