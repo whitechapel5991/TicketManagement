@@ -55,6 +55,7 @@
     <Reference Include="System.Threading.Tasks.Extensions, Version=4.2.0.1, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
       <HintPath>..\packages\System.Threading.Tasks.Extensions.4.5.4\lib\net461\System.Threading.Tasks.Extensions.dll</HintPath>
     </Reference>
+    <Reference Include="System.Transactions" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -63,6 +64,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Constants\EventSeatState.cs" />
     <Compile Include="DTO\AreaDto.cs" />
     <Compile Include="DTO\EventAreaDto.cs" />
     <Compile Include="DTO\EventDto.cs" />
@@ -70,6 +72,7 @@
     <Compile Include="DTO\LayoutDto.cs" />
     <Compile Include="DTO\SeatDto.cs" />
     <Compile Include="DTO\VenueDto.cs" />
+    <Compile Include="Extensions\AutomapperExtensions.cs" />
     <Compile Include="Interfaces\IAreaService.cs" />
     <Compile Include="Interfaces\IEventAreaService.cs" />
     <Compile Include="Interfaces\IEventSeatService.cs" />
@@ -85,6 +88,22 @@
     <Compile Include="Services\LayoutService.cs" />
     <Compile Include="Services\SeatService.cs" />
     <Compile Include="Services\VenueService.cs" />
+    <Compile Include="ServiceValidators\AreaValidator.cs" />
+    <Compile Include="ServiceValidators\Base\IServiceValidator.cs" />
+    <Compile Include="ServiceValidators\Base\ValidatorBase.cs" />
+    <Compile Include="ServiceValidators\EventAreaValidator.cs" />
+    <Compile Include="ServiceValidators\EventSeatValidator.cs" />
+    <Compile Include="ServiceValidators\EventValidator.cs" />
+    <Compile Include="ServiceValidators\Interfaces\IAreaValidator.cs" />
+    <Compile Include="ServiceValidators\Interfaces\IEventAreaValidator.cs" />
+    <Compile Include="ServiceValidators\Interfaces\IEventSeatValidator.cs" />
+    <Compile Include="ServiceValidators\Interfaces\IEventValidator.cs" />
+    <Compile Include="ServiceValidators\Interfaces\ILayoutValidator.cs" />
+    <Compile Include="ServiceValidators\Interfaces\ISeatValidator.cs" />
+    <Compile Include="ServiceValidators\Interfaces\IVenueValidator.cs" />
+    <Compile Include="ServiceValidators\LayoutValidator.cs" />
+    <Compile Include="ServiceValidators\SeatValidator.cs" />
+    <Compile Include="ServiceValidators\VenueValidator.cs" />
     <Compile Include="Util\BllAutofacModule.cs" />
     <Compile Include="Util\BllMapperProfile.cs" />
     <Compile Include="Util\TicketManagementException.cs" />
