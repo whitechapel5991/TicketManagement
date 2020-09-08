@@ -6,3 +6,4 @@
 AS
     UPDATE Layouts set Description=@Description, VenueId=@VenueId, Name=@Name
 	where Id = @Id
+	select @@ROWCOUNT;

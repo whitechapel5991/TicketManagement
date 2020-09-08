@@ -8,3 +8,4 @@
 AS
     UPDATE EventAreas set Description=@Description, CoordX=@CoordX, CoordY=@CoordY, Price=@Price, EventId=@EventId
 	where Id = @Id
+	select @@ROWCOUNT;

@@ -7,3 +7,4 @@
 AS
     UPDATE Areas set Description=@Description, CoordX=@CoordX, CoordY=@CoordY, LayoutId=@LayoutId
 	where Id = @Id
+    select @@ROWCOUNT;

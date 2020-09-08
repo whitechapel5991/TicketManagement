@@ -7,3 +7,4 @@
 AS
     UPDATE Venues set Description=@Description, Address=@Address, Phone=@Phone, Name=@Name
 	where Id = @Id
+	select @@ROWCOUNT;

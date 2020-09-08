@@ -6,3 +6,4 @@
 AS
     UPDATE Seats set Row=@Row, Number=@Number, AreaId=@AreaId
 	where Id = @Id
+	select @@ROWCOUNT;

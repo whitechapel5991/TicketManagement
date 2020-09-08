@@ -2,3 +2,4 @@
 		@Id int
 AS
     delete from Events where Id=@Id;
+	select @@ROWCOUNT;

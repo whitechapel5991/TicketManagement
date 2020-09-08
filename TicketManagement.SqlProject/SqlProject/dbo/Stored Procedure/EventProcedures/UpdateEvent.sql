@@ -8,3 +8,4 @@
 AS
     UPDATE Events set Name=@Name, Description=@Description, LayoutId=@LayoutId, BeginDate=@BeginDate, EndDate=@EndDate
 	where Id = @Id
+	select @@ROWCOUNT;
