@@ -5,13 +5,7 @@
 // </copyright>
 // ****************************************************************************
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Autofac;
-using Autofac.Core;
 using TicketManagement.DAL.Models;
 using TicketManagement.DAL.Repositories;
 using TicketManagement.DAL.Repositories.Base;
@@ -33,6 +27,42 @@ namespace TicketManagement.DAL.Util
         {
             builder.RegisterType<VenueRepository>()
                 .As<IRepository<Venue>>()
+                .WithParameter("connectionString", this.connectionString)
+                .WithParameter("provider", this.provider)
+                .InstancePerLifetimeScope();
+
+            builder.RegisterType<SeatRepository>()
+                .As<IRepository<Seat>>()
+                .WithParameter("connectionString", this.connectionString)
+                .WithParameter("provider", this.provider)
+                .InstancePerLifetimeScope();
+
+            builder.RegisterType<LayoutRepository>()
+                .As<IRepository<Layout>>()
+                .WithParameter("connectionString", this.connectionString)
+                .WithParameter("provider", this.provider)
+                .InstancePerLifetimeScope();
+
+            builder.RegisterType<EventSeatRepository>()
+                .As<IRepository<EventSeat>>()
+                .WithParameter("connectionString", this.connectionString)
+                .WithParameter("provider", this.provider)
+                .InstancePerLifetimeScope();
+
+            builder.RegisterType<EventRepository>()
+                .As<IRepository<Event>>()
+                .WithParameter("connectionString", this.connectionString)
+                .WithParameter("provider", this.provider)
+                .InstancePerLifetimeScope();
+
+            builder.RegisterType<EventAreaRepository>()
+                .As<IRepository<EventArea>>()
+                .WithParameter("connectionString", this.connectionString)
+                .WithParameter("provider", this.provider)
+                .InstancePerLifetimeScope();
+
+            builder.RegisterType<AreaRepository>()
+                .As<IRepository<Area>>()
                 .WithParameter("connectionString", this.connectionString)
                 .WithParameter("provider", this.provider)
                 .InstancePerLifetimeScope();

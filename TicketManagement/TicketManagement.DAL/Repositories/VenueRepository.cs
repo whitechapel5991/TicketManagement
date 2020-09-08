@@ -5,10 +5,8 @@
 // </copyright>
 // ****************************************************************************
 
-using System;
 using System.Collections.Generic;
 using System.Data;
-using System.Data.Common;
 using TicketManagement.DAL.Extensions;
 using TicketManagement.DAL.Models;
 using TicketManagement.DAL.Repositories.Base;
@@ -63,9 +61,11 @@ namespace TicketManagement.DAL.Repositories
         protected override Venue Map(IDataReader reader)
         {
             Venue venue = new Venue();
+            bool isNull = true;
 
             while (reader.Read())
             {
+                isNull = false;
                 int index = 0;
                 venue.Id = reader.GetInt32(index++);
                 venue.Description = reader.GetString(index++);
@@ -74,28 +74,27 @@ namespace TicketManagement.DAL.Repositories
                 venue.Name = reader.GetString(index++);
             }
 
-            return venue;
+            return isNull ? null : venue;
         }
 
         protected override IEnumerable<Venue> Maps(IDataReader reader)
         {
             ICollection<Venue> venues = new List<Venue>();
-            for (int i = 0; i < reader.FieldCount; i++)
-            {
-                while (reader.Read())
-                {
-                    int index = 0;
 
-                    Venue venue = new Venue
-                    {
-                        Id = reader.GetInt32(index++),
-                        Description = reader.GetString(index++),
-                        Address = reader.GetString(index++),
-                        Phone = reader.GetString(index++),
-                        Name = reader.GetString(index++),
-                    };
-                    venues.Add(venue);
-                }
+            while (reader.Read())
+            {
+                int index = 0;
+
+                Venue venue = new Venue
+                {
+                    Id = reader.GetInt32(index++),
+                    Description = reader.GetString(index++),
+                    Address = reader.GetString(index++),
+                    Phone = reader.GetString(index++),
+                    Name = reader.GetString(index++),
+                };
+
+                venues.Add(venue);
             }
 
             return venues;

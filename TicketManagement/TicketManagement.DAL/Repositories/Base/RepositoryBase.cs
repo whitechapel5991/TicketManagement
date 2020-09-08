@@ -31,14 +31,16 @@ namespace TicketManagement.DAL.Repositories.Base
             return res;
         }
 
-        public void Update(T entity)
+        public object Update(T entity)
         {
             var res = this.CommandExecuteScalar<T>(entity, this.UpdateCommandParameters, CommandType.StoredProcedure);
+            return res;
         }
 
-        public void Delete(int id)
+        public object Delete(int id)
         {
             var res = this.CommandExecuteScalar<int>(id, this.DeleteCommandParameters, CommandType.StoredProcedure);
+            return res;
         }
 
         public T GetById(int id)

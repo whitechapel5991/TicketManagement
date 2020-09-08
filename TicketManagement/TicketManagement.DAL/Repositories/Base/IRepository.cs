@@ -5,11 +5,7 @@
 // </copyright>
 // ****************************************************************************
 
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace TicketManagement.DAL.Repositories.Base
 {
@@ -17,9 +13,9 @@ namespace TicketManagement.DAL.Repositories.Base
     {
         object Create(T entity);
 
-        void Update(T entity);
+        object Update(T entity);
 
-        void Delete(int id);
+        object Delete(int id);
 
         T GetById(int id);
 
