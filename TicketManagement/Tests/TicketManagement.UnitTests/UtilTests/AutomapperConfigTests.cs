@@ -5,28 +5,22 @@
 // </copyright>
 // ****************************************************************************
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Autofac;
 using AutoMapper;
 using NUnit.Framework;
-using TicketManagement.UnitTests.ServiceTests.Base;
-using TicketManagement.UnitTests.Util;
+using Test = TicketManagement.UnitTests.TestBase.TestBase;
 
 namespace TicketManagement.UnitTests.UtilTests
 {
-    internal class AutomapperConfigTests : TestBase
+    internal class AutomapperConfigTests : Test
     {
         private MapperConfiguration mapperConfiguration;
 
         [SetUp]
         public void Init()
         {
-            var container = this.container.Build();
-            this.mapperConfiguration = container.Resolve<MapperConfiguration>();
+            this.Container = this.ContainerBuilder.Build();
+            this.mapperConfiguration = this.Container.Resolve<MapperConfiguration>();
         }
 
         [Test]
