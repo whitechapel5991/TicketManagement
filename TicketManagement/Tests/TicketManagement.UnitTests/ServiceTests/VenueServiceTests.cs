@@ -15,20 +15,14 @@ using TicketManagement.BLL.Interfaces;
 using TicketManagement.BLL.Util;
 using TicketManagement.DAL.Models;
 using TicketManagement.DAL.Repositories.Base;
-using TicketManagement.UnitTests.FakeRepositories.Util;
 using TicketManagement.UnitTests.ServiceTests.Base;
 
 namespace TicketManagement.UnitTests.ServiceTests
 {
     [TestFixture]
-    internal class VenueServiceTests : TestWithRepositoryBase<Venue>
+    internal class VenueServiceTests : TestWithRepositoryBase
     {
         private IVenueService venueService;
-
-        public VenueServiceTests()
-            : base(InitializeFakeData.InitializeVenueData())
-        {
-        }
 
         [SetUp]
         public void Init()
@@ -40,18 +34,18 @@ namespace TicketManagement.UnitTests.ServiceTests
         public void AddVenue_AddNewVenue_GetCountVenues()
         {
             // Arrange
-            int expectedVenuesCount = this.FakeRepositoryData.Count() + 1;
-            var venueDto = this.Fixture.Build<VenueDto>().Create();
+            int expectedCount = this.VenueFakeRepositoryData.Count() + 1;
+            var dto = this.Fixture.Build<VenueDto>().Create();
 
             // Act
-            this.venueService.AddVenue(venueDto);
+            this.venueService.AddVenue(dto);
 
             // Assert
             Assert.Multiple(() =>
             {
                 this.Mock.Mock<IRepository<Venue>>().Verify(x => x.GetAll(), Times.Once);
                 this.Mock.Mock<IRepository<Venue>>().Verify(x => x.Create(It.IsAny<Venue>()), Times.Once);
-                Assert.AreEqual(expectedVenuesCount, this.FakeRepositoryData.Count());
+                Assert.AreEqual(expectedCount, this.VenueFakeRepositoryData.Count());
             });
         }
 
@@ -59,22 +53,22 @@ namespace TicketManagement.UnitTests.ServiceTests
         public void UpdateVenue_NewVenue_GetVenueProperties()
         {
             // Arrange
-            var venueId = 1;
-            var venueDto = this.Fixture.Build<VenueDto>().With(e => e.Id, venueId).Create();
+            var id = 1;
+            var expectedDto = this.Fixture.Build<VenueDto>().With(e => e.Id, id).Create();
 
             // Act
-            this.venueService.UpdateVenue(venueDto);
+            this.venueService.UpdateVenue(expectedDto);
 
             // Assert
             Assert.Multiple(() =>
             {
                 this.Mock.Mock<IRepository<Venue>>().Verify(x => x.GetAll(), Times.Once);
                 this.Mock.Mock<IRepository<Venue>>().Verify(x => x.Update(It.IsAny<Venue>()), Times.Once);
-                var venue = this.FakeRepositoryData.First(x => x.Id == venueId);
-                Assert.AreEqual(venueDto.Description, venue.Description);
-                Assert.AreEqual(venueDto.Address, venue.Address);
-                Assert.AreEqual(venueDto.Name, venue.Name);
-                Assert.AreEqual(venueDto.Phone, venue.Phone);
+                var actualDto = this.VenueFakeRepositoryData.First(x => x.Id == id);
+                Assert.AreEqual(expectedDto.Description, actualDto.Description);
+                Assert.AreEqual(expectedDto.Address, actualDto.Address);
+                Assert.AreEqual(expectedDto.Name, actualDto.Name);
+                Assert.AreEqual(expectedDto.Phone, actualDto.Phone);
             });
         }
 
@@ -82,17 +76,17 @@ namespace TicketManagement.UnitTests.ServiceTests
         public void DeleteVenue_VenueId_GetVenuesCount()
         {
             // Arrange
-            int venueId = 1;
-            int expectedCount = this.FakeRepositoryData.Count() - 1;
+            int id = 1;
+            int expectedCount = this.VenueFakeRepositoryData.Count() - 1;
 
             // Act
-            this.venueService.DeleteVenue(venueId);
+            this.venueService.DeleteVenue(id);
 
             // Assert
             Assert.Multiple(() =>
             {
                 this.Mock.Mock<IRepository<Venue>>().Verify(x => x.Delete(It.IsAny<int>()), Times.Once);
-                Assert.AreEqual(expectedCount, this.FakeRepositoryData.Count());
+                Assert.AreEqual(expectedCount, this.VenueFakeRepositoryData.Count());
             });
         }
 
@@ -100,20 +94,20 @@ namespace TicketManagement.UnitTests.ServiceTests
         public void GetVenue_VenueId_GetVenueProperties()
         {
             // Arrange
-            var venueId = 1;
-            var expectedVenue = this.FakeRepositoryData.First(x => x.Id == venueId);
+            var id = 1;
+            var expectedDto = this.VenueFakeRepositoryData.First(x => x.Id == id);
 
             // Act
-            var venueDto = this.venueService.GetVenue(venueId);
+            var actualDto = this.venueService.GetVenue(id);
 
             // Assert
             Assert.Multiple(() =>
             {
                 this.Mock.Mock<IRepository<Venue>>().Verify(x => x.GetById(It.IsAny<int>()), Times.Once);
-                Assert.AreEqual(expectedVenue.Description, venueDto.Description);
-                Assert.AreEqual(expectedVenue.Address, venueDto.Address);
-                Assert.AreEqual(expectedVenue.Name, venueDto.Name);
-                Assert.AreEqual(expectedVenue.Phone, venueDto.Phone);
+                Assert.AreEqual(expectedDto.Description, actualDto.Description);
+                Assert.AreEqual(expectedDto.Address, actualDto.Address);
+                Assert.AreEqual(expectedDto.Name, actualDto.Name);
+                Assert.AreEqual(expectedDto.Phone, actualDto.Phone);
             });
         }
 
@@ -121,16 +115,16 @@ namespace TicketManagement.UnitTests.ServiceTests
         public void GetVenues_GetVenuesCount()
         {
             // Arrange
-            var expectedCount = this.FakeRepositoryData.Count();
+            var expectedCount = this.VenueFakeRepositoryData.Count();
 
             // Act
-            var venues = this.venueService.GetVenues();
+            var dtos = this.venueService.GetVenues();
 
             // Assert
             Assert.Multiple(() =>
             {
                 this.Mock.Mock<IRepository<Venue>>().Verify(x => x.GetAll(), Times.Once);
-                Assert.AreEqual(expectedCount, venues.Count());
+                Assert.AreEqual(expectedCount, dtos.Count());
             });
         }
 
@@ -138,14 +132,14 @@ namespace TicketManagement.UnitTests.ServiceTests
         public void AddVenue_IsVenueName_GetException()
         {
             // Arrange
-            var existingVenueName = this.FakeRepositoryData.First().Name;
-            var venueDto = this.Fixture.Build<VenueDto>().With(e => e.Name, existingVenueName).Create();
+            var existingName = this.VenueFakeRepositoryData.First().Name;
+            var dto = this.Fixture.Build<VenueDto>().With(e => e.Name, existingName).Create();
 
             // Act - delegate. Assert
             Assert.Multiple(() =>
             {
                 Assert.Throws<TicketManagementException>(
-                    () => this.venueService.AddVenue(venueDto));
+                    () => this.venueService.AddVenue(dto));
                 this.Mock.Mock<IRepository<Venue>>().Verify(x => x.GetAll(), Times.Once);
                 this.Mock.Mock<IRepository<Venue>>().Verify(x => x.Create(It.IsAny<Venue>()), Times.Never);
             });
@@ -155,14 +149,14 @@ namespace TicketManagement.UnitTests.ServiceTests
         public void UpdateVenue_VenueIsNull_GetException()
         {
             // Arrange
-            var idNotExist = -1;
-            var venueDto = this.Fixture.Build<VenueDto>().With(e => e.Id, idNotExist).Create();
+            var idNotExistId = -1;
+            var dto = this.Fixture.Build<VenueDto>().With(e => e.Id, idNotExistId).Create();
 
             // Act - delegate. Assert
             Assert.Multiple(() =>
             {
                 Assert.Throws<TicketManagementException>(
-                () => this.venueService.UpdateVenue(venueDto));
+                () => this.venueService.UpdateVenue(dto));
                 this.Mock.Mock<IRepository<Venue>>().Verify(x => x.GetAll(), Times.Once);
                 this.Mock.Mock<IRepository<Venue>>().Verify(x => x.Update(It.IsAny<Venue>()), Times.Once);
             });
@@ -172,15 +166,15 @@ namespace TicketManagement.UnitTests.ServiceTests
         public void UpdateVenue_IsVenueName_GetException()
         {
             // Arrange
-            var existingVenueName = this.FakeRepositoryData.First().Name;
-            var venueIdForUpdate = this.FakeRepositoryData.Last().Id;
-            var venueDto = this.Fixture.Build<VenueDto>().With(e => e.Id, venueIdForUpdate).With(e => e.Name, existingVenueName).Create();
+            var existingVenueName = this.VenueFakeRepositoryData.First().Name;
+            var venueIdForUpdate = this.VenueFakeRepositoryData.Last().Id;
+            var dto = this.Fixture.Build<VenueDto>().With(e => e.Id, venueIdForUpdate).With(e => e.Name, existingVenueName).Create();
 
             // Act - delegate. Assert
             Assert.Multiple(() =>
             {
                 Assert.Throws<TicketManagementException>(
-                () => this.venueService.UpdateVenue(venueDto));
+                () => this.venueService.UpdateVenue(dto));
                 this.Mock.Mock<IRepository<Venue>>().Verify(x => x.GetAll(), Times.Once);
                 this.Mock.Mock<IRepository<Venue>>().Verify(x => x.Update(It.IsAny<Venue>()), Times.Never);
             });
