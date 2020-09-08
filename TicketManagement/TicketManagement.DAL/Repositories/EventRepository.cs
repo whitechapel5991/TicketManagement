@@ -49,12 +49,12 @@ namespace TicketManagement.DAL.Repositories
 
         protected override void GetByIdCommandParameters(int id, IDbCommand cmd)
         {
-            cmd.CommandText = string.Format("SELECT * FROM Event WHERE Id = {0}", id);
+            cmd.CommandText = string.Format("SELECT * FROM Events WHERE Id = {0}", id);
         }
 
         protected override void GetAllCommandParameters(IDbCommand cmd)
         {
-            cmd.CommandText = "select * from Event";
+            cmd.CommandText = "select * from Events";
         }
 
         protected override Event Map(IDataReader reader)

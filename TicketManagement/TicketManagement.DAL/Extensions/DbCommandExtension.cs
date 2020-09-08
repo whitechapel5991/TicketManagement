@@ -9,7 +9,7 @@ using System.Data;
 
 namespace TicketManagement.DAL.Extensions
 {
-    public static class DbCommandExtension
+    internal static class DbCommandExtension
     {
         public static void AddParameterWithValue(this IDbCommand command, string paramName, object paramValue)
         {
