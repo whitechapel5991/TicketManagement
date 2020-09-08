@@ -7,39 +7,86 @@
 
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using AutoMapper;
 using TicketManagement.BLL.DTO;
 using TicketManagement.BLL.Interfaces;
+using TicketManagement.BLL.ServiceValidators.Interfaces;
+using TicketManagement.DAL.Models;
+using TicketManagement.DAL.Repositories.Base;
 
 namespace TicketManagement.BLL.Services
 {
-    public class SeatService : ISeatService
+    internal class SeatService : ISeatService
     {
-        public int AddSeat(SeatDto entity)
+        private readonly IRepository<Area> areaRepository;
+
+        private readonly IRepository<Seat> seatRepository;
+
+        private readonly IMapper mapper;
+        private readonly ISeatValidator seatValidator;
+
+        public SeatService(
+            IRepository<Seat> seatRepository,
+            IRepository<Area> areaRepository,
+            IMapper mapper,
+            ISeatValidator seatValidator)
         {
-            throw new NotImplementedException();
+            this.seatRepository = seatRepository;
+            this.areaRepository = areaRepository;
+            this.mapper = mapper;
+            this.seatValidator = seatValidator;
+        }
+
+        public int AddSeat(SeatDto seatDto)
+        {
+            Area area = this.areaRepository.GetById(seatDto.AreaId);
+
+            this.seatValidator.QueryResultValidate<Area>(area, seatDto.AreaId);
+
+            this.seatValidator.IsSeatExist(seatDto.AreaId, seatDto.Row, seatDto.Number);
+
+            Seat seat = this.mapper.Map<Seat>(seatDto);
+
+            return Convert.ToInt32(this.seatRepository.Create(seat));
+        }
+
+        public void UpdateSeat(SeatDto seatDto)
+        {
+            Seat seat = this.seatRepository.GetById(seatDto.Id);
+
+            this.seatValidator.QueryResultValidate<Seat>(seat, seatDto.Id);
+
+            Area area = this.areaRepository.GetById(seatDto.AreaId);
+
+            this.seatValidator.QueryResultValidate<Area>(area, seatDto.AreaId);
+
+            this.seatValidator.IsSeatExist(seatDto.AreaId, seatDto.Row, seatDto.Number);
+
+            seat = this.mapper.Map<Seat>(seatDto);
+
+            var result = this.seatRepository.Update(seat);
         }
 
         public void DeleteSeat(int id)
         {
-            throw new NotImplementedException();
+            var result = this.seatRepository.Delete(id);
+
+            this.seatValidator.CUDResultValidate<Seat>(result, id);
         }
 
         public SeatDto GetSeat(int id)
         {
-            throw new NotImplementedException();
+            Seat seat = this.seatRepository.GetById(id);
+
+            this.seatValidator.QueryResultValidate<Seat>(seat, id);
+
+            return this.mapper.Map<Seat, SeatDto>(seat);
         }
 
         public IEnumerable<SeatDto> GetSeats()
         {
-            throw new NotImplementedException();
-        }
-
-        public void UpdateSeat(SeatDto entity)
-        {
-            throw new NotImplementedException();
+            var result = this.seatRepository.GetAll();
+            return this.mapper.Map<IEnumerable<Seat>, IEnumerable<SeatDto>>(result);
         }
     }
 }
