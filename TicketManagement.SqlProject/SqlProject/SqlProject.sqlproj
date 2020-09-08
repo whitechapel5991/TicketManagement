@@ -103,5 +103,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="SqlProject.publish.xml" />
+    <None Include="SqlProjectTest.publish.xml" />
   </ItemGroup>
 </Project>
