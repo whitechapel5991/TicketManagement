@@ -15,87 +15,120 @@ namespace TicketManagement.DAL.Repositories
 {
     internal class EventRepository : RepositoryBase<Event>
     {
+        private const string IdColumnName = "Id";
+        private const string NameColumnName = "Name";
+        private const string DescriptionColumnName = "Description";
+        private const string LayoutIdColumnName = "LayoutId";
+        private const string BeginDateColumnName = "BeginDate";
+        private const string EndDateColumnName = "EndDate";
+
+        private const string IdParamName = "@Id";
+        private const string NameParamName = "@Name";
+        private const string DescriptionParamName = "@Description";
+        private const string LayoutIdParamName = "@LayoutId";
+        private const string BeginDateParamName = "@BeginDate";
+        private const string EndDateParamName = "@EndDate";
+
         public EventRepository(string connectionString, string provider)
             : base(connectionString, provider)
         {
         }
 
-        protected override void InsertCommandParameters(Event entity, IDbCommand cmd)
+        protected override void CreateCommandParameters(Event entity, IDbCommand cmd)
         {
-            cmd.CommandText = "CreateEvent";
-            cmd.AddParameterWithValue("@Name", entity.Name);
-            cmd.AddParameterWithValue("@BeginDate", entity.BeginDate);
-            cmd.AddParameterWithValue("@EndDate", entity.EndDate);
-            cmd.AddParameterWithValue("@Description", entity.Description);
-            cmd.AddParameterWithValue("@LayoutId", entity.LayoutId);
+            const string CreateEventStoredProcedureName = "CreateEvent";
+
+            cmd.CommandText = CreateEventStoredProcedureName;
+            cmd.AddParameterWithValue(NameParamName, entity.Name);
+            cmd.AddParameterWithValue(BeginDateParamName, entity.BeginDate);
+            cmd.AddParameterWithValue(EndDateParamName, entity.EndDate);
+            cmd.AddParameterWithValue(DescriptionParamName, entity.Description);
+            cmd.AddParameterWithValue(LayoutIdParamName, entity.LayoutId);
         }
 
         protected override void UpdateCommandParameters(Event entity, IDbCommand cmd)
         {
-            cmd.CommandText = "UpdateEvent";
-            cmd.AddParameterWithValue("@Id", entity.Id);
-            cmd.AddParameterWithValue("@Name", entity.Name);
-            cmd.AddParameterWithValue("@BeginDate", entity.BeginDate);
-            cmd.AddParameterWithValue("@EndDate", entity.EndDate);
-            cmd.AddParameterWithValue("@Description", entity.Description);
-            cmd.AddParameterWithValue("@LayoutId", entity.LayoutId);
+            const string UpdateEventStoredProcedureName = "UpdateEvent";
+
+            cmd.CommandText = UpdateEventStoredProcedureName;
+            cmd.AddParameterWithValue(IdParamName, entity.Id);
+            cmd.AddParameterWithValue(NameParamName, entity.Name);
+            cmd.AddParameterWithValue(BeginDateParamName, entity.BeginDate);
+            cmd.AddParameterWithValue(EndDateParamName, entity.EndDate);
+            cmd.AddParameterWithValue(DescriptionParamName, entity.Description);
+            cmd.AddParameterWithValue(LayoutIdParamName, entity.LayoutId);
         }
 
         protected override void DeleteCommandParameters(int id, IDbCommand cmd)
         {
-            cmd.CommandText = "DeleteEvent";
-            cmd.AddParameterWithValue("@Id", id);
+            const string DeleteEventStoredProcedureName = "DeleteEvent";
+
+            cmd.CommandText = DeleteEventStoredProcedureName;
+            cmd.AddParameterWithValue(IdParamName, id);
         }
 
         protected override void GetByIdCommandParameters(int id, IDbCommand cmd)
         {
-            cmd.CommandText = string.Format("SELECT * FROM Events WHERE Id = {0}", id);
+            cmd.CommandText = $"SELECT {IdColumnName},{NameColumnName},{DescriptionColumnName}," +
+                $"{LayoutIdColumnName},{BeginDateColumnName},{EndDateColumnName} " +
+                $"FROM Events WHERE Id = {id}";
         }
 
         protected override void GetAllCommandParameters(IDbCommand cmd)
         {
-            cmd.CommandText = "select * from Events";
+            cmd.CommandText = $"select {IdColumnName},{NameColumnName},{DescriptionColumnName}," +
+                $"{LayoutIdColumnName},{BeginDateColumnName},{EndDateColumnName} " +
+                $"from Events";
         }
 
         protected override Event Map(IDataReader reader)
         {
-            Event @event = new Event();
-            bool isNull = true;
+            var @event = new Event();
+
+            var idColumnIndex = reader.GetOrdinal(IdColumnName);
+            var layoutIdColumnIndex = reader.GetOrdinal(LayoutIdColumnName);
+            var descriptionColumnIndex = reader.GetOrdinal(DescriptionColumnName);
+            var beginDateColumnIndex = reader.GetOrdinal(BeginDateColumnName);
+            var endDateColumnIndex = reader.GetOrdinal(EndDateColumnName);
+            var nameColumnIndex = reader.GetOrdinal(NameColumnName);
 
             while (reader.Read())
-                {
-                isNull = false;
-                int index = 0;
-                @event.Id = reader.GetInt32(index++);
-                @event.Name = reader.GetString(index++);
-                @event.Description = reader.GetString(index++);
-                @event.LayoutId = reader.GetInt32(index++);
-                @event.BeginDate = reader.GetDateTime(index++);
-                @event.EndDate = reader.GetDateTime(index++);
-                }
+            {
+                @event.Id = reader.GetInt32(idColumnIndex);
+                @event.Name = reader.GetString(nameColumnIndex);
+                @event.Description = reader.GetString(descriptionColumnIndex);
+                @event.LayoutId = reader.GetInt32(layoutIdColumnIndex);
+                @event.BeginDate = reader.GetDateTime(beginDateColumnIndex);
+                @event.EndDate = reader.GetDateTime(endDateColumnIndex);
+            }
 
-            return isNull ? null : @event;
+            return @event;
         }
 
         protected override IEnumerable<Event> Maps(IDataReader reader)
         {
-            ICollection<Event> events = new List<Event>();
+            var events = new List<Event>();
+
+            var idColumnIndex = reader.GetOrdinal(IdColumnName);
+            var layoutIdColumnIndex = reader.GetOrdinal(LayoutIdColumnName);
+            var descriptionColumnIndex = reader.GetOrdinal(DescriptionColumnName);
+            var beginDateColumnIndex = reader.GetOrdinal(BeginDateColumnName);
+            var endDateColumnIndex = reader.GetOrdinal(EndDateColumnName);
+            var nameColumnIndex = reader.GetOrdinal(NameColumnName);
 
             while (reader.Read())
+            {
+                var @event = new Event
                 {
-                int index = 0;
-
-                Event @event = new Event
-                    {
-                    Id = reader.GetInt32(index++),
-                    Name = reader.GetString(index++),
-                    Description = reader.GetString(index++),
-                    LayoutId = reader.GetInt32(index++),
-                    BeginDate = reader.GetDateTime(index++),
-                    EndDate = reader.GetDateTime(index++),
-                    };
+                    Id = reader.GetInt32(idColumnIndex),
+                    Name = reader.GetString(nameColumnIndex),
+                    Description = reader.GetString(descriptionColumnIndex),
+                    LayoutId = reader.GetInt32(layoutIdColumnIndex),
+                    BeginDate = reader.GetDateTime(beginDateColumnIndex),
+                    EndDate = reader.GetDateTime(endDateColumnIndex),
+                };
                 events.Add(@event);
-                }
+            }
 
             return events;
         }

@@ -15,79 +15,100 @@ namespace TicketManagement.DAL.Repositories
 {
     internal class SeatRepository : RepositoryBase<Seat>
     {
+        private const string IdColumnName = "Id";
+        private const string AreaIdColumnName = "AreaId";
+        private const string RowColumnName = "Row";
+        private const string NumberColumnName = "Number";
+
+        private const string IdParamName = "@Id";
+        private const string AreaIdParamName = "@AreaId";
+        private const string RowParamName = "@Row";
+        private const string NumberParamName = "@Number";
+
         public SeatRepository(string connectionString, string provider)
             : base(connectionString, provider)
         {
         }
 
-        protected override void InsertCommandParameters(Seat entity, IDbCommand cmd)
+        protected override void CreateCommandParameters(Seat entity, IDbCommand cmd)
         {
-            cmd.CommandText = "CreateSeat";
-            cmd.AddParameterWithValue("@Row", entity.Row);
-            cmd.AddParameterWithValue("@Number", entity.Number);
-            cmd.AddParameterWithValue("@AreaId", entity.AreaId);
+            const string CreateSeatStoredProcedureName = "CreateSeat";
+
+            cmd.CommandText = CreateSeatStoredProcedureName;
+            cmd.AddParameterWithValue(RowParamName, entity.Row);
+            cmd.AddParameterWithValue(NumberParamName, entity.Number);
+            cmd.AddParameterWithValue(AreaIdParamName, entity.AreaId);
         }
 
         protected override void UpdateCommandParameters(Seat entity, IDbCommand cmd)
         {
-            cmd.CommandText = "UpdateSeat";
-            cmd.AddParameterWithValue("@Id", entity.Id);
-            cmd.AddParameterWithValue("@Row", entity.Row);
-            cmd.AddParameterWithValue("@Number", entity.Number);
-            cmd.AddParameterWithValue("@AreaId", entity.AreaId);
+            const string UpdateSeatStoredProcedureName = "UpdateSeat";
+
+            cmd.CommandText = UpdateSeatStoredProcedureName;
+            cmd.AddParameterWithValue(IdParamName, entity.Id);
+            cmd.AddParameterWithValue(RowParamName, entity.Row);
+            cmd.AddParameterWithValue(NumberParamName, entity.Number);
+            cmd.AddParameterWithValue(AreaIdParamName, entity.AreaId);
         }
 
         protected override void DeleteCommandParameters(int id, IDbCommand cmd)
         {
-            cmd.CommandText = "DeleteSeat";
-            cmd.AddParameterWithValue("@Id", id);
+            const string DeleteSeatStoredProcedureName = "DeleteSeat";
+
+            cmd.CommandText = DeleteSeatStoredProcedureName;
+            cmd.AddParameterWithValue(IdParamName, id);
         }
 
         protected override void GetByIdCommandParameters(int id, IDbCommand cmd)
         {
-            cmd.CommandText = string.Format("SELECT * FROM Seats WHERE Id = {0}", id);
+            cmd.CommandText = $"SELECT {IdColumnName},{AreaIdColumnName},{RowColumnName},{NumberColumnName} FROM Seats WHERE Id = {id}";
         }
 
         protected override void GetAllCommandParameters(IDbCommand cmd)
         {
-            cmd.CommandText = "select * from Seats";
+            cmd.CommandText = $"select {IdColumnName},{AreaIdColumnName},{RowColumnName},{NumberColumnName} from Seats";
         }
 
         protected override Seat Map(IDataReader reader)
         {
-            Seat seat = new Seat();
-            bool isNull = true;
+            var seat = new Seat();
+
+            var idColumnIndex = reader.GetOrdinal(IdColumnName);
+            var areaIdColumnIndex = reader.GetOrdinal(AreaIdColumnName);
+            var rowColumnIndex = reader.GetOrdinal(RowColumnName);
+            var numberColumnIndex = reader.GetOrdinal(NumberColumnName);
 
             while (reader.Read())
-                {
-                isNull = false;
-                int index = 0;
-                seat.Id = reader.GetInt32(index++);
-                seat.AreaId = reader.GetInt32(index++);
-                seat.Row = reader.GetInt32(index++);
-                seat.Number = reader.GetInt32(index++);
+            {
+                seat.Id = reader.GetInt32(idColumnIndex);
+                seat.AreaId = reader.GetInt32(areaIdColumnIndex);
+                seat.Row = reader.GetInt32(rowColumnIndex);
+                seat.Number = reader.GetInt32(numberColumnIndex);
             }
 
-            return isNull ? null : seat;
+            return seat;
         }
 
         protected override IEnumerable<Seat> Maps(IDataReader reader)
         {
-            ICollection<Seat> seats = new List<Seat>();
+            var seats = new List<Seat>();
+
+            var idColumnIndex = reader.GetOrdinal(IdColumnName);
+            var areaIdColumnIndex = reader.GetOrdinal(AreaIdColumnName);
+            var rowColumnIndex = reader.GetOrdinal(RowColumnName);
+            var numberColumnIndex = reader.GetOrdinal(NumberColumnName);
 
             while (reader.Read())
+            {
+                var seat = new Seat
                 {
-                int index = 0;
-
-                Seat seat = new Seat
-                    {
-                    Id = reader.GetInt32(index++),
-                    AreaId = reader.GetInt32(index++),
-                    Row = reader.GetInt32(index++),
-                    Number = reader.GetInt32(index++),
-                    };
+                    Id = reader.GetInt32(idColumnIndex),
+                    AreaId = reader.GetInt32(areaIdColumnIndex),
+                    Row = reader.GetInt32(rowColumnIndex),
+                    Number = reader.GetInt32(numberColumnIndex),
+                };
                 seats.Add(seat);
-                }
+            }
 
             return seats;
         }

@@ -42,6 +42,7 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.Composition" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
     <Reference Include="System.Runtime.CompilerServices.Unsafe, Version=4.0.6.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <HintPath>..\packages\System.Runtime.CompilerServices.Unsafe.4.7.1\lib\net461\System.Runtime.CompilerServices.Unsafe.dll</HintPath>
@@ -57,7 +58,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Constants\EventSeatState.cs" />
     <Compile Include="Extensions\DbCommandExtension.cs" />
+    <Compile Include="Models\Base\Entity.cs" />
     <Compile Include="Models\Base\IEntity.cs" />
     <Compile Include="Models\Area.cs" />
     <Compile Include="Models\Event.cs" />
@@ -76,7 +79,7 @@
     <Compile Include="Repositories\LayoutRepository.cs" />
     <Compile Include="Repositories\SeatRepository.cs" />
     <Compile Include="Repositories\VenueRepository.cs" />
-    <Compile Include="Util\DalAutofacModule.cs" />
+    <Compile Include="Util\AdoAutofacModule.cs" />
   </ItemGroup>
   <ItemGroup>
     <AdditionalFiles Include="..\stylecop.json">

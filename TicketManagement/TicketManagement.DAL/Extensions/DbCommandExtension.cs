@@ -11,7 +11,7 @@ namespace TicketManagement.DAL.Extensions
 {
     internal static class DbCommandExtension
     {
-        public static void AddParameterWithValue(this IDbCommand command, string paramName, object paramValue)
+        public static void AddParameterWithValue<TParam>(this IDbCommand command, string paramName, TParam paramValue)
         {
             var param = command.CreateParameter();
             param.ParameterName = paramName;

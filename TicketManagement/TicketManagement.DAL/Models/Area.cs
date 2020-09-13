@@ -5,20 +5,27 @@
 // </copyright>
 // ****************************************************************************
 
+using System.ComponentModel.DataAnnotations;
 using TicketManagement.DAL.Models.Base;
 
 namespace TicketManagement.DAL.Models
 {
-    public class Area : IEntity
+    public class Area : Entity
     {
-        public int Id { get; set; }
-
+        [Required]
+        [StringLength(200)]
         public string Description { get; set; }
 
+        [Required]
+        [Range(0, 10000)]
         public int CoordX { get; set; }
 
+        [Required]
+        [Range(0, int.MaxValue)]
         public int CoordY { get; set; }
 
+        [Required]
+        [Range(0, int.MaxValue)]
         public int LayoutId { get; set; }
     }
 }

@@ -15,83 +15,110 @@ namespace TicketManagement.DAL.Repositories
 {
     internal class VenueRepository : RepositoryBase<Venue>
     {
+        private const string IdColumnName = "Id";
+        private const string DescriptionColumnName = "Description";
+        private const string AddressColumnName = "Address";
+        private const string PhoneColumnName = "Phone";
+        private const string NameColumnName = "Name";
+
+        private const string IdParamName = "@Id";
+        private const string AddressParamName = "@Address";
+        private const string DescriptionParamName = "@Description";
+        private const string PhoneParamName = "Phone";
+        private const string NameParamName = "@Name";
+
         public VenueRepository(string connectionString, string provider)
             : base(connectionString, provider)
         {
         }
 
-        protected override void InsertCommandParameters(Venue entity, IDbCommand cmd)
+        protected override void CreateCommandParameters(Venue entity, IDbCommand cmd)
         {
-            cmd.CommandText = "CreateVenue";
+            const string CreateVenueStoredProcedureName = "CreateVenue";
 
-            cmd.AddParameterWithValue("@Description", entity.Description);
-            cmd.AddParameterWithValue("@Address", entity.Address);
-            cmd.AddParameterWithValue("@Phone", entity.Phone);
-            cmd.AddParameterWithValue("@Name", entity.Name);
+            cmd.CommandText = CreateVenueStoredProcedureName;
+
+            cmd.AddParameterWithValue(DescriptionParamName, entity.Description);
+            cmd.AddParameterWithValue(AddressParamName, entity.Address);
+            cmd.AddParameterWithValue(PhoneParamName, entity.Phone);
+            cmd.AddParameterWithValue(NameParamName, entity.Name);
         }
 
         protected override void UpdateCommandParameters(Venue entity, IDbCommand cmd)
         {
-            cmd.CommandText = "UpdateVenue";
+            const string UpdateVenueStoredProcedureName = "UpdateVenue";
 
-            cmd.AddParameterWithValue("@Id", entity.Id);
-            cmd.AddParameterWithValue("@Description", entity.Description);
-            cmd.AddParameterWithValue("@Address", entity.Address);
-            cmd.AddParameterWithValue("@Phone", entity.Phone);
-            cmd.AddParameterWithValue("@Name", entity.Name);
+            cmd.CommandText = UpdateVenueStoredProcedureName;
+
+            cmd.AddParameterWithValue(IdParamName, entity.Id);
+            cmd.AddParameterWithValue(DescriptionParamName, entity.Description);
+            cmd.AddParameterWithValue(AddressParamName, entity.Address);
+            cmd.AddParameterWithValue(PhoneParamName, entity.Phone);
+            cmd.AddParameterWithValue(NameParamName, entity.Name);
         }
 
         protected override void DeleteCommandParameters(int id, IDbCommand cmd)
         {
-            cmd.CommandText = "DeleteVenue";
+            const string DeleteVenueStoredProcedureName = "DeleteVenue";
 
-            cmd.AddParameterWithValue("@Id", id);
+            cmd.CommandText = DeleteVenueStoredProcedureName;
+
+            cmd.AddParameterWithValue(IdParamName, id);
         }
 
         protected override void GetAllCommandParameters(IDbCommand cmd)
         {
-            cmd.CommandText = "select * from Venues";
+            cmd.CommandText = $"select {IdColumnName},{DescriptionColumnName}," +
+                $"{AddressColumnName},{PhoneColumnName},{NameColumnName} from Venues";
         }
 
         protected override void GetByIdCommandParameters(int id, IDbCommand cmd)
         {
-            cmd.CommandText = string.Format("SELECT * FROM Venues WHERE Id = {0}", id);
+            cmd.CommandText = $"SELECT {IdColumnName},{DescriptionColumnName}," +
+                $"{AddressColumnName},{PhoneColumnName},{NameColumnName} FROM Venues WHERE Id = {id}";
         }
 
         protected override Venue Map(IDataReader reader)
         {
-            Venue venue = new Venue();
-            bool isNull = true;
+            var venue = new Venue();
+
+            var idColumnIndex = reader.GetOrdinal(IdColumnName);
+            var addressColumnIndex = reader.GetOrdinal(AddressColumnName);
+            var descriptionColumnIndex = reader.GetOrdinal(DescriptionColumnName);
+            var nameColumnIndex = reader.GetOrdinal(NameColumnName);
+            var phoneColumnIndex = reader.GetOrdinal(PhoneColumnName);
 
             while (reader.Read())
             {
-                isNull = false;
-                int index = 0;
-                venue.Id = reader.GetInt32(index++);
-                venue.Description = reader.GetString(index++);
-                venue.Address = reader.GetString(index++);
-                venue.Phone = reader.GetString(index++);
-                venue.Name = reader.GetString(index++);
+                venue.Id = reader.GetInt32(idColumnIndex);
+                venue.Description = reader.GetString(descriptionColumnIndex);
+                venue.Address = reader.GetString(addressColumnIndex);
+                venue.Phone = reader.GetString(phoneColumnIndex);
+                venue.Name = reader.GetString(nameColumnIndex);
             }
 
-            return isNull ? null : venue;
+            return venue;
         }
 
         protected override IEnumerable<Venue> Maps(IDataReader reader)
         {
-            ICollection<Venue> venues = new List<Venue>();
+            var venues = new List<Venue>();
+
+            var idColumnIndex = reader.GetOrdinal(IdColumnName);
+            var addressColumnIndex = reader.GetOrdinal(AddressColumnName);
+            var descriptionColumnIndex = reader.GetOrdinal(DescriptionColumnName);
+            var nameColumnIndex = reader.GetOrdinal(NameColumnName);
+            var phoneColumnIndex = reader.GetOrdinal(PhoneColumnName);
 
             while (reader.Read())
             {
-                int index = 0;
-
-                Venue venue = new Venue
+                var venue = new Venue
                 {
-                    Id = reader.GetInt32(index++),
-                    Description = reader.GetString(index++),
-                    Address = reader.GetString(index++),
-                    Phone = reader.GetString(index++),
-                    Name = reader.GetString(index++),
+                    Id = reader.GetInt32(idColumnIndex),
+                    Description = reader.GetString(descriptionColumnIndex),
+                    Address = reader.GetString(addressColumnIndex),
+                    Phone = reader.GetString(phoneColumnIndex),
+                    Name = reader.GetString(nameColumnIndex),
                 };
 
                 venues.Add(venue);

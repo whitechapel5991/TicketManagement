@@ -5,20 +5,26 @@
 // </copyright>
 // ****************************************************************************
 
+using System.ComponentModel.DataAnnotations;
+using TicketManagement.DAL.Constants;
 using TicketManagement.DAL.Models.Base;
 
 namespace TicketManagement.DAL.Models
 {
-    public class EventSeat : IEntity
+    public class EventSeat : Entity
     {
-        public int Id { get; set; }
-
+        [Required]
+        [Range(0, int.MaxValue)]
         public int Row { get; set; }
 
+        [Required]
+        [Range(0, int.MaxValue)]
         public int Number { get; set; }
 
-        public int State { get; set; }
+        public EventSeatState State { get; set; }
 
+        [Required]
+        [Range(0, int.MaxValue)]
         public int EventAreaId { get; set; }
     }
 }

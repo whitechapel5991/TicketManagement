@@ -5,18 +5,22 @@
 // </copyright>
 // ****************************************************************************
 
+using System.ComponentModel.DataAnnotations;
 using TicketManagement.DAL.Models.Base;
 
 namespace TicketManagement.DAL.Models
 {
-    public class Layout : IEntity
+    public class Layout : Entity
     {
-        public int Id { get; set; }
-
+        [StringLength(50)]
         public string Name { get; set; }
 
+        [Required]
+        [StringLength(120)]
         public string Description { get; set; }
 
+        [Required]
+        [Range(0, int.MaxValue)]
         public int VenueId { get; set; }
     }
 }

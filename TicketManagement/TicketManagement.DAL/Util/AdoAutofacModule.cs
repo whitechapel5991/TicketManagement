@@ -12,12 +12,12 @@ using TicketManagement.DAL.Repositories.Base;
 
 namespace TicketManagement.DAL.Util
 {
-    public class DalAutofacModule : Module
+    public class AdoAutofacModule : Module
     {
         private readonly string connectionString;
         private readonly string provider;
 
-        public DalAutofacModule(string connectionString, string provider)
+        public AdoAutofacModule(string connectionString, string provider)
         {
             this.connectionString = connectionString;
             this.provider = provider;

@@ -7,6 +7,7 @@
 
 using System.Collections.Generic;
 using System.Data;
+using TicketManagement.DAL.Constants;
 using TicketManagement.DAL.Extensions;
 using TicketManagement.DAL.Models;
 using TicketManagement.DAL.Repositories.Base;
@@ -15,83 +16,112 @@ namespace TicketManagement.DAL.Repositories
 {
     internal class EventSeatRepository : RepositoryBase<EventSeat>
     {
+        private const string IdColumnName = "Id";
+        private const string EventAreaIdColumnName = "EventAreaId";
+        private const string RowColumnName = "Row";
+        private const string NumberColumnName = "Number";
+        private const string StateColumnName = "State";
+
+        private const string IdParamName = "@Id";
+        private const string EventAreaIdParamName = "@EventAreaId";
+        private const string RowParamName = "@Row";
+        private const string NumberParamName = "@Number";
+        private const string StateParamName = "@State";
+
         public EventSeatRepository(string connectionString, string provider)
             : base(connectionString, provider)
         {
         }
 
-        protected override void InsertCommandParameters(EventSeat entity, IDbCommand cmd)
+        protected override void CreateCommandParameters(EventSeat entity, IDbCommand cmd)
         {
-            cmd.CommandText = "CreateEventSeat";
-            cmd.AddParameterWithValue("@Row", entity.Row);
-            cmd.AddParameterWithValue("@Number", entity.Number);
-            cmd.AddParameterWithValue("@State", entity.State);
-            cmd.AddParameterWithValue("@EventAreaId", entity.EventAreaId);
+            const string CreateEventSeatStoredProcedureName = "CreateEventSeat";
+
+            cmd.CommandText = CreateEventSeatStoredProcedureName;
+            cmd.AddParameterWithValue(RowParamName, entity.Row);
+            cmd.AddParameterWithValue(NumberParamName, entity.Number);
+            cmd.AddParameterWithValue(StateParamName, entity.State);
+            cmd.AddParameterWithValue(EventAreaIdParamName, entity.EventAreaId);
         }
 
         protected override void UpdateCommandParameters(EventSeat entity, IDbCommand cmd)
         {
-            cmd.CommandText = "UpdateEventSeat";
-            cmd.AddParameterWithValue("@Id", entity.Id);
-            cmd.AddParameterWithValue("@Row", entity.Row);
-            cmd.AddParameterWithValue("@Number", entity.Number);
-            cmd.AddParameterWithValue("@State", entity.State);
-            cmd.AddParameterWithValue("@EventAreaId", entity.EventAreaId);
+            const string UpdateEventSeatStoredProcedureName = "UpdateEventSeat";
+
+            cmd.CommandText = UpdateEventSeatStoredProcedureName;
+            cmd.AddParameterWithValue(IdParamName, entity.Id);
+            cmd.AddParameterWithValue(RowParamName, entity.Row);
+            cmd.AddParameterWithValue(NumberParamName, entity.Number);
+            cmd.AddParameterWithValue(StateParamName, entity.State);
+            cmd.AddParameterWithValue(EventAreaIdParamName, entity.EventAreaId);
         }
 
         protected override void DeleteCommandParameters(int id, IDbCommand cmd)
         {
-            cmd.CommandText = "DeleteEventSeat";
-            cmd.AddParameterWithValue("@Id", id);
+            const string DeleteEventSeatStoredProcedureName = "DeleteEventSeat";
+
+            cmd.CommandText = DeleteEventSeatStoredProcedureName;
+            cmd.AddParameterWithValue(IdParamName, id);
         }
 
         protected override void GetByIdCommandParameters(int id, IDbCommand cmd)
         {
-            cmd.CommandText = string.Format("SELECT * FROM EventSeats WHERE Id = {0}", id);
+            cmd.CommandText = $"SELECT {IdColumnName},{EventAreaIdColumnName}," +
+                $"{RowColumnName},{NumberColumnName},{StateColumnName} " +
+                $"FROM EventSeats WHERE Id = {id}";
         }
 
         protected override void GetAllCommandParameters(IDbCommand cmd)
         {
-            cmd.CommandText = "select * from EventSeats";
+            cmd.CommandText = $"select {IdColumnName},{EventAreaIdColumnName}," +
+                $"{RowColumnName},{NumberColumnName},{StateColumnName} " +
+                $"from EventSeats";
         }
 
         protected override EventSeat Map(IDataReader reader)
         {
-            EventSeat eventSeat = new EventSeat();
-            bool isNull = true;
+            var eventSeat = new EventSeat();
+
+            var idColumnIndex = reader.GetOrdinal(IdColumnName);
+            var eventAreaIdColumnIndex = reader.GetOrdinal(EventAreaIdColumnName);
+            var rowColumnIndex = reader.GetOrdinal(RowColumnName);
+            var numberColumnIndex = reader.GetOrdinal(NumberColumnName);
+            var stateColumnIndex = reader.GetOrdinal(StateColumnName);
 
             while (reader.Read())
-                {
-                isNull = false;
-                int index = 0;
-                eventSeat.Id = reader.GetInt32(index++);
-                eventSeat.EventAreaId = reader.GetInt32(index++);
-                eventSeat.Row = reader.GetInt32(index++);
-                eventSeat.Number = reader.GetInt32(index++);
-                eventSeat.State = reader.GetInt32(index++);
-                }
+            {
+                eventSeat.Id = reader.GetInt32(idColumnIndex);
+                eventSeat.EventAreaId = reader.GetInt32(eventAreaIdColumnIndex);
+                eventSeat.Row = reader.GetInt32(rowColumnIndex);
+                eventSeat.Number = reader.GetInt32(numberColumnIndex);
+                eventSeat.State = (EventSeatState)reader.GetInt32(stateColumnIndex);
+            }
 
-            return isNull ? null : eventSeat;
+            return eventSeat;
         }
 
         protected override IEnumerable<EventSeat> Maps(IDataReader reader)
         {
-            ICollection<EventSeat> eventSeats = new List<EventSeat>();
+            var eventSeats = new List<EventSeat>();
+
+            var idColumnIndex = reader.GetOrdinal(IdColumnName);
+            var eventAreaIdColumnIndex = reader.GetOrdinal(EventAreaIdColumnName);
+            var rowColumnIndex = reader.GetOrdinal(RowColumnName);
+            var numberColumnIndex = reader.GetOrdinal(NumberColumnName);
+            var stateColumnIndex = reader.GetOrdinal(StateColumnName);
 
             while (reader.Read())
+            {
+                var eventSeat = new EventSeat
                 {
-                int index = 0;
-
-                EventSeat eventSeat = new EventSeat
-                    {
-                        Id = reader.GetInt32(index++),
-                        EventAreaId = reader.GetInt32(index++),
-                        Row = reader.GetInt32(index++),
-                        Number = reader.GetInt32(index++),
-                        State = reader.GetInt32(index++),
-                    };
+                    Id = reader.GetInt32(idColumnIndex),
+                    EventAreaId = reader.GetInt32(eventAreaIdColumnIndex),
+                    Row = reader.GetInt32(rowColumnIndex),
+                    Number = reader.GetInt32(numberColumnIndex),
+                    State = (EventSeatState)reader.GetInt32(stateColumnIndex),
+                };
                 eventSeats.Add(eventSeat);
-                }
+            }
 
             return eventSeats;
         }

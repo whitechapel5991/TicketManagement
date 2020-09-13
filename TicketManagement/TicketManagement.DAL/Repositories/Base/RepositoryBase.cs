@@ -13,8 +13,8 @@ using TicketManagement.DAL.Models.Base;
 
 namespace TicketManagement.DAL.Repositories.Base
 {
-    internal abstract class RepositoryBase<T> : IRepository<T>
-        where T : IEntity, new()
+    internal abstract class RepositoryBase<TDalEntity> : IRepository<TDalEntity>
+        where TDalEntity : IEntity, new()
     {
         private readonly DbProviderFactory providerFactory;
         private readonly string connectionString;
@@ -25,39 +25,34 @@ namespace TicketManagement.DAL.Repositories.Base
             this.connectionString = connectionString;
         }
 
-        public object Create(T entity)
+        public int Create(TDalEntity entity)
         {
-            var res = this.CommandExecuteScalar<T>(entity, this.InsertCommandParameters, CommandType.StoredProcedure);
-            return res;
+            return Convert.ToInt32(this.CommandExecuteScalar(entity, this.CreateCommandParameters));
         }
 
-        public object Update(T entity)
+        public void Update(TDalEntity entity)
         {
-            var res = this.CommandExecuteScalar<T>(entity, this.UpdateCommandParameters, CommandType.StoredProcedure);
-            return res;
+            this.CommandExecuteScalar(entity, this.UpdateCommandParameters);
         }
 
-        public object Delete(int id)
+        public void Delete(int id)
         {
-            var res = this.CommandExecuteScalar<int>(id, this.DeleteCommandParameters, CommandType.StoredProcedure);
-            return res;
+            this.CommandExecuteScalar(id, this.DeleteCommandParameters);
         }
 
-        public T GetById(int id)
+        public TDalEntity GetById(int id)
         {
-            var res = this.CommandExecuteReaderById<int>(id, this.GetByIdCommandParameters, CommandType.Text);
-            return res;
+            return this.CommandExecuteReaderById(id, this.GetByIdCommandParameters);
         }
 
-        public IEnumerable<T> GetAll()
+        public IEnumerable<TDalEntity> GetAll()
         {
-            var res = this.CommandExecuteReaderAll(this.GetAllCommandParameters, CommandType.Text);
-            return res;
+            return this.CommandExecuteReaderAll(this.GetAllCommandParameters);
         }
 
-        protected abstract void InsertCommandParameters(T entity, IDbCommand cmd);
+        protected abstract void CreateCommandParameters(TDalEntity entity, IDbCommand cmd);
 
-        protected abstract void UpdateCommandParameters(T entity, IDbCommand cmd);
+        protected abstract void UpdateCommandParameters(TDalEntity entity, IDbCommand cmd);
 
         protected abstract void DeleteCommandParameters(int id, IDbCommand cmd);
 
@@ -65,11 +60,11 @@ namespace TicketManagement.DAL.Repositories.Base
 
         protected abstract void GetAllCommandParameters(IDbCommand cmd);
 
-        protected abstract T Map(IDataReader reader);
+        protected abstract TDalEntity Map(IDataReader reader);
 
-        protected abstract IEnumerable<T> Maps(IDataReader reader);
+        protected abstract IEnumerable<TDalEntity> Maps(IDataReader reader);
 
-        private object CommandExecuteScalar<TU>(TU param, Action<TU, IDbCommand> operation, CommandType commandType)
+        private object CommandExecuteScalar<TCommandParam>(TCommandParam param, Action<TCommandParam, IDbCommand> dbOperation)
         {
             using (IDbConnection connection = this.providerFactory.CreateConnection())
             {
@@ -78,14 +73,14 @@ namespace TicketManagement.DAL.Repositories.Base
 
                 using (var cmd = connection.CreateCommand())
                 {
-                    cmd.CommandType = commandType;
-                    operation(param, cmd);
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    dbOperation(param, cmd);
                     return cmd.ExecuteScalar();
                 }
             }
         }
 
-        private T CommandExecuteReaderById<TIdType>(TIdType id, Action<TIdType, IDbCommand> operation, CommandType commandType)
+        private TDalEntity CommandExecuteReaderById(int id, Action<int, IDbCommand> operation)
         {
             using (IDbConnection connection = this.providerFactory.CreateConnection())
             {
@@ -94,7 +89,7 @@ namespace TicketManagement.DAL.Repositories.Base
 
                 using (var cmd = connection.CreateCommand())
                 {
-                    cmd.CommandType = commandType;
+                    cmd.CommandType = CommandType.Text;
                     operation(id, cmd);
                     using (IDataReader reader = cmd.ExecuteReader())
                     {
@@ -104,7 +99,7 @@ namespace TicketManagement.DAL.Repositories.Base
             }
         }
 
-        private IEnumerable<T> CommandExecuteReaderAll(Action<IDbCommand> operation, CommandType commandType)
+        private IEnumerable<TDalEntity> CommandExecuteReaderAll(Action<IDbCommand> operation)
         {
             using (IDbConnection connection = this.providerFactory.CreateConnection())
             {
@@ -113,7 +108,7 @@ namespace TicketManagement.DAL.Repositories.Base
 
                 using (var cmd = connection.CreateCommand())
                 {
-                    cmd.CommandType = commandType;
+                    cmd.CommandType = CommandType.Text;
                     operation(cmd);
                     using (IDataReader reader = cmd.ExecuteReader())
                     {

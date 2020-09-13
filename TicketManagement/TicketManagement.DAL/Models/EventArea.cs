@@ -5,22 +5,30 @@
 // </copyright>
 // ****************************************************************************
 
+using System.ComponentModel.DataAnnotations;
 using TicketManagement.DAL.Models.Base;
 
 namespace TicketManagement.DAL.Models
 {
-    public class EventArea : IEntity
+    public class EventArea : Entity
     {
-        public int Id { get; set; }
-
+        [Required]
+        [StringLength(200)]
         public string Description { get; set; }
 
+        [Required]
+        [Range(0, int.MaxValue)]
         public int CoordX { get; set; }
 
+        [Required]
+        [Range(0, int.MaxValue)]
         public int CoordY { get; set; }
 
+        [DataType(DataType.Currency)]
         public decimal Price { get; set; }
 
+        [Required]
+        [Range(0,int.MaxValue)]
         public int EventId { get; set; }
     }
 }
