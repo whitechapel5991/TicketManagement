@@ -40,9 +40,9 @@ namespace TicketManagement.BLL.Services
 
         public void DeleteVenue(int id)
         {
-            var result = this.venueRepository.Delete(id);
+            this.venueRepository.Delete(id);
 
-            this.venueValidator.CUDResultValidate<Venue>(result, id);
+            //this.venueValidator.CUDResultValidate<Venue>(result, id);
         }
 
         public VenueDto GetVenue(int id)
@@ -66,9 +66,9 @@ namespace TicketManagement.BLL.Services
 
             Venue venue = this.mapper.Map<Venue>(entity);
 
-            var result = this.venueRepository.Update(venue);
+            this.venueRepository.Update(venue);
 
-            this.venueValidator.CUDResultValidate<Venue>(result, entity.Id);
+            //this.venueValidator.CUDResultValidate<Venue>(result, entity.Id);
         }
     }
 }

@@ -13,8 +13,5 @@ namespace TicketManagement.BLL.ServiceValidators.Base
     {
         void QueryResultValidate<T>(T result, int id)
             where T : IEntity;
-
-        void CUDResultValidate<T>(object result, int id)
-            where T : IEntity;
     }
 }

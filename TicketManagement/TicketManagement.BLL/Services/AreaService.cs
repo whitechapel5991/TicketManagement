@@ -61,8 +61,8 @@ namespace TicketManagement.BLL.Services
 
         public void DeleteArea(int id)
         {
-            var result = this.areaRepository.Delete(id);
-            this.areaValidator.CUDResultValidate<Area>(result, id);
+            this.areaRepository.Delete(id);
+            //this.areaValidator.CUDResultValidate<Area>(result, id);
         }
 
         public AreaDto GetArea(int id)

@@ -10,6 +10,7 @@ using AutoMapper;
 using TicketManagement.BLL.DTO;
 using TicketManagement.BLL.Interfaces;
 using TicketManagement.BLL.ServiceValidators.Interfaces;
+using TicketManagement.DAL.Constants;
 using TicketManagement.DAL.Models;
 using TicketManagement.DAL.Repositories.Base;
 
@@ -36,7 +37,7 @@ namespace TicketManagement.BLL.Services
 
             this.eventSeatValidator.QueryResultValidate<EventSeat>(eventSeat, eventSeatDto.Id);
 
-            eventSeat.State = eventSeatDto.State;
+            eventSeat.State = (EventSeatState)eventSeatDto.State;
 
             this.eventSeatRepository.Update(eventSeat);
         }

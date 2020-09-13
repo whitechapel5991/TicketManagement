@@ -64,14 +64,14 @@ namespace TicketManagement.BLL.Services
 
             seat = this.mapper.Map<Seat>(seatDto);
 
-            var result = this.seatRepository.Update(seat);
+            this.seatRepository.Update(seat);
         }
 
         public void DeleteSeat(int id)
         {
-            var result = this.seatRepository.Delete(id);
+            this.seatRepository.Delete(id);
 
-            this.seatValidator.CUDResultValidate<Seat>(result, id);
+            //this.seatValidator.CUDResultValidate<Seat>(result, id);
         }
 
         public SeatDto GetSeat(int id)

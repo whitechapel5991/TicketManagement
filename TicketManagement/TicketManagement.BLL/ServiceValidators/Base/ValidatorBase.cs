@@ -42,19 +42,6 @@ namespace TicketManagement.BLL.ServiceValidators.Base
             }
         }
 
-        public void CUDResultValidate<T>(object result, int id)
-            where T : IEntity
-        {
-            if (Convert.ToInt32(result) == 0)
-            {
-                throw new TicketManagementException(
-                   string.Format(
-                       this.exceptionMessagies.First(x => x.Key == ConcreteNotFound).Value,
-                       typeof(T).Name,
-                       id), NotFound);
-            }
-        }
-
         private bool IsNull(object entity)
         {
             return entity == null;

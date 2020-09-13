@@ -14,7 +14,7 @@ using TicketManagement.BLL.ServiceValidators.Interfaces;
 
 namespace TicketManagement.BLL.Util
 {
-    public class BllAutofacModule : Module
+    public class ServiceAutofacModule : Module
     {
         protected override void Load(ContainerBuilder builder)
         {
@@ -69,7 +69,7 @@ namespace TicketManagement.BLL.Util
                .As<IAreaValidator>()
                .InstancePerLifetimeScope();
 
-            builder.AddAutoMapper(typeof(BllAutofacModule).Assembly);
+            builder.AddAutoMapper(typeof(ServiceAutofacModule).Assembly);
         }
     }
 }

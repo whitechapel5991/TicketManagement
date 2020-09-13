@@ -64,7 +64,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Constants\EventSeatState.cs" />
     <Compile Include="DTO\AreaDto.cs" />
     <Compile Include="DTO\EventAreaDto.cs" />
     <Compile Include="DTO\EventDto.cs" />
@@ -104,7 +103,7 @@
     <Compile Include="ServiceValidators\LayoutValidator.cs" />
     <Compile Include="ServiceValidators\SeatValidator.cs" />
     <Compile Include="ServiceValidators\VenueValidator.cs" />
-    <Compile Include="Util\BllAutofacModule.cs" />
+    <Compile Include="Util\ServiceAutofacModule.cs" />
     <Compile Include="Util\BllMapperProfile.cs" />
     <Compile Include="Util\TicketManagementException.cs" />
   </ItemGroup>

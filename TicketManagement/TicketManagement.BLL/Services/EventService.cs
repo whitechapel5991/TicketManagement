@@ -60,59 +60,12 @@ namespace TicketManagement.BLL.Services
 
         public void UpdateEvent(EventDto eventDto)
         {
-            Event @event;
-            @event = this.UpdateValidation(eventDto);
-            if (@event.LayoutId != eventDto.LayoutId)
-            {
-                this.DeleteValidation(eventDto.Id);
-                this.AddValidation(eventDto, out List<Area> areasAdd, out List<Seat> seatsAdd);
-                try
-                {
-                    List<int> eventAreaIdList = this.eventAreaRepository.GetAll().Where(x => x.EventId == @event.Id).Select(x => x.Id).ToList();
+            this.UpdateValidation(eventDto);
+            this.DeleteValidation(eventDto.Id);
+            this.AddValidation(eventDto, out List<Area> areasAdd, out List<Seat> seatsAdd);
+            Event @event = this.mapper.Map<Event>(eventDto);
+            this.eventRepository.Update(@event);
 
-                    using (var transaction = new TransactionScope())
-                    {
-                        // cascade delete eventarea and eventseat
-                        foreach (var item in eventAreaIdList)
-                        {
-                            this.eventAreaRepository.Delete(item);
-                        }
-
-                        @event = this.mapper.Map<Event>(eventDto);
-                        this.eventRepository.Update(@event);
-
-                        foreach (Area area in areasAdd)
-                        {
-                            List<Seat> seatsAddId = seatsAdd.FindAll(x => x.AreaId == area.Id);
-
-                            EventArea eventArea = this.mapper.MergeInto<EventArea>(area, eventDto);
-
-                            int id = Convert.ToInt32(this.eventAreaRepository.Create(eventArea));
-                            foreach (Seat seat in seatsAddId)
-                            {
-                                EventSeat eventSeat = this.mapper.MergeInto<EventSeat>(seat, id);
-
-                                this.eventSeatRepository.Create(eventSeat);
-                            }
-                        }
-
-                        transaction.Complete();
-                    }
-                }
-                catch (TransactionAbortedException)
-                {
-                    throw new TicketManagementException("TransactionAbortedException Message", "TransactionAbortedException");
-                }
-            }
-            else
-            {
-                @event.Name = eventDto.Name;
-                @event.BeginDate = eventDto.BeginDate;
-                @event.EndDate = eventDto.EndDate;
-                @event.Description = eventDto.Description;
-                var result = this.eventRepository.Update(@event);
-                this.eventValidator.CUDResultValidate<Event>(result, @event.Id);
-            }
         }
 
         public int AddEvent(EventDto eventDto)
@@ -121,54 +74,15 @@ namespace TicketManagement.BLL.Services
 
             Event @event = this.mapper.Map<Event>(eventDto);
 
-            try
-            {
-                using (var transaction = new TransactionScope())
-                {
-                    int id = Convert.ToInt32(this.eventRepository.Create(@event));
+            int id = Convert.ToInt32(this.eventRepository.Create(@event));
 
-                    foreach (Area area in areas)
-                    {
-                        List<Seat> seatsAddId = seats.FindAll(x => x.AreaId == area.Id);
-                        EventArea eventArea = this.mapper.MergeInto<EventArea>(area, id);
-
-                        int eventAreaId = Convert.ToInt32(this.eventAreaRepository.Create(eventArea));
-
-                        foreach (Seat seat in seatsAddId)
-                        {
-                            EventSeat eventSeat = this.mapper.MergeInto<EventSeat>(seat, eventAreaId);
-
-                            this.eventSeatRepository.Create(eventSeat);
-                        }
-                    }
-
-                    transaction.Complete();
-
-                    return id;
-                }
-            }
-            catch (TransactionAbortedException)
-            {
-                throw new TicketManagementException("TransactionAbortedException Message", "TransactionAbortedException");
-            }
+            return id;
         }
 
         public void DeleteEvent(int id)
         {
             this.DeleteValidation(id);
-            try
-            {
-                using (var transaction = new TransactionScope())
-                {
-                    var result = this.eventRepository.Delete(id);
-                    transaction.Complete();
-                    this.eventValidator.CUDResultValidate<Event>(result, id);
-                }
-            }
-            catch (TransactionAbortedException)
-            {
-                throw new TicketManagementException("TransactionAbortedException Message: ", "TransactionAbortedException");
-            }
+            this.eventRepository.Delete(id);
         }
 
         public EventDto GetEvent(int id)

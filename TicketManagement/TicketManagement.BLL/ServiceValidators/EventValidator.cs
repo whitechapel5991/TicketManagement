@@ -9,11 +9,11 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
-using TicketManagement.BLL.Constants;
 using TicketManagement.BLL.DTO;
 using TicketManagement.BLL.ServiceValidators.Base;
 using TicketManagement.BLL.ServiceValidators.Interfaces;
 using TicketManagement.BLL.Util;
+using TicketManagement.DAL.Constants;
 using TicketManagement.DAL.Models;
 using TicketManagement.DAL.Repositories.Base;
 

@@ -64,14 +64,14 @@ namespace TicketManagement.BLL.Services
 
             layout = this.mapper.Map<Layout>(layoutDto);
 
-            var result = this.layoutRepository.Update(layout);
+            this.layoutRepository.Update(layout);
         }
 
         public void DeleteLayout(int id)
         {
-            var result = this.layoutRepository.Delete(id);
+            layoutRepository.Delete(id);
 
-            this.layoutValidator.CUDResultValidate<Layout>(result, id);
+            //this.layoutValidator.CUDResultValidate<Layout>(result, id);
         }
 
         public LayoutDto GetLayout(int id)
