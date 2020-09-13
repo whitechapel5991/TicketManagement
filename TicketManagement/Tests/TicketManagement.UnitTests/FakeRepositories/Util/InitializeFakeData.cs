@@ -7,6 +7,7 @@
 
 using System;
 using System.Collections.Generic;
+using TicketManagement.DAL.Constants;
 using TicketManagement.DAL.Models;
 
 namespace TicketManagement.UnitTests.FakeRepositories.Util
@@ -76,26 +77,26 @@ namespace TicketManagement.UnitTests.FakeRepositories.Util
         {
             return new List<EventSeat>
             {
-                new EventSeat() { Id = 1, State = 0, EventAreaId = 1, Row = 1, Number = 1 },
-                new EventSeat() { Id = 2, State = 0, EventAreaId = 1, Row = 1, Number = 2 },
-                new EventSeat() { Id = 3, State = 0, EventAreaId = 1, Row = 1, Number = 3 },
-                new EventSeat() { Id = 4, State = 0, EventAreaId = 1, Row = 1, Number = 4 },
-                new EventSeat() { Id = 5, State = 2, EventAreaId = 1, Row = 1, Number = 5 },
-                new EventSeat() { Id = 6, State = 1, EventAreaId = 2, Row = 1, Number = 1 },
-                new EventSeat() { Id = 7, State = 2, EventAreaId = 2, Row = 1, Number = 2 },
-                new EventSeat() { Id = 8, State = 1, EventAreaId = 2, Row = 1, Number = 3 },
-                new EventSeat() { Id = 9, State = 0, EventAreaId = 2, Row = 1, Number = 4 },
-                new EventSeat() { Id = 10, State = 0, EventAreaId = 2, Row = 1, Number = 5 },
-                new EventSeat() { Id = 11, State = 0, EventAreaId = 3, Row = 1, Number = 1 },
-                new EventSeat() { Id = 12, State = 0, EventAreaId = 3, Row = 1, Number = 2 },
-                new EventSeat() { Id = 13, State = 0, EventAreaId = 3, Row = 1, Number = 3 },
-                new EventSeat() { Id = 14, State = 0, EventAreaId = 3, Row = 1, Number = 4 },
-                new EventSeat() { Id = 15, State = 0, EventAreaId = 3, Row = 1, Number = 5 },
-                new EventSeat() { Id = 16, State = 0, EventAreaId = 4, Row = 1, Number = 1 },
-                new EventSeat() { Id = 17, State = 0, EventAreaId = 4, Row = 1, Number = 2 },
-                new EventSeat() { Id = 18, State = 0, EventAreaId = 4, Row = 1, Number = 3 },
-                new EventSeat() { Id = 19, State = 0, EventAreaId = 4, Row = 1, Number = 4 },
-                new EventSeat() { Id = 20, State = 0, EventAreaId = 4, Row = 1, Number = 5 },
+                new EventSeat() { Id = 1, State = EventSeatState.Free, EventAreaId = 1, Row = 1, Number = 1 },
+                new EventSeat() { Id = 2, State = EventSeatState.Free, EventAreaId = 1, Row = 1, Number = 2 },
+                new EventSeat() { Id = 3, State = EventSeatState.Free, EventAreaId = 1, Row = 1, Number = 3 },
+                new EventSeat() { Id = 4, State = EventSeatState.Free, EventAreaId = 1, Row = 1, Number = 4 },
+                new EventSeat() { Id = 5, State = EventSeatState.Sold, EventAreaId = 1, Row = 1, Number = 5 },
+                new EventSeat() { Id = 6, State = EventSeatState.InBasket, EventAreaId = 2, Row = 1, Number = 1 },
+                new EventSeat() { Id = 7, State = EventSeatState.Sold, EventAreaId = 2, Row = 1, Number = 2 },
+                new EventSeat() { Id = 8, State = EventSeatState.InBasket, EventAreaId = 2, Row = 1, Number = 3 },
+                new EventSeat() { Id = 9, State = EventSeatState.Free, EventAreaId = 2, Row = 1, Number = 4 },
+                new EventSeat() { Id = 10, State = EventSeatState.Free, EventAreaId = 2, Row = 1, Number = 5 },
+                new EventSeat() { Id = 11, State = EventSeatState.Free, EventAreaId = 3, Row = 1, Number = 1 },
+                new EventSeat() { Id = 12, State = EventSeatState.Free, EventAreaId = 3, Row = 1, Number = 2 },
+                new EventSeat() { Id = 13, State = EventSeatState.Free, EventAreaId = 3, Row = 1, Number = 3 },
+                new EventSeat() { Id = 14, State = EventSeatState.Free, EventAreaId = 3, Row = 1, Number = 4 },
+                new EventSeat() { Id = 15, State = EventSeatState.Free, EventAreaId = 3, Row = 1, Number = 5 },
+                new EventSeat() { Id = 16, State = EventSeatState.Free, EventAreaId = 4, Row = 1, Number = 1 },
+                new EventSeat() { Id = 17, State = EventSeatState.Free, EventAreaId = 4, Row = 1, Number = 2 },
+                new EventSeat() { Id = 18, State = EventSeatState.Free, EventAreaId = 4, Row = 1, Number = 3 },
+                new EventSeat() { Id = 19, State = EventSeatState.Free, EventAreaId = 4, Row = 1, Number = 4 },
+                new EventSeat() { Id = 20, State = EventSeatState.Free, EventAreaId = 4, Row = 1, Number = 5 },
             };
         }
 

@@ -8,9 +8,9 @@
 using System.Linq;
 using Autofac;
 using NUnit.Framework;
-using TicketManagement.BLL.Constants;
 using TicketManagement.BLL.DTO;
 using TicketManagement.BLL.Interfaces;
+using TicketManagement.DAL.Constants;
 using Test = TicketManagement.IntegrationTests.TestBase.TestBase;
 
 namespace TicketManagement.IntegrationTests.ServiceTests
@@ -32,7 +32,7 @@ namespace TicketManagement.IntegrationTests.ServiceTests
             {
                 Id = 1,
                 Number = 2,
-                State = (int)EventSeatState.Selled,
+                State = (int)EventSeatState.Sold,
                 Row = 2,
                 EventAreaId = 2,
             };
@@ -42,7 +42,7 @@ namespace TicketManagement.IntegrationTests.ServiceTests
             EventSeatDto eventSeatDtoTemp = this.eventSeatService.GetEventSeat(1);
 
             Assert.AreEqual(1, eventSeatDtoTemp.Number);
-            Assert.AreEqual((int)EventSeatState.Selled, eventSeatDtoTemp.State);
+            Assert.AreEqual((int)EventSeatState.Sold, eventSeatDtoTemp.State);
             Assert.AreEqual(1, eventSeatDtoTemp.Row);
             Assert.AreEqual(1, eventSeatDtoTemp.EventAreaId);
         }

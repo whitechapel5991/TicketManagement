@@ -198,7 +198,7 @@ namespace TicketManagement.UnitTests.ServiceTests
         [Test]
         public void DeleteVenue_VenueIsNull_GetException()
         {
-            var idNotExist = 10;
+            var idNotExist = -1;
 
             // Arrange
             // Act - delegate. Assert

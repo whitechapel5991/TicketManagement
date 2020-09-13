@@ -30,11 +30,6 @@ namespace TicketManagement.UnitTests.FakeRepositories
                 .Verifiable();
 
             mockRepository.Setup(x => x.Update(It.IsAny<T>()))
-                .Returns((T entity) =>
-                {
-                    int index = this.repositoryData.FindIndex(x => x.Id == entity.Id);
-                    return (object)(index == -1 ? 0 : 1);
-                })
                 .Callback((T entity) =>
                 {
                     int index = this.repositoryData.FindIndex(x => x.Id == entity.Id);
@@ -46,18 +41,13 @@ namespace TicketManagement.UnitTests.FakeRepositories
                 }).Verifiable();
 
             mockRepository.Setup(x => x.Create(It.IsAny<T>()))
-                .Returns((T entity) => (object)entity.Id)
+                .Returns((T entity) => (int)entity.Id)
                 .Callback((T entity) =>
                 {
                     this.repositoryData.Add(entity);
                 }).Verifiable();
 
             mockRepository.Setup(x => x.Delete(It.IsAny<int>()))
-                .Returns((int id) =>
-                    {
-                        int index = this.repositoryData.FindIndex(x => x.Id == id);
-                        return (object)(index == -1 ? 0 : 1);
-                    })
                 .Callback((int id) =>
                 {
                     int index = this.repositoryData.FindIndex(x => x.Id == id);

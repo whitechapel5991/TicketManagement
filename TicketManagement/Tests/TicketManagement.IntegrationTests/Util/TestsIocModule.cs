@@ -31,8 +31,8 @@ namespace TicketManagement.IntegrationTests.Util
                 throw new ArgumentNullException("builder");
             }
 
-            builder.RegisterModule(new DalAutofacModule(this.connectionString, this.providerName));
-            builder.RegisterModule(new BllAutofacModule());
+            builder.RegisterModule(new AdoAutofacModule(this.connectionString, this.providerName));
+            builder.RegisterModule(new ServiceAutofacModule());
         }
     }
 }

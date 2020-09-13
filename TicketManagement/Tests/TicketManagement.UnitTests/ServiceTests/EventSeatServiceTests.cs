@@ -36,6 +36,7 @@ namespace TicketManagement.UnitTests.ServiceTests
             var expectedDto = this.Fixture.Build<EventSeatDto>()
                 .With(e => e.Id, id)
                 .With(e => e.EventAreaId, eventAreaId)
+                .With(e => e.State, 1)
                 .Create();
 
             // Act
@@ -46,7 +47,7 @@ namespace TicketManagement.UnitTests.ServiceTests
             {
                 var actualDto = this.EventSeatFakeRepositoryData.First(x => x.Id == id);
                 Assert.AreEqual(expectedDto.EventAreaId, actualDto.EventAreaId);
-                Assert.AreEqual(expectedDto.State, actualDto.State);
+                Assert.AreEqual(expectedDto.State, (int)actualDto.State);
             });
         }
 
@@ -66,7 +67,7 @@ namespace TicketManagement.UnitTests.ServiceTests
                 Assert.AreEqual(expectedDto.EventAreaId, actualDto.EventAreaId);
                 Assert.AreEqual(expectedDto.Number, actualDto.Number);
                 Assert.AreEqual(expectedDto.Row, actualDto.Row);
-                Assert.AreEqual(expectedDto.State, actualDto.State);
+                Assert.AreEqual((int)expectedDto.State, actualDto.State);
             });
         }
 

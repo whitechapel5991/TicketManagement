@@ -13,7 +13,7 @@ CREATE TABLE [dbo].[Areas](
 	[Description] [nvarchar](200) NOT NULL,
 	[CoordX] [int] NOT NULL,
 	[CoordY] [int] NOT NULL,
-PRIMARY KEY CLUSTERED 
+PRIMARY KEY CLUSTERED
 (
 	[Id] ASC
 ))
@@ -25,7 +25,7 @@ CREATE TABLE [dbo].[Events](
 	[LayoutId] [int] NOT NULL,
 	[BeginDate] [datetime] NOT NULL,
 	[EndDate] [datetime] NOT NULL,
-PRIMARY KEY CLUSTERED 
+PRIMARY KEY CLUSTERED
 (
 	[Id] ASC
 ))
@@ -37,7 +37,7 @@ CREATE TABLE [dbo].[EventAreas](
 	[CoordX] [int] NOT NULL,
 	[CoordY] [int] NOT NULL,
 	[Price] [decimal](18, 2) NULL,
-PRIMARY KEY CLUSTERED 
+PRIMARY KEY CLUSTERED
 (
 	[Id] ASC
 ))
@@ -49,7 +49,7 @@ CREATE TABLE [dbo].[EventSeats](
 	[Row] [int] NOT NULL,
 	[Number] [int] NOT NULL,
 	[State] [int] NULL,
-PRIMARY KEY CLUSTERED 
+PRIMARY KEY CLUSTERED
 (
 	[Id] ASC
 ))
@@ -59,7 +59,7 @@ CREATE TABLE [dbo].[Layouts](
 	[VenueId] [int] NOT NULL,
 	[Description] [nvarchar](120) NOT NULL,
 	[Name] [nvarchar](50) NOT NULL,
-PRIMARY KEY CLUSTERED 
+PRIMARY KEY CLUSTERED
 (
 	[Id] ASC
 ))
@@ -69,7 +69,7 @@ CREATE TABLE [dbo].[Seats](
 	[AreaId] [int] NOT NULL,
 	[Row] [int] NOT NULL,
 	[Number] [int] NOT NULL,
-PRIMARY KEY CLUSTERED 
+PRIMARY KEY CLUSTERED
 (
 	[Id] ASC
 ))
@@ -80,7 +80,7 @@ CREATE TABLE [dbo].[Venues](
 	[Address] [nvarchar](200) NOT NULL,
 	[Phone] [nvarchar](30) NULL,
 	[Name] [nvarchar](50) NULL,
-PRIMARY KEY CLUSTERED 
+PRIMARY KEY CLUSTERED
 (
 	[Id] ASC
 ))
@@ -142,21 +142,24 @@ select @@ROWCOUNT')
 EXEC('CREATE PROCEDURE [dbo].[DeleteEvent]
 		@Id int
 AS
-    DELETE FROM [dbo].Events 
-	WHERE Id=@Id
-select @@ROWCOUNT')
+	BEGIN TRAN
+    Begin try
+		delete from Events where Id=@Id;
+ commit tran
+    end try
+    begin catch
+        rollback tran
+    end catch')
 
 EXEC('CREATE PROCEDURE [dbo].[DeleteEventArea]
 	@Id int
 AS
-    delete from EventAreas where Id=@Id
-select @@ROWCOUNT')
+    delete from EventAreas where Id=@Id')
 
 EXEC('CREATE PROCEDURE [dbo].[DeleteEventSeat]
 	@Id int
 AS
-    delete from EventSeats where Id=@Id
-select @@ROWCOUNT')
+    delete from EventSeats where Id=@Id')
 
 EXEC('CREATE PROCEDURE [dbo].[CreateArea]
 	@Description nvarchar(50),
@@ -198,35 +201,115 @@ AS
 
 EXEC('CREATE PROCEDURE [dbo].[CreateEvent]
 	@Name nvarchar(50),
-    @BeginDate datetime,
-	@EndDate datetime,
     @Description nvarchar(50),
-    @LayoutId int
+    @LayoutId int,
+    @BeginDate datetime,
+    @EndDate datetime
 AS
-    INSERT INTO Events (Name, BeginDate, EndDate, Description, LayoutId)
-    VALUES (@Name, @BeginDate, @EndDate, @Description, @LayoutId)
-    SELECT SCOPE_IDENTITY()')
+    declare @AreaTemp table (
+    Id int,
+    LayoutId int,
+    Description nvarchar(200),
+    CoordX int,
+    CoordY int,
+    RowId int not null identity(1,1));
+
+    declare @SeatTemp table (
+    Id int,
+    AreaId int,
+    Row int,
+    Number int,
+    RowId int not null identity(1,1));
+
+    DECLARE @AreaRows       int
+    DECLARE @SeatRows       int
+    DECLARE @AreaCurrentRow  int
+    DECLARE @SeatCurrentRow  int
+    DECLARE @SelectCol1     int
+
+    BEGIN TRAN
+    Begin try
+        Insert into @AreaTemp (Id, LayoutId, Description, CoordX, CoordY)
+        select Id, LayoutId, Description, CoordX, CoordY
+        from dbo.Areas
+        where LayoutId = @LayoutId;
+        set @AreaRows=@@ROWCOUNT;
+
+        Insert into @SeatTemp (Id, AreaId, Row, Number)
+        select dbo.Seats.Id, AreaId, Row, Number
+        from @AreaTemp
+        join dbo.Seats on [@AreaTemp].Id = dbo.Seats.AreaId
+        set @SeatRows=@@ROWCOUNT;
+
+        declare @eventId int;
+        INSERT INTO Events (Name, Description, LayoutId, BeginDate, EndDate)
+        VALUES (@Name, @Description, @LayoutId, @BeginDate, @EndDate)
+        set @eventId = SCOPE_IDENTITY();
+
+        set @AreaCurrentRow=0
+        while @AreaCurrentRow < @AreaRows
+        begin
+            set @AreaCurrentRow=@AreaCurrentRow+1
+            declare @descriptionParam nvarchar(50), @coordXParam int, @coordYParam int, @priceParam decimal(18,0), @areaIdParam int, @eventAreaIdParam int;
+            select top 1 @descriptionParam=Description, @coordXParam=CoordX, @coordYParam=CoordY, @areaIdParam=Id
+            from @AreaTemp
+            where RowId = @AreaCurrentRow;
+            set @priceParam = 0;
+            exec dbo.CreateEventArea @descriptionParam, @coordXParam, @coordYParam, @priceParam, @eventId, @eventAreaIdParam OUTPUT;
+
+
+
+            declare @SeatIdParam int, @RowParam int, @numberParam int, @eventSeatIdOutput int;
+            declare Seat_Cursor cursor for
+            (select Id, Row, Number
+                from @SeatTemp
+                where AreaId = @areaIdParam);
+
+            open Seat_Cursor
+            FETCH NEXT FROM Seat_Cursor INTO
+    @SeatIdParam, @RowParam, @numberParam
+
+            while @@FETCH_STATUS = 0
+            begin
+                exec dbo.CreateEventSeat @RowParam, @numberParam, 0, @eventAreaIdParam, @eventSeatIdOutput output;
+
+               FETCH NEXT FROM Seat_Cursor INTO
+                        @SeatIdParam, @RowParam, @numberParam
+            end
+            CLOSE Seat_Cursor
+            DEALLOCATE Seat_Cursor
+        end
+
+        commit tran
+        select @eventId
+    end try
+    begin catch
+        return -1
+        rollback tran
+    end catch')
 
 EXEC('CREATE PROCEDURE [dbo].[CreateEventArea]
 	@Description nvarchar(50),
     @CoordX int,
     @CoordY int,
 	@Price decimal,
-    @EventId int
+    @EventId int,
+    @EventAreaId int Output
 AS
     INSERT INTO EventAreas (Description, CoordX, CoordY, Price, EventId)
     VALUES (@Description, @CoordX, @CoordY, @Price, @EventId)
-    SELECT SCOPE_IDENTITY()')
+    Set @EventAreaId = SCOPE_IDENTITY()')
 
 EXEC('CREATE PROCEDURE [dbo].[CreateEventSeat]
-	@Row int,
+    @Row int,
     @Number int,
     @State int,
-    @EventAreaId int
+    @EventAreaId int,
+    @EventSeatId int Output
 AS
     INSERT INTO EventSeats (Row, Number, State, EventAreaId)
     VALUES (@Row, @Number, @State, @EventAreaId)
-    SELECT SCOPE_IDENTITY()')
+    set @EventSeatId = SCOPE_IDENTITY()')
 
 EXEC('CREATE PROCEDURE [dbo].[UpdateArea]
 	@Id int,
@@ -273,14 +356,106 @@ select @@ROWCOUNT')
 EXEC('CREATE PROCEDURE [dbo].[UpdateEvent]
 	@Id int,
 	@Name nvarchar(50),
-    @BeginDate datetime,
-    @EndDate datetime,
     @Description nvarchar(50),
-    @LayoutId int
+    @LayoutId int,
+	@BeginDate datetime,
+    @EndDate datetime
 AS
-    UPDATE Events set Name=@Name, BeginDate=@BeginDate, EndDate=@EndDate, Description=@Description, LayoutId=@LayoutId
-	where Id = @Id
-select @@ROWCOUNT')
+ declare @AreaTemp table (
+    Id int,
+    LayoutId int,
+    Description nvarchar(200),
+    CoordX int,
+    CoordY int,
+    RowId int not null identity(1,1));
+
+    declare @SeatTemp table (
+    Id int,
+    AreaId int,
+    Row int,
+    Number int,
+    RowId int not null identity(1,1));
+
+    DECLARE @AreaRows       int
+    DECLARE @SeatRows       int
+    DECLARE @AreaCurrentRow  int
+    DECLARE @SeatCurrentRow  int
+    DECLARE @SelectCol1     int
+
+    BEGIN TRAN
+    Begin try
+    declare @oldLayoutId int;
+
+    select  @oldLayoutId=LayoutId from Events where Id=@Id;
+
+    if (@LayoutId = @oldLayoutId)
+        Begin
+            UPDATE Events set Name=@Name, Description=@Description, LayoutId=@LayoutId, BeginDate=@BeginDate, EndDate=@EndDate
+	        where Id = @Id
+	        select @@ROWCOUNT;
+        End
+    Else
+        Begin
+            Insert into @AreaTemp (Id, LayoutId, Description, CoordX, CoordY)
+            select Id, LayoutId, Description, CoordX, CoordY
+            from dbo.Areas
+            where LayoutId = @LayoutId;
+            set @AreaRows=@@ROWCOUNT;
+
+            Insert into @SeatTemp (Id, AreaId, Row, Number)
+            select dbo.Seats.Id, AreaId, Row, Number
+            from @AreaTemp
+            join dbo.Seats on [@AreaTemp].Id = dbo.Seats.AreaId
+            set @SeatRows=@@ROWCOUNT;
+
+            UPDATE Events set Name=@Name, Description=@Description, LayoutId=@LayoutId, BeginDate=@BeginDate, EndDate=@EndDate
+	        where Id = @Id
+	        select @@ROWCOUNT;
+
+            set @AreaCurrentRow=0
+            while @AreaCurrentRow < @AreaRows
+            begin
+                set @AreaCurrentRow=@AreaCurrentRow+1
+                declare @descriptionParam nvarchar(50), @coordXParam int, @coordYParam int, @priceParam decimal(18,0), @areaIdParam int, @eventAreaIdParam int;
+                select top 1 @descriptionParam=Description, @coordXParam=CoordX, @coordYParam=CoordY, @areaIdParam=Id
+                from @AreaTemp
+                where RowId = @AreaCurrentRow;
+                set @priceParam = 0;
+                exec dbo.CreateEventArea @descriptionParam, @coordXParam, @coordYParam, @priceParam, @Id, @eventAreaIdParam OUTPUT;
+
+
+
+                declare @SeatIdParam int, @RowParam int, @numberParam int;
+                declare Seat_Cursor cursor for
+                (select Id, Row, Number
+                    from @SeatTemp
+                    where AreaId = @areaIdParam);
+
+                open Seat_Cursor
+                FETCH NEXT FROM Seat_Cursor INTO
+        @SeatIdParam, @RowParam, @numberParam
+
+        declare @eventSeatIdOutput int;
+            while @@FETCH_STATUS = 0
+            begin
+                exec dbo.CreateEventSeat @RowParam, @numberParam, 0, @eventAreaIdParam, @eventSeatIdOutput output;
+
+               FETCH NEXT FROM Seat_Cursor INTO
+                        @SeatIdParam, @RowParam, @numberParam
+            end
+            CLOSE Seat_Cursor
+DEALLOCATE Seat_Cursor
+        end
+        End
+
+
+commit tran
+end try
+begin catch
+return -1
+    rollback tran
+end catch
+')
 
 EXEC('CREATE PROCEDURE [dbo].[UpdateEventArea]
 	@Id int,
