@@ -2,8 +2,9 @@
     @Row int,
     @Number int,
     @State int,
-    @EventAreaId int
+    @EventAreaId int,
+    @EventSeatId int Output
 AS
     INSERT INTO EventSeats (Row, Number, State, EventAreaId)
     VALUES (@Row, @Number, @State, @EventAreaId)
-    SELECT SCOPE_IDENTITY()
+    set @EventSeatId = SCOPE_IDENTITY()

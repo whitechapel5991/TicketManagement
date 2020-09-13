@@ -1,5 +1,11 @@
 ﻿CREATE PROCEDURE [dbo].[DeleteEvent]
 		@Id int
 AS
-    delete from Events where Id=@Id;
-	select @@ROWCOUNT;
+	BEGIN TRAN
+    Begin try
+		delete from Events where Id=@Id;
+ commit tran
+    end try
+    begin catch
+        rollback tran
+    end catch

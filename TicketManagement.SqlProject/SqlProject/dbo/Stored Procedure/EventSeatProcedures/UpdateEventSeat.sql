@@ -6,5 +6,4 @@
     @EventAreaId int
 AS
     UPDATE EventSeats set Row=@Row, Number=@Number, State=@State, EventAreaId=@EventAreaId
-	where Id = @Id
-    select @@ROWCOUNT;
+	where Id = @Id;
