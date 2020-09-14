@@ -5,109 +5,109 @@
 // </copyright>
 // ****************************************************************************
 
-using System.Linq;
+using System.Collections.Generic;
 using Autofac;
+using Autofac.Extras.Moq;
 using AutoFixture;
+using FluentAssertions;
 using NUnit.Framework;
-using TicketManagement.BLL.DTO;
 using TicketManagement.BLL.Interfaces;
-using TicketManagement.BLL.Util;
-using TicketManagement.UnitTests.ServiceTests.Base;
+using TicketManagement.BLL.Services;
+using TicketManagement.DAL.Models;
+using TicketManagement.DAL.Repositories.Base;
+using TicketManagement.UnitTests.FakeRepositories;
 
 namespace TicketManagement.UnitTests.ServiceTests
 {
     [TestFixture]
-    internal class EventAreaServiceTests : TestWithRepositoryBase
+    internal class EventAreaServiceTests
     {
         private IEventAreaService eventAreaService;
+
+        protected AutoMock Mock { get; private set; }
+
+        protected Fixture Fixture { get; private set; }
 
         [SetUp]
         public void Init()
         {
-            this.eventAreaService = this.Container.Resolve<IEventAreaService>();
+            this.Fixture = new Fixture();
+
+            var eventAreas = new List<EventArea>
+            {
+                new EventArea() { Id = 1, CoordX = 1, CoordY = 1, Description = "First area event", EventId = 1, Price = 100 },
+                new EventArea() { Id = 2, CoordX = 1, CoordY = 1, Description = "Second area event", EventId = 1, Price = 100 },
+                new EventArea() { Id = 3, CoordX = 2, CoordY = 2, Description = "First area event", EventId = 2, Price = 200 },
+                new EventArea() { Id = 4, CoordX = 2, CoordY = 2, Description = "Second area event", EventId = 2, Price = 200 },
+            };
+            var fakeEventAreaRepository = new RepositoryFake<EventArea>(eventAreas);
+
+            this.Mock = AutoMock.GetLoose(builder =>
+            {
+                builder.RegisterInstance(fakeEventAreaRepository)
+                .As<IRepository<EventArea>>();
+            });
+        }
+
+        [TearDown]
+        public void TearDown()
+        {
+            this.Mock?.Dispose();
         }
 
         [Test]
         public void UpdateEventArea_NewEventArea_GetEventAreaPrice()
         {
             // Arrange
+            var eventAreaRepository = this.Mock.Create<IRepository<EventArea>>();
+            this.eventAreaService = this.Mock.Create<EventAreaService>();
             var id = 1;
-            var eventId = 1;
-            var expectedDto = this.Fixture.Build<EventAreaDto>()
+            var expectedDto = this.Fixture.Build<EventArea>()
                 .With(e => e.Id, id)
-                .With(e => e.EventId, eventId)
                 .Create();
 
             // Act
             this.eventAreaService.UpdateEventArea(expectedDto);
 
             // Assert
-            Assert.Multiple(() =>
-            {
-                var actualDto = this.EventAreaFakeRepositoryData.First(x => x.Id == id);
-                Assert.AreEqual(expectedDto.EventId, actualDto.EventId);
-                Assert.AreEqual(expectedDto.Price, actualDto.Price);
-            });
+            eventAreaRepository.GetById(id).Should().BeEquivalentTo(expectedDto);
         }
 
         [Test]
         public void GetEventArea_EventAreaId_GetEventAreaDescription()
         {
             // Arrange
+            var eventAreaRepository = this.Mock.Create<IRepository<EventArea>>();
+            this.eventAreaService = this.Mock.Create<EventAreaService>();
             var id = 1;
-            var expectedDto = this.EventAreaFakeRepositoryData.First(x => x.Id == id);
+            var expectedDto = new EventArea() { Id = 1, CoordX = 1, CoordY = 1, Description = "First area event", EventId = 1, Price = 100 };
 
             // Act
             var actualDto = this.eventAreaService.GetEventArea(id);
 
             // Assert
-            Assert.Multiple(() =>
-            {
-                Assert.AreEqual(expectedDto.Description, actualDto.Description);
-                Assert.AreEqual(expectedDto.CoordX, actualDto.CoordX);
-                Assert.AreEqual(expectedDto.CoordY, actualDto.CoordY);
-                Assert.AreEqual(expectedDto.EventId, actualDto.EventId);
-                Assert.AreEqual(expectedDto.Price, actualDto.Price);
-            });
+            actualDto.Should().BeEquivalentTo(expectedDto);
         }
 
         [Test]
         public void GetEventAreas_GetEventAreasCount()
         {
             // Arrange
-            var expectedCount = this.EventAreaFakeRepositoryData.Count();
+            var eventAreaRepository = this.Mock.Create<IRepository<EventArea>>();
+            this.eventAreaService = this.Mock.Create<EventAreaService>();
+            var expected = new List<EventArea>
+            {
+                new EventArea() { Id = 1, CoordX = 1, CoordY = 1, Description = "First area event", EventId = 1, Price = 100 },
+                new EventArea() { Id = 2, CoordX = 1, CoordY = 1, Description = "Second area event", EventId = 1, Price = 100 },
+                new EventArea() { Id = 3, CoordX = 2, CoordY = 2, Description = "First area event", EventId = 2, Price = 200 },
+                new EventArea() { Id = 4, CoordX = 2, CoordY = 2, Description = "Second area event", EventId = 2, Price = 200 },
+            };
 
             // Act
-            var dtos = this.eventAreaService.GetEventAreas();
+            var actual = this.eventAreaService.GetEventAreas();
 
             // Assert
-            Assert.Multiple(() =>
-            {
-                Assert.AreEqual(expectedCount, dtos.Count());
-            });
-        }
-
-        [Test]
-        public void UpdateEventArea_NonexistentEventArea_GetException()
-        {
-            // Arrange
-            var id = 10000;
-            var dto = this.Fixture.Build<EventAreaDto>().With(e => e.Id, id).Create();
-
-            // Act - delegate. Assert
-            Assert.Throws<TicketManagementException>(
-                () => this.eventAreaService.UpdateEventArea(dto));
-        }
-
-        [Test]
-        public void GetEventArea_NonexistentEventArea_GetException()
-        {
-            // Arrange
-            var id = 10000;
-
-            // Act - delegate. Assert
-            Assert.Throws<TicketManagementException>(
-                () => this.eventAreaService.GetEventArea(id));
+            actual.Should().BeEquivalentTo(expected);
         }
     }
 }

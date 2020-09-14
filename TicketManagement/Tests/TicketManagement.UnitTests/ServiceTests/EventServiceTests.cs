@@ -6,331 +6,186 @@
 // ****************************************************************************
 
 using System;
-using System.Linq;
+using System.Collections.Generic;
 using Autofac;
+using Autofac.Extras.Moq;
+using AutoFixture;
+using FluentAssertions;
 using NUnit.Framework;
-using TicketManagement.BLL.DTO;
 using TicketManagement.BLL.Interfaces;
-using TicketManagement.BLL.Util;
-using TicketManagement.UnitTests.ServiceTests.Base;
+using TicketManagement.BLL.Services;
+using TicketManagement.DAL.Models;
+using TicketManagement.DAL.Repositories.Base;
+using TicketManagement.UnitTests.FakeRepositories;
 
 namespace TicketManagement.UnitTests.ServiceTests
 {
     [TestFixture]
-    internal class EventServiceTests : TestWithRepositoryBase
+    internal class EventServiceTests
     {
         private IEventService eventService;
+
+        protected AutoMock Mock { get; private set; }
+
+        protected Fixture Fixture { get; private set; }
 
         [SetUp]
         public void Init()
         {
-            this.eventService = this.Container.Resolve<IEventService>();
+            this.Fixture = new Fixture();
+
+            var events = new List<Event>
+            {
+                new Event()
+                {
+                    Id = 1, BeginDate = new DateTime(2025, 12, 12, 12, 00, 00),
+                    EndDate = new DateTime(2025, 12, 12, 13, 00, 00), Description = "First",
+                    LayoutId = 1, Name = "First event",
+                },
+                new Event()
+                {
+                    Id = 2, BeginDate = new DateTime(2025, 12, 12, 13, 00, 00),
+                    EndDate = new DateTime(2025, 12, 12, 14, 00, 00), Description = "Second",
+                    LayoutId = 2, Name = "Second event",
+                },
+            };
+            var fakeVenueRepository = new RepositoryFake<Event>(events);
+
+            this.Mock = AutoMock.GetLoose(builder =>
+            {
+                builder.RegisterInstance(fakeVenueRepository)
+                .As<IRepository<Event>>();
+            });
+        }
+
+        [TearDown]
+        public void TearDown()
+        {
+            this.Mock?.Dispose();
         }
 
         [Test]
         public void AddEvent_AddNewEvent_GetCountEvents()
         {
             // Arrange
-            int expectedCount = this.EventFakeRepositoryData.Count() + 1;
-
-            var dto = new EventDto()
+            var eventRepository = this.Mock.Create<IRepository<Event>>();
+            this.eventService = this.Mock.Create<EventService>();
+            var dto = this.Fixture.Build<Event>().Create();
+            var expected = new List<Event>
             {
-                Id = 2,
-                BeginDate = new DateTime(2025, 10, 20, 8, 30, 59),
-                EndDate = new DateTime(2025, 10, 20, 10, 30, 59),
-                Description = "2",
-                LayoutId = 2,
-                Name = "2",
+                new Event()
+                {
+                    Id = 1, BeginDate = new DateTime(2025, 12, 12, 12, 00, 00),
+                    EndDate = new DateTime(2025, 12, 12, 13, 00, 00), Description = "First",
+                    LayoutId = 1, Name = "First event",
+                },
+                new Event()
+                {
+                    Id = 2, BeginDate = new DateTime(2025, 12, 12, 13, 00, 00),
+                    EndDate = new DateTime(2025, 12, 12, 14, 00, 00), Description = "Second",
+                    LayoutId = 2, Name = "Second event",
+                },
+                dto,
             };
 
             // Act
             this.eventService.AddEvent(dto);
 
             // Assert
-            Assert.AreEqual(expectedCount, this.EventFakeRepositoryData.Count());
+            expected.Should().BeEquivalentTo(eventRepository.GetAll());
         }
 
         [Test]
         public void UpdateEvent_NewEvent_GetEventDescription()
         {
             // Arrange
+            var eventRepository = this.Mock.Create<IRepository<Event>>();
+            this.eventService = this.Mock.Create<EventService>();
             var id = 2;
-            var expectedDto = new EventDto()
-            {
-                Id = id,
-                BeginDate = new DateTime(2025, 10, 20, 8, 30, 59),
-                EndDate = new DateTime(2025, 10, 20, 10, 30, 59),
-                Description = "2",
-                LayoutId = 2,
-                Name = "2",
-            };
+            var expectedDto = this.Fixture.Build<Event>().With(e => e.Id, id).Create();
 
             // Act
             this.eventService.UpdateEvent(expectedDto);
 
             // Assert
-            Assert.Multiple(() =>
-            {
-                var actualDto = this.EventFakeRepositoryData.First(x => x.Id == id);
-                Assert.AreEqual(expectedDto.Description, actualDto.Description);
-                Assert.AreEqual(expectedDto.LayoutId, actualDto.LayoutId);
-                Assert.AreEqual(expectedDto.BeginDate, actualDto.BeginDate);
-                Assert.AreEqual(expectedDto.EndDate, actualDto.EndDate);
-                Assert.AreEqual(expectedDto.Name, actualDto.Name);
-            });
+            eventRepository.GetById(id).Should().BeEquivalentTo(expectedDto);
         }
 
         [Test]
         public void DeleteEvent_EventId_GeteventsCount()
         {
             // Arrange
+            var eventRepository = this.Mock.Create<IRepository<Event>>();
+            this.eventService = this.Mock.Create<EventService>();
             int id = 2;
-            int expectedCount = this.EventFakeRepositoryData.Count() - 1;
+            var expected = new List<Event>
+            {
+                new Event()
+                {
+                    Id = 1, BeginDate = new DateTime(2025, 12, 12, 12, 00, 00),
+                    EndDate = new DateTime(2025, 12, 12, 13, 00, 00), Description = "First",
+                    LayoutId = 1, Name = "First event",
+                },
+            };
 
             // Act
             this.eventService.DeleteEvent(id);
 
             // Assert
-            Assert.AreEqual(expectedCount, this.EventFakeRepositoryData.Count());
+            expected.Should().BeEquivalentTo(eventRepository.GetAll());
         }
 
         [Test]
         public void GetEvent_EventId_GetEventDescription()
         {
             // Arrange
+            var eventRepository = this.Mock.Create<IRepository<Event>>();
+            this.eventService = this.Mock.Create<EventService>();
             var id = 1;
-            var expectedDto = this.EventFakeRepositoryData.First(x => x.Id == id);
+            var expectedDto = new Event()
+            {
+                Id = 1,
+                BeginDate = new DateTime(2025, 12, 12, 12, 00, 00),
+                EndDate = new DateTime(2025, 12, 12, 13, 00, 00),
+                Description = "First",
+                LayoutId = 1,
+                Name = "First event",
+            };
 
             // Act
             var actualDto = this.eventService.GetEvent(id);
 
             // Assert
-            Assert.Multiple(() =>
-            {
-                Assert.AreEqual(expectedDto.Description, actualDto.Description);
-                Assert.AreEqual(expectedDto.LayoutId, actualDto.LayoutId);
-                Assert.AreEqual(expectedDto.BeginDate, actualDto.BeginDate);
-                Assert.AreEqual(expectedDto.EndDate, actualDto.EndDate);
-                Assert.AreEqual(expectedDto.Name, actualDto.Name);
-            });
+            actualDto.Should().BeEquivalentTo(expectedDto);
         }
 
         [Test]
         public void GetEvents_GetEventsCount()
         {
             // Arrange
-            var expectedCount = this.EventFakeRepositoryData.Count();
+            var eventRepository = this.Mock.Create<IRepository<Event>>();
+            this.eventService = this.Mock.Create<EventService>();
+            var expected = new List<Event>
+            {
+                new Event()
+                {
+                    Id = 1, BeginDate = new DateTime(2025, 12, 12, 12, 00, 00),
+                    EndDate = new DateTime(2025, 12, 12, 13, 00, 00), Description = "First",
+                    LayoutId = 1, Name = "First event",
+                },
+                new Event()
+                {
+                    Id = 2, BeginDate = new DateTime(2025, 12, 12, 13, 00, 00),
+                    EndDate = new DateTime(2025, 12, 12, 14, 00, 00), Description = "Second",
+                    LayoutId = 2, Name = "Second event",
+                },
+            };
 
             // Act
-            var dtos = this.eventService.GetEvents();
+            var actual = this.eventService.GetEvents();
 
             // Assert
-            Assert.AreEqual(expectedCount, dtos.Count());
-        }
-
-        [Test]
-        public void AddEvent_NonexistentLayout_GetException()
-        {
-            // Arrange
-            var nonexistingLayoutId = 100000;
-            var eventDto = new EventDto()
-            {
-                Id = 2,
-                BeginDate = new DateTime(2025, 10, 20, 8, 30, 59),
-                EndDate = new DateTime(2025, 10, 20, 10, 30, 59),
-                Description = "2",
-                LayoutId = nonexistingLayoutId,
-                Name = "2",
-            };
-
-            // Act - delegate. Assert
-            Assert.Throws<TicketManagementException>(
-                () => this.eventService.AddEvent(eventDto));
-        }
-
-        [Test]
-        public void AddEvent_NonexistentAreas_GetException()
-        {
-            // Arrange
-            var layoutWithoutAreasId = 100;
-            var dto = new EventDto()
-            {
-                Id = 2,
-                BeginDate = new DateTime(2025, 10, 20, 8, 30, 59),
-                EndDate = new DateTime(2025, 10, 20, 10, 30, 59),
-                Description = "2",
-                LayoutId = layoutWithoutAreasId,
-                Name = "2",
-            };
-
-            // Act - delegate. Assert
-            Assert.Throws<TicketManagementException>(
-                () => this.eventService.AddEvent(dto));
-        }
-
-        [Test]
-        public void AddEvent_NonexistentSeats_GetException()
-        {
-            // Arrange
-            var layoutWithoutSeatsId = 101;
-
-            var eventDto = new EventDto()
-            {
-                Id = 2,
-                BeginDate = new DateTime(2025, 10, 20, 8, 30, 59),
-                EndDate = new DateTime(2025, 10, 20, 10, 30, 59),
-                Description = "2",
-                LayoutId = layoutWithoutSeatsId,
-                Name = "2",
-            };
-
-            // Act - delegate. Assert
-            Assert.Throws<TicketManagementException>(
-                () => this.eventService.AddEvent(eventDto));
-        }
-
-        [Test]
-        public void AddEvent_IsDateInPast_GetException()
-        {
-            // Arrange
-            var beginDateInPast = new DateTime(2016, 10, 20, 8, 30, 59);
-            var endDateInPast = new DateTime(2016, 10, 20, 10, 30, 59);
-            var eventDto = new EventDto()
-            {
-                Id = 2,
-                BeginDate = beginDateInPast,
-                EndDate = endDateInPast,
-                Description = "2",
-                LayoutId = 1,
-                Name = "2",
-            };
-
-            // Act - delegate. Assert
-            Assert.Throws<TicketManagementException>(
-                () => this.eventService.AddEvent(eventDto));
-        }
-
-        [Test]
-        public void AddEvent_IsLongerBeginDate_GetException()
-        {
-            // Arrange
-            var beginDateInPast = new DateTime(2025, 10, 20, 8, 30, 59);
-            var endDateInPast = new DateTime(2024, 10, 20, 10, 30, 59);
-            var eventDto = new EventDto()
-            {
-                Id = 2,
-                BeginDate = beginDateInPast,
-                EndDate = endDateInPast,
-                Description = "2",
-                LayoutId = 1,
-                Name = "2",
-            };
-
-            // Act - delegate. Assert
-            Assert.Throws<TicketManagementException>(
-                () => this.eventService.AddEvent(eventDto));
-        }
-
-        [Test]
-        public void AddEvent_IsEventInLayoutSameTime_GetException()
-        {
-            // Arrange
-            var dto = new EventDto()
-            {
-                Id = 2,
-                BeginDate = new DateTime(2025, 12, 12, 12, 00, 00),
-                EndDate = new DateTime(2025, 12, 12, 13, 00, 00),
-                Description = "2",
-                LayoutId = 1,
-                Name = "2",
-            };
-
-            // Act - delegate. Assert
-            Assert.Throws<TicketManagementException>(
-                () => this.eventService.AddEvent(dto));
-        }
-
-        [Test]
-        public void UpdateArea_NonexistentLayout_GetException()
-        {
-            // Arrange
-            var nonexistingLayoutId = 100000;
-            var eventDto = new EventDto()
-            {
-                Id = 2,
-                BeginDate = new DateTime(2025, 10, 20, 8, 30, 59),
-                EndDate = new DateTime(2025, 10, 20, 10, 30, 59),
-                Description = "2",
-                LayoutId = nonexistingLayoutId,
-                Name = "2",
-            };
-
-            // Act - delegate. Assert
-            Assert.Throws<TicketManagementException>(
-                () => this.eventService.UpdateEvent(eventDto));
-        }
-
-        [Test]
-        public void UpdateEvent_IsDateInPast_GetException()
-        {
-            // Arrange
-            var beginDateInPast = new DateTime(2016, 10, 20, 8, 30, 59);
-            var endDateInPast = new DateTime(2016, 10, 20, 10, 30, 59);
-            var eventDto = new EventDto()
-            {
-                Id = 1,
-                BeginDate = beginDateInPast,
-                EndDate = endDateInPast,
-                Description = "2",
-                LayoutId = 1,
-                Name = "2",
-            };
-
-            // Act - delegate. Assert
-            Assert.Throws<TicketManagementException>(
-                () => this.eventService.UpdateEvent(eventDto));
-        }
-
-        [Test]
-        public void UpdateEvent_IsLongerBeginDate_GetException()
-        {
-            // Arrange
-            var beginDateInPast = new DateTime(2025, 10, 20, 8, 30, 59);
-            var endDateInPast = new DateTime(2024, 10, 20, 10, 30, 59);
-            var eventDto = new EventDto()
-            {
-                Id = 1,
-                BeginDate = beginDateInPast,
-                EndDate = endDateInPast,
-                Description = "2",
-                LayoutId = 1,
-                Name = "2",
-            };
-
-            // Act - delegate. Assert
-            Assert.Throws<TicketManagementException>(
-                () => this.eventService.UpdateEvent(eventDto));
-        }
-
-        [Test]
-        public void DeleteArea_IdIsNull_GetException()
-        {
-            // Arrange
-            var nonexistingId = 100000;
-
-            // Act - delegate. Assert
-            Assert.Throws<TicketManagementException>(
-                () => this.eventService.DeleteEvent(nonexistingId));
-        }
-
-        public void GetEvent_IdIsNull_GetException()
-        {
-            // Arrange
-            var nonexistingId = 100000;
-
-            // Act - delegate. Assert
-            Assert.Throws<TicketManagementException>(
-                () => this.eventService.GetEvent(nonexistingId));
+            actual.Should().BeEquivalentTo(expected);
         }
     }
 }

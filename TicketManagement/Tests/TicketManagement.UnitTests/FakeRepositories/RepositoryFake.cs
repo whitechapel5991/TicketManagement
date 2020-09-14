@@ -5,63 +5,64 @@
 // </copyright>
 // ****************************************************************************
 
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using Moq;
 using TicketManagement.DAL.Models.Base;
 using TicketManagement.DAL.Repositories.Base;
 
 namespace TicketManagement.UnitTests.FakeRepositories
 {
-    internal class RepositoryFake<T>
-        where T : IEntity, new()
+    internal class RepositoryFake<TEntity> : IRepository<TEntity>
+        where TEntity : IEntity, new()
     {
-        private readonly List<T> repositoryData;
+        private readonly List<TEntity> repositoryData;
 
-        public RepositoryFake(List<T> repositoryData)
+        public RepositoryFake(List<TEntity> repositoryData)
         {
             this.repositoryData = repositoryData;
         }
 
-        public Mock<IRepository<T>> SetUpFakeRepository(Mock<IRepository<T>> mockRepository)
+        public int Create(TEntity entity)
         {
-            mockRepository.Setup(x => x.GetById(It.IsAny<int>()))
-                .Returns((int id) => this.repositoryData.FirstOrDefault(x => x.Id == id))
-                .Verifiable();
+            this.repositoryData.Add(entity);
+            return entity.Id;
+        }
 
-            mockRepository.Setup(x => x.Update(It.IsAny<T>()))
-                .Callback((T entity) =>
-                {
-                    int index = this.repositoryData.FindIndex(x => x.Id == entity.Id);
-                    if (index != -1)
-                    {
-                        this.repositoryData.RemoveAt(index);
-                        this.repositoryData.Insert(index, entity);
-                    }
-                }).Verifiable();
+        public void Update(TEntity entity)
+        {
+            int index = this.repositoryData.FindIndex(x => x.Id == entity.Id);
+            if (index != -1)
+            {
+                this.repositoryData.RemoveAt(index);
+                this.repositoryData.Insert(index, entity);
+            }
+        }
 
-            mockRepository.Setup(x => x.Create(It.IsAny<T>()))
-                .Returns((T entity) => (int)entity.Id)
-                .Callback((T entity) =>
-                {
-                    this.repositoryData.Add(entity);
-                }).Verifiable();
+        public void Delete(int id)
+        {
+            int index = this.repositoryData.FindIndex(x => x.Id == id);
+            if (index != -1)
+            {
+                this.repositoryData.RemoveAt(index);
+            }
+        }
 
-            mockRepository.Setup(x => x.Delete(It.IsAny<int>()))
-                .Callback((int id) =>
-                {
-                    int index = this.repositoryData.FindIndex(x => x.Id == id);
-                    if (index != -1)
-                    {
-                        this.repositoryData.RemoveAt(index);
-                    }
-                }).Verifiable();
+        public IEnumerable<TEntity> GetAll()
+        {
+            return this.repositoryData;
+        }
 
-            mockRepository.Setup(x => x.GetAll())
-                .Returns(() => this.repositoryData.Count == 0 ? null : this.repositoryData)
-                .Verifiable();
-
-            return mockRepository;
+        public TEntity GetById(int id)
+        {
+            try
+            {
+                return this.repositoryData.First(x => x.Id == id);
+            }
+            catch (InvalidOperationException)
+            {
+                return default;
+            }
         }
     }
 }
