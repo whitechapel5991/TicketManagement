@@ -1,9 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
+﻿// ****************************************************************************
+// <copyright file="Entity.cs" company="EPAM Systems">
+// Copyright (c) EPAM Systems. All rights reserved.
+// Author Dzianis Shcharbakou.
+// </copyright>
+// ****************************************************************************
+
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace TicketManagement.DAL.Models.Base
 {

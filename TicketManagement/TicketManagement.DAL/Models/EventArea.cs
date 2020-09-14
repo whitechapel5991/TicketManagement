@@ -28,7 +28,7 @@ namespace TicketManagement.DAL.Models
         public decimal Price { get; set; }
 
         [Required]
-        [Range(0,int.MaxValue)]
+        [Range(0, int.MaxValue)]
         public int EventId { get; set; }
     }
 }

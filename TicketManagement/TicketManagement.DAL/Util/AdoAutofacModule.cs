@@ -1,5 +1,5 @@
 ﻿// ****************************************************************************
-// <copyright file="DalAutofacModule.cs" company="EPAM Systems">
+// <copyright file="AdoAutofacModule.cs" company="EPAM Systems">
 // Copyright (c) EPAM Systems. All rights reserved.
 // Author Dzianis Shcharbakou.
 // </copyright>
