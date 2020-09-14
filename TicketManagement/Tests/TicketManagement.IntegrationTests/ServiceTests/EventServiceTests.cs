@@ -9,8 +9,8 @@ using System;
 using System.Linq;
 using Autofac;
 using NUnit.Framework;
-using TicketManagement.BLL.DTO;
 using TicketManagement.BLL.Interfaces;
+using TicketManagement.DAL.Models;
 using Test = TicketManagement.IntegrationTests.TestBase.TestBase;
 
 namespace TicketManagement.IntegrationTests.ServiceTests
@@ -32,7 +32,7 @@ namespace TicketManagement.IntegrationTests.ServiceTests
         [Test]
         public void AddEvent_AddNewEventNewAreasEventNewSeatsEvent_GetEvents()
         {
-            EventDto eventDto = new EventDto
+            var eventDto = new Event
             {
                 Id = 2,
                 BeginDate = new DateTime(2025, 10, 20, 8, 30, 59),
@@ -44,7 +44,7 @@ namespace TicketManagement.IntegrationTests.ServiceTests
 
             int id = this.eventService.AddEvent(eventDto);
 
-            EventDto eventDtoTemp = this.eventService.GetEvent(id);
+            var eventDtoTemp = this.eventService.GetEvent(id);
 
             Assert.AreEqual("2", eventDtoTemp.Description);
             Assert.AreEqual(new DateTime(2025, 10, 20, 8, 30, 59), eventDtoTemp.BeginDate);
@@ -58,7 +58,7 @@ namespace TicketManagement.IntegrationTests.ServiceTests
         [Test]
         public void UpdateEvent_NewEvent_GetEvent()
         {
-            EventDto eventDto = new EventDto
+            var eventDto = new Event
             {
                 Id = 2,
                 BeginDate = new DateTime(2025, 10, 20, 8, 30, 59),
@@ -69,7 +69,7 @@ namespace TicketManagement.IntegrationTests.ServiceTests
             };
             this.eventService.UpdateEvent(eventDto);
 
-            EventDto eventDtoTemp = this.eventService.GetEvent(2);
+            var eventDtoTemp = this.eventService.GetEvent(2);
 
             Assert.AreEqual(new DateTime(2025, 10, 20, 8, 30, 59), eventDtoTemp.BeginDate);
             Assert.AreEqual(new DateTime(2025, 10, 20, 10, 30, 59), eventDtoTemp.EndDate);
@@ -92,7 +92,7 @@ namespace TicketManagement.IntegrationTests.ServiceTests
         [Test]
         public void GetEvent_EventId_GetEvent()
         {
-            EventDto eventDtoTemp = this.eventService.GetEvent(1);
+            Event eventDtoTemp = this.eventService.GetEvent(1);
 
             Assert.AreEqual("First", eventDtoTemp.Description);
             Assert.AreEqual("First event", eventDtoTemp.Name);

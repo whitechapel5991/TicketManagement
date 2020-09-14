@@ -8,8 +8,8 @@
 using System.Linq;
 using Autofac;
 using NUnit.Framework;
-using TicketManagement.BLL.DTO;
 using TicketManagement.BLL.Interfaces;
+using TicketManagement.DAL.Models;
 using Test = TicketManagement.IntegrationTests.TestBase.TestBase;
 
 namespace TicketManagement.IntegrationTests.ServiceTests
@@ -27,7 +27,7 @@ namespace TicketManagement.IntegrationTests.ServiceTests
         [Test]
         public void AddArea_AddNewArea_GetAreas()
         {
-            AreaDto areaDto = new AreaDto
+            Area areaDto = new Area
             {
                 Description = "blabla5",
                 CoordX = 1000,
@@ -37,7 +37,7 @@ namespace TicketManagement.IntegrationTests.ServiceTests
 
             int id = this.areaService.AddArea(areaDto);
 
-            AreaDto areaDtoTemp = this.areaService.GetArea(id);
+            Area areaDtoTemp = this.areaService.GetArea(id);
 
             Assert.AreEqual("blabla5", areaDtoTemp.Description);
             Assert.AreEqual(1000, areaDtoTemp.CoordX);
@@ -48,7 +48,7 @@ namespace TicketManagement.IntegrationTests.ServiceTests
         [Test]
         public void UpdateArea_NewArea_GetArea()
         {
-            AreaDto areaDto = new AreaDto
+            Area areaDto = new Area
             {
                 Id = 1,
                 Description = "blablabla",
@@ -58,7 +58,7 @@ namespace TicketManagement.IntegrationTests.ServiceTests
             };
             this.areaService.UpdateArea(areaDto);
 
-            AreaDto areaDtoTemp = this.areaService.GetArea(1);
+            Area areaDtoTemp = this.areaService.GetArea(1);
 
             Assert.AreEqual("blablabla", areaDtoTemp.Description);
             Assert.AreEqual(100011, areaDtoTemp.CoordX);
@@ -78,7 +78,7 @@ namespace TicketManagement.IntegrationTests.ServiceTests
         [Test]
         public void GetArea_AreaId_GetArea()
         {
-            AreaDto areaDtoTemp = this.areaService.GetArea(1);
+            Area areaDtoTemp = this.areaService.GetArea(1);
 
             Assert.AreEqual("First area of first layout", areaDtoTemp.Description);
             Assert.AreEqual(1, areaDtoTemp.CoordX);

@@ -8,8 +8,8 @@
 using System.Linq;
 using Autofac;
 using NUnit.Framework;
-using TicketManagement.BLL.DTO;
 using TicketManagement.BLL.Interfaces;
+using TicketManagement.DAL.Models;
 using Test = TicketManagement.IntegrationTests.TestBase.TestBase;
 
 namespace TicketManagement.IntegrationTests.ServiceTests
@@ -27,7 +27,7 @@ namespace TicketManagement.IntegrationTests.ServiceTests
         [Test]
         public void UpdateEventArea_NewPrice_GetEventArea()
         {
-            EventAreaDto eventAreaDto = new EventAreaDto
+            EventArea eventAreaDto = new EventArea
             {
                 Id = 1,
                 Description = "blabla5",
@@ -39,7 +39,7 @@ namespace TicketManagement.IntegrationTests.ServiceTests
 
             this.eventAreaService.UpdateEventArea(eventAreaDto);
 
-            EventAreaDto eventAreaDtoTemp = this.eventAreaService.GetEventArea(1);
+            EventArea eventAreaDtoTemp = this.eventAreaService.GetEventArea(1);
 
             Assert.AreEqual("First area of first layout", eventAreaDtoTemp.Description);
             Assert.AreEqual(1, eventAreaDtoTemp.CoordX);
@@ -51,7 +51,7 @@ namespace TicketManagement.IntegrationTests.ServiceTests
         [Test]
         public void GetEventArea_EventAreaId_GetEventArea()
         {
-            EventAreaDto eventAreaDtoTemp = this.eventAreaService.GetEventArea(1);
+            EventArea eventAreaDtoTemp = this.eventAreaService.GetEventArea(1);
 
             Assert.AreEqual("First area of first layout", eventAreaDtoTemp.Description);
             Assert.AreEqual(1, eventAreaDtoTemp.CoordX);

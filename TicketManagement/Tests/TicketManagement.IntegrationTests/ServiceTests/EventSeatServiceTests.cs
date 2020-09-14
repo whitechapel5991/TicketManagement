@@ -8,9 +8,9 @@
 using System.Linq;
 using Autofac;
 using NUnit.Framework;
-using TicketManagement.BLL.DTO;
 using TicketManagement.BLL.Interfaces;
 using TicketManagement.DAL.Constants;
+using TicketManagement.DAL.Models;
 using Test = TicketManagement.IntegrationTests.TestBase.TestBase;
 
 namespace TicketManagement.IntegrationTests.ServiceTests
@@ -28,21 +28,21 @@ namespace TicketManagement.IntegrationTests.ServiceTests
         [Test]
         public void UpdateEventSeat_NewState_GetEventSeat()
         {
-            EventSeatDto eventSeatDto = new EventSeatDto
+            EventSeat eventSeatDto = new EventSeat
             {
                 Id = 1,
                 Number = 2,
-                State = (int)EventSeatState.Sold,
+                State = EventSeatState.Sold,
                 Row = 2,
                 EventAreaId = 2,
             };
 
             this.eventSeatService.UpdateEventSeat(eventSeatDto);
 
-            EventSeatDto eventSeatDtoTemp = this.eventSeatService.GetEventSeat(1);
+            EventSeat eventSeatDtoTemp = this.eventSeatService.GetEventSeat(1);
 
             Assert.AreEqual(1, eventSeatDtoTemp.Number);
-            Assert.AreEqual((int)EventSeatState.Sold, eventSeatDtoTemp.State);
+            Assert.AreEqual(EventSeatState.Sold, eventSeatDtoTemp.State);
             Assert.AreEqual(1, eventSeatDtoTemp.Row);
             Assert.AreEqual(1, eventSeatDtoTemp.EventAreaId);
         }
@@ -50,10 +50,10 @@ namespace TicketManagement.IntegrationTests.ServiceTests
         [Test]
         public void GetEventSeat_EventSeatId_GetEventSeat()
         {
-            EventSeatDto eventSeatDtoTemp = this.eventSeatService.GetEventSeat(1);
+            EventSeat eventSeatDtoTemp = this.eventSeatService.GetEventSeat(1);
 
             Assert.AreEqual(1, eventSeatDtoTemp.Number);
-            Assert.AreEqual((int)EventSeatState.Free, eventSeatDtoTemp.State);
+            Assert.AreEqual(EventSeatState.Free, eventSeatDtoTemp.State);
             Assert.AreEqual(1, eventSeatDtoTemp.Row);
             Assert.AreEqual(1, eventSeatDtoTemp.EventAreaId);
         }

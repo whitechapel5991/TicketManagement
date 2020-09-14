@@ -8,8 +8,8 @@
 using System.Linq;
 using Autofac;
 using NUnit.Framework;
-using TicketManagement.BLL.DTO;
 using TicketManagement.BLL.Interfaces;
+using TicketManagement.DAL.Models;
 using Test = TicketManagement.IntegrationTests.TestBase.TestBase;
 
 namespace TicketManagement.IntegrationTests.ServiceTests
@@ -27,7 +27,7 @@ namespace TicketManagement.IntegrationTests.ServiceTests
         [Test]
         public void AddLayout_AddNewLayout_GetLayouts()
         {
-            LayoutDto layoutDto = new LayoutDto
+            var layoutDto = new Layout
             {
                 Description = "2",
                 VenueId = 2,
@@ -36,7 +36,7 @@ namespace TicketManagement.IntegrationTests.ServiceTests
 
             int id = this.layoutService.AddLayout(layoutDto);
 
-            LayoutDto layoutDtoTemp = this.layoutService.GetLayout(id);
+            var layoutDtoTemp = this.layoutService.GetLayout(id);
 
             Assert.AreEqual("2", layoutDtoTemp.Description);
             Assert.AreEqual(2, layoutDtoTemp.VenueId);
@@ -46,7 +46,7 @@ namespace TicketManagement.IntegrationTests.ServiceTests
         [Test]
         public void UpdateLayout_NewLayout_GetLayout()
         {
-            LayoutDto layoutDto = new LayoutDto
+            var layoutDto = new Layout
             {
                 Id = 2,
                 Description = "2",
@@ -55,7 +55,7 @@ namespace TicketManagement.IntegrationTests.ServiceTests
             };
             this.layoutService.UpdateLayout(layoutDto);
 
-            LayoutDto layoutDtoTemp = this.layoutService.GetLayout(2);
+            var layoutDtoTemp = this.layoutService.GetLayout(2);
 
             Assert.AreEqual("2", layoutDtoTemp.Description);
             Assert.AreEqual(2, layoutDtoTemp.VenueId);
@@ -74,7 +74,7 @@ namespace TicketManagement.IntegrationTests.ServiceTests
         [Test]
         public void GetLayout_LayoutId_GetLayout()
         {
-            LayoutDto layoutDtoTemp = this.layoutService.GetLayout(1);
+            var layoutDtoTemp = this.layoutService.GetLayout(1);
 
             Assert.AreEqual("First layout", layoutDtoTemp.Description);
             Assert.AreEqual("first", layoutDtoTemp.Name);

@@ -8,8 +8,8 @@
 using System.Linq;
 using Autofac;
 using NUnit.Framework;
-using TicketManagement.BLL.DTO;
 using TicketManagement.BLL.Interfaces;
+using TicketManagement.DAL.Models;
 using Test = TicketManagement.IntegrationTests.TestBase.TestBase;
 
 namespace TicketManagement.IntegrationTests.ServiceTests
@@ -27,7 +27,7 @@ namespace TicketManagement.IntegrationTests.ServiceTests
         [Test]
         public void AddSeat_AddNewSeat_GetSeats()
         {
-            SeatDto seatDto = new SeatDto
+            var seatDto = new Seat
             {
                 Row = 2,
                 Number = 2,
@@ -36,7 +36,7 @@ namespace TicketManagement.IntegrationTests.ServiceTests
 
             int id = this.seatService.AddSeat(seatDto);
 
-            SeatDto seatDtoTemp = this.seatService.GetSeat(id);
+            var seatDtoTemp = this.seatService.GetSeat(id);
 
             Assert.AreEqual(2, seatDtoTemp.Row);
             Assert.AreEqual(2, seatDtoTemp.Number);
@@ -46,7 +46,7 @@ namespace TicketManagement.IntegrationTests.ServiceTests
         [Test]
         public void UpdateSeat_NewSeat_GetSeat()
         {
-            SeatDto seatDto = new SeatDto
+            var seatDto = new Seat
             {
                 Id = 2,
                 Row = 2,
@@ -55,7 +55,7 @@ namespace TicketManagement.IntegrationTests.ServiceTests
             };
             this.seatService.UpdateSeat(seatDto);
 
-            SeatDto seatDtoTemp = this.seatService.GetSeat(2);
+            var seatDtoTemp = this.seatService.GetSeat(2);
 
             Assert.AreEqual(2, seatDtoTemp.Row);
             Assert.AreEqual(2, seatDtoTemp.Number);
@@ -74,7 +74,7 @@ namespace TicketManagement.IntegrationTests.ServiceTests
         [Test]
         public void GetSeat_SeatId_GetSeat()
         {
-            SeatDto seatDtoTemp = this.seatService.GetSeat(1);
+            var seatDtoTemp = this.seatService.GetSeat(1);
 
             Assert.AreEqual(1, seatDtoTemp.Row);
             Assert.AreEqual(1, seatDtoTemp.Number);

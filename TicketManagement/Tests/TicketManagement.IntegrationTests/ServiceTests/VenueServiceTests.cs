@@ -8,8 +8,8 @@
 using System.Linq;
 using Autofac;
 using NUnit.Framework;
-using TicketManagement.BLL.DTO;
 using TicketManagement.BLL.Interfaces;
+using TicketManagement.DAL.Models;
 using Test = TicketManagement.IntegrationTests.TestBase.TestBase;
 
 namespace TicketManagement.IntegrationTests.ServiceTests
@@ -28,7 +28,7 @@ namespace TicketManagement.IntegrationTests.ServiceTests
         [Test]
         public void AddVenue_AddNewVenue_GetVenues()
         {
-            VenueDto venueDto = new VenueDto
+            var venueDto = new Venue
             {
                 Description = "3",
                 Name = "3",
@@ -37,7 +37,7 @@ namespace TicketManagement.IntegrationTests.ServiceTests
             };
 
             int id = this.venueService.AddVenue(venueDto);
-            VenueDto seatDtoTemp = this.venueService.GetVenue(id);
+            var seatDtoTemp = this.venueService.GetVenue(id);
 
             Assert.AreEqual("3", seatDtoTemp.Name);
             Assert.AreEqual("3", seatDtoTemp.Address);
@@ -48,7 +48,7 @@ namespace TicketManagement.IntegrationTests.ServiceTests
         [Test]
         public void UpdateVenue_NewVenue_GetVenue()
         {
-            VenueDto venueDto = new VenueDto
+            var venueDto = new Venue
             {
                 Id = 2,
                 Description = "3",
@@ -58,7 +58,7 @@ namespace TicketManagement.IntegrationTests.ServiceTests
             };
             this.venueService.UpdateVenue(venueDto);
 
-            VenueDto venueDtoTemp = this.venueService.GetVenue(2);
+            var venueDtoTemp = this.venueService.GetVenue(2);
 
             Assert.AreEqual("3", venueDtoTemp.Description);
             Assert.AreEqual("3", venueDtoTemp.Name);
@@ -78,7 +78,7 @@ namespace TicketManagement.IntegrationTests.ServiceTests
         [Test]
         public void GetVenue_VenueId_GetVenue()
         {
-            VenueDto venueDtoTemp = this.venueService.GetVenue(1);
+            var venueDtoTemp = this.venueService.GetVenue(1);
 
             Assert.AreEqual("First venue", venueDtoTemp.Description);
             Assert.AreEqual("first", venueDtoTemp.Name);

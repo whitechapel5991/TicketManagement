@@ -465,9 +465,8 @@ EXEC('CREATE PROCEDURE [dbo].[UpdateEventArea]
 	@Price decimal,
     @EventId int
 AS
-    UPDATE EventAreas set Description=@Description, CoordX=@CoordX, CoordY=@CoordY, Price=@Price, EventId=@EventId
-	where Id = @Id
-select @@ROWCOUNT')
+    UPDATE EventAreas set Price=@Price
+	where Id = @Id;')
 
 EXEC('CREATE PROCEDURE [dbo].[UpdateEventSeat]
 	@Id int,
@@ -476,9 +475,8 @@ EXEC('CREATE PROCEDURE [dbo].[UpdateEventSeat]
     @State int,
     @EventAreaId int
 AS
-    UPDATE EventSeats set Row=@Row, Number=@Number, State=@State, EventAreaId=@EventAreaId
-	where Id = @Id
-select @@ROWCOUNT')
+    UPDATE EventSeats set State=@State
+	where Id = @Id;')
 
 SET IDENTITY_INSERT [dbo].[Venues] ON
 
