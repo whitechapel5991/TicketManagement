@@ -5,10 +5,7 @@
 // </copyright>
 // ****************************************************************************
 
-using System;
 using System.Collections.Generic;
-using AutoMapper;
-using TicketManagement.BLL.DTO;
 using TicketManagement.BLL.Interfaces;
 using TicketManagement.BLL.ServiceValidators.Interfaces;
 using TicketManagement.DAL.Models;
@@ -19,56 +16,39 @@ namespace TicketManagement.BLL.Services
     internal class VenueService : IVenueService
     {
         private readonly IRepository<Venue> venueRepository;
-        private readonly IMapper mapper;
         private readonly IVenueValidator venueValidator;
 
-        public VenueService(IRepository<Venue> venueRepository, IMapper mapper, IVenueValidator validator)
+        public VenueService(IRepository<Venue> venueRepository, IVenueValidator validator)
         {
             this.venueRepository = venueRepository;
-            this.mapper = mapper;
             this.venueValidator = validator;
         }
 
-        public int AddVenue(VenueDto entity)
+        public int AddVenue(Venue entity)
         {
-            this.venueValidator.IsVenueNameExist(entity.Name);
-
-            Venue venue = this.mapper.Map<Venue>(entity);
-
-            return Convert.ToInt32(this.venueRepository.Create(venue));
+            this.venueValidator.Validate(entity);
+            return this.venueRepository.Create(entity);
         }
 
         public void DeleteVenue(int id)
         {
             this.venueRepository.Delete(id);
-
-            //this.venueValidator.CUDResultValidate<Venue>(result, id);
         }
 
-        public VenueDto GetVenue(int id)
+        public Venue GetVenue(int id)
         {
-            Venue venue = this.venueRepository.GetById(id);
-
-            this.venueValidator.QueryResultValidate<Venue>(venue, id);
-
-            return this.mapper.Map<Venue, VenueDto>(venue);
+            return this.venueRepository.GetById(id);
         }
 
-        public IEnumerable<VenueDto> GetVenues()
+        public IEnumerable<Venue> GetVenues()
         {
-            var result = this.venueRepository.GetAll();
-            return this.mapper.Map<IEnumerable<Venue>, IEnumerable<VenueDto>>(result);
+            return this.venueRepository.GetAll();
         }
 
-        public void UpdateVenue(VenueDto entity)
+        public void UpdateVenue(Venue entity)
         {
-            this.venueValidator.IsVenueNameExist(entity.Name);
-
-            Venue venue = this.mapper.Map<Venue>(entity);
-
-            this.venueRepository.Update(venue);
-
-            //this.venueValidator.CUDResultValidate<Venue>(result, entity.Id);
+            this.venueValidator.Validate(entity);
+            this.venueRepository.Update(entity);
         }
     }
 }

@@ -5,10 +5,7 @@
 // </copyright>
 // ****************************************************************************
 
-using System;
 using System.Collections.Generic;
-using AutoMapper;
-using TicketManagement.BLL.DTO;
 using TicketManagement.BLL.Interfaces;
 using TicketManagement.BLL.ServiceValidators.Interfaces;
 using TicketManagement.DAL.Models;
@@ -18,75 +15,42 @@ namespace TicketManagement.BLL.Services
 {
     internal class SeatService : ISeatService
     {
-        private readonly IRepository<Area> areaRepository;
-
         private readonly IRepository<Seat> seatRepository;
-
-        private readonly IMapper mapper;
         private readonly ISeatValidator seatValidator;
 
         public SeatService(
             IRepository<Seat> seatRepository,
-            IRepository<Area> areaRepository,
-            IMapper mapper,
             ISeatValidator seatValidator)
         {
             this.seatRepository = seatRepository;
-            this.areaRepository = areaRepository;
-            this.mapper = mapper;
             this.seatValidator = seatValidator;
         }
 
-        public int AddSeat(SeatDto seatDto)
+        public int AddSeat(Seat seatDto)
         {
-            Area area = this.areaRepository.GetById(seatDto.AreaId);
-
-            this.seatValidator.QueryResultValidate<Area>(area, seatDto.AreaId);
-
-            this.seatValidator.IsSeatExist(seatDto.AreaId, seatDto.Row, seatDto.Number);
-
-            Seat seat = this.mapper.Map<Seat>(seatDto);
-
-            return Convert.ToInt32(this.seatRepository.Create(seat));
+            this.seatValidator.Validate(seatDto);
+            return this.seatRepository.Create(seatDto);
         }
 
-        public void UpdateSeat(SeatDto seatDto)
+        public void UpdateSeat(Seat seatDto)
         {
-            Seat seat = this.seatRepository.GetById(seatDto.Id);
-
-            this.seatValidator.QueryResultValidate<Seat>(seat, seatDto.Id);
-
-            Area area = this.areaRepository.GetById(seatDto.AreaId);
-
-            this.seatValidator.QueryResultValidate<Area>(area, seatDto.AreaId);
-
-            this.seatValidator.IsSeatExist(seatDto.AreaId, seatDto.Row, seatDto.Number);
-
-            seat = this.mapper.Map<Seat>(seatDto);
-
-            this.seatRepository.Update(seat);
+            this.seatValidator.Validate(seatDto);
+            this.seatRepository.Update(seatDto);
         }
 
         public void DeleteSeat(int id)
         {
             this.seatRepository.Delete(id);
-
-            //this.seatValidator.CUDResultValidate<Seat>(result, id);
         }
 
-        public SeatDto GetSeat(int id)
+        public Seat GetSeat(int id)
         {
-            Seat seat = this.seatRepository.GetById(id);
-
-            this.seatValidator.QueryResultValidate<Seat>(seat, id);
-
-            return this.mapper.Map<Seat, SeatDto>(seat);
+            return this.seatRepository.GetById(id);
         }
 
-        public IEnumerable<SeatDto> GetSeats()
+        public IEnumerable<Seat> GetSeats()
         {
-            var result = this.seatRepository.GetAll();
-            return this.mapper.Map<IEnumerable<Seat>, IEnumerable<SeatDto>>(result);
+            return this.seatRepository.GetAll();
         }
     }
 }

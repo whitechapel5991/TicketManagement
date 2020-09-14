@@ -1,12 +1,11 @@
 ﻿// ****************************************************************************
-// <copyright file="BllAutofacModule.cs" company="EPAM Systems">
+// <copyright file="ServiceAutofacModule.cs" company="EPAM Systems">
 // Copyright (c) EPAM Systems. All rights reserved.
 // Author Dzianis Shcharbakou.
 // </copyright>
 // ****************************************************************************
 
 using Autofac;
-using AutoMapper.Contrib.Autofac.DependencyInjection;
 using TicketManagement.BLL.Interfaces;
 using TicketManagement.BLL.Services;
 using TicketManagement.BLL.ServiceValidators;
@@ -59,17 +58,9 @@ namespace TicketManagement.BLL.Util
             builder.RegisterType<EventValidator>()
                .As<IEventValidator>()
                .InstancePerLifetimeScope();
-            builder.RegisterType<EventSeatValidator>()
-               .As<IEventSeatValidator>()
-               .InstancePerLifetimeScope();
-            builder.RegisterType<EventAreaValidator>()
-               .As<IEventAreaValidator>()
-               .InstancePerLifetimeScope();
             builder.RegisterType<AreaValidator>()
                .As<IAreaValidator>()
                .InstancePerLifetimeScope();
-
-            builder.AddAutoMapper(typeof(ServiceAutofacModule).Assembly);
         }
     }
 }

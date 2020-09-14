@@ -6,19 +6,19 @@
 // ****************************************************************************
 
 using System.Collections.Generic;
-using TicketManagement.BLL.DTO;
+using TicketManagement.DAL.Models;
 
 namespace TicketManagement.BLL.Interfaces
 {
     internal interface IEventService
     {
-        IEnumerable<EventDto> GetEvents();
+        IEnumerable<Event> GetEvents();
 
-        EventDto GetEvent(int id);
+        Event GetEvent(int id);
 
-        int AddEvent(EventDto entity);
+        int AddEvent(Event entity);
 
-        void UpdateEvent(EventDto entity);
+        void UpdateEvent(Event entity);
 
         void DeleteEvent(int id);
     }

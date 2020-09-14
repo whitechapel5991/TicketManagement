@@ -6,19 +6,19 @@
 // ****************************************************************************
 
 using System.Collections.Generic;
-using TicketManagement.BLL.DTO;
+using TicketManagement.DAL.Models;
 
 namespace TicketManagement.BLL.Interfaces
 {
     internal interface IAreaService
     {
-        IEnumerable<AreaDto> GetAreas();
+        IEnumerable<Area> GetAreas();
 
-        AreaDto GetArea(int id);
+        Area GetArea(int id);
 
-        int AddArea(AreaDto entity);
+        int AddArea(Area entity);
 
-        void UpdateArea(AreaDto entity);
+        void UpdateArea(Area entity);
 
         void DeleteArea(int id);
     }

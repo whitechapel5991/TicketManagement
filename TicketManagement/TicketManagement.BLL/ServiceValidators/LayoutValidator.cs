@@ -5,46 +5,44 @@
 // </copyright>
 // ****************************************************************************
 
-using System.Collections.Generic;
 using System.Linq;
-using TicketManagement.BLL.ServiceValidators.Base;
+using TicketManagement.BLL.Exceptions.Base;
+using TicketManagement.BLL.Exceptions.LayoutExceptions;
 using TicketManagement.BLL.ServiceValidators.Interfaces;
-using TicketManagement.BLL.Util;
 using TicketManagement.DAL.Models;
 using TicketManagement.DAL.Repositories.Base;
 
 namespace TicketManagement.BLL.ServiceValidators
 {
-    internal class LayoutValidator : ValidatorBase, ILayoutValidator
+    internal class LayoutValidator : ILayoutValidator
     {
-        private const string ExistLayoutWithThisNameException = "ExistLayoutWithThisNameException";
-
-        private readonly Dictionary<string, string> exceptionMessagies;
-
         private readonly IRepository<Layout> layoutRepository;
+        private readonly IRepository<Venue> venueRepository;
 
-        public LayoutValidator(IRepository<Layout> layoutRepository)
+        public LayoutValidator(IRepository<Layout> layoutRepository, IRepository<Venue> venueRepository)
         {
-            this.exceptionMessagies = new Dictionary<string, string>();
-            this.exceptionMessagies.Add(ExistLayoutWithThisNameException, "there is layout with this name in the venue");
-
             this.layoutRepository = layoutRepository;
+            this.venueRepository = venueRepository;
         }
 
-        public void IsUniqLayoutNameInTheVenue(string nameLayout, int venueId)
+        public void Validate(Layout entity)
         {
-            if (this.IsLayoutName(nameLayout, venueId))
+            var venue = this.venueRepository.GetById(entity.VenueId);
+            if (venue == default(Venue))
             {
-                throw new TicketManagementException(this.exceptionMessagies.First(x => x.Key == ExistLayoutWithThisNameException).Value, ExistLayoutWithThisNameException);
+                throw new EntityDoesNotExistException($"Venue with id={entity.VenueId} doesn't exist.");
+            }
+
+            if (this.LayoutNameExist(entity.Name, entity.VenueId))
+            {
+                throw new LayoutWithSameNameInTheVenueExistException($"Layout with name={entity.Name} exist in the venue with id={entity.VenueId}");
             }
         }
 
-        private bool IsLayoutName(string nameLayout, int venueId)
+        private bool LayoutNameExist(string nameLayout, int venueId)
         {
-            var query = this.layoutRepository.GetAll()
-                .Where(x => x.Name == nameLayout && x.VenueId == venueId);
-
-            return query.Any();
+            return this.layoutRepository.GetAll()
+                .Where(x => x.Name == nameLayout && x.VenueId == venueId).Any();
         }
     }
 }

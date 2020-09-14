@@ -6,11 +6,11 @@
 // ****************************************************************************
 
 using TicketManagement.BLL.ServiceValidators.Base;
+using TicketManagement.DAL.Models;
 
 namespace TicketManagement.BLL.ServiceValidators.Interfaces
 {
-    public interface ISeatValidator : IServiceValidator
+    public interface ISeatValidator : IServiceValidator<Seat>
     {
-        void IsSeatExist(int areaId, int row, int number);
     }
 }

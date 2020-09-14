@@ -6,19 +6,19 @@
 // ****************************************************************************
 
 using System.Collections.Generic;
-using TicketManagement.BLL.DTO;
+using TicketManagement.DAL.Models;
 
 namespace TicketManagement.BLL.Interfaces
 {
     internal interface ILayoutService
     {
-        IEnumerable<LayoutDto> GetLayouts();
+        IEnumerable<Layout> GetLayouts();
 
-        LayoutDto GetLayout(int id);
+        Layout GetLayout(int id);
 
-        int AddLayout(LayoutDto entity);
+        int AddLayout(Layout entity);
 
-        void UpdateLayout(LayoutDto entity);
+        void UpdateLayout(Layout entity);
 
         void DeleteLayout(int id);
     }

@@ -6,107 +6,117 @@
 // ****************************************************************************
 
 using System;
-using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
-using TicketManagement.BLL.DTO;
-using TicketManagement.BLL.ServiceValidators.Base;
+using TicketManagement.BLL.Exceptions.Base;
+using TicketManagement.BLL.Exceptions.EventExceptions;
 using TicketManagement.BLL.ServiceValidators.Interfaces;
-using TicketManagement.BLL.Util;
 using TicketManagement.DAL.Constants;
 using TicketManagement.DAL.Models;
 using TicketManagement.DAL.Repositories.Base;
 
 namespace TicketManagement.BLL.ServiceValidators
 {
-    internal class EventValidator : ValidatorBase, IEventValidator
+    internal class EventValidator : IEventValidator
     {
-        private const string EventIsNotDeletingException = "EventIsNotDeletingException";
-        private const string LayoutNotHasAreasException = "LayoutNotHasAreasException";
-        private const string AreasNotHasSeatsException = "AreasNotHasSeatsException";
-        private const string CreateInPastException = "CreateInPastException";
-        private const string BeginDateLongerEndDateException = "BeginDateLongerEndDateException";
-        private const string CreateEventInSameTimeException = "CreateEventInSameTimeException";
-
-        private readonly Dictionary<string, string> exceptionMessagies;
-
         private readonly IRepository<Event> eventRepository;
+        private readonly IRepository<Layout> layoutRepository;
+        private readonly IRepository<Area> areaRepository;
+        private readonly IRepository<Seat> seatRepository;
         private readonly IRepository<EventArea> eventAreaRepository;
         private readonly IRepository<EventSeat> eventSeatRepository;
 
-        public EventValidator(IRepository<Event> eventRepository, IRepository<EventArea> eventAreaRepository, IRepository<EventSeat> eventSeatRepository)
+        public EventValidator(IRepository<Event> eventRepository, IRepository<EventArea> eventAreaRepository, IRepository<EventSeat> eventSeatRepository, IRepository<Layout> layoutRepository, IRepository<Area> areaRepository, IRepository<Seat> seatRepository)
         {
-            this.exceptionMessagies = new Dictionary<string, string>
-            {
-                { EventIsNotDeletingException, "event is not deleting, because one or more ticket have been sold" },
-                { LayoutNotHasAreasException, "event doesn't create because layout does not has areas" },
-                { AreasNotHasSeatsException, "event doesn't create because areas does not has seats" },
-                { CreateInPastException, "can not create an event in the past" },
-                { BeginDateLongerEndDateException, "begin date cannot be longer than end date" },
-                { CreateEventInSameTimeException, "event can not be created in same time with other event" },
-            };
-
             this.eventRepository = eventRepository;
             this.eventAreaRepository = eventAreaRepository;
             this.eventSeatRepository = eventSeatRepository;
+            this.layoutRepository = layoutRepository;
+            this.areaRepository = areaRepository;
+            this.seatRepository = seatRepository;
         }
 
-        public void SoldTicketExist(int eventId)
+        public void Validate(Event entity)
         {
-            if (this.IsSoldSeatExist(eventId))
+            var layout = this.layoutRepository.GetById(entity.LayoutId);
+
+            if (layout == default(Layout))
             {
-                throw new TicketManagementException(this.exceptionMessagies.First(x => x.Key == EventIsNotDeletingException).Value, EventIsNotDeletingException);
+                throw new EntityDoesNotExistException("Layout doesn't exist.");
+            }
+
+            if (this.IsDateInPast(entity.BeginDate))
+            {
+                throw new EventInPastException("Event can not be in the past.");
+            }
+
+            if (this.IsBeginDateLongerThenEndDate(entity.BeginDate, entity.EndDate))
+            {
+                throw new BeginDateLongerThenEndDateException("Begin date cannot be longer than end date.");
+            }
+
+            if (this.EventInLayoutInTheSameTimeExist(
+                entity.LayoutId,
+                entity.BeginDate.ToString("dd.MM.yyyy HH:mm"),
+                entity.EndDate.ToString("dd.MM.yyyy HH:mm")))
+            {
+                throw new EventExistInTheLayoutInThisTimeException($"Event in the layout={entity.LayoutId} exist in the same time");
+            }
+
+            if (!this.AreaInLayoutExist(entity.LayoutId))
+            {
+                throw new LayoutHasNotAreaException($"Layout with id={entity.LayoutId} has not area.");
+            }
+
+            if (!this.SeatInLayoutExist(entity.LayoutId))
+            {
+                throw new LayoutHasNotSeatException($"Layout with id={entity.LayoutId} has not seat.");
             }
         }
 
-        public void ExistAreaForEvent(IEnumerable<AreaDto> areas)
+        public void UpdateValidate(Event entity)
         {
-            if (areas.Count() < 1)
+            var @event = this.eventRepository.GetById(entity.Id);
+
+            if (entity.LayoutId == @event.LayoutId)
             {
-                throw new TicketManagementException(this.exceptionMessagies.First(x => x.Key == LayoutNotHasAreasException).Value, LayoutNotHasAreasException);
+                return;
+            }
+
+            if (this.SoldSeatExist(entity.Id))
+            {
+                throw new LayoutHasSoldSeatAndCouldNotBeChangeException("Layout cannot be changed, because one or more ticket have been sold on this event.");
             }
         }
 
-        public void ExistSeatForEvent(IEnumerable<SeatDto> seats)
+        public void DeleteValidate(int eventId)
         {
-            if (seats.Count() < 1)
+            var @event = this.eventRepository.GetById(eventId);
+
+            if (this.SoldSeatExist(@event.Id))
             {
-                throw new TicketManagementException(this.exceptionMessagies.First(x => x.Key == AreasNotHasSeatsException).Value, AreasNotHasSeatsException);
+                throw new LayoutHasSoldSeatAndCouldNotBeChangeException("Event cannot be deleted, because one or more ticket have been sold on this event.");
             }
         }
 
-        public void IsAnyTicketSold(int eventId)
+        private bool SoldSeatExist(int eventId)
         {
-            var isAnyTicketSold =
-                                (from areasQ in this.eventAreaRepository.GetAll().Where(x => x.EventId == eventId)
-                                 join eventQ in this.eventSeatRepository.GetAll() on areasQ.Id equals eventQ.EventAreaId
-                                 select new { eventQ.State }).Any(x => x.State != 0);
-
-            if (isAnyTicketSold)
-            {
-                throw new TicketManagementException("event is not deleting, because one or more ticket have been sold", "EventIsNotDeletingException");
-            }
+            return (from eventArea in this.eventAreaRepository.GetAll().Where(x => x.EventId == eventId)
+                    join eventSeat in this.eventSeatRepository.GetAll() on eventArea.Id equals eventSeat.EventAreaId
+                    where eventSeat.State != EventSeatState.Free
+                    select new { eventSeat.State }).Any();
         }
 
-        public void IsValidEventDates(EventDto eventDto)
+        private bool AreaInLayoutExist(int layoutId)
         {
-            if (this.IsDateInPast(eventDto.BeginDate))
-            {
-                throw new TicketManagementException(this.exceptionMessagies.First(x => x.Key == CreateInPastException).Value, CreateInPastException);
-            }
+            return this.areaRepository.GetAll().Where(x => x.LayoutId == layoutId).Any();
+        }
 
-            if (this.IsLongerBeginDate(eventDto.BeginDate, eventDto.EndDate))
-            {
-                throw new TicketManagementException(this.exceptionMessagies.First(x => x.Key == BeginDateLongerEndDateException).Value, BeginDateLongerEndDateException);
-            }
-
-            if (this.IsEventInLayoutSameTime(
-                eventDto.LayoutId,
-                eventDto.BeginDate.ToString("dd.MM.yyyy HH:mm"),
-                eventDto.EndDate.ToString("dd.MM.yyyy HH:mm")))
-            {
-                throw new TicketManagementException(this.exceptionMessagies.First(x => x.Key == CreateEventInSameTimeException).Value, CreateEventInSameTimeException);
-            }
+        private bool SeatInLayoutExist(int layoutId)
+        {
+            return (from areasQ in this.areaRepository.GetAll().Where(x => x.LayoutId == layoutId)
+                join seatsQ in this.seatRepository.GetAll() on areasQ.Id equals seatsQ.AreaId
+                select new Seat { Id = seatsQ.Id, AreaId = seatsQ.AreaId, Number = seatsQ.Number, Row = seatsQ.Row }).Any();
         }
 
         private bool IsDateInPast(DateTime dateTime)
@@ -117,14 +127,14 @@ namespace TicketManagement.BLL.ServiceValidators
             return now > begin;
         }
 
-        private bool IsLongerBeginDate(DateTime beginDate, DateTime endDate)
+        private bool IsBeginDateLongerThenEndDate(DateTime beginDate, DateTime endDate)
         {
             long begin = (long)TimeSpan.FromTicks(beginDate.Ticks).TotalMinutes;
             long end = (long)TimeSpan.FromTicks(endDate.Ticks).TotalMinutes;
             return begin >= end;
         }
 
-        private bool IsEventInLayoutSameTime(int layoutId, string beginDate, string endDate)
+        private bool EventInLayoutInTheSameTimeExist(int layoutId, string beginDate, string endDate)
         {
             DateTime begin = Convert.ToDateTime(beginDate, new CultureInfo("ru"));
             DateTime end = Convert.ToDateTime(endDate, new CultureInfo("ru"));
@@ -138,17 +148,6 @@ namespace TicketManagement.BLL.ServiceValidators
                 select new { a.Id };
             var events = seatsInAreasQvery.Any();
             return events;
-        }
-
-        private bool IsSoldSeatExist(int eventId)
-        {
-            var seatsInAreasQvery =
-                    from eventArea in this.eventAreaRepository.GetAll().Where(x => x.EventId == eventId)
-                    join eventSeat in this.eventSeatRepository.GetAll() on eventArea.Id equals eventSeat.EventAreaId
-                    where eventSeat.State != (int)EventSeatState.Free
-                    select new { eventSeat.State };
-
-            return seatsInAreasQvery.Any();
         }
     }
 }

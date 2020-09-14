@@ -64,14 +64,17 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="DTO\AreaDto.cs" />
-    <Compile Include="DTO\EventAreaDto.cs" />
-    <Compile Include="DTO\EventDto.cs" />
-    <Compile Include="DTO\EventSeatDto.cs" />
-    <Compile Include="DTO\LayoutDto.cs" />
-    <Compile Include="DTO\SeatDto.cs" />
-    <Compile Include="DTO\VenueDto.cs" />
-    <Compile Include="Extensions\AutomapperExtensions.cs" />
+    <Compile Include="Exceptions\AreaExceptions\AreaWithSameDescriptionInTheLayoutExistException.cs" />
+    <Compile Include="Exceptions\Base\EntityDoesNotExistException.cs" />
+    <Compile Include="Exceptions\EventExceptions\BeginDateLongerThenEndDateException.cs" />
+    <Compile Include="Exceptions\EventExceptions\EventExistInTheLayoutInThisTimeException.cs" />
+    <Compile Include="Exceptions\EventExceptions\EventInPastException.cs" />
+    <Compile Include="Exceptions\EventExceptions\LayoutHasNotAreaException.cs" />
+    <Compile Include="Exceptions\EventExceptions\LayoutHasNotSeatException.cs" />
+    <Compile Include="Exceptions\EventExceptions\LayoutHasSoldSeatAndCouldNotBeChangeException.cs" />
+    <Compile Include="Exceptions\LayoutExceptions\LayoutWithSameNameInTheVenueExistException.cs" />
+    <Compile Include="Exceptions\SeatExceptions\SeatWithSameRowAndNumberInTheAreaExistException.cs" />
+    <Compile Include="Exceptions\VenueExceptions\VenueWithThisNameExistException.cs" />
     <Compile Include="Interfaces\IAreaService.cs" />
     <Compile Include="Interfaces\IEventAreaService.cs" />
     <Compile Include="Interfaces\IEventSeatService.cs" />
@@ -89,13 +92,8 @@
     <Compile Include="Services\VenueService.cs" />
     <Compile Include="ServiceValidators\AreaValidator.cs" />
     <Compile Include="ServiceValidators\Base\IServiceValidator.cs" />
-    <Compile Include="ServiceValidators\Base\ValidatorBase.cs" />
-    <Compile Include="ServiceValidators\EventAreaValidator.cs" />
-    <Compile Include="ServiceValidators\EventSeatValidator.cs" />
     <Compile Include="ServiceValidators\EventValidator.cs" />
     <Compile Include="ServiceValidators\Interfaces\IAreaValidator.cs" />
-    <Compile Include="ServiceValidators\Interfaces\IEventAreaValidator.cs" />
-    <Compile Include="ServiceValidators\Interfaces\IEventSeatValidator.cs" />
     <Compile Include="ServiceValidators\Interfaces\IEventValidator.cs" />
     <Compile Include="ServiceValidators\Interfaces\ILayoutValidator.cs" />
     <Compile Include="ServiceValidators\Interfaces\ISeatValidator.cs" />
@@ -104,8 +102,6 @@
     <Compile Include="ServiceValidators\SeatValidator.cs" />
     <Compile Include="ServiceValidators\VenueValidator.cs" />
     <Compile Include="Util\ServiceAutofacModule.cs" />
-    <Compile Include="Util\BllMapperProfile.cs" />
-    <Compile Include="Util\TicketManagementException.cs" />
   </ItemGroup>
   <ItemGroup>
     <AdditionalFiles Include="..\stylecop.json">

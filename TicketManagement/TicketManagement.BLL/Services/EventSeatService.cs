@@ -6,11 +6,7 @@
 // ****************************************************************************
 
 using System.Collections.Generic;
-using AutoMapper;
-using TicketManagement.BLL.DTO;
 using TicketManagement.BLL.Interfaces;
-using TicketManagement.BLL.ServiceValidators.Interfaces;
-using TicketManagement.DAL.Constants;
 using TicketManagement.DAL.Models;
 using TicketManagement.DAL.Repositories.Base;
 
@@ -20,42 +16,24 @@ namespace TicketManagement.BLL.Services
     {
         private readonly IRepository<EventSeat> eventSeatRepository;
 
-        private readonly IMapper mapper;
-
-        private readonly IEventSeatValidator eventSeatValidator;
-
-        public EventSeatService(IRepository<EventSeat> eventSeat, IMapper mapper, IEventSeatValidator eventSeatValidator)
+        public EventSeatService(IRepository<EventSeat> eventSeatRepository)
         {
-            this.eventSeatRepository = eventSeat;
-            this.mapper = mapper;
-            this.eventSeatValidator = eventSeatValidator;
+            this.eventSeatRepository = eventSeatRepository;
         }
 
-        public void UpdateEventSeat(EventSeatDto eventSeatDto)
+        public void UpdateEventSeat(EventSeat eventSeatDto)
         {
-            EventSeat eventSeat = this.eventSeatRepository.GetById(eventSeatDto.Id);
-
-            this.eventSeatValidator.QueryResultValidate<EventSeat>(eventSeat, eventSeatDto.Id);
-
-            eventSeat.State = (EventSeatState)eventSeatDto.State;
-
-            this.eventSeatRepository.Update(eventSeat);
+            this.eventSeatRepository.Update(eventSeatDto);
         }
 
-        public EventSeatDto GetEventSeat(int id)
+        public EventSeat GetEventSeat(int id)
         {
-            EventSeat eventSeat = this.eventSeatRepository.GetById(id);
-
-            this.eventSeatValidator.QueryResultValidate<EventSeat>(eventSeat, id);
-
-            return this.mapper.Map<EventSeat, EventSeatDto>(eventSeat);
+            return this.eventSeatRepository.GetById(id);
         }
 
-        public IEnumerable<EventSeatDto> GetEventSeats()
+        public IEnumerable<EventSeat> GetEventSeats()
         {
-            var result = this.eventSeatRepository.GetAll();
-
-            return this.mapper.Map<IEnumerable<EventSeat>, List<EventSeatDto>>(result);
+            return this.eventSeatRepository.GetAll();
         }
     }
 }

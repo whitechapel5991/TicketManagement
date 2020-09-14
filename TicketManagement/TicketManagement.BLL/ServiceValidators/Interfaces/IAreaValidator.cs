@@ -6,11 +6,11 @@
 // ****************************************************************************
 
 using TicketManagement.BLL.ServiceValidators.Base;
+using TicketManagement.DAL.Models;
 
 namespace TicketManagement.BLL.ServiceValidators.Interfaces
 {
-    public interface IAreaValidator : IServiceValidator
+    public interface IAreaValidator : IServiceValidator<Area>
     {
-        void IsUniqAreaNameInTheLayout(string nameArea, int layoutId);
     }
 }

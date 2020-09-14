@@ -6,19 +6,19 @@
 // ****************************************************************************
 
 using System.Collections.Generic;
-using TicketManagement.BLL.DTO;
+using TicketManagement.DAL.Models;
 
 namespace TicketManagement.BLL.Interfaces
 {
     internal interface ISeatService
     {
-        IEnumerable<SeatDto> GetSeats();
+        IEnumerable<Seat> GetSeats();
 
-        SeatDto GetSeat(int id);
+        Seat GetSeat(int id);
 
-        int AddSeat(SeatDto entity);
+        int AddSeat(Seat entity);
 
-        void UpdateSeat(SeatDto entity);
+        void UpdateSeat(Seat entity);
 
         void DeleteSeat(int id);
     }

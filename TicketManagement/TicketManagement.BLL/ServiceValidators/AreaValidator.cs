@@ -5,44 +5,44 @@
 // </copyright>
 // ****************************************************************************
 
-using System.Collections.Generic;
 using System.Linq;
-using TicketManagement.BLL.ServiceValidators.Base;
+using TicketManagement.BLL.Exceptions.AreaExceptions;
+using TicketManagement.BLL.Exceptions.Base;
 using TicketManagement.BLL.ServiceValidators.Interfaces;
-using TicketManagement.BLL.Util;
 using TicketManagement.DAL.Models;
 using TicketManagement.DAL.Repositories.Base;
 
 namespace TicketManagement.BLL.ServiceValidators
 {
-    internal class AreaValidator : ValidatorBase, IAreaValidator
+    internal class AreaValidator : IAreaValidator
     {
-        private const string ExistAreaWithDescription = "ExistAreaWithDescription";
-
-        private readonly Dictionary<string, string> exceptionMessagies;
-
         private readonly IRepository<Area> areaRepository;
+        private readonly IRepository<Layout> layoutRepository;
 
-        public AreaValidator(IRepository<Area> areaRepository)
+        public AreaValidator(IRepository<Area> areaRepository, IRepository<Layout> layoutRepository)
         {
-            this.exceptionMessagies = new Dictionary<string, string>();
-            this.exceptionMessagies.Add(ExistAreaWithDescription, "there is area with this description in the layout");
-
             this.areaRepository = areaRepository;
+            this.layoutRepository = layoutRepository;
         }
 
-        public void IsUniqAreaNameInTheLayout(string nameArea, int layoutId)
+        public void Validate(Area entity)
         {
-            if (this.IsAreaDescription(nameArea, layoutId))
+            var layout = this.layoutRepository.GetById(entity.LayoutId);
+            if (layout == default(Layout))
             {
-                throw new TicketManagementException(this.exceptionMessagies.First(x => x.Key == ExistAreaWithDescription).Value, ExistAreaWithDescription);
+                throw new EntityDoesNotExistException($"Layout with id={entity.LayoutId} doesn't exist.");
+            }
+
+            if (this.AreaWithDescriptionExist(entity.Description, entity.LayoutId))
+            {
+                throw new AreaWithSameDescriptionInTheLayoutExistException($"Area with description={entity.Description} in the layout already exist.");
             }
         }
 
-        private bool IsAreaDescription(string nameArea, int layoutId)
+        private bool AreaWithDescriptionExist(string areaDescription, int layoutId)
         {
-            var areasQuery = this.areaRepository.GetAll().Where(x => x.LayoutId == layoutId && x.Description == nameArea);
-            return areasQuery.Any();
+            return this.areaRepository.GetAll()
+                .Where(x => x.LayoutId == layoutId && x.Description == areaDescription).Any();
         }
     }
 }

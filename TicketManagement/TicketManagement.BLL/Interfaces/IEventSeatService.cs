@@ -6,16 +6,16 @@
 // ****************************************************************************
 
 using System.Collections.Generic;
-using TicketManagement.BLL.DTO;
+using TicketManagement.DAL.Models;
 
 namespace TicketManagement.BLL.Interfaces
 {
     internal interface IEventSeatService
     {
-        IEnumerable<EventSeatDto> GetEventSeats();
+        IEnumerable<EventSeat> GetEventSeats();
 
-        EventSeatDto GetEventSeat(int id);
+        EventSeat GetEventSeat(int id);
 
-        void UpdateEventSeat(EventSeatDto entity);
+        void UpdateEventSeat(EventSeat entity);
     }
 }

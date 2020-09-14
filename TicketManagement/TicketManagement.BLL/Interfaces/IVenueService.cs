@@ -6,19 +6,19 @@
 // ****************************************************************************
 
 using System.Collections.Generic;
-using TicketManagement.BLL.DTO;
+using TicketManagement.DAL.Models;
 
 namespace TicketManagement.BLL.Interfaces
 {
     internal interface IVenueService
     {
-        IEnumerable<VenueDto> GetVenues();
+        IEnumerable<Venue> GetVenues();
 
-        VenueDto GetVenue(int id);
+        Venue GetVenue(int id);
 
-        int AddVenue(VenueDto entity);
+        int AddVenue(Venue entity);
 
-        void UpdateVenue(VenueDto entity);
+        void UpdateVenue(Venue entity);
 
         void DeleteVenue(int id);
     }

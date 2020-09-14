@@ -6,11 +6,11 @@
 // ****************************************************************************
 
 using TicketManagement.BLL.ServiceValidators.Base;
+using TicketManagement.DAL.Models;
 
 namespace TicketManagement.BLL.ServiceValidators.Interfaces
 {
-    public interface IVenueValidator : IServiceValidator
+    public interface IVenueValidator : IServiceValidator<Venue>
     {
-        void IsVenueNameExist(string name);
     }
 }

@@ -5,22 +5,15 @@
 // </copyright>
 // ****************************************************************************
 
-using System.Collections.Generic;
-using TicketManagement.BLL.DTO;
 using TicketManagement.BLL.ServiceValidators.Base;
+using TicketManagement.DAL.Models;
 
 namespace TicketManagement.BLL.ServiceValidators.Interfaces
 {
-    public interface IEventValidator : IServiceValidator
+    public interface IEventValidator : IServiceValidator<Event>
     {
-        void SoldTicketExist(int eventId);
+        void UpdateValidate(Event entity);
 
-        void ExistAreaForEvent(IEnumerable<AreaDto> area);
-
-        void ExistSeatForEvent(IEnumerable<SeatDto> area);
-
-        void IsValidEventDates(EventDto eventDto);
-
-        void IsAnyTicketSold(int eventId);
+        void DeleteValidate(int eventId);
     }
 }
