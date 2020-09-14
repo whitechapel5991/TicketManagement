@@ -5,5 +5,5 @@
     @State int,
     @EventAreaId int
 AS
-    UPDATE EventSeats set Row=@Row, Number=@Number, State=@State, EventAreaId=@EventAreaId
+    UPDATE EventSeats set State=@State
 	where Id = @Id;
