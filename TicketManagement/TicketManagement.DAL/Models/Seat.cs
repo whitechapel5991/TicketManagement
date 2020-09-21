@@ -6,6 +6,7 @@
 // ****************************************************************************
 
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using TicketManagement.DAL.Models.Base;
 
 namespace TicketManagement.DAL.Models

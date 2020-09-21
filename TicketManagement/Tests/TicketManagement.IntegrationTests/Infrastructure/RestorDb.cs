@@ -9,6 +9,7 @@ using System;
 using System.Configuration;
 using System.Data;
 using System.Data.Common;
+using System.Data.SqlClient;
 using System.IO;
 
 namespace TicketManagement.IntegrationTests.Infrastructure
@@ -17,13 +18,12 @@ namespace TicketManagement.IntegrationTests.Infrastructure
     {
         public void Execute(string scriptPath)
         {
-            DbProviderFactory providerFactory = DbProviderFactories.GetFactory(ConfigurationManager.ConnectionStrings["TicketManagementTest"].ProviderName);
             string connectionString = ConfigurationManager.ConnectionStrings["TicketManagementTest"].ConnectionString;
 
             string script = this.Read(scriptPath);
             string[] scriptSplit = this.Split(script);
 
-            using (IDbConnection connection = providerFactory.CreateConnection())
+            using (IDbConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["TicketManagementTest"].ConnectionString))
             {
                 connection.ConnectionString = connectionString;
                 connection.Open();

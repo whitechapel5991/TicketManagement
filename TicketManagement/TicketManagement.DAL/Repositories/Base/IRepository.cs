@@ -6,6 +6,7 @@
 // ****************************************************************************
 
 using System.Collections.Generic;
+using System.Linq;
 using TicketManagement.DAL.Models.Base;
 
 namespace TicketManagement.DAL.Repositories.Base
@@ -21,6 +22,6 @@ namespace TicketManagement.DAL.Repositories.Base
 
         TDalEntity GetById(int id);
 
-        IEnumerable<TDalEntity> GetAll();
+        IQueryable<TDalEntity> GetAll();
     }
 }

@@ -114,8 +114,8 @@ namespace TicketManagement.BLL.ServiceValidators
 
         private bool SeatInLayoutExist(int layoutId)
         {
-            return (from areasQ in this.areaRepository.GetAll().Where(x => x.LayoutId == layoutId)
-                join seatsQ in this.seatRepository.GetAll() on areasQ.Id equals seatsQ.AreaId
+            return (from areasQ in this.areaRepository.GetAll().Where(x => x.LayoutId == layoutId).AsEnumerable()
+                    join seatsQ in this.seatRepository.GetAll().AsEnumerable() on areasQ.Id equals seatsQ.AreaId
                 select new Seat { Id = seatsQ.Id, AreaId = seatsQ.AreaId, Number = seatsQ.Number, Row = seatsQ.Row }).Any();
         }
 

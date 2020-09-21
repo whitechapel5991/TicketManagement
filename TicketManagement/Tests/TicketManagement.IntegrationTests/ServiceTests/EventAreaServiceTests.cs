@@ -41,11 +41,11 @@ namespace TicketManagement.IntegrationTests.ServiceTests
 
             EventArea eventAreaDtoTemp = this.eventAreaService.GetEventArea(1);
 
-            Assert.AreEqual("First area of first layout", eventAreaDtoTemp.Description);
-            Assert.AreEqual(1, eventAreaDtoTemp.CoordX);
-            Assert.AreEqual(1, eventAreaDtoTemp.CoordY);
+            Assert.AreEqual("blabla5", eventAreaDtoTemp.Description);
+            Assert.AreEqual(1000, eventAreaDtoTemp.CoordX);
+            Assert.AreEqual(1000, eventAreaDtoTemp.CoordY);
             Assert.AreEqual(1000, eventAreaDtoTemp.Price);
-            Assert.AreEqual(1, eventAreaDtoTemp.EventId);
+            Assert.AreEqual(2, eventAreaDtoTemp.EventId);
         }
 
         [Test]

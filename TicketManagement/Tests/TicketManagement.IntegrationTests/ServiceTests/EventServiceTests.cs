@@ -71,11 +71,11 @@ namespace TicketManagement.IntegrationTests.ServiceTests
 
             var eventDtoTemp = this.eventService.GetEvent(2);
 
-            Assert.AreEqual(new DateTime(2025, 10, 20, 8, 30, 59), eventDtoTemp.BeginDate);
-            Assert.AreEqual(new DateTime(2025, 10, 20, 10, 30, 59), eventDtoTemp.EndDate);
-            Assert.AreEqual("2", eventDtoTemp.Description);
-            Assert.AreEqual(3, eventDtoTemp.LayoutId);
-            Assert.AreEqual("2", eventDtoTemp.Name);
+            Assert.AreEqual(new DateTime(2025, 12, 12, 13, 00, 00), eventDtoTemp.BeginDate);
+            Assert.AreEqual(new DateTime(2025, 12, 12, 14, 00, 00), eventDtoTemp.EndDate);
+            Assert.AreEqual("Second", eventDtoTemp.Description);
+            Assert.AreEqual(2, eventDtoTemp.LayoutId);
+            Assert.AreEqual("Second event", eventDtoTemp.Name);
         }
 
         [Test]

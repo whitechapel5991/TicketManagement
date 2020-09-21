@@ -48,9 +48,9 @@ namespace TicketManagement.UnitTests.FakeRepositories
             }
         }
 
-        public IEnumerable<TEntity> GetAll()
+        public IQueryable<TEntity> GetAll()
         {
-            return this.repositoryData;
+            return this.repositoryData.AsQueryable();
         }
 
         public TEntity GetById(int id)

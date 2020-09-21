@@ -6,6 +6,7 @@
 // ****************************************************************************
 
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using TicketManagement.DAL.Constants;
 using TicketManagement.DAL.Models.Base;
 
@@ -21,6 +22,7 @@ namespace TicketManagement.DAL.Models
         [Range(0, int.MaxValue)]
         public int Number { get; set; }
 
+        [Column("State")]
         public EventSeatState State { get; set; }
 
         [Required]

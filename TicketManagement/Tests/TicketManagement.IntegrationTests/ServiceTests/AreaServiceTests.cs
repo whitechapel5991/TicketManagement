@@ -52,8 +52,8 @@ namespace TicketManagement.IntegrationTests.ServiceTests
             {
                 Id = 1,
                 Description = "blablabla",
-                CoordX = 100011,
-                CoordY = 100011,
+                CoordX = 9999,
+                CoordY = 9999,
                 LayoutId = 2,
             };
             this.areaService.UpdateArea(areaDto);
@@ -61,8 +61,8 @@ namespace TicketManagement.IntegrationTests.ServiceTests
             Area areaDtoTemp = this.areaService.GetArea(1);
 
             Assert.AreEqual("blablabla", areaDtoTemp.Description);
-            Assert.AreEqual(100011, areaDtoTemp.CoordX);
-            Assert.AreEqual(100011, areaDtoTemp.CoordY);
+            Assert.AreEqual(9999, areaDtoTemp.CoordX);
+            Assert.AreEqual(9999, areaDtoTemp.CoordY);
             Assert.AreEqual(2, areaDtoTemp.LayoutId);
         }
 

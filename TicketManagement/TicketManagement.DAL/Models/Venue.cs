@@ -5,6 +5,7 @@
 // </copyright>
 // ****************************************************************************
 
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using TicketManagement.DAL.Models.Base;
 
@@ -26,5 +27,7 @@ namespace TicketManagement.DAL.Models
         [StringLength(30)]
         [DataType(DataType.PhoneNumber)]
         public string Phone { get; set; }
+
+        //public ICollection<Layout> Layouts { get; set; }
     }
 }

@@ -41,10 +41,10 @@ namespace TicketManagement.IntegrationTests.ServiceTests
 
             EventSeat eventSeatDtoTemp = this.eventSeatService.GetEventSeat(1);
 
-            Assert.AreEqual(1, eventSeatDtoTemp.Number);
+            Assert.AreEqual(2, eventSeatDtoTemp.Number);
             Assert.AreEqual(EventSeatState.Sold, eventSeatDtoTemp.State);
-            Assert.AreEqual(1, eventSeatDtoTemp.Row);
-            Assert.AreEqual(1, eventSeatDtoTemp.EventAreaId);
+            Assert.AreEqual(2, eventSeatDtoTemp.Row);
+            Assert.AreEqual(2, eventSeatDtoTemp.EventAreaId);
         }
 
         [Test]

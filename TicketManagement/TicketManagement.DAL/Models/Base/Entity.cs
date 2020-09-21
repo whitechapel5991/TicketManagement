@@ -12,6 +12,7 @@ namespace TicketManagement.DAL.Models.Base
     public abstract class Entity : IEntity
     {
         [Required]
+        [Key]
         public int Id { get; set; }
     }
 }

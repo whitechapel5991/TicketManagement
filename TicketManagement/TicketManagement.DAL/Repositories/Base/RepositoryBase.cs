@@ -9,113 +9,39 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Common;
+using System.Data.Entity;
+using System.Linq;
+using TicketManagement.DAL.EFContext;
 using TicketManagement.DAL.Models.Base;
 
 namespace TicketManagement.DAL.Repositories.Base
 {
-    internal abstract class RepositoryBase<TDalEntity> : IRepository<TDalEntity>
-        where TDalEntity : IEntity, new()
+    public abstract class RepositoryBase<TDalEntity> : IRepository<TDalEntity>
+        where TDalEntity : class, IEntity, new()
     {
-        private readonly DbProviderFactory providerFactory;
-        private readonly string connectionString;
+        protected readonly TicketManagementContext context;
+        protected DbSet<TDalEntity> dbSet;
 
-        protected RepositoryBase(string connectionString, string provider)
+        public RepositoryBase(TicketManagementContext context)
         {
-            this.providerFactory = DbProviderFactories.GetFactory(provider);
-            this.connectionString = connectionString;
+            this.context = context;
+            this.dbSet = this.context.Set<TDalEntity>();
         }
 
-        public int Create(TDalEntity entity)
+        public abstract int Create(TDalEntity entity);
+
+        public abstract void Update(TDalEntity entity);
+
+        public abstract void Delete(int id);
+
+        public virtual TDalEntity GetById(int id)
         {
-            return Convert.ToInt32(this.CommandExecuteScalar(entity, this.CreateCommandParameters));
+            return this.dbSet.Find(id);
         }
 
-        public void Update(TDalEntity entity)
+        public virtual IQueryable<TDalEntity> GetAll()
         {
-            this.CommandExecuteScalar(entity, this.UpdateCommandParameters);
-        }
-
-        public void Delete(int id)
-        {
-            this.CommandExecuteScalar(id, this.DeleteCommandParameters);
-        }
-
-        public TDalEntity GetById(int id)
-        {
-            return this.CommandExecuteReaderById(id, this.GetByIdCommandParameters);
-        }
-
-        public IEnumerable<TDalEntity> GetAll()
-        {
-            return this.CommandExecuteReaderAll(this.GetAllCommandParameters);
-        }
-
-        protected abstract void CreateCommandParameters(TDalEntity entity, IDbCommand cmd);
-
-        protected abstract void UpdateCommandParameters(TDalEntity entity, IDbCommand cmd);
-
-        protected abstract void DeleteCommandParameters(int id, IDbCommand cmd);
-
-        protected abstract void GetByIdCommandParameters(int id, IDbCommand cmd);
-
-        protected abstract void GetAllCommandParameters(IDbCommand cmd);
-
-        protected abstract TDalEntity Map(IDataReader reader);
-
-        protected abstract IEnumerable<TDalEntity> Maps(IDataReader reader);
-
-        private object CommandExecuteScalar<TCommandParam>(TCommandParam param, Action<TCommandParam, IDbCommand> dbOperation)
-        {
-            using (IDbConnection connection = this.providerFactory.CreateConnection())
-            {
-                connection.ConnectionString = this.connectionString;
-                connection.Open();
-
-                using (var cmd = connection.CreateCommand())
-                {
-                    cmd.CommandType = CommandType.StoredProcedure;
-                    dbOperation(param, cmd);
-                    return cmd.ExecuteScalar();
-                }
-            }
-        }
-
-        private TDalEntity CommandExecuteReaderById(int id, Action<int, IDbCommand> operation)
-        {
-            using (IDbConnection connection = this.providerFactory.CreateConnection())
-            {
-                connection.ConnectionString = this.connectionString;
-                connection.Open();
-
-                using (var cmd = connection.CreateCommand())
-                {
-                    cmd.CommandType = CommandType.Text;
-                    operation(id, cmd);
-                    using (IDataReader reader = cmd.ExecuteReader())
-                    {
-                        return this.Map(reader);
-                    }
-                }
-            }
-        }
-
-        private IEnumerable<TDalEntity> CommandExecuteReaderAll(Action<IDbCommand> operation)
-        {
-            using (IDbConnection connection = this.providerFactory.CreateConnection())
-            {
-                connection.ConnectionString = this.connectionString;
-                connection.Open();
-
-                using (var cmd = connection.CreateCommand())
-                {
-                    cmd.CommandType = CommandType.Text;
-                    operation(cmd);
-                    using (IDataReader reader = cmd.ExecuteReader())
-                    {
-                        return this.Maps(reader);
-                    }
-                }
-            }
+            return this.dbSet.AsNoTracking();
         }
     }
 }
