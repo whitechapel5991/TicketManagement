@@ -10,7 +10,7 @@ using TicketManagement.DAL.Models;
 
 namespace TicketManagement.BLL.Interfaces
 {
-    internal interface ISeatService
+    public interface ISeatService
     {
         IEnumerable<Seat> GetSeats();
 

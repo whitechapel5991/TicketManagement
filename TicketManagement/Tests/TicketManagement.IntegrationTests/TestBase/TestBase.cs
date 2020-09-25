@@ -7,8 +7,9 @@
 
 using System;
 using Autofac;
+using AutoFixture;
 using NUnit.Framework;
-using TicketManagement.IntegrationTests.Infrastructure;
+using TicketManagement.IntegrationTests.Helper;
 using TicketManagement.IntegrationTests.Util;
 
 namespace TicketManagement.IntegrationTests.TestBase
@@ -17,13 +18,29 @@ namespace TicketManagement.IntegrationTests.TestBase
     {
         protected IContainer Container { get; private set; }
 
+        protected Fixture Fixture { get; private set; }
+
         [SetUp]
         public void InitBase()
         {
-            RestorDb restoreDb = new RestorDb();
-            restoreDb.Execute(AppDomain.CurrentDomain.BaseDirectory + @"\..\..\Infrastructure\Sql\script.txt");
+            this.Fixture = new Fixture();
+
+            if (DatabaseHelper.SnapshotExists())
+            {
+                DatabaseHelper.RestoreFromSnapshot();
+                DatabaseHelper.DropSnapshot();
+            }
+
+            DatabaseHelper.CreateSnapshot();
 
             this.Container = ConfigIocContainer.GetIocContainer();
+        }
+
+        [TearDown]
+        public void TearDown()
+        {
+            DatabaseHelper.RestoreFromSnapshot();
+            DatabaseHelper.DropSnapshot();
         }
 
         public virtual void Dispose()

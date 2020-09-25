@@ -10,12 +10,16 @@ using TicketManagement.DAL.Models;
 
 namespace TicketManagement.BLL.Interfaces
 {
-    internal interface IEventSeatService
+    public interface IEventSeatService
     {
         IEnumerable<EventSeat> GetEventSeats();
 
         EventSeat GetEventSeat(int id);
 
         void UpdateEventSeat(EventSeat entity);
+
+        decimal GetSeatCost(int seatId);
+
+        Event GetEventByEventSeatId(int seatId);
     }
 }

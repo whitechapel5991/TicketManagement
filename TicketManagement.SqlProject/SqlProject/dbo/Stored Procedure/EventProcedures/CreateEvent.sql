@@ -5,6 +5,7 @@
     @BeginDate datetime,
     @EndDate datetime
 AS
+    declare  @Published bit = 0
     declare @AreaTemp table (
     Id int, 
     LayoutId int, 
@@ -41,8 +42,8 @@ AS
         set @SeatRows=@@ROWCOUNT;
 
         declare @eventId int;
-        INSERT INTO Events (Name, Description, LayoutId, BeginDate, EndDate)
-        VALUES (@Name, @Description, @LayoutId, @BeginDate, @EndDate)
+        INSERT INTO Events (Name, Description, LayoutId, BeginDate, EndDate, Published)
+        VALUES (@Name, @Description, @LayoutId, @BeginDate, @EndDate, @Published)
         set @eventId = SCOPE_IDENTITY();
 
         set @AreaCurrentRow=0
@@ -80,7 +81,7 @@ AS
         end
 
         commit tran
-        return @eventId
+        select @eventId
     end try
     begin catch
         return -1

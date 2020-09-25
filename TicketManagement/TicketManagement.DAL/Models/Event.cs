@@ -6,32 +6,40 @@
 // ****************************************************************************
 
 using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using TicketManagement.DAL.Models.Base;
 
 namespace TicketManagement.DAL.Models
 {
+    [Table("Events")]
     public class Event : Entity
     {
         [Required]
         [StringLength(120)]
+        [Column("Name")]
         public string Name { get; set; }
 
         [Required]
-        [DataType(DataType.Date)]
+        [Column("BeginDate")]
+        [DataType(DataType.DateTime)]
         public DateTime BeginDate { get; set; }
 
         [Required]
-        [DataType(DataType.Date)]
+        [Column("EndDate")]
+        [DataType(DataType.DateTime)]
         public DateTime EndDate { get; set; }
 
         [Required]
+        [Column("Description")]
         public string Description { get; set; }
 
         [Required]
-        [Range(0, int.MaxValue)]
+        [Column("Published")]
+        public bool Published { get; set; }
+
+        [Required]
+        [Column("LayoutId")]
         public int LayoutId { get; set; }
     }
 }

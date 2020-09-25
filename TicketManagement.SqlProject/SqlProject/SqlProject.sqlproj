@@ -60,13 +60,10 @@
     <Folder Include="dbo" />
     <Folder Include="dbo\Stored Procedure" />
     <Folder Include="dbo\Tables" />
-    <Folder Include="dbo\Stored Procedure\AreaProcedures" />
     <Folder Include="dbo\Stored Procedure\EventAreaProcedures" />
     <Folder Include="dbo\Stored Procedure\EventProcedures" />
     <Folder Include="dbo\Stored Procedure\EventSeatProcedures" />
-    <Folder Include="dbo\Stored Procedure\LayoutProcedures" />
-    <Folder Include="dbo\Stored Procedure\SeatProcedures" />
-    <Folder Include="dbo\Stored Procedure\VenueProcedures" />
+    <Folder Include="Scripts\" />
   </ItemGroup>
   <ItemGroup>
     <Build Include="dbo\Tables\Areas.sql" />
@@ -76,27 +73,23 @@
     <Build Include="dbo\Tables\Events.sql" />
     <Build Include="dbo\Tables\EventAreas.sql" />
     <Build Include="dbo\Tables\EventSeats.sql" />
-    <Build Include="dbo\Stored Procedure\AreaProcedures\DeleteArea.sql" />
     <Build Include="dbo\Stored Procedure\EventProcedures\DeleteEvent.sql" />
     <Build Include="dbo\Stored Procedure\EventAreaProcedures\DeleteEventArea.sql" />
     <Build Include="dbo\Stored Procedure\EventSeatProcedures\DeleteEventSeat.sql" />
-    <Build Include="dbo\Stored Procedure\LayoutProcedures\DeleteLayout.sql" />
-    <Build Include="dbo\Stored Procedure\SeatProcedures\DeleteSeat.sql" />
-    <Build Include="dbo\Stored Procedure\VenueProcedures\DeleteVenue.sql" />
-    <Build Include="dbo\Stored Procedure\AreaProcedures\CreateArea.sql" />
-    <Build Include="dbo\Stored Procedure\AreaProcedures\UpdateArea.sql" />
     <Build Include="dbo\Stored Procedure\EventAreaProcedures\CreateEventArea.sql" />
     <Build Include="dbo\Stored Procedure\EventAreaProcedures\UpdateEventArea.sql" />
     <Build Include="dbo\Stored Procedure\EventProcedures\CreateEvent.sql" />
     <Build Include="dbo\Stored Procedure\EventProcedures\UpdateEvent.sql" />
     <Build Include="dbo\Stored Procedure\EventSeatProcedures\CreateEventSeat.sql" />
     <Build Include="dbo\Stored Procedure\EventSeatProcedures\UpdateEventSeat.sql" />
-    <Build Include="dbo\Stored Procedure\LayoutProcedures\CreateLayout.sql" />
-    <Build Include="dbo\Stored Procedure\LayoutProcedures\UpdateLayout.sql" />
-    <Build Include="dbo\Stored Procedure\VenueProcedures\CreateVenue.sql" />
-    <Build Include="dbo\Stored Procedure\VenueProcedures\UpdateVenue.sql" />
-    <Build Include="dbo\Stored Procedure\SeatProcedures\CreateSeat.sql" />
-    <Build Include="dbo\Stored Procedure\SeatProcedures\UpdateSeat.sql" />
+    <Build Include="dbo\Tables\Orders.sql" />
+    <Build Include="dbo\Tables\AspNetUserLogins.sql" />
+    <Build Include="dbo\Tables\AspNetRoles.sql" />
+    <Build Include="dbo\Tables\AspNetUserRoles.sql" />
+    <Build Include="dbo\Tables\AspNetUsers.sql" />
+    <Build Include="dbo\Tables\AspNetUserClaims.sql" />
+    <Build Include="dbo\Tables\__MigrationHistory.sql" />
+    <None Include="Scripts\ScriptsIgnoredOnImport.sql" />
   </ItemGroup>
   <ItemGroup>
     <PostDeploy Include="Script.PostDeployment.sql" />

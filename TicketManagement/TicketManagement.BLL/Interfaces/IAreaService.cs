@@ -10,7 +10,7 @@ using TicketManagement.DAL.Models;
 
 namespace TicketManagement.BLL.Interfaces
 {
-    internal interface IAreaService
+    public interface IAreaService
     {
         IEnumerable<Area> GetAreas();
 

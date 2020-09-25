@@ -5,29 +5,33 @@
 // </copyright>
 // ****************************************************************************
 
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using TicketManagement.DAL.Models.Base;
 
 namespace TicketManagement.DAL.Models
 {
+    [Table("Areas")]
     public class Area : Entity
     {
         [Required]
         [StringLength(200)]
+        [Column("Description")]
         public string Description { get; set; }
 
         [Required]
         [Range(0, 10000)]
+        [Column("CoordX")]
         public int CoordX { get; set; }
 
         [Required]
         [Range(0, int.MaxValue)]
+        [Column("CoordY")]
         public int CoordY { get; set; }
 
         [Required]
         [Range(0, int.MaxValue)]
+        [Column("LayoutId")]
         public int LayoutId { get; set; }
     }
 }

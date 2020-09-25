@@ -99,6 +99,24 @@ namespace TicketManagement.BLL.ServiceValidators
             }
         }
 
+        public void PublishValidate(Event @event)
+        {
+            if (@event.Published)
+            {
+                throw new EventAlreadyPublishedException("Event already published");
+            }
+
+            if (this.SomeAreaInEventHasNotPrice(@event.Id))
+            {
+                throw new SomeAreaHasNotPriceException("All areas in event must have a price");
+            }
+        }
+
+        private bool SomeAreaInEventHasNotPrice(int eventId)
+        {
+            return this.eventAreaRepository.GetAll().Where(x => x.Price == decimal.Zero && x.EventId == eventId).Any();
+        }
+
         private bool SoldSeatExist(int eventId)
         {
             return (from eventArea in this.eventAreaRepository.GetAll().Where(x => x.EventId == eventId)
@@ -116,7 +134,7 @@ namespace TicketManagement.BLL.ServiceValidators
         {
             return (from areasQ in this.areaRepository.GetAll().Where(x => x.LayoutId == layoutId).AsEnumerable()
                     join seatsQ in this.seatRepository.GetAll().AsEnumerable() on areasQ.Id equals seatsQ.AreaId
-                select new Seat { Id = seatsQ.Id, AreaId = seatsQ.AreaId, Number = seatsQ.Number, Row = seatsQ.Row }).Any();
+                    select new Seat { Id = seatsQ.Id, AreaId = seatsQ.AreaId, Number = seatsQ.Number, Row = seatsQ.Row }).Any();
         }
 
         private bool IsDateInPast(DateTime dateTime)

@@ -5,10 +5,6 @@
 // </copyright>
 // ****************************************************************************
 
-using System;
-using System.Collections.Generic;
-using System.Data;
-using System.Data.Common;
 using System.Data.Entity;
 using System.Linq;
 using TicketManagement.DAL.EFContext;
@@ -19,13 +15,14 @@ namespace TicketManagement.DAL.Repositories.Base
     public abstract class RepositoryBase<TDalEntity> : IRepository<TDalEntity>
         where TDalEntity : class, IEntity, new()
     {
-        protected readonly TicketManagementContext context;
-        protected DbSet<TDalEntity> dbSet;
+        public TicketManagementContext Context { get; private set; }
+
+        public DbSet<TDalEntity> DbSet { get; private set; }
 
         public RepositoryBase(TicketManagementContext context)
         {
-            this.context = context;
-            this.dbSet = this.context.Set<TDalEntity>();
+            this.Context = context;
+            this.DbSet = this.Context.Set<TDalEntity>();
         }
 
         public abstract int Create(TDalEntity entity);
@@ -36,12 +33,12 @@ namespace TicketManagement.DAL.Repositories.Base
 
         public virtual TDalEntity GetById(int id)
         {
-            return this.dbSet.Find(id);
+            return this.DbSet.AsNoTracking().First(x => x.Id == id);
         }
 
         public virtual IQueryable<TDalEntity> GetAll()
         {
-            return this.dbSet.AsNoTracking();
+            return this.DbSet.AsNoTracking();
         }
     }
 }

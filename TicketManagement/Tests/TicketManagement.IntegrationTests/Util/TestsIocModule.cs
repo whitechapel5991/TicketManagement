@@ -16,12 +16,10 @@ namespace TicketManagement.IntegrationTests.Util
     internal class TestsIocModule : Module
     {
         private readonly string connectionString;
-        private readonly string providerName;
 
         public TestsIocModule()
         {
             this.connectionString = ConfigurationManager.ConnectionStrings["TicketManagementTest"].ConnectionString;
-            this.providerName = ConfigurationManager.ConnectionStrings["TicketManagementTest"].ProviderName;
         }
 
         protected override void Load(ContainerBuilder builder)
@@ -31,7 +29,7 @@ namespace TicketManagement.IntegrationTests.Util
                 throw new ArgumentNullException("builder");
             }
 
-            builder.RegisterModule(new AdoAutofacModule(this.connectionString, this.providerName));
+            builder.RegisterModule(new AdoAutofacModule(this.connectionString));
             builder.RegisterModule(new ServiceAutofacModule());
         }
     }

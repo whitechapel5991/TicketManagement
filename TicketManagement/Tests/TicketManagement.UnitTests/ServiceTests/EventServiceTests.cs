@@ -40,13 +40,13 @@ namespace TicketManagement.UnitTests.ServiceTests
                 {
                     Id = 1, BeginDate = new DateTime(2025, 12, 12, 12, 00, 00),
                     EndDate = new DateTime(2025, 12, 12, 13, 00, 00), Description = "First",
-                    LayoutId = 1, Name = "First event",
+                    LayoutId = 1, Name = "First event", Published = false,
                 },
                 new Event()
                 {
                     Id = 2, BeginDate = new DateTime(2025, 12, 12, 13, 00, 00),
                     EndDate = new DateTime(2025, 12, 12, 14, 00, 00), Description = "Second",
-                    LayoutId = 2, Name = "Second event",
+                    LayoutId = 2, Name = "Second event", Published = true,
                 },
             };
             var fakeVenueRepository = new RepositoryFake<Event>(events);
@@ -77,13 +77,13 @@ namespace TicketManagement.UnitTests.ServiceTests
                 {
                     Id = 1, BeginDate = new DateTime(2025, 12, 12, 12, 00, 00),
                     EndDate = new DateTime(2025, 12, 12, 13, 00, 00), Description = "First",
-                    LayoutId = 1, Name = "First event",
+                    LayoutId = 1, Name = "First event", Published = false,
                 },
                 new Event()
                 {
                     Id = 2, BeginDate = new DateTime(2025, 12, 12, 13, 00, 00),
                     EndDate = new DateTime(2025, 12, 12, 14, 00, 00), Description = "Second",
-                    LayoutId = 2, Name = "Second event",
+                    LayoutId = 2, Name = "Second event", Published = true,
                 },
                 dto,
             };
@@ -106,6 +106,31 @@ namespace TicketManagement.UnitTests.ServiceTests
 
             // Act
             this.eventService.UpdateEvent(expectedDto);
+
+            // Assert
+            eventRepository.GetById(id).Should().BeEquivalentTo(expectedDto);
+        }
+
+        [Test]
+        public void PublishEvent_UpdateOnlyPublishFlag_GetPublishEvent()
+        {
+            // Arrange
+            var eventRepository = this.Mock.Create<IRepository<Event>>();
+            this.eventService = this.Mock.Create<EventService>();
+            var id = 1;
+            var expectedDto = new Event()
+            {
+                Id = 1,
+                BeginDate = new DateTime(2025, 12, 12, 12, 00, 00),
+                EndDate = new DateTime(2025, 12, 12, 13, 00, 00),
+                Description = "First",
+                LayoutId = 1,
+                Name = "First event",
+                Published = true,
+            };
+
+            // Act
+            this.eventService.PublishEvent(id);
 
             // Assert
             eventRepository.GetById(id).Should().BeEquivalentTo(expectedDto);
@@ -171,13 +196,13 @@ namespace TicketManagement.UnitTests.ServiceTests
                 {
                     Id = 1, BeginDate = new DateTime(2025, 12, 12, 12, 00, 00),
                     EndDate = new DateTime(2025, 12, 12, 13, 00, 00), Description = "First",
-                    LayoutId = 1, Name = "First event",
+                    LayoutId = 1, Name = "First event", Published = false,
                 },
                 new Event()
                 {
                     Id = 2, BeginDate = new DateTime(2025, 12, 12, 13, 00, 00),
                     EndDate = new DateTime(2025, 12, 12, 14, 00, 00), Description = "Second",
-                    LayoutId = 2, Name = "Second event",
+                    LayoutId = 2, Name = "Second event", Published = true,
                 },
             };
 

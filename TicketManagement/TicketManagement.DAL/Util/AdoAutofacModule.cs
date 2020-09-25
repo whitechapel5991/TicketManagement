@@ -6,22 +6,23 @@
 // ****************************************************************************
 
 using Autofac;
+using Microsoft.AspNet.Identity;
 using TicketManagement.DAL.EFContext;
 using TicketManagement.DAL.Models;
+using TicketManagement.DAL.Models.Identity;
 using TicketManagement.DAL.Repositories;
 using TicketManagement.DAL.Repositories.Base;
+using TicketManagement.DAL.Repositories.Identity;
 
 namespace TicketManagement.DAL.Util
 {
     public class AdoAutofacModule : Module
     {
         private readonly string connectionString;
-        private readonly string provider;
 
-        public AdoAutofacModule(string connectionString, string provider)
+        public AdoAutofacModule(string connectionString)
         {
             this.connectionString = connectionString;
-            this.provider = provider;
         }
 
         protected override void Load(ContainerBuilder builder)
@@ -29,6 +30,14 @@ namespace TicketManagement.DAL.Util
             builder.RegisterType<TicketManagementContext>()
                 .WithParameter(new TypedParameter(typeof(string), this.connectionString))
                 .SingleInstance();
+
+            builder.RegisterType<UserRepository>()
+                .As(typeof(IUserStore<TicketManagementUser, int>))
+                .InstancePerDependency();
+
+            builder.RegisterType<RoleRepository>()
+                .As(typeof(IRoleStore<Role, int>))
+                .InstancePerDependency();
 
             builder.RegisterGeneric(typeof(Repository<>))
                 .As(typeof(IRepository<>))

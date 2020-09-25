@@ -1,9 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
+﻿// ****************************************************************************
+// <copyright file="Repository.cs" company="EPAM Systems">
+// Copyright (c) EPAM Systems. All rights reserved.
+// Author Dzianis Shcharbakou.
+// </copyright>
+// ****************************************************************************
+
 using System.Data.Entity;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using TicketManagement.DAL.EFContext;
 using TicketManagement.DAL.Models.Base;
 using TicketManagement.DAL.Repositories.Base;
@@ -20,15 +23,15 @@ namespace TicketManagement.DAL.Repositories
 
         public override int Create(TDalEntity entity)
         {
-            this.dbSet.Add(entity);
-            this.context.SaveChanges();
+            this.DbSet.Add(entity);
+            this.Context.SaveChanges();
             return entity.Id;
         }
 
         public override void Update(TDalEntity entity)
         {
-            this.context.Entry(entity).State = EntityState.Modified;
-            this.context.SaveChanges();
+            this.Context.Entry(entity).State = EntityState.Modified;
+            this.Context.SaveChanges();
         }
 
         public override void Delete(int id)
@@ -36,19 +39,19 @@ namespace TicketManagement.DAL.Repositories
             TDalEntity area = this.GetById(id);
             if (area != null)
             {
-                this.dbSet.Remove(area);
-                this.context.SaveChanges();
+                this.DbSet.Remove(area);
+                this.Context.SaveChanges();
             }
         }
 
         public override TDalEntity GetById(int id)
         {
-            return this.dbSet.Find(id);
+            return this.DbSet.Find(id);
         }
 
         public override IQueryable<TDalEntity> GetAll()
         {
-            return this.dbSet.AsNoTracking();
+            return this.DbSet.AsNoTracking();
         }
     }
 }

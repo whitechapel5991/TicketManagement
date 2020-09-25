@@ -4,7 +4,8 @@
     @Description nvarchar(50),
     @LayoutId int,
 	@BeginDate datetime,
-    @EndDate datetime
+    @EndDate datetime,
+    @Published bit = 0
 AS
  declare @AreaTemp table (
     Id int, 
@@ -35,12 +36,14 @@ AS
 
     if (@LayoutId = @oldLayoutId)
         Begin
-            UPDATE Events set Name=@Name, Description=@Description, LayoutId=@LayoutId, BeginDate=@BeginDate, EndDate=@EndDate
+            UPDATE Events set Name=@Name, Description=@Description, LayoutId=@LayoutId, BeginDate=@BeginDate, EndDate=@EndDate, Published=@Published
 	        where Id = @Id
 	        select @@ROWCOUNT;
         End
     Else
         Begin
+            Delete from EventAreas where EventId = @Id;
+
             Insert into @AreaTemp (Id, LayoutId, Description, CoordX, CoordY)
             select Id, LayoutId, Description, CoordX, CoordY
             from dbo.Areas

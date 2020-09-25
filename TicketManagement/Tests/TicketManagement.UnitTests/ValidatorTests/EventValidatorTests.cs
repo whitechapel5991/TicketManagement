@@ -53,13 +53,13 @@ namespace TicketManagement.UnitTests.ValidatorTests
                 {
                     Id = 1, BeginDate = new DateTime(2025, 12, 12, 12, 00, 00),
                     EndDate = new DateTime(2025, 12, 12, 13, 00, 00), Description = "First",
-                    LayoutId = 1, Name = "First event",
+                    LayoutId = 1, Name = "First event", Published = false,
                 },
                 new Event()
                 {
                     Id = 2, BeginDate = new DateTime(2025, 12, 12, 13, 00, 00),
                     EndDate = new DateTime(2025, 12, 12, 14, 00, 00), Description = "Second",
-                    LayoutId = 2, Name = "Second event",
+                    LayoutId = 2, Name = "Second event",  Published = true,
                 },
             };
             var fakeEventRepository = new RepositoryFake<Event>(events);
@@ -129,6 +129,7 @@ namespace TicketManagement.UnitTests.ValidatorTests
                 new EventArea() { Id = 2, CoordX = 1, CoordY = 1, Description = "Second area event", EventId = 1, Price = 100 },
                 new EventArea() { Id = 3, CoordX = 2, CoordY = 2, Description = "First area event", EventId = 2, Price = 200 },
                 new EventArea() { Id = 4, CoordX = 2, CoordY = 2, Description = "Second area event", EventId = 2, Price = 200 },
+                new EventArea() { Id = 4, CoordX = 2, CoordY = 2, Description = "Area event without price", EventId = 2, Price = 0 },
             };
             var fakeEventAreaRepository = new RepositoryFake<EventArea>(eventAreas);
 
@@ -178,6 +179,54 @@ namespace TicketManagement.UnitTests.ValidatorTests
         public void TearDown()
         {
             this.Mock?.Dispose();
+        }
+
+        [Test]
+        public void WhenEventNotPublishAndAllAreaInEventHavePrice_EventPublish()
+        {
+            // Arrange
+            this.eventValidator = this.Mock.Create<EventValidator>();
+            var dto = this.Fixture.Build<Event>().With(e => e.Id, 1)
+                .With(e => e.Published, false)
+                .Create();
+
+            // Act
+            Action validate = () => this.eventValidator.PublishValidate(dto);
+
+            // Act - delegate. Assert
+            validate.Should().NotThrow();
+        }
+
+        [Test]
+        public void WhenEventPublishAndAllAreaInEventHavePrice_ThrowEventAlreadyPublishedException()
+        {
+            // Arrange
+            this.eventValidator = this.Mock.Create<EventValidator>();
+            var dto = this.Fixture.Build<Event>().With(e => e.Id, 1)
+                .With(e => e.Published, true)
+                .Create();
+
+            // Act
+            Action validate = () => this.eventValidator.PublishValidate(dto);
+
+            // Act - delegate. Assert
+            validate.Should().Throw<EventAlreadyPublishedException>();
+        }
+
+        [Test]
+        public void WhenEventNotPublishButSomeAreaInEventHaveNotPrice_ThrowSomeAreaHasNotPriceException()
+        {
+            // Arrange
+            this.eventValidator = this.Mock.Create<EventValidator>();
+            var dto = this.Fixture.Build<Event>().With(e => e.Id, 2)
+                .With(e => e.Published, false)
+                .Create();
+
+            // Act
+            Action validate = () => this.eventValidator.PublishValidate(dto);
+
+            // Act - delegate. Assert
+            validate.Should().Throw<SomeAreaHasNotPriceException>();
         }
 
         [Test]

@@ -1,9 +1,8 @@
-﻿CREATE TABLE [dbo].[Venues]
-(
-	[Id]          INT            IDENTITY (1, 1) NOT NULL,
-    [Description] NVARCHAR (120) NOT NULL,
-    [Address]     NVARCHAR (200) NOT NULL,
-    [Phone]       NVARCHAR (30)  NULL,
-    [Name]        NVARCHAR (50)  NULL,
-    PRIMARY KEY CLUSTERED ([Id] ASC)
+﻿CREATE TABLE [dbo].[Venues] (
+    [Id] [int] NOT NULL IDENTITY,
+    [Name] [nvarchar](50),
+    [Description] [nvarchar](120) NOT NULL,
+    [Address] [nvarchar](200) NOT NULL,
+    [Phone] [nvarchar](30),
+    CONSTRAINT [PK_dbo.Venues] PRIMARY KEY ([Id])
 )

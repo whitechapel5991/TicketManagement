@@ -5,14 +5,11 @@
 // </copyright>
 // ****************************************************************************
 
-using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
 using TicketManagement.DAL.EFContext;
-using TicketManagement.DAL.Extensions;
 using TicketManagement.DAL.Models;
-using TicketManagement.DAL.Models.Base;
 using TicketManagement.DAL.Repositories.Base;
 
 namespace TicketManagement.DAL.Repositories
@@ -25,6 +22,7 @@ namespace TicketManagement.DAL.Repositories
         private const string LayoutIdParamName = "@LayoutId";
         private const string BeginDateParamName = "@BeginDate";
         private const string EndDateParamName = "@EndDate";
+        private const string PublishParamName = "@Published";
 
         public EventRepository(TicketManagementContext dbContext)
             : base(dbContext)
@@ -35,42 +33,44 @@ namespace TicketManagement.DAL.Repositories
         {
             const string CreateEventStoredProcedureName = "CreateEvent";
 
-            var @event = this.context.Database.SqlQuery<int>(
+            var resultId = this.Context.Database.SqlQuery<int>(
                 $"{CreateEventStoredProcedureName} {NameParamName}, {DescriptionParamName}, {LayoutIdParamName}, {BeginDateParamName}, {EndDateParamName}",
                 new SqlParameter(NameParamName, entity.Name),
                 new SqlParameter(DescriptionParamName, entity.Description),
                 new SqlParameter(LayoutIdParamName, entity.LayoutId),
                 new SqlParameter(BeginDateParamName, entity.BeginDate),
                 new SqlParameter(EndDateParamName, entity.EndDate))
-                .FirstOrDefault();
+                .Single();
 
-            this.context.SaveChanges();
-            return @event;
+            this.Context.SaveChanges();
+            return resultId;
         }
 
         public override void Update(Event entity)
         {
             const string UpdateEventStoredProcedureName = "UpdateEvent";
 
-            this.context.Database.SqlQuery<Event>(
-                $"{UpdateEventStoredProcedureName} {IdParamName}, {NameParamName}, {BeginDateParamName}, {EndDateParamName}, {DescriptionParamName}, {LayoutIdParamName}",
+            this.Context.Database.ExecuteSqlCommand(
+                $"{UpdateEventStoredProcedureName} {IdParamName}, {NameParamName}, {DescriptionParamName}, {LayoutIdParamName}, {BeginDateParamName}, {EndDateParamName}, {PublishParamName}",
                 new SqlParameter(IdParamName, entity.Id),
                 new SqlParameter(NameParamName, entity.Name),
-                new SqlParameter(BeginDateParamName, entity.BeginDate),
-                new SqlParameter(EndDateParamName, entity.EndDate),
                 new SqlParameter(DescriptionParamName, entity.Description),
-                new SqlParameter(LayoutIdParamName, entity.LayoutId));
-            this.context.SaveChanges();
+                new SqlParameter(LayoutIdParamName, entity.LayoutId),
+                new SqlParameter(BeginDateParamName, entity.BeginDate) { SqlDbType = SqlDbType.DateTime },
+                new SqlParameter(EndDateParamName, entity.EndDate) { SqlDbType = SqlDbType.DateTime },
+                new SqlParameter(PublishParamName, entity.Published));
+
+            this.Context.SaveChanges();
         }
 
         public override void Delete(int id)
         {
             const string DeleteEventStoredProcedureName = "DeleteEvent";
 
-            this.context.Database.ExecuteSqlCommand(
+            this.Context.Database.ExecuteSqlCommand(
                 $"{DeleteEventStoredProcedureName} {IdParamName}",
                 new SqlParameter(IdParamName, id));
-            this.context.SaveChanges();
+            this.Context.SaveChanges();
         }
     }
 }

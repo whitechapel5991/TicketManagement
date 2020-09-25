@@ -187,10 +187,10 @@ GO
 SET IDENTITY_INSERT [dbo].[Events] ON
 GO
 
-INSERT INTO [dbo].[Events] ([Id], [Name], [Description], [LayoutId], [BeginDate], [EndDate]) VALUES (1, N'First event', N'First', 1, N'2025-12-12 12:00:00', N'2025-12-12 13:00:00')
+INSERT INTO [dbo].[Events] ([Id], [Name], [Description], [LayoutId], [BeginDate], [EndDate], [Published]) VALUES (1, N'First event', N'First', 1, N'2025-12-12 12:00:00', N'2025-12-12 13:00:00', 1)
 GO
 
-INSERT INTO [dbo].[Events] ([Id], [Name], [Description], [LayoutId], [BeginDate], [EndDate]) VALUES (2, N'Second event', N'Second', 2, N'2025-12-12 12:00:00', N'2025-12-12 13:00:00')
+INSERT INTO [dbo].[Events] ([Id], [Name], [Description], [LayoutId], [BeginDate], [EndDate], [Published]) VALUES (2, N'Second event', N'Second', 2, N'2025-12-12 12:00:00', N'2025-12-12 13:00:00', 0)
 GO
 
 SET IDENTITY_INSERT [dbo].[Events] OFF
@@ -278,4 +278,46 @@ INSERT INTO [dbo].[EventSeats] ([Id], [State], [EventAreaId], [Row], [Number]) V
 GO
 
 SET IDENTITY_INSERT [dbo].[EventSeats] OFF
+GO
+
+SET IDENTITY_INSERT [dbo].[AspNetUsers] ON
+GO
+
+INSERT INTO [dbo].[AspNetUsers] ([Id], [UserName], [Email], [EmailConfirmed], [PasswordHash], [Language], [TimeZone], [FirstName], [Surname], [Balance], [PhoneNumberConfirmed], [TwoFactorEnabled],[LockoutEnabled],[AccessFailedCount]) 
+VALUES (1, 'admin', 'admin@admin.com', 1, 'AN+dimATtnynaDlFB1TFqB0XWDWbytYMwSQMwWGVT2Pdd3ASxUmvmQSHY9eNc9DU9A==', 'ru', 'Belarus Standard Time', 'Admin', 'AdminS', 100000, 0, 0, 0, 0)
+GO
+
+INSERT INTO [dbo].[AspNetUsers] ([Id],[UserName], [Email], [EmailConfirmed],[PasswordHash], [Language], [TimeZone], [FirstName], [Surname], [Balance], [PhoneNumberConfirmed], [TwoFactorEnabled],[LockoutEnabled],[AccessFailedCount]) 
+VALUES (2, 'user', 'user@user.com', 1,'AM1rNg7ocbR18loZOEsl4dqaX+fKjjmt5UbeKNM32rNYLeDVfi0mtAXkE7etqtZjng==', 'en','Belarus Standard Time', 'User', 'UserS', 300, 0, 0, 0, 0)
+GO
+
+INSERT INTO [dbo].[AspNetUsers] ([Id],[UserName], [Email], [EmailConfirmed],[PasswordHash], [Language], [TimeZone], [FirstName], [Surname], [Balance], [PhoneNumberConfirmed], [TwoFactorEnabled],[LockoutEnabled],[AccessFailedCount]) 
+VALUES (3, 'event manager', 'manager@manager.com', 1,'AIIyby5JGrXPBYaW+uc3WDX68f5ol82JHm4FIi9UHTJSRmD5WzKrP7DfG0nRbbCMpw==', 'ru','Belarus Standard Time', 'Manager', 'ManagerS', 1000, 0, 0, 0, 0)
+GO
+
+SET IDENTITY_INSERT [dbo].[AspNetUsers] OFF
+GO
+
+SET IDENTITY_INSERT [dbo].[AspNetRoles] ON
+GO
+
+INSERT INTO [dbo].[AspNetRoles] ([Id], [Name]) VALUES (1, 'admin')
+GO
+
+INSERT INTO [dbo].[AspNetRoles] ([Id], [Name]) VALUES (2, 'user')
+GO
+
+INSERT INTO [dbo].[AspNetRoles] ([Id], [Name]) VALUES (3, 'event manager')
+GO
+
+SET IDENTITY_INSERT [dbo].[AspNetRoles] OFF
+GO
+
+INSERT INTO [dbo].[AspNetUserRoles] ([UserId], [RoleId]) VALUES (1,1)
+GO
+
+INSERT INTO [dbo].[AspNetUserRoles] ([UserId], [RoleId]) VALUES (2,2)
+GO
+
+INSERT INTO [dbo].[AspNetUserRoles] ([UserId], [RoleId]) VALUES (3,3)
 GO

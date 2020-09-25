@@ -10,7 +10,7 @@ using TicketManagement.DAL.Models;
 
 namespace TicketManagement.BLL.Interfaces
 {
-    internal interface ILayoutService
+    public interface ILayoutService
     {
         IEnumerable<Layout> GetLayouts();
 

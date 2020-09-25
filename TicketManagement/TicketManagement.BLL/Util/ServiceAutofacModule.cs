@@ -6,10 +6,13 @@
 // ****************************************************************************
 
 using Autofac;
+using Microsoft.AspNet.Identity;
 using TicketManagement.BLL.Interfaces;
 using TicketManagement.BLL.Services;
+using TicketManagement.BLL.Services.Identity;
 using TicketManagement.BLL.ServiceValidators;
 using TicketManagement.BLL.ServiceValidators.Interfaces;
+using TicketManagement.DAL.Models.Identity;
 
 namespace TicketManagement.BLL.Util
 {
@@ -43,6 +46,22 @@ namespace TicketManagement.BLL.Util
 
             builder.RegisterType<AreaService>()
                 .As<IAreaService>()
+                .InstancePerLifetimeScope();
+
+            builder.RegisterType<UserService>()
+                .As<IUserService>()
+                .InstancePerLifetimeScope();
+
+            builder.RegisterType<OrderService>()
+    .As<IOrderService>()
+    .InstancePerLifetimeScope();
+
+            builder.RegisterType<TicketManagementUserManager>()
+                .As<UserManager<TicketManagementUser, int>>()
+                .InstancePerLifetimeScope();
+
+            builder.RegisterType<TicketManagementRoleManager>()
+                .As<RoleManager<Role, int>>()
                 .InstancePerLifetimeScope();
 
             // vaidators

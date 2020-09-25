@@ -6,16 +6,19 @@
 // ****************************************************************************
 
 using System.Collections.Generic;
+using TicketManagement.BLL.Dto;
 using TicketManagement.DAL.Models;
 
 namespace TicketManagement.BLL.Interfaces
 {
-    internal interface IEventAreaService
+    public interface IEventAreaService
     {
         IEnumerable<EventArea> GetEventAreas();
 
         EventArea GetEventArea(int id);
 
         void UpdateEventArea(EventArea entity);
+
+        EventAreaDto GetEventAreaMap(int eventAreaId);
     }
 }

@@ -15,5 +15,7 @@ namespace TicketManagement.BLL.ServiceValidators.Interfaces
         void UpdateValidate(Event entity);
 
         void DeleteValidate(int eventId);
+
+        void PublishValidate(Event @event);
     }
 }

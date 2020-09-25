@@ -136,7 +136,6 @@ namespace TicketManagement.UnitTests.ServiceTests
         public void GetArea_AreaId_GetAreaDescription()
         {
             // Arrange
-            var areaRepository = this.Mock.Create<IRepository<Area>>();
             this.areaService = this.Mock.Create<AreaService>();
             var expectedDto = new Area() { Id = 1, Description = "First area of first layout", CoordX = 1, CoordY = 1, LayoutId = 1 };
 
@@ -151,7 +150,6 @@ namespace TicketManagement.UnitTests.ServiceTests
         public void GetAreas_GetAreasCount()
         {
             // Arrange
-            var areaRepository = this.Mock.Create<IRepository<Area>>();
             this.areaService = this.Mock.Create<AreaService>();
             var expected = new List<Area>
             {

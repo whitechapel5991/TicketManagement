@@ -1,11 +1,10 @@
-﻿CREATE TABLE [dbo].[Events]
-(
-	[Id]          INT            IDENTITY (1, 1) NOT NULL,
-    [Name]        NVARCHAR (120) NOT NULL,
-    [Description] NVARCHAR (MAX) NOT NULL,
-    [LayoutId]    INT            NOT NULL,
-    [BeginDate]   DATETIME       NOT NULL,
-    [EndDate]     DATETIME       NOT NULL,
-    PRIMARY KEY CLUSTERED ([Id] ASC),
-    CONSTRAINT [FK_Layouts_Events] FOREIGN KEY ([LayoutId]) REFERENCES [dbo].[Layouts] ([Id]) ON DELETE CASCADE
+﻿CREATE TABLE [dbo].[Events] (
+    [Id] [int] NOT NULL IDENTITY,
+    [Name] [nvarchar](120) NOT NULL,
+    [BeginDate] [datetime] NOT NULL,
+    [EndDate] [datetime] NOT NULL,
+    [Description] [nvarchar](max) NOT NULL,
+    [Published] [bit] NOT NULL,
+    [LayoutId] [int] NOT NULL,
+    CONSTRAINT [PK_dbo.Events] PRIMARY KEY ([Id])
 )
