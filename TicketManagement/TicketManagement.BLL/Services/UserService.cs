@@ -113,5 +113,31 @@ namespace TicketManagement.BLL.Services
         {
             throw new NotImplementedException();
         }
+
+        public OperationDetails IncreaseBalance(decimal money, string userName)
+        {
+            TicketManagementUser user = this.userManager.FindByName(userName);
+            user.Balance += money;
+            this.userManager.Update(user);
+            return new OperationDetails(true, "Balance increased successfull", "Balance");
+        }
+
+        public OperationDetails ChangePassword(string oldPassword, string newPassword, string userName)
+        {
+            TicketManagementUser user = this.userManager.FindByName(userName);
+            var result = this.userManager.ChangePassword(user.Id, oldPassword, newPassword);
+
+            OperationDetails details = default;
+            if (result.Succeeded)
+            {
+                details = new OperationDetails(true, "Password changed successfully", "Password");
+            }
+            else
+            {
+                details = new OperationDetails(true, $"Errors: {result.Errors.Aggregate((i,j) => i + ", " + j)}", "Password");
+            }
+
+            return details;
+        }
     }
 }

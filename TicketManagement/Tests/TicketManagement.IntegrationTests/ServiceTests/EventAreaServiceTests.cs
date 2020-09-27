@@ -14,6 +14,7 @@ using Test = TicketManagement.IntegrationTests.TestBase.TestBase;
 
 namespace TicketManagement.IntegrationTests.ServiceTests
 {
+    [TestFixture]
     internal class EventAreaServiceTests : Test
     {
         private IEventAreaService eventAreaService;

@@ -16,10 +16,16 @@ namespace TicketManagement.IntegrationTests.Util
     internal class TestsIocModule : Module
     {
         private readonly string connectionString;
+        private readonly string email;
+        private readonly string emailPassword;
+        private readonly int lockTime;
 
         public TestsIocModule()
         {
             this.connectionString = ConfigurationManager.ConnectionStrings["TicketManagementTest"].ConnectionString;
+            this.email = ConfigurationManager.AppSettings["Email"];
+            this.emailPassword = ConfigurationManager.AppSettings["EmailPassword"];
+            this.lockTime = int.Parse(ConfigurationManager.AppSettings["lockTime"]);
         }
 
         protected override void Load(ContainerBuilder builder)
@@ -30,7 +36,7 @@ namespace TicketManagement.IntegrationTests.Util
             }
 
             builder.RegisterModule(new AdoAutofacModule(this.connectionString));
-            builder.RegisterModule(new ServiceAutofacModule());
+            builder.RegisterModule(new ServiceAutofacModule(this.email, this.emailPassword, this.lockTime));
         }
     }
 }

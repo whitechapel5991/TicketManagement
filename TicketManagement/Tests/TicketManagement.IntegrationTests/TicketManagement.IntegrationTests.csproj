@@ -93,6 +93,7 @@
     <Compile Include="ServiceTests\EventSeatServiceTests.cs" />
     <Compile Include="ServiceTests\EventServiceTests.cs" />
     <Compile Include="ServiceTests\LayoutServiceTests.cs" />
+    <Compile Include="ServiceTests\OrderServiceTests.cs" />
     <Compile Include="ServiceTests\SeatServiceTests.cs" />
     <Compile Include="ServiceTests\UserServiceTests.cs" />
     <Compile Include="ServiceTests\VenueServiceTests.cs" />

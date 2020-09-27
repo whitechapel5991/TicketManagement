@@ -70,13 +70,13 @@ namespace TicketManagement.Web.Controllers
             return this.View(eventAreaDto);
         }
 
-        [Authorize(Roles = "user, admin, event manager")]
+        [Authorize(Roles = "user")]
         [HttpPost]
         public void AddToCart(int? seatId)
         {
             var identity = (ClaimsIdentity)this.User.Identity;
             var user = this.userService.FindByName(identity.Claims.FirstOrDefault(x => x.Type == ClaimTypes.Name)?.Value);
-            this.orderService.AddToCart(seatId.Value, user);
+            this.orderService.AddToCart(seatId.Value, user.Id);
         }
 
         private IEnumerable<EventViewModel> MapToEventViewModel(IEnumerable<Event> events)

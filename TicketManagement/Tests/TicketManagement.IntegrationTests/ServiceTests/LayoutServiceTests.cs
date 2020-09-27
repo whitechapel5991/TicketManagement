@@ -14,6 +14,7 @@ using Test = TicketManagement.IntegrationTests.TestBase.TestBase;
 
 namespace TicketManagement.IntegrationTests.ServiceTests
 {
+    [TestFixture]
     internal class LayoutServiceTests : Test
     {
         private ILayoutService layoutService;

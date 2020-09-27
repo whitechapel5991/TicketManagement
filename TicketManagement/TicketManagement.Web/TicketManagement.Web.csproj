@@ -177,7 +177,9 @@
     <Compile Include="Areas\EventManager\Data\SeatViewModel.cs" />
     <Compile Include="Areas\EventManager\EventManagerAreaRegistration.cs" />
     <Compile Include="Constants\Language.cs" />
+    <Compile Include="Constants\SeatColor.cs" />
     <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\CartController.cs" />
     <Compile Include="Controllers\EventController.cs" />
     <Compile Include="Controllers\UserProfileController.cs" />
     <Compile Include="Filters\LogAttribute.cs" />
@@ -189,8 +191,12 @@
     <Compile Include="Models\Account\LoginViewModel.cs" />
     <Compile Include="Models\Account\RegisterViewModel.cs" />
     <Compile Include="Models\Account\UserPasswordViewModel.cs" />
+    <Compile Include="Models\Cart\CartViewModel.cs" />
     <Compile Include="Models\Event\EventViewModel.cs" />
+    <Compile Include="Models\UserProfile\BalanceViewModel.cs" />
+    <Compile Include="Models\UserProfile\EditUserProfileViewModel.cs" />
     <Compile Include="Models\UserProfile\PurchaseHistoryViewModel.cs" />
+    <Compile Include="Models\UserProfile\UserPasswordViewModel.cs" />
     <Compile Include="Models\UserProfile\UserProfileViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Util\WebIocModule.cs" />
@@ -200,7 +206,6 @@
     <Content Include="..\stylecop.json">
       <Link>stylecop.json</Link>
     </Content>
-    <Content Include="App_Code\EventMapDrawingHelper.cshtml" />
     <Content Include="Areas\EventManager\Views\web.config" />
     <Content Include="fonts\glyphicons-halflings-regular.woff2" />
     <Content Include="fonts\glyphicons-halflings-regular.woff" />
@@ -224,10 +229,12 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="App_Code\" />
     <Folder Include="App_Data\" />
     <Folder Include="Areas\EventManager\Views\Event\" />
     <Folder Include="Areas\EventManager\Views\Shared\" />
     <Folder Include="Views\Account\" />
+    <Folder Include="Views\Cart\" />
     <Folder Include="Views\Event\" />
     <Folder Include="Views\UserProfile\" />
   </ItemGroup>

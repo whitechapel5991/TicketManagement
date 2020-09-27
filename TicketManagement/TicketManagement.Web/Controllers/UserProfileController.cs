@@ -29,8 +29,6 @@ namespace TicketManagement.Web.Controllers
         public ActionResult Index()
         {
             TicketManagementUser user = this.userService.FindByName(this.User.Identity.Name);
-            var userOrders = this.orderService.GetHistoryOrdersById(user);
-            var purchaseHistoryVM = this.MapFromListOrder(userOrders);
 
             UserProfileViewModel userView = new UserProfileViewModel
             {
@@ -41,13 +39,101 @@ namespace TicketManagement.Web.Controllers
                 UserName = user.UserName,
                 Language = (Language)Enum.Parse(typeof(Language), user.Language, true),
                 TimeZone = user.TimeZone,
-                PurchaseHistory = purchaseHistoryVM,
             };
 
-            return this.View("Index", userView);
+            return this.View(userView);
         }
 
-        private PurchaseHistoryViewModel MapFromListOrder(List<Order> orderList)
+        [Authorize]
+        public ActionResult Edit()
+        {
+            TicketManagementUser user = this.userService.FindByName(this.User.Identity.Name);
+
+            var editUserProfile = new EditUserProfileViewModel
+            {
+                FirstName = user.FirstName,
+                Surname = user.Surname,
+                Language = (Language)Enum.Parse(typeof(Language), user.Language, true),
+                TimeZone = user.TimeZone,
+                Email = user.Email,
+            };
+
+            return this.View(editUserProfile);
+        }
+
+        [HttpPost]
+        public ActionResult Edit(EditUserProfileViewModel userProfile)
+        {
+            if (this.ModelState.IsValid)
+            {
+                TicketManagementUser user = this.userService.FindByName(this.User.Identity.Name);
+
+                user.FirstName = userProfile.FirstName;
+                user.Surname = userProfile.Surname;
+                user.Language = userProfile.Language.ToString();
+                user.TimeZone = userProfile.TimeZone;
+                user.Email = userProfile.Email;
+
+                this.userService.Update(user);
+                return this.RedirectToAction("Index");
+            }
+               
+
+            return this.View(userProfile);
+        }
+
+        [Authorize]
+        public ActionResult ChangePassword()
+        {
+            return this.View(new UserPasswordViewModel());
+        }
+
+        [Authorize()]
+        [HttpPost]
+        public ActionResult ChangePassword(UserPasswordViewModel userPasswordModel)
+        {
+            if (this.ModelState.IsValid)
+            {
+                this.userService.ChangePassword(userPasswordModel.OldPassword, userPasswordModel.Password, this.User.Identity.Name);
+            }
+
+            return this.View(userPasswordModel);
+        }
+
+        [Authorize(Roles = "user")]
+        public ActionResult IncreaseBalance()
+        {
+            TicketManagementUser user = this.userService.FindByName(this.User.Identity.Name);
+
+            var balanceModel = new BalanceViewModel
+            {
+                Balance = user.Balance,
+            };
+
+            return this.View(balanceModel);
+        }
+
+        [HttpPost]
+        public ActionResult IncreaseBalance(BalanceViewModel balanceModel)
+        {
+            if (this.ModelState.IsValid)
+            {
+                this.userService.IncreaseBalance(balanceModel.Balance, this.User.Identity.Name);
+                return this.RedirectToAction("Index");
+            } 
+
+            return this.View(balanceModel);
+        }
+
+        [Authorize(Roles = "user")]
+        public ActionResult PurchaseHistory()
+        {
+            var userOrders = this.orderService.GetHistoryOrdersByName(this.User.Identity.Name);
+
+            return this.View(this.MapToPurchaseHistoryViewModel(userOrders));
+        }
+
+        private PurchaseHistoryViewModel MapToPurchaseHistoryViewModel(List<Order> orderList)
         {
             var purchaseHistoryVM = new PurchaseHistoryViewModel()
             {

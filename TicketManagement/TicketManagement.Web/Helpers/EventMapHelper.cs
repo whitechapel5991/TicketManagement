@@ -1,5 +1,6 @@
 ﻿using System.Web.Mvc;
 using TicketManagement.BLL.Dto;
+using TicketManagement.Web.Constants;
 
 namespace TicketManagement.Web.Helpers
 {
@@ -43,6 +44,8 @@ namespace TicketManagement.Web.Helpers
                 li.SetInnerText(
                     $"X: {eventSeat.Number}, Y: {eventSeat.Row}.\n" +
                     $"Status: {eventSeat.State}");
+
+                li.MergeAttribute("style", $"background-color: {SeatColor.GetSeatColor(eventSeat.State)};");
 
                 TagBuilder a = new TagBuilder("a")
                 {

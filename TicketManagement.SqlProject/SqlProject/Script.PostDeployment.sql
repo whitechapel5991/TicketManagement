@@ -217,7 +217,7 @@ GO
 SET IDENTITY_INSERT [dbo].[EventSeats] ON
 GO
 
-INSERT INTO [dbo].[EventSeats] ([Id], [State], [EventAreaId], [Row], [Number]) VALUES (1, 0, 1, 1, 1)
+INSERT INTO [dbo].[EventSeats] ([Id], [State], [EventAreaId], [Row], [Number]) VALUES (1, 1, 1, 1, 1)
 GO
 
 INSERT INTO [dbo].[EventSeats] ([Id], [State], [EventAreaId], [Row], [Number]) VALUES (2, 0, 1, 1, 2)
@@ -284,7 +284,7 @@ SET IDENTITY_INSERT [dbo].[AspNetUsers] ON
 GO
 
 INSERT INTO [dbo].[AspNetUsers] ([Id], [UserName], [Email], [EmailConfirmed], [PasswordHash], [Language], [TimeZone], [FirstName], [Surname], [Balance], [PhoneNumberConfirmed], [TwoFactorEnabled],[LockoutEnabled],[AccessFailedCount]) 
-VALUES (1, 'admin', 'admin@admin.com', 1, 'AN+dimATtnynaDlFB1TFqB0XWDWbytYMwSQMwWGVT2Pdd3ASxUmvmQSHY9eNc9DU9A==', 'ru', 'Belarus Standard Time', 'Admin', 'AdminS', 100000, 0, 0, 0, 0)
+VALUES (1, 'admin', 'whitechapel5991@gmail.com', 1, 'AN+dimATtnynaDlFB1TFqB0XWDWbytYMwSQMwWGVT2Pdd3ASxUmvmQSHY9eNc9DU9A==', 'ru', 'Belarus Standard Time', 'Admin', 'AdminS', 100000, 0, 0, 0, 0)
 GO
 
 INSERT INTO [dbo].[AspNetUsers] ([Id],[UserName], [Email], [EmailConfirmed],[PasswordHash], [Language], [TimeZone], [FirstName], [Surname], [Balance], [PhoneNumberConfirmed], [TwoFactorEnabled],[LockoutEnabled],[AccessFailedCount]) 
@@ -310,6 +310,9 @@ GO
 INSERT INTO [dbo].[AspNetRoles] ([Id], [Name]) VALUES (3, 'event manager')
 GO
 
+INSERT INTO [dbo].[AspNetRoles] ([Id], [Name]) VALUES (4, 'venue manager')
+GO
+
 SET IDENTITY_INSERT [dbo].[AspNetRoles] OFF
 GO
 
@@ -320,4 +323,13 @@ INSERT INTO [dbo].[AspNetUserRoles] ([UserId], [RoleId]) VALUES (2,2)
 GO
 
 INSERT INTO [dbo].[AspNetUserRoles] ([UserId], [RoleId]) VALUES (3,3)
+GO
+
+SET IDENTITY_INSERT [dbo].[Orders] ON
+GO
+
+INSERT INTO [dbo].[Orders] ([Id], [UserId], [EventSeatId], [Date]) VALUES (1, 1, 1, N'2020-09-09 12:00:00')
+GO
+
+SET IDENTITY_INSERT [dbo].[Orders] OFF
 GO

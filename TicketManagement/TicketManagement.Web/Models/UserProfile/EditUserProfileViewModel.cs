@@ -1,20 +1,14 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.Linq;
+using System.Web;
 using TicketManagement.Web.Constants;
 
 namespace TicketManagement.Web.Models.UserProfile
 {
-    public class UserProfileViewModel
+    public class EditUserProfileViewModel
     {
-        [Required]
-        [DataType(DataType.EmailAddress)]
-        [Display(Name = "Email")]
-        public string Email { get; set; }
-
-        [Required]
-        [StringLength(30, MinimumLength = 3)]
-        [Display(Name = "UserName")]
-        public string UserName { get; set; }
-
         [Required]
         [StringLength(30, MinimumLength = 2)]
         [Display(Name = "FirstName")]
@@ -33,8 +27,9 @@ namespace TicketManagement.Web.Models.UserProfile
         [Display(Name = "TimeZone")]
         public string TimeZone { get; set; }
 
-        [DataType(DataType.Currency)]
-        [Display(Name = "Balance")]
-        public decimal Balance { get; set; }
+        [Required]
+        [DataType(DataType.EmailAddress)]
+        [Display(Name = "Email")]
+        public string Email { get; set; }
     }
 }

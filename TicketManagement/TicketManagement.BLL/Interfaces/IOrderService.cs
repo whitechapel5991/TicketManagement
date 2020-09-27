@@ -13,8 +13,18 @@ namespace TicketManagement.BLL.Interfaces
 {
     public interface IOrderService
     {
-        void AddToCart(int eventSeatId, TicketManagementUser user);
+        void AddToCart(int eventSeatId, int userId);
 
-        List<Order> GetHistoryOrdersById(TicketManagementUser user);
+        void Buy(int orderId);
+
+        void DeleteFromCart(int orderId);
+
+        List<Order> GetHistoryOrdersById(int userId);
+
+        List<Order> GetHistoryOrdersByName(string userName);
+
+        List<Order> GetCartOrdersById(int userId);
+
+        List<Order> GetCartOrdersByName(string userName);
     }
 }

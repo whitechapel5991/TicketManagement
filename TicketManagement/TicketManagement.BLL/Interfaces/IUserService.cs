@@ -32,6 +32,10 @@ namespace TicketManagement.BLL.Interfaces
 
         OperationDetails Delete(TicketManagementUser user);
 
+        OperationDetails IncreaseBalance(decimal money, string userName);
+
+        OperationDetails ChangePassword(string oldPassword, string newPassword, string userName);
+
         List<TicketManagementUser> GetAllUsers();
     }
 }
