@@ -1,8 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Web;
 
 namespace TicketManagement.Web.Models.Cart
 {
@@ -15,15 +12,17 @@ namespace TicketManagement.Web.Models.Cart
     {
         public int OrderId { get; set; }
 
-        [StringLength(30, MinimumLength = 3)]
+        [StringLength(30, MinimumLength = 3, ErrorMessageResourceType = typeof(Resources.TicketManagementResource), ErrorMessageResourceName = "StringLenghtMessageFrom3to30symb")]
         public string EventName { get; set; }
 
         [StringLength(
             300,
-            MinimumLength = 5)]
+            MinimumLength = 5,
+            ErrorMessageResourceType = typeof(Resources.TicketManagementResource),
+            ErrorMessageResourceName = "StringLenghtMessageFrom5symb")]
         public string EventDescription { get; set; }
 
         [Range(typeof(decimal), "0.00", "1000000.00")]
-        public decimal EventCost { get; set; }
+        public decimal TicketCost { get; set; }
     }
 }

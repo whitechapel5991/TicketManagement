@@ -35,7 +35,7 @@ namespace TicketManagement.IntegrationTests.Util
                 throw new ArgumentNullException("builder");
             }
 
-            builder.RegisterModule(new AdoAutofacModule(this.connectionString));
+            builder.RegisterModule(new EfAutofacModule(this.connectionString));
             builder.RegisterModule(new ServiceAutofacModule(this.email, this.emailPassword, this.lockTime));
         }
     }

@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Web;
+﻿using System.ComponentModel.DataAnnotations;
 using TicketManagement.Web.Constants;
 
 namespace TicketManagement.Web.Models.UserProfile
@@ -10,26 +6,26 @@ namespace TicketManagement.Web.Models.UserProfile
     public class EditUserProfileViewModel
     {
         [Required]
-        [StringLength(30, MinimumLength = 2)]
-        [Display(Name = "FirstName")]
+        [StringLength(30, MinimumLength = 2, ErrorMessageResourceType = typeof(Resources.TicketManagementResource), ErrorMessageResourceName = "StringLenghtMessageFrom2to30symb")]
+        [Display(Name = "FirstName", ResourceType = typeof(Resources.TicketManagementResource))]
         public string FirstName { get; set; }
 
         [Required]
-        [StringLength(30, MinimumLength = 2)]
-        [Display(Name = "Surname")]
+        [StringLength(30, MinimumLength = 2, ErrorMessageResourceType = typeof(Resources.TicketManagementResource), ErrorMessageResourceName = "StringLenghtMessageFrom2to30symb")]
+        [Display(Name = "Surname", ResourceType = typeof(Resources.TicketManagementResource))]
         public string Surname { get; set; }
 
         [Required]
-        [Display(Name = "Language")]
+        [Display(Name = "Language", ResourceType = typeof(Resources.TicketManagementResource))]
         public Language Language { get; set; }
 
         [Required]
-        [Display(Name = "TimeZone")]
+        [Display(Name = "TimeZone", ResourceType = typeof(Resources.TicketManagementResource))]
         public string TimeZone { get; set; }
 
         [Required]
         [DataType(DataType.EmailAddress)]
-        [Display(Name = "Email")]
+        [Display(Name = "Email", ResourceType = typeof(Resources.TicketManagementResource))]
         public string Email { get; set; }
     }
 }

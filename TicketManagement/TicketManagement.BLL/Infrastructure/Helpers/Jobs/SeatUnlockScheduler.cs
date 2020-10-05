@@ -1,13 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
+﻿// ****************************************************************************
+// <copyright file="SeatUnlockScheduler.cs" company="EPAM Systems">
+// Copyright (c) EPAM Systems. All rights reserved.
+// Author Dzianis Shcharbakou.
+// </copyright>
+// ****************************************************************************
+
 using Quartz;
-using Quartz.Impl;
-using TicketManagement.DAL.Models;
-using TicketManagement.DAL.Repositories.Base;
 
 namespace TicketManagement.BLL.Infrastructure.Helpers.Jobs
 {
@@ -47,5 +45,4 @@ namespace TicketManagement.BLL.Infrastructure.Helpers.Jobs
             await this.scheduler.Interrupt($"job{eventSeatId}");
         }
     }
-
 }

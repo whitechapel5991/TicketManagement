@@ -7,34 +7,34 @@ namespace TicketManagement.Web.Models.UserProfile
     {
         [Required]
         [DataType(DataType.EmailAddress)]
-        [Display(Name = "Email")]
+        [Display(Name = "Email", ResourceType = typeof(Resources.TicketManagementResource))]
         public string Email { get; set; }
 
         [Required]
-        [StringLength(30, MinimumLength = 3)]
-        [Display(Name = "UserName")]
+        [StringLength(30, MinimumLength = 3, ErrorMessageResourceType = typeof(Resources.TicketManagementResource), ErrorMessageResourceName = "StringLenghtMessageFrom3to30symb")]
+        [Display(Name = "UserName", ResourceType = typeof(Resources.TicketManagementResource))]
         public string UserName { get; set; }
 
         [Required]
-        [StringLength(30, MinimumLength = 2)]
-        [Display(Name = "FirstName")]
+        [StringLength(30, MinimumLength = 2, ErrorMessageResourceType = typeof(Resources.TicketManagementResource), ErrorMessageResourceName = "StringLenghtMessageFrom2to30symb")]
+        [Display(Name = "FirstName", ResourceType = typeof(Resources.TicketManagementResource))]
         public string FirstName { get; set; }
 
         [Required]
-        [StringLength(30, MinimumLength = 2)]
-        [Display(Name = "Surname")]
+        [StringLength(30, MinimumLength = 2, ErrorMessageResourceType = typeof(Resources.TicketManagementResource), ErrorMessageResourceName = "StringLenghtMessageFrom2to30symb")]
+        [Display(Name = "Surname", ResourceType = typeof(Resources.TicketManagementResource))]
         public string Surname { get; set; }
 
         [Required]
-        [Display(Name = "Language")]
+        [Display(Name = "Language", ResourceType = typeof(Resources.TicketManagementResource))]
         public Language Language { get; set; }
 
         [Required]
-        [Display(Name = "TimeZone")]
+        [Display(Name = "TimeZone", ResourceType = typeof(Resources.TicketManagementResource))]
         public string TimeZone { get; set; }
 
         [DataType(DataType.Currency)]
-        [Display(Name = "Balance")]
+        [Display(Name = "Balance", ResourceType = typeof(Resources.TicketManagementResource))]
         public decimal Balance { get; set; }
     }
 }

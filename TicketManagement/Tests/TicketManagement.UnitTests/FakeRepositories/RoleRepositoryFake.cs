@@ -7,13 +7,12 @@
 
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNet.Identity;
+using TicketManagement.BLL.Interfaces.Identity;
 using TicketManagement.DAL.Models.Identity;
 
 namespace TicketManagement.UnitTests.FakeRepositories
 {
-    public class RoleRepositoryFake : IRoleStore<Role, int>
+    public class RoleRepositoryFake : IRoleService
     {
         private readonly List<Role> repositoryData;
 
@@ -22,43 +21,41 @@ namespace TicketManagement.UnitTests.FakeRepositories
             this.repositoryData = repositoryData;
         }
 
-        public Task CreateAsync(Role role)
+        public void Add(string roleName)
         {
-            this.repositoryData.Add(role);
-            return Task.CompletedTask;
+            this.repositoryData.Add(new Role { Name = roleName });
         }
 
-        public Task DeleteAsync(Role role)
+        public void Delete(string roleName)
         {
-            this.repositoryData.Add(role);
-            return Task.CompletedTask;
+            this.repositoryData.Remove(this.repositoryData.Find(x => x.Name == roleName));
         }
 
-        public void Dispose()
+        public Role FindById(int id)
         {
-            // Empty
+            return this.repositoryData.First(x => x.Id == id);
         }
 
-        public Task<Role> FindByIdAsync(int roleId)
+        public Role FindByName(string roleName)
         {
-            return Task.FromResult<Role>(this.repositoryData.First(x => x.Id == roleId));
+            return this.repositoryData.First(x => x.Name == roleName);
         }
 
-        public Task<Role> FindByNameAsync(string roleName)
+        public IQueryable<Role> GetAll()
         {
-            return Task.FromResult<Role>(this.repositoryData.First(x => x.Name == roleName));
+            return this.repositoryData.AsQueryable();
         }
 
-        public Task UpdateAsync(Role role)
+        public void Update(Role role)
         {
             int index = this.repositoryData.FindIndex(x => x.Id == role.Id);
-            if (index != -1)
+            if (index == -1)
             {
-                this.repositoryData.RemoveAt(index);
-                this.repositoryData.Insert(index, role);
+                return;
             }
 
-            return Task.CompletedTask;
+            this.repositoryData.RemoveAt(index);
+            this.repositoryData.Insert(index, role);
         }
     }
 }

@@ -1,8 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Web;
 using System.Web.Mvc;
 
 namespace TicketManagement.Web.Areas.EventManager.Data
@@ -11,7 +8,7 @@ namespace TicketManagement.Web.Areas.EventManager.Data
     {
         public IndexEventViewModel IndexEventViewModel { get; set; }
 
-        [Display(Name = "LayoutId")]
+        [Display(Name = "LayoutId", ResourceType = typeof(Resources.TicketManagementResource))]
         public int LayoutId { get; set; }
 
         public IEnumerable<SelectListItem> LayoutList { get; set; }

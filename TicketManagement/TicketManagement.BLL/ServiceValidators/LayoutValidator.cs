@@ -16,10 +16,12 @@ namespace TicketManagement.BLL.ServiceValidators
 {
     internal class LayoutValidator : ILayoutValidator
     {
-        private readonly IRepository<Layout> layoutRepository;
-        private readonly IRepository<Venue> venueRepository;
+        private readonly IRepository<Layout, int> layoutRepository;
+        private readonly IRepository<Venue, int> venueRepository;
 
-        public LayoutValidator(IRepository<Layout> layoutRepository, IRepository<Venue> venueRepository)
+        public LayoutValidator(
+            IRepository<Layout, int> layoutRepository,
+            IRepository<Venue, int> venueRepository)
         {
             this.layoutRepository = layoutRepository;
             this.venueRepository = venueRepository;

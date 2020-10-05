@@ -5,14 +5,11 @@
 // </copyright>
 // ****************************************************************************
 
-using System.Threading.Tasks;
 using Autofac;
 using AutoFixture;
 using FluentAssertions;
 using NUnit.Framework;
-using NUnit.Framework.Internal;
-using TicketManagement.BLL.Infrastructure;
-using TicketManagement.BLL.Interfaces;
+using TicketManagement.BLL.Interfaces.Identity;
 using TicketManagement.DAL.Models.Identity;
 using Test = TicketManagement.IntegrationTests.TestBase.TestBase;
 
@@ -32,7 +29,7 @@ namespace TicketManagement.IntegrationTests.ServiceTests
         [Test]
         public void Create_AddNewUser_GetNewUserByName()
         {
-            TicketManagementUser userDto = new TicketManagementUser
+            var userDto = new TicketManagementUser
             {
                 Email = "sbaka1111@gmail.com",
                 Password = "adminadmin",
@@ -43,11 +40,10 @@ namespace TicketManagement.IntegrationTests.ServiceTests
                 TimeZone = "Belarus",
             };
 
-            var expected = new OperationDetails(true, "Registration successfull", string.Empty);
+            this.userService.Add(userDto);
+            var actualUser = this.userService.FindByName("Den");
 
-            var results = this.userService.Create(userDto);
-
-            expected.Should().BeEquivalentTo(results);
+            actualUser.Should().BeEquivalentTo(userDto);
         }
 
         [Test]
@@ -57,8 +53,6 @@ namespace TicketManagement.IntegrationTests.ServiceTests
                 .With(x => x.UserName, "admin")
                 .With(x => x.Password, "adminadmin")
                 .Create();
-
-            var results = this.userService.Authenticate(dto);
         }
     }
 }

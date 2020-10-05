@@ -1,8 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿// ****************************************************************************
+// <copyright file="HtmlHelper.cs" company="EPAM Systems">
+// Copyright (c) EPAM Systems. All rights reserved.
+// Author Dzianis Shcharbakou.
+// </copyright>
+// ****************************************************************************
+
 using TicketManagement.BLL.Infrastructure.Helpers.Interfaces;
 using TicketManagement.DAL.Models;
 

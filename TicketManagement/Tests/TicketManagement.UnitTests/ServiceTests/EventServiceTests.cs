@@ -54,7 +54,7 @@ namespace TicketManagement.UnitTests.ServiceTests
             this.Mock = AutoMock.GetLoose(builder =>
             {
                 builder.RegisterInstance(fakeVenueRepository)
-                .As<IRepository<Event>>();
+                .As<IRepository<Event, int>>();
             });
         }
 
@@ -68,7 +68,7 @@ namespace TicketManagement.UnitTests.ServiceTests
         public void AddEvent_AddNewEvent_GetCountEvents()
         {
             // Arrange
-            var eventRepository = this.Mock.Create<IRepository<Event>>();
+            var eventRepository = this.Mock.Create<IRepository<Event, int>>();
             this.eventService = this.Mock.Create<EventService>();
             var dto = this.Fixture.Build<Event>().Create();
             var expected = new List<Event>
@@ -99,7 +99,7 @@ namespace TicketManagement.UnitTests.ServiceTests
         public void UpdateEvent_NewEvent_GetEventDescription()
         {
             // Arrange
-            var eventRepository = this.Mock.Create<IRepository<Event>>();
+            var eventRepository = this.Mock.Create<IRepository<Event, int>>();
             this.eventService = this.Mock.Create<EventService>();
             var id = 2;
             var expectedDto = this.Fixture.Build<Event>().With(e => e.Id, id).Create();
@@ -115,7 +115,7 @@ namespace TicketManagement.UnitTests.ServiceTests
         public void PublishEvent_UpdateOnlyPublishFlag_GetPublishEvent()
         {
             // Arrange
-            var eventRepository = this.Mock.Create<IRepository<Event>>();
+            var eventRepository = this.Mock.Create<IRepository<Event, int>>();
             this.eventService = this.Mock.Create<EventService>();
             var id = 1;
             var expectedDto = new Event()
@@ -140,7 +140,7 @@ namespace TicketManagement.UnitTests.ServiceTests
         public void DeleteEvent_EventId_GeteventsCount()
         {
             // Arrange
-            var eventRepository = this.Mock.Create<IRepository<Event>>();
+            var eventRepository = this.Mock.Create<IRepository<Event, int>>();
             this.eventService = this.Mock.Create<EventService>();
             int id = 2;
             var expected = new List<Event>
@@ -164,7 +164,7 @@ namespace TicketManagement.UnitTests.ServiceTests
         public void GetEvent_EventId_GetEventDescription()
         {
             // Arrange
-            var eventRepository = this.Mock.Create<IRepository<Event>>();
+            var eventRepository = this.Mock.Create<IRepository<Event, int>>();
             this.eventService = this.Mock.Create<EventService>();
             var id = 1;
             var expectedDto = new Event()
@@ -188,7 +188,7 @@ namespace TicketManagement.UnitTests.ServiceTests
         public void GetEvents_GetEventsCount()
         {
             // Arrange
-            var eventRepository = this.Mock.Create<IRepository<Event>>();
+            var eventRepository = this.Mock.Create<IRepository<Event, int>>();
             this.eventService = this.Mock.Create<EventService>();
             var expected = new List<Event>
             {

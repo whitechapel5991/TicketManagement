@@ -1,8 +1,15 @@
 ﻿using Autofac;
 using System;
 using System.Configuration;
+using System.Web;
+using Autofac.Integration.Mvc;
+using Microsoft.AspNet.Identity;
+using Microsoft.Owin.Security;
 using TicketManagement.BLL.Util;
 using TicketManagement.DAL.Util;
+using TicketManagement.Web.Interfaces;
+using TicketManagement.Web.Services;
+using TicketManagement.Web.Services.Identity;
 
 namespace TicketManagement.Web.Util
 {
@@ -28,7 +35,28 @@ namespace TicketManagement.Web.Util
                 throw new ArgumentNullException("builder");
             }
 
-            builder.RegisterModule(new AdoAutofacModule(this.connectionString));
+            builder.RegisterControllers(typeof(MvcApplication).Assembly);
+
+            builder.RegisterType<UserStore>()
+                .As<IUserStore<IdentityUser, int>>()
+                .InstancePerLifetimeScope();
+
+            builder.RegisterType<RoleStore>()
+                .As<IRoleStore<IdentityRole, int>>()
+                .InstancePerLifetimeScope();
+
+            builder.RegisterType<RoleStore>()
+                .As<IRoleStore<IdentityRole, int>>()
+                .InstancePerLifetimeScope();
+
+            builder.RegisterType<AccountService>()
+                .As<IAccountService>()
+                .InstancePerLifetimeScope();
+
+            builder.Register<IAuthenticationManager>(context => HttpContext.Current.GetOwinContext().Authentication)
+                .InstancePerRequest();
+
+            builder.RegisterModule(new EfAutofacModule(this.connectionString));
             builder.RegisterModule(new ServiceAutofacModule(this.email, this.emailPassword, this.lockTime));
         }
     }

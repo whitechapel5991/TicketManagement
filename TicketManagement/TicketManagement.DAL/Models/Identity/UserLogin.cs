@@ -5,11 +5,16 @@
 // </copyright>
 // ****************************************************************************
 
-using Microsoft.AspNet.Identity.EntityFramework;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace TicketManagement.DAL.Models.Identity
 {
-    public class UserLogin : IdentityUserLogin<int>
+    [Table("AspNetUserLogins")]
+    public class UserLogin : UserLoginKey
     {
+        [Key]
+        [Column(Order = 1)]
+        public int UserId { get; set; }
     }
 }

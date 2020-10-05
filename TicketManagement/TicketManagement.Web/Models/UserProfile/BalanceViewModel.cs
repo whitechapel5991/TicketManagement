@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Web;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace TicketManagement.Web.Models.UserProfile
 {
@@ -12,7 +8,7 @@ namespace TicketManagement.Web.Models.UserProfile
         [DataType(
             DataType.Currency)]
         [DisplayFormat(DataFormatString = "{0:C2}", ApplyFormatInEditMode = true)]
-        [Display(Name = "Balance")]
+        [Display(Name = "Balance", ResourceType = typeof(Resources.TicketManagementResource))]
         public decimal Balance { get; set; }
     }
 }

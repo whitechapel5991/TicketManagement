@@ -161,17 +161,17 @@ namespace TicketManagement.UnitTests.ValidatorTests
             this.Mock = AutoMock.GetLoose(builder =>
             {
                 builder.RegisterInstance(fakeLayoutRepository)
-                .As<IRepository<Layout>>();
+                .As<IRepository<Layout, int>>();
                 builder.RegisterInstance(fakeEventRepository)
-                .As<IRepository<Event>>();
+                .As<IRepository<Event, int>>();
                 builder.RegisterInstance(fakeAreaRepository)
-                .As<IRepository<Area>>();
+                .As<IRepository<Area, int>>();
                 builder.RegisterInstance(fakeSeatsRepository)
-               .As<IRepository<Seat>>();
+               .As<IRepository<Seat, int>>();
                 builder.RegisterInstance(fakeEventAreaRepository)
-               .As<IRepository<EventArea>>();
+               .As<IRepository<EventArea, int>>();
                 builder.RegisterInstance(fakeEventSeatRepository)
-               .As<IRepository<EventSeat>>();
+               .As<IRepository<EventSeat, int>>();
             });
         }
 

@@ -15,10 +15,10 @@ namespace TicketManagement.BLL.Services
 {
     internal class VenueService : IVenueService
     {
-        private readonly IRepository<Venue> venueRepository;
+        private readonly IRepository<Venue, int> venueRepository;
         private readonly IVenueValidator venueValidator;
 
-        public VenueService(IRepository<Venue> venueRepository, IVenueValidator validator)
+        public VenueService(IRepository<Venue, int> venueRepository, IVenueValidator validator)
         {
             this.venueRepository = venueRepository;
             this.venueValidator = validator;

@@ -15,9 +15,9 @@ namespace TicketManagement.BLL.ServiceValidators
 {
     public class VenueValidator : IVenueValidator
     {
-        private readonly IRepository<Venue> venueRepository;
+        private readonly IRepository<Venue, int> venueRepository;
 
-        public VenueValidator(IRepository<Venue> venueRepository)
+        public VenueValidator(IRepository<Venue, int> venueRepository)
         {
             this.venueRepository = venueRepository;
         }

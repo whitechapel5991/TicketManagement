@@ -48,6 +48,12 @@
     <Reference Include="Autofac.Integration.Mvc, Version=5.0.0.0, Culture=neutral, PublicKeyToken=17863af14b0044da, processorArchitecture=MSIL">
       <HintPath>..\packages\Autofac.Mvc5.5.0.0\lib\net461\Autofac.Integration.Mvc.dll</HintPath>
     </Reference>
+    <Reference Include="Autofac.Integration.Mvc.Owin, Version=5.0.0.0, Culture=neutral, PublicKeyToken=17863af14b0044da, processorArchitecture=MSIL">
+      <HintPath>..\packages\Autofac.Mvc5.Owin.5.0.0\lib\net461\Autofac.Integration.Mvc.Owin.dll</HintPath>
+    </Reference>
+    <Reference Include="Autofac.Integration.Owin, Version=5.0.1.0, Culture=neutral, PublicKeyToken=17863af14b0044da, processorArchitecture=MSIL">
+      <HintPath>..\packages\Autofac.Owin.5.0.1\lib\net461\Autofac.Integration.Owin.dll</HintPath>
+    </Reference>
     <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.dll</HintPath>
     </Reference>
@@ -170,11 +176,11 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\IocContainerConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
-    <Compile Include="App_Start\Startup.cs" />
+    <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="Areas\EventManager\Controllers\EventController.cs" />
     <Compile Include="Areas\EventManager\Data\EventViewModel.cs" />
     <Compile Include="Areas\EventManager\Data\IndexEventViewModel.cs" />
-    <Compile Include="Areas\EventManager\Data\SeatViewModel.cs" />
+    <Compile Include="Areas\EventManager\Data\AreaViewModel.cs" />
     <Compile Include="Areas\EventManager\EventManagerAreaRegistration.cs" />
     <Compile Include="Constants\Language.cs" />
     <Compile Include="Constants\SeatColor.cs" />
@@ -188,6 +194,11 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Helpers\EventMapHelper.cs" />
+    <Compile Include="Interfaces\IAccountService.cs" />
+    <Compile Include="Interfaces\ICartService.cs" />
+    <Compile Include="Interfaces\IEventManagerEventService.cs" />
+    <Compile Include="Interfaces\IEventService.cs" />
+    <Compile Include="Interfaces\IUserProfileService.cs" />
     <Compile Include="Models\Account\LoginViewModel.cs" />
     <Compile Include="Models\Account\RegisterViewModel.cs" />
     <Compile Include="Models\Account\UserPasswordViewModel.cs" />
@@ -199,6 +210,31 @@
     <Compile Include="Models\UserProfile\UserPasswordViewModel.cs" />
     <Compile Include="Models\UserProfile\UserProfileViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Resources\TicketManagementResource.en.Designer.cs">
+      <DependentUpon>TicketManagementResource.en.resx</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="Resources\TicketManagementResource.be.Designer.cs">
+      <DependentUpon>TicketManagementResource.be.resx</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="Resources\TicketManagementResource.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>TicketManagementResource.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Services\AccountService.cs" />
+    <Compile Include="Services\CartService.cs" />
+    <Compile Include="Services\EventManagerEventService.cs" />
+    <Compile Include="Services\EventService.cs" />
+    <Compile Include="Services\Identity\IdentityRole.cs" />
+    <Compile Include="Services\Identity\IdentityUser.cs" />
+    <Compile Include="Services\Identity\RoleStore.cs" />
+    <Compile Include="Services\Identity\UserStore.cs" />
+    <Compile Include="Services\UserProfileService.cs" />
+    <Compile Include="Startup.cs" />
     <Compile Include="Util\WebIocModule.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -247,6 +283,23 @@
       <Project>{6adbb0c8-8a69-4f66-a817-fc79d2995799}</Project>
       <Name>TicketManagement.DAL</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\TicketManagementResource.en.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>TicketManagementResource.en.Designer.cs</LastGenOutput>
+      <CustomToolNamespace>Resources</CustomToolNamespace>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\TicketManagementResource.be.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>TicketManagementResource.be.Designer.cs</LastGenOutput>
+      <CustomToolNamespace>Resources</CustomToolNamespace>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\TicketManagementResource.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>TicketManagementResource.Designer.cs</LastGenOutput>
+      <CustomToolNamespace>Resources</CustomToolNamespace>
+    </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

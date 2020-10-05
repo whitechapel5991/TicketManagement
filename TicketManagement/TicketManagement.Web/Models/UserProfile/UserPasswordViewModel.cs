@@ -1,28 +1,26 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Web;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace TicketManagement.Web.Models.UserProfile
 {
     public class UserPasswordViewModel
     {
-        [Required()]
+        [Required(ErrorMessageResourceType = typeof(Resources.TicketManagementResource),
+            ErrorMessageResourceName = "PasswordRequired")]
         [DataType(DataType.Password)]
-        [StringLength(20, MinimumLength = 8)]
-        [Display(Name = "OldPassword")]
+        [StringLength(20, MinimumLength = 8, ErrorMessageResourceType = typeof(Resources.TicketManagementResource), ErrorMessageResourceName = "PasswordMustBeFrom8To20symb")]
+        [Display(Name = "OldPassword", ResourceType = typeof(Resources.TicketManagementResource))]
         public string OldPassword { get; set; }
 
-        [Required()]
+        [Required(ErrorMessageResourceType = typeof(Resources.TicketManagementResource),
+            ErrorMessageResourceName = "PasswordRequired")]
         [DataType(DataType.Password)]
-        [StringLength(20, MinimumLength = 8)]
-        [Display(Name = "Password")]
+        [StringLength(20, MinimumLength = 8, ErrorMessageResourceType = typeof(Resources.TicketManagementResource), ErrorMessageResourceName = "PasswordMustBeFrom8To20symb")]
+        [Display(Name = "Password", ResourceType = typeof(Resources.TicketManagementResource))]
         public string Password { get; set; }
 
-        [Compare("Password")]
+        [Compare("Password", ErrorMessageResourceType = typeof(Resources.TicketManagementResource), ErrorMessageResourceName = "PasswordsDoNotMatch")]
         [DataType(DataType.Password)]
-        [Display(Name = "PasswordConfirm")]
+        [Display(Name = "PasswordConfirm", ResourceType = typeof(Resources.TicketManagementResource))]
         public string PasswordConfirm { get; set; }
     }
 }

@@ -5,17 +5,22 @@
 // </copyright>
 // ****************************************************************************
 
-using Microsoft.AspNet.Identity.EntityFramework;
+using System.Linq;
 using TicketManagement.DAL.EFContext;
 using TicketManagement.DAL.Models.Identity;
 
 namespace TicketManagement.DAL.Repositories.Identity
 {
-    public class RoleRepository : RoleStore<Role, int, UserRole>
+    internal class RoleRepository : Repository<Role>, IRoleRepository
     {
-        public RoleRepository(TicketManagementContext dbContext)
-            : base(dbContext)
+        public RoleRepository(TicketManagementContext context)
+            : base(context)
         {
+        }
+
+        public Role FindByName(string roleName)
+        {
+            return this.DbSet.First(x => x.Name == roleName);
         }
     }
 }

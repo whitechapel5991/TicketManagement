@@ -98,9 +98,9 @@ namespace TicketManagement.UnitTests.ValidatorTests
             this.Mock = AutoMock.GetLoose(builder =>
             {
                 builder.RegisterInstance(fakeSeatsRepository)
-                .As<IRepository<Seat>>();
+                .As<IRepository<Seat, int>>();
                 builder.RegisterInstance(fakeAreasRepository)
-                .As<IRepository<Area>>();
+                .As<IRepository<Area, int>>();
             });
         }
 
@@ -114,7 +114,7 @@ namespace TicketManagement.UnitTests.ValidatorTests
         public void AddSeat_NonexistentArea_GetException()
         {
             // Arrange
-            var seatRepository = this.Mock.Create<IRepository<Seat>>();
+            var seatRepository = this.Mock.Create<IRepository<Seat, int>>();
             this.seatValidator = this.Mock.Create<SeatValidator>();
             var nonexistingAreaId = 100000;
             var dto = new Seat
@@ -135,7 +135,7 @@ namespace TicketManagement.UnitTests.ValidatorTests
         public void AddSeat_IsSeatRowAndNumber_GetException()
         {
             // Arrange
-            var seatRepository = this.Mock.Create<IRepository<Seat>>();
+            var seatRepository = this.Mock.Create<IRepository<Seat, int>>();
             this.seatValidator = this.Mock.Create<SeatValidator>();
             var dto = new Seat
             {
@@ -155,7 +155,7 @@ namespace TicketManagement.UnitTests.ValidatorTests
         public void AddSeat_IsSeatRowAndNumber_NotThrowException()
         {
             // Arrange
-            var seatRepository = this.Mock.Create<IRepository<Seat>>();
+            var seatRepository = this.Mock.Create<IRepository<Seat, int>>();
             this.seatValidator = this.Mock.Create<SeatValidator>();
             var dto = new Seat
             {

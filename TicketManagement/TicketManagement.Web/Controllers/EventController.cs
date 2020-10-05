@@ -1,11 +1,8 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using System.Security.Claims;
+﻿using System.Security.Claims;
 using System.Web.Mvc;
 using TicketManagement.BLL.Interfaces;
-using TicketManagement.DAL.Models;
 using TicketManagement.Web.Filters;
-using TicketManagement.Web.Models.Event;
+using IEventServiceWeb = TicketManagement.Web.Interfaces.IEventService;
 
 namespace TicketManagement.Web.Controllers
 {
@@ -14,24 +11,18 @@ namespace TicketManagement.Web.Controllers
     public class EventController : Controller
     {
         private readonly IEventService eventService;
-        private readonly ILayoutService layoutService;
         private readonly IEventAreaService eventAreaService;
-        private readonly IOrderService orderService;
-        private readonly IUserService userService;
+        private readonly IEventServiceWeb eventWebService;
 
         public EventController(
+            IEventServiceWeb eventWebService,
             IEventService eventService,
-            ILayoutService layoutService,
-            IEventAreaService eventAreaService,
-            IOrderService orderService,
-            IUserService userService
-            )
+            IEventAreaService eventAreaService
+        )
         {
-            this.orderService = orderService;
+            this.eventWebService = eventWebService;
             this.eventAreaService = eventAreaService;
             this.eventService = eventService;
-            this.layoutService = layoutService;
-            this.userService = userService;
         }
 
         [HttpGet]
@@ -39,18 +30,14 @@ namespace TicketManagement.Web.Controllers
         [Authorize(Roles = "user, admin, event manager")]
         public ActionResult Events()
         {
-            var eventDtos = this.eventService.GetPublishEvents();
-
-            var events = this.MapToEventViewModel(eventDtos);
-
-            return this.View(events);
+            return this.View(this.eventWebService.GetPublishEvents());
         }
 
         [Authorize(Roles = "user, admin, event manager")]
-        public ActionResult EventDetail(int? id)
+        public ActionResult EventDetail(int id)
         {
-            var eventDto = this.eventService.GetEventMap(id.Value);
-            if (eventDto == null)
+            var eventDto = this.eventService.GetEventMap(id);
+            if (eventDto == default)
             {
                 return this.HttpNotFound();
             }
@@ -59,9 +46,9 @@ namespace TicketManagement.Web.Controllers
         }
 
         [Authorize(Roles = "user, admin, event manager")]
-        public ActionResult EventAreaDetail(int? id)
+        public ActionResult EventAreaDetail(int id)
         {
-            var eventAreaDto = this.eventAreaService.GetEventAreaMap(id.Value);
+            var eventAreaDto = this.eventAreaService.GetEventAreaMap(id);
             if (eventAreaDto == null)
             {
                 return this.HttpNotFound();
@@ -72,35 +59,9 @@ namespace TicketManagement.Web.Controllers
 
         [Authorize(Roles = "user")]
         [HttpPost]
-        public void AddToCart(int? seatId)
+        public void AddToCart(int seatId)
         {
-            var identity = (ClaimsIdentity)this.User.Identity;
-            var user = this.userService.FindByName(identity.Claims.FirstOrDefault(x => x.Type == ClaimTypes.Name)?.Value);
-            this.orderService.AddToCart(seatId.Value, user.Id);
-        }
-
-        private IEnumerable<EventViewModel> MapToEventViewModel(IEnumerable<Event> events)
-        {
-            List<EventViewModel> eventViewModelList = new List<EventViewModel>();
-            foreach (Event @event in events)
-            {
-                EventViewModel eventViewModel = new EventViewModel
-                {
-                    Id = @event.Id,
-                    Name = @event.Name,
-                    Description = @event.Description,
-                    BeginDate = @event.BeginDate,
-                    EndDate = @event.EndDate,
-                    BeginTime = @event.BeginDate,
-                    EndTime = @event.EndDate,
-                    CountFreeSeats = this.eventService.AvailibleSeatCount(@event.Id),
-                    LayoutName = layoutService.GetLayout(@event.LayoutId).Name,
-                };
-
-                eventViewModelList.Add(eventViewModel);
-            }
-
-            return eventViewModelList;
+            this.eventWebService.AddToCart(seatId, (ClaimsIdentity)this.User.Identity);
         }
     }
 }

@@ -1,0 +1,420 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="AddInBasket" xml:space="preserve">
+    <value>Add to Basket</value>
+  </data>
+  <data name="AreaNotFound" xml:space="preserve">
+    <value>Area not found</value>
+  </data>
+  <data name="Areas" xml:space="preserve">
+    <value>Areas</value>
+  </data>
+  <data name="AreasNotHasSeats" xml:space="preserve">
+    <value>Areas do not has seats</value>
+  </data>
+  <data name="Back" xml:space="preserve">
+    <value>Back to list</value>
+  </data>
+  <data name="BackToProfile" xml:space="preserve">
+    <value>Back to profile</value>
+  </data>
+  <data name="Balance" xml:space="preserve">
+    <value>Balance</value>
+  </data>
+  <data name="Basket" xml:space="preserve">
+    <value>Basket</value>
+  </data>
+  <data name="BasketEmptyException" xml:space="preserve">
+    <value>Basket is empty</value>
+  </data>
+  <data name="BeginDate" xml:space="preserve">
+    <value>Begin date</value>
+  </data>
+  <data name="BeginDateLongerEndDateException" xml:space="preserve">
+    <value>Begin date cannot be longer than end date</value>
+  </data>
+  <data name="BeginTime" xml:space="preserve">
+    <value>Begin time</value>
+  </data>
+  <data name="Buy" xml:space="preserve">
+    <value>Buy</value>
+  </data>
+  <data name="ChangePassword" xml:space="preserve">
+    <value>Change password</value>
+  </data>
+  <data name="ChooseLang" xml:space="preserve">
+    <value>Change language</value>
+  </data>
+  <data name="ClearBasket" xml:space="preserve">
+    <value>Clear basket</value>
+  </data>
+  <data name="Cost" xml:space="preserve">
+    <value>Cost</value>
+  </data>
+  <data name="CountFreeSeats" xml:space="preserve">
+    <value>Number of available seats</value>
+  </data>
+  <data name="Create" xml:space="preserve">
+    <value>Add</value>
+  </data>
+  <data name="CreateEventInSameTimeException" xml:space="preserve">
+    <value>Event can not be created in same time with other eventViewModel</value>
+  </data>
+  <data name="CreateInPastException" xml:space="preserve">
+    <value>Can not create an eventViewModel in the past</value>
+  </data>
+  <data name="Delete" xml:space="preserve">
+    <value>Delete</value>
+  </data>
+  <data name="Description" xml:space="preserve">
+    <value>Description</value>
+  </data>
+  <data name="Details" xml:space="preserve">
+    <value>Details</value>
+  </data>
+  <data name="Edit" xml:space="preserve">
+    <value>Update</value>
+  </data>
+  <data name="EditPass" xml:space="preserve">
+    <value>Change password</value>
+  </data>
+  <data name="EditUserProfile" xml:space="preserve">
+    <value>Change user profile</value>
+  </data>
+  <data name="Email" xml:space="preserve">
+    <value>Email</value>
+  </data>
+  <data name="EmailRequired" xml:space="preserve">
+    <value>Field "Email" must be filled</value>
+  </data>
+  <data name="EndDate" xml:space="preserve">
+    <value>End date</value>
+  </data>
+  <data name="EndTime" xml:space="preserve">
+    <value>End time</value>
+  </data>
+  <data name="Event" xml:space="preserve">
+    <value>Event</value>
+  </data>
+  <data name="EventAreaNotFound" xml:space="preserve">
+    <value>Event area not found</value>
+  </data>
+  <data name="EventInfo" xml:space="preserve">
+    <value>Event Information</value>
+  </data>
+  <data name="EventIsNotCancelException" xml:space="preserve">
+    <value>You can not cancel a publication, one or more tickets have already been sold</value>
+  </data>
+  <data name="EventIsNotDeletingException" xml:space="preserve">
+    <value>Event is not deleting (edit), because one or more ticket have been sold</value>
+  </data>
+  <data name="EventName" xml:space="preserve">
+    <value>Event</value>
+  </data>
+  <data name="EventNotCreatedWitoutSeatsException" xml:space="preserve">
+    <value>Event cannot be created without seats</value>
+  </data>
+  <data name="EventNotFound" xml:space="preserve">
+    <value>Event not found</value>
+  </data>
+  <data name="EventPassedException" xml:space="preserve">
+    <value>The eventViewModel has already passed</value>
+  </data>
+  <data name="Events" xml:space="preserve">
+    <value>Events</value>
+  </data>
+  <data name="EventSeatNotFound" xml:space="preserve">
+    <value>Event seat not found</value>
+  </data>
+  <data name="ExistAreaWithDescription" xml:space="preserve">
+    <value>There is area with this description</value>
+  </data>
+  <data name="FirstName" xml:space="preserve">
+    <value>First name</value>
+  </data>
+  <data name="FirstNameRequired" xml:space="preserve">
+    <value>Field "First name" must be filled</value>
+  </data>
+  <data name="Image" xml:space="preserve">
+    <value>Image</value>
+  </data>
+  <data name="ImageNotFound" xml:space="preserve">
+    <value>Image not found</value>
+  </data>
+  <data name="IncorrectCurrency" xml:space="preserve">
+    <value>Incorrect amount</value>
+  </data>
+  <data name="IncorrectEmail" xml:space="preserve">
+    <value>Invalid email address</value>
+  </data>
+  <data name="Language" xml:space="preserve">
+    <value>Language</value>
+  </data>
+  <data name="Layout" xml:space="preserve">
+    <value>Layout</value>
+  </data>
+  <data name="LayoutId" xml:space="preserve">
+    <value>Layout</value>
+  </data>
+  <data name="LayoutNotFound" xml:space="preserve">
+    <value>Layout not found</value>
+  </data>
+  <data name="LayoutNotHasAreasException" xml:space="preserve">
+    <value>Layout do not has areas</value>
+  </data>
+  <data name="Login" xml:space="preserve">
+    <value>Log in</value>
+  </data>
+  <data name="LoginTitle" xml:space="preserve">
+    <value>Enter data</value>
+  </data>
+  <data name="LogOut" xml:space="preserve">
+    <value>Log out</value>
+  </data>
+  <data name="ManagerEvents" xml:space="preserve">
+    <value>Events (manager)</value>
+  </data>
+  <data name="Name" xml:space="preserve">
+    <value>User name</value>
+  </data>
+  <data name="NameRequired" xml:space="preserve">
+    <value>Field "User name" must be filled</value>
+  </data>
+  <data name="NotEnoughMoneyException" xml:space="preserve">
+    <value>Not enough money on the account</value>
+  </data>
+  <data name="NotSelectedSeatsException" xml:space="preserve">
+    <value>No seats selected</value>
+  </data>
+  <data name="OldPassword" xml:space="preserve">
+    <value>Old password</value>
+  </data>
+  <data name="Password" xml:space="preserve">
+    <value>Password</value>
+  </data>
+  <data name="PasswordConfirm" xml:space="preserve">
+    <value>Confirm the password</value>
+  </data>
+  <data name="PasswordMustBeFrom8To20symb" xml:space="preserve">
+    <value>Password must be between 8 and 20 characters</value>
+  </data>
+  <data name="PasswordRequired" xml:space="preserve">
+    <value>Field "Password" must be filled</value>
+  </data>
+  <data name="PasswordsDoNotMatch" xml:space="preserve">
+    <value>Passwords do not match</value>
+  </data>
+  <data name="Price" xml:space="preserve">
+    <value>Price</value>
+  </data>
+  <data name="Profile" xml:space="preserve">
+    <value>Profile</value>
+  </data>
+  <data name="Published" xml:space="preserve">
+    <value>Publish</value>
+  </data>
+  <data name="PurchaseDate" xml:space="preserve">
+    <value>Purchase date</value>
+  </data>
+  <data name="PurchaseHistory" xml:space="preserve">
+    <value>Purchase history</value>
+  </data>
+  <data name="PurchaseName" xml:space="preserve">
+    <value>Name</value>
+  </data>
+  <data name="PutMoney" xml:space="preserve">
+    <value>Put money</value>
+  </data>
+  <data name="Registration" xml:space="preserve">
+    <value>Registration</value>
+  </data>
+  <data name="Save" xml:space="preserve">
+    <value>Save</value>
+  </data>
+  <data name="SeatNotFound" xml:space="preserve">
+    <value>Seat not found</value>
+  </data>
+  <data name="Seats" xml:space="preserve">
+    <value>Seats</value>
+  </data>
+  <data name="SetAreasCosts" xml:space="preserve">
+    <value>Set cost of areas</value>
+  </data>
+  <data name="SetCostsEventException" xml:space="preserve">
+    <value>Everything areas in eventViewModel must have a price</value>
+  </data>
+  <data name="StringLenghtMessageFrom2to30symb" xml:space="preserve">
+    <value>The length of the string must be between 2 and 30 characters</value>
+  </data>
+  <data name="StringLenghtMessageFrom3to30symb" xml:space="preserve">
+    <value>The length of the string must be between 3 and 30 characters</value>
+  </data>
+  <data name="StringLenghtMessageFrom5symb" xml:space="preserve">
+    <value>The length of the string should be from 5 characters</value>
+  </data>
+  <data name="Surname" xml:space="preserve">
+    <value>Surname</value>
+  </data>
+  <data name="SurnameRequired" xml:space="preserve">
+    <value>Field "Surname" must be filled</value>
+  </data>
+  <data name="TimeZone" xml:space="preserve">
+    <value>Time zone</value>
+  </data>
+  <data name="TopUp" xml:space="preserve">
+    <value>Top up</value>
+  </data>
+  <data name="TransactionAbortedException" xml:space="preserve">
+    <value>Transaction aborted exception</value>
+  </data>
+  <data name="UniqueRowAndNumber" xml:space="preserve">
+    <value>The row and seat number must be unique for the area</value>
+  </data>
+  <data name="UnPublished" xml:space="preserve">
+    <value>Do not publish</value>
+  </data>
+  <data name="Update" xml:space="preserve">
+    <value>Update</value>
+  </data>
+  <data name="UserExistException" xml:space="preserve">
+    <value>User with this name or email already exists</value>
+  </data>
+  <data name="UserInfo" xml:space="preserve">
+    <value>User info</value>
+  </data>
+  <data name="UserName" xml:space="preserve">
+    <value>User name</value>
+  </data>
+  <data name="UserNameRequired" xml:space="preserve">
+    <value>Field "User name" must be filled</value>
+  </data>
+  <data name="UserOrPassword" xml:space="preserve">
+    <value>User name or password is wrong</value>
+  </data>
+  <data name="VenueNotFound" xml:space="preserve">
+    <value>Venue not found</value>
+  </data>
+  <data name="VenueWithThatNameException" xml:space="preserve">
+    <value>There is venue with this name</value>
+  </data>
+  <data name="Welcome" xml:space="preserve">
+    <value>Welcome you</value>
+  </data>
+</root>

@@ -16,10 +16,12 @@ namespace TicketManagement.BLL.ServiceValidators
 {
     internal class SeatValidator : ISeatValidator
     {
-        private readonly IRepository<Seat> seatRepository;
-        private readonly IRepository<Area> areaRepository;
+        private readonly IRepository<Seat, int> seatRepository;
+        private readonly IRepository<Area, int> areaRepository;
 
-        public SeatValidator(IRepository<Seat> seatRepository, IRepository<Area> areaRepository)
+        public SeatValidator(
+            IRepository<Seat, int> seatRepository,
+            IRepository<Area, int> areaRepository)
         {
             this.seatRepository = seatRepository;
             this.areaRepository = areaRepository;

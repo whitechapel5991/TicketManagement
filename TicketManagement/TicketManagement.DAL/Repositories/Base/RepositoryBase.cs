@@ -12,18 +12,18 @@ using TicketManagement.DAL.Models.Base;
 
 namespace TicketManagement.DAL.Repositories.Base
 {
-    public abstract class RepositoryBase<TDalEntity> : IRepository<TDalEntity>
+    public abstract class RepositoryBase<TDalEntity> : IRepository<TDalEntity, int>
         where TDalEntity : class, IEntity, new()
     {
-        public TicketManagementContext Context { get; private set; }
-
-        public DbSet<TDalEntity> DbSet { get; private set; }
-
-        public RepositoryBase(TicketManagementContext context)
+        protected RepositoryBase(TicketManagementContext context)
         {
             this.Context = context;
             this.DbSet = this.Context.Set<TDalEntity>();
         }
+
+        protected TicketManagementContext Context { get; private set; }
+
+        protected DbSet<TDalEntity> DbSet { get; private set; }
 
         public abstract int Create(TDalEntity entity);
 

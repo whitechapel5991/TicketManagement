@@ -6,20 +6,19 @@
 // ****************************************************************************
 
 using System.Linq;
-using TicketManagement.DAL.Models.Base;
 
 namespace TicketManagement.DAL.Repositories.Base
 {
-    public interface IRepository<TDalEntity>
-        where TDalEntity : IEntity, new()
+    public interface IRepository<TDalEntity, TKey>
+        where TDalEntity : class, new()
     {
-        int Create(TDalEntity entity);
+        TKey Create(TDalEntity entity);
 
         void Update(TDalEntity entity);
 
-        void Delete(int id);
+        void Delete(TKey id);
 
-        TDalEntity GetById(int id);
+        TDalEntity GetById(TKey id);
 
         IQueryable<TDalEntity> GetAll();
     }

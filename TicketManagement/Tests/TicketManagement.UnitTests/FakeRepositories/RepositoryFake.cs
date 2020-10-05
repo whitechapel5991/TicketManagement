@@ -13,8 +13,8 @@ using TicketManagement.DAL.Repositories.Base;
 
 namespace TicketManagement.UnitTests.FakeRepositories
 {
-    internal class RepositoryFake<TEntity> : IRepository<TEntity>
-        where TEntity : IEntity, new()
+    internal class RepositoryFake<TEntity> : IRepository<TEntity, int>
+        where TEntity : class, IEntity, new()
     {
         private readonly List<TEntity> repositoryData;
 

@@ -15,10 +15,10 @@ namespace TicketManagement.BLL.Services
 {
     public class AreaService : IAreaService
     {
-        private readonly IRepository<Area> areaRepository;
+        private readonly IRepository<Area, int> areaRepository;
         private readonly IAreaValidator areaValidator;
 
-        public AreaService(IRepository<Area> areaRepository, IAreaValidator areaValidator)
+        public AreaService(IRepository<Area, int> areaRepository, IAreaValidator areaValidator)
         {
             this.areaRepository = areaRepository;
             this.areaValidator = areaValidator;

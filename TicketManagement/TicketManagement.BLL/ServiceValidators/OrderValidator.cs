@@ -1,8 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿// ****************************************************************************
+// <copyright file="OrderValidator.cs" company="EPAM Systems">
+// Copyright (c) EPAM Systems. All rights reserved.
+// Author Dzianis Shcharbakou.
+// </copyright>
+// ****************************************************************************
+
+using System;
 using TicketManagement.BLL.Exceptions.OrderExceptions;
 using TicketManagement.BLL.ServiceValidators.Interfaces;
 using TicketManagement.DAL.Constants;

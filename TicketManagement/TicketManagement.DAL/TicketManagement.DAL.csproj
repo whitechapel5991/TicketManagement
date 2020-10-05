@@ -80,10 +80,12 @@
     <Compile Include="Models\Event.cs" />
     <Compile Include="Models\EventArea.cs" />
     <Compile Include="Models\EventSeat.cs" />
+    <Compile Include="Models\Identity\ClaimBase.cs" />
     <Compile Include="Models\Identity\Role.cs" />
     <Compile Include="Models\Identity\TicketManagementUser.cs" />
     <Compile Include="Models\Identity\UserClaim.cs" />
     <Compile Include="Models\Identity\UserLogin.cs" />
+    <Compile Include="Models\Identity\UserLoginKey.cs" />
     <Compile Include="Models\Identity\UserRole.cs" />
     <Compile Include="Models\Layout.cs" />
     <Compile Include="Models\Order.cs" />
@@ -93,10 +95,19 @@
     <Compile Include="Repositories\Base\IRepository.cs" />
     <Compile Include="Repositories\Base\RepositoryBase.cs" />
     <Compile Include="Repositories\EventRepository.cs" />
+    <Compile Include="Repositories\Identity\IRoleRepository.cs" />
+    <Compile Include="Repositories\Identity\IUserClaimRepository.cs" />
+    <Compile Include="Repositories\Identity\IUserLoginRepository.cs" />
+    <Compile Include="Repositories\Identity\IUserRepository.cs" />
+    <Compile Include="Repositories\Identity\IUserRoleRepository.cs" />
     <Compile Include="Repositories\Identity\RoleRepository.cs" />
+    <Compile Include="Repositories\Identity\UserClaimRepository.cs" />
+    <Compile Include="Repositories\Identity\UserLoginRepository.cs" />
     <Compile Include="Repositories\Identity\UserRepository.cs" />
+    <Compile Include="Repositories\Identity\UserRoleRepository.cs" />
     <Compile Include="Repositories\Repository.cs" />
-    <Compile Include="Util\AdoAutofacModule.cs" />
+    <Compile Include="Util\EfAutofacModule.cs" />
+    <Compile Include="Util\IdentityModule.cs" />
   </ItemGroup>
   <ItemGroup>
     <AdditionalFiles Include="..\stylecop.json">

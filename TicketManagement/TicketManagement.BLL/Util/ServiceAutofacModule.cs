@@ -6,8 +6,6 @@
 // ****************************************************************************
 
 using Autofac;
-using Microsoft.AspNet.Identity;
-using System.Collections.Generic;
 using System.Reflection;
 using Quartz;
 using Quartz.Impl;
@@ -16,10 +14,8 @@ using TicketManagement.BLL.Infrastructure.Helpers.Interfaces;
 using TicketManagement.BLL.Infrastructure.Helpers.Jobs;
 using TicketManagement.BLL.Interfaces;
 using TicketManagement.BLL.Services;
-using TicketManagement.BLL.Services.Identity;
 using TicketManagement.BLL.ServiceValidators;
 using TicketManagement.BLL.ServiceValidators.Interfaces;
-using TicketManagement.DAL.Models.Identity;
 using Module = Autofac.Module;
 
 namespace TicketManagement.BLL.Util
@@ -67,21 +63,9 @@ namespace TicketManagement.BLL.Util
                 .As<IAreaService>()
                 .InstancePerLifetimeScope();
 
-            builder.RegisterType<UserService>()
-                .As<IUserService>()
-                .InstancePerLifetimeScope();
-
             builder.RegisterType<OrderService>()
     .As<IOrderService>()
     .InstancePerLifetimeScope();
-
-            builder.RegisterType<TicketManagementUserManager>()
-                .As<UserManager<TicketManagementUser, int>>()
-                .InstancePerLifetimeScope();
-
-            builder.RegisterType<TicketManagementRoleManager>()
-                .As<RoleManager<Role, int>>()
-                .InstancePerLifetimeScope();
 
             // helpers
             builder.RegisterType<HtmlHelper>()
@@ -124,6 +108,8 @@ namespace TicketManagement.BLL.Util
                 .As<ISeatUnlockScheduler>()
                 .InstancePerLifetimeScope()
                 .WithParameter(new NamedParameter("lockTime", this.lockTime));
+
+            builder.RegisterModule(new IdentityModule());
         }
     }
 }

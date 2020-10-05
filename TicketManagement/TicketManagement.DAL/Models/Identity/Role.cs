@@ -6,20 +6,13 @@
 // ****************************************************************************
 
 using System.ComponentModel.DataAnnotations.Schema;
-using Microsoft.AspNet.Identity.EntityFramework;
+using TicketManagement.DAL.Models.Base;
 
 namespace TicketManagement.DAL.Models.Identity
 {
-    [Table("Roles")]
-    public class Role : IdentityRole<int, UserRole>
+    [Table("AspNetRoles")]
+    public class Role : Entity
     {
-        public Role()
-        {
-        }
-
-        public Role(string name)
-        {
-            this.Name = name;
-        }
+        public string Name { get; set; }
     }
 }

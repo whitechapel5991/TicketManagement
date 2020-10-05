@@ -5,15 +5,38 @@
 // </copyright>
 // ****************************************************************************
 
+using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using Microsoft.AspNet.Identity.EntityFramework;
+using TicketManagement.DAL.Models.Base;
 
 namespace TicketManagement.DAL.Models.Identity
 {
-    [Table("Users")]
-    public class TicketManagementUser : IdentityUser<int, UserLogin, UserRole, UserClaim>
+    [Table("AspNetUsers")]
+    public class TicketManagementUser : Entity
     {
+        public string Email { get; set; }
+
+        public bool EmailConfirmed { get; set; }
+
+        public string PasswordHash { get; set; }
+
+        public string SecurityStamp { get; set; }
+
+        public string PhoneNumber { get; set; }
+
+        public bool PhoneNumberConfirmed { get; set; }
+
+        public bool TwoFactorEnabled { get; set; }
+
+        public bool LockoutEnabled { get; set; }
+
+        public DateTimeOffset? LockoutEndDateUtc { get; set; }
+
+        public int AccessFailedCount { get; set; }
+
+        public string UserName { get; set; }
+
         [Required]
         [MaxLength(100)]
         [Column("TimeZone")]

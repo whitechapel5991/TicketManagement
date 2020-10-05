@@ -19,14 +19,20 @@ namespace TicketManagement.BLL.ServiceValidators
 {
     internal class EventValidator : IEventValidator
     {
-        private readonly IRepository<Event> eventRepository;
-        private readonly IRepository<Layout> layoutRepository;
-        private readonly IRepository<Area> areaRepository;
-        private readonly IRepository<Seat> seatRepository;
-        private readonly IRepository<EventArea> eventAreaRepository;
-        private readonly IRepository<EventSeat> eventSeatRepository;
+        private readonly IRepository<Event, int> eventRepository;
+        private readonly IRepository<Layout, int> layoutRepository;
+        private readonly IRepository<Area, int> areaRepository;
+        private readonly IRepository<Seat, int> seatRepository;
+        private readonly IRepository<EventArea, int> eventAreaRepository;
+        private readonly IRepository<EventSeat, int> eventSeatRepository;
 
-        public EventValidator(IRepository<Event> eventRepository, IRepository<EventArea> eventAreaRepository, IRepository<EventSeat> eventSeatRepository, IRepository<Layout> layoutRepository, IRepository<Area> areaRepository, IRepository<Seat> seatRepository)
+        public EventValidator(
+            IRepository<Event, int> eventRepository,
+            IRepository<EventArea, int> eventAreaRepository,
+            IRepository<EventSeat, int> eventSeatRepository,
+            IRepository<Layout, int> layoutRepository,
+            IRepository<Area, int> areaRepository,
+            IRepository<Seat, int> seatRepository)
         {
             this.eventRepository = eventRepository;
             this.eventAreaRepository = eventAreaRepository;

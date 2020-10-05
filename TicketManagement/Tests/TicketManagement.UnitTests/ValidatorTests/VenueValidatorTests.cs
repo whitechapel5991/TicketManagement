@@ -45,7 +45,7 @@ namespace TicketManagement.UnitTests.ValidatorTests
             this.Mock = AutoMock.GetLoose(builder =>
             {
                 builder.RegisterInstance(fakeVenueRepository)
-                .As<IRepository<Venue>>();
+                .As<IRepository<Venue, int>>();
             });
         }
 
@@ -74,7 +74,7 @@ namespace TicketManagement.UnitTests.ValidatorTests
         public void AddVenue_IsVenueName_GetException()
         {
             // Arrange
-            var venueRepository = this.Mock.Create<IRepository<Venue>>();
+            var venueRepository = this.Mock.Create<IRepository<Venue, int>>();
             this.venueValidator = this.Mock.Create<VenueValidator>();
             var existingName = "first";
             var dto = this.Fixture.Build<Venue>().With(e => e.Name, existingName).Create();

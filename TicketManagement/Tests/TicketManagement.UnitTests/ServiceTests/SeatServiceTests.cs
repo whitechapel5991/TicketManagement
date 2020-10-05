@@ -81,7 +81,7 @@ namespace TicketManagement.UnitTests.ServiceTests
             this.Mock = AutoMock.GetLoose(builder =>
             {
                 builder.RegisterInstance(fakeSeatsRepository)
-                .As<IRepository<Seat>>();
+                .As<IRepository<Seat, int>>();
             });
         }
 
@@ -95,7 +95,7 @@ namespace TicketManagement.UnitTests.ServiceTests
         public void AddSeat_AddNewSeat_GetCountSeats()
         {
             // Arrange
-            var seatRepository = this.Mock.Create<IRepository<Seat>>();
+            var seatRepository = this.Mock.Create<IRepository<Seat, int>>();
             this.seatService = this.Mock.Create<SeatService>();
             var seatDto = new Seat
             {
@@ -159,7 +159,7 @@ namespace TicketManagement.UnitTests.ServiceTests
         public void UpdateSeat_NewSeat_GetSeatRow()
         {
             // Arrange
-            var seatRepository = this.Mock.Create<IRepository<Seat>>();
+            var seatRepository = this.Mock.Create<IRepository<Seat, int>>();
             this.seatService = this.Mock.Create<SeatService>();
             var expectedDto = new Seat
             {
@@ -180,7 +180,7 @@ namespace TicketManagement.UnitTests.ServiceTests
         public void DeleteSeat_SeatId_GetSeatsCount()
         {
             // Arrange
-            var seatRepository = this.Mock.Create<IRepository<Seat>>();
+            var seatRepository = this.Mock.Create<IRepository<Seat, int>>();
             this.seatService = this.Mock.Create<SeatService>();
             int id = 1;
             var expected = new List<Seat>()
@@ -237,7 +237,7 @@ namespace TicketManagement.UnitTests.ServiceTests
         public void GetSeat_SeatId_GetSeatNumber()
         {
             // Arrange
-            var seatRepository = this.Mock.Create<IRepository<Seat>>();
+            var seatRepository = this.Mock.Create<IRepository<Seat, int>>();
             this.seatService = this.Mock.Create<SeatService>();
             var expectedDto = new Seat() { Id = 1, AreaId = 1, Number = 1, Row = 1 };
 
@@ -252,7 +252,7 @@ namespace TicketManagement.UnitTests.ServiceTests
         public void GetSeats_GetSeatsCount()
         {
             // Arrange
-            var seatRepository = this.Mock.Create<IRepository<Seat>>();
+            var seatRepository = this.Mock.Create<IRepository<Seat, int>>();
             this.seatService = this.Mock.Create<SeatService>();
             var expected = new List<Seat>()
             {

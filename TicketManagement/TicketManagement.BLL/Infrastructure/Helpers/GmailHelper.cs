@@ -1,23 +1,24 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿// ****************************************************************************
+// <copyright file="GmailHelper.cs" company="EPAM Systems">
+// Copyright (c) EPAM Systems. All rights reserved.
+// Author Dzianis Shcharbakou.
+// </copyright>
+// ****************************************************************************
+
+using System;
 using System.Net;
 using System.Net.Mail;
-using System.Text;
-using System.Threading.Tasks;
 using TicketManagement.BLL.Infrastructure.Helpers.Interfaces;
 
 namespace TicketManagement.BLL.Infrastructure.Helpers
 {
     public class GmailHelper : IEmailHelper
     {
-        private readonly string email;
-        private readonly string emailPassword;
-
         private const string Hostname = "smtp.gmail.com";
-
         private const int Port = 587;
         private const bool UseSsl = true;
+        private readonly string email;
+        private readonly string emailPassword;
 
         public GmailHelper(string email, string password)
         {
@@ -34,7 +35,7 @@ namespace TicketManagement.BLL.Infrastructure.Helpers
                     mailMessage.From = new MailAddress(this.email);
                     mailMessage.To.Add(recipient);
                     mailMessage.Subject = subject;
-                    mailMessage.IsBodyHtml = true; //to make message body as html  
+                    mailMessage.IsBodyHtml = true;
                     mailMessage.Body = htmlMessage;
                     using (SmtpClient smtp = new SmtpClient(Hostname, Port))
                     {
@@ -47,7 +48,10 @@ namespace TicketManagement.BLL.Infrastructure.Helpers
                     }
                 }
             }
-            catch (Exception ex) { throw ex; }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
         }
     }
 }

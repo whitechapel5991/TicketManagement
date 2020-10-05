@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using TicketManagement.DAL.Constants;
+﻿using TicketManagement.DAL.Constants;
 
 namespace TicketManagement.Web.Constants
 {

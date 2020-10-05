@@ -2,17 +2,17 @@
 
 namespace TicketManagement.Web.Areas.EventManager
 {
-    public class EventManagerAreaRegistration : AreaRegistration 
+    public class EventManagerAreaRegistration : AreaRegistration
     {
-        public override string AreaName 
+        public override string AreaName
         {
-            get 
+            get
             {
                 return "EventManager";
             }
         }
 
-        public override void RegisterArea(AreaRegistrationContext context) 
+        public override void RegisterArea(AreaRegistrationContext context)
         {
             context.MapRoute(
                 "EventManager_default",

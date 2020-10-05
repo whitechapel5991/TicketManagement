@@ -1,13 +1,7 @@
-﻿using Microsoft.AspNet.Identity;
-using Microsoft.Owin.Security;
-using System;
-using System.Linq;
-using System.Security.Claims;
-using System.Web;
+﻿using System;
 using System.Web.Mvc;
-using TicketManagement.BLL.Interfaces;
-using TicketManagement.DAL.Models.Identity;
 using TicketManagement.Web.Filters;
+using TicketManagement.Web.Interfaces;
 using TicketManagement.Web.Models.Account;
 
 namespace TicketManagement.Web.Controllers
@@ -16,14 +10,12 @@ namespace TicketManagement.Web.Controllers
     [LogCustomExceptionFilter]
     public class AccountController : Controller
     {
-        private readonly IUserService userService;
+        private readonly IAccountService accountService;
 
-        public AccountController(IUserService userService)
+        public AccountController(IAccountService accountService)
         {
-            this.userService = userService;
+            this.accountService = accountService;
         }
-
-        private IAuthenticationManager AuthenticationManager => this.HttpContext.GetOwinContext().Authentication;
 
         [AllowAnonymous]
         public ActionResult Login()
@@ -35,35 +27,32 @@ namespace TicketManagement.Web.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Login(LoginViewModel model)
         {
-            if (this.ModelState.IsValid)
+            if (!this.ModelState.IsValid) return this.View(model);
+
+            try
             {
-                try
+                var claimIdentity = this.accountService.GetUserClaimIdentity(model.UserName, model.Password);
+
+                if (claimIdentity == default)
                 {
-                    TicketManagementUser userDto = new TicketManagementUser() { UserName = model.UserName, Password = model.Password };
-                    ClaimsIdentity claim = this.userService.Authenticate(userDto);
-                    if (claim == default)
-                    {
-                        this.ModelState.AddModelError(string.Empty, "Неверный логин или пароль.");
-                    }
-                    else
-                    {
-                        this.AuthenticationManager.SignOut();
-                        this.AuthenticationManager.SignIn(claim);
-
-                        this.ViewBag.claim = claim;
-
-                        if ((string)claim.Claims.FirstOrDefault(x => x.Type == ClaimTypes.Role)?.Value == "event manager")
-                        {
-                            return this.RedirectToAction("GetAllEvents", new { area = "EventManager", controller = "Event" });
-                        }
-
-                        return this.RedirectToAction("Events", "Event");
-                    }
+                    this.ModelState.AddModelError(string.Empty, "Wrong login or password.");
+                    return this.View(model);
                 }
-                catch (Exception ex)
+
+                this.accountService.Authenticate(claimIdentity);
+
+                this.ViewBag.claim = claimIdentity;
+
+                if (this.accountService.IsRoleInClaimIdentity(claimIdentity, "event manager"))
                 {
-                    this.ModelState.AddModelError("Login", ex.Message);
+                    return this.RedirectToAction("Index", new { area = "EventManager", controller = "Event" });
                 }
+
+                return this.RedirectToAction("Events", "Event");
+            }
+            catch (Exception ex)
+            {
+                this.ModelState.AddModelError("Login", ex.Message);
             }
 
             return this.View(model);
@@ -72,7 +61,7 @@ namespace TicketManagement.Web.Controllers
         [Authorize]
         public ActionResult Logout()
         {
-            this.AuthenticationManager.SignOut(DefaultAuthenticationTypes.ApplicationCookie);
+            this.accountService.SignOut();
 
             return this.RedirectToAction("Login", "Account");
         }
@@ -89,31 +78,28 @@ namespace TicketManagement.Web.Controllers
         {
             if (!this.ModelState.IsValid)
             {
-                return this.View();
+                return this.View(model);
             }
 
-            if (this.ModelState.IsValid)
+            try
             {
-                try
-                {
-                    var user = new TicketManagementUser
-                    {
-                        UserName = model.UserName,
-                        Email = model.Email,
-                        Password = model.Password,
-                        FirstName = model.FirstName,
-                        Surname = model.Surname,
-                        Language = model.Language.ToString(),
-                        TimeZone = model.TimeZone,
-                    };
+                var registerResult = this.accountService.RegisterUser(this.accountService.MapIdentityUser(model));
 
-                    this.userService.Create(user);
-                    return this.RedirectToAction("Login", "Account");
-                }
-                catch (Exception ex)
+                if (!registerResult.Succeeded)
                 {
-                    this.ModelState.AddModelError("Register", ex.Message);
+                    foreach (var error in registerResult.Errors)
+                    {
+                        this.ModelState.AddModelError(string.Empty, error);
+                    }
+
+                    return this.View(model);
                 }
+
+                return this.RedirectToAction("Login", "Account");
+            }
+            catch (Exception ex)
+            {
+                this.ModelState.AddModelError("Register", ex.Message);
             }
 
             return this.View(model);

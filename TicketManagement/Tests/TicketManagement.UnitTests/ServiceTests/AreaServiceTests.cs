@@ -50,7 +50,7 @@ namespace TicketManagement.UnitTests.ServiceTests
             this.Mock = AutoMock.GetLoose(builder =>
             {
                 builder.RegisterInstance(fakeAreaRepository)
-                .As<IRepository<Area>>();
+                .As<IRepository<Area, int>>();
             });
         }
 
@@ -64,7 +64,7 @@ namespace TicketManagement.UnitTests.ServiceTests
         public void AddArea_AddNewArea_GetCountAreas()
         {
             // Arrange
-            var areaRepository = this.Mock.Create<IRepository<Area>>();
+            var areaRepository = this.Mock.Create<IRepository<Area, int>>();
             this.areaService = this.Mock.Create<AreaService>();
             var dto = this.Fixture.Build<Area>().Create();
             var expected = new List<Area>
@@ -92,7 +92,7 @@ namespace TicketManagement.UnitTests.ServiceTests
         public void UpdateArea_NewArea_GetAreaDescription()
         {
             // Arrange
-            var areaRepository = this.Mock.Create<IRepository<Area>>();
+            var areaRepository = this.Mock.Create<IRepository<Area, int>>();
             this.areaService = this.Mock.Create<AreaService>();
             var id = 1;
             var expectedDto = this.Fixture.Build<Area>()
@@ -110,7 +110,7 @@ namespace TicketManagement.UnitTests.ServiceTests
         public void DeleteArea_AreaId_GetAreasCount()
         {
             // Arrange
-            var areaRepository = this.Mock.Create<IRepository<Area>>();
+            var areaRepository = this.Mock.Create<IRepository<Area, int>>();
             this.areaService = this.Mock.Create<AreaService>();
             int id = 1;
             var expected = new List<Area>

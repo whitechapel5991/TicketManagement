@@ -5,11 +5,14 @@
 // </copyright>
 // ****************************************************************************
 
-using Microsoft.AspNet.Identity.EntityFramework;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace TicketManagement.DAL.Models.Identity
 {
-    public class UserClaim : IdentityUserClaim<int>
+    [Table("AspNetUserClaims")]
+
+    public class UserClaim : ClaimBase
     {
+        public int UserId { get; set; }
     }
 }

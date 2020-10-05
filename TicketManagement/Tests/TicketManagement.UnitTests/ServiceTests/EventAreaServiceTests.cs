@@ -45,7 +45,7 @@ namespace TicketManagement.UnitTests.ServiceTests
             this.Mock = AutoMock.GetLoose(builder =>
             {
                 builder.RegisterInstance(fakeEventAreaRepository)
-                .As<IRepository<EventArea>>();
+                .As<IRepository<EventArea, int>>();
             });
         }
 
@@ -59,7 +59,7 @@ namespace TicketManagement.UnitTests.ServiceTests
         public void UpdateEventArea_NewEventArea_GetEventAreaPrice()
         {
             // Arrange
-            var eventAreaRepository = this.Mock.Create<IRepository<EventArea>>();
+            var eventAreaRepository = this.Mock.Create<IRepository<EventArea, int>>();
             this.eventAreaService = this.Mock.Create<EventAreaService>();
             var id = 1;
             var expectedDto = this.Fixture.Build<EventArea>()
@@ -77,7 +77,7 @@ namespace TicketManagement.UnitTests.ServiceTests
         public void GetEventArea_EventAreaId_GetEventAreaDescription()
         {
             // Arrange
-            var eventAreaRepository = this.Mock.Create<IRepository<EventArea>>();
+            var eventAreaRepository = this.Mock.Create<IRepository<EventArea, int>>();
             this.eventAreaService = this.Mock.Create<EventAreaService>();
             var id = 1;
             var expectedDto = new EventArea() { Id = 1, CoordX = 1, CoordY = 1, Description = "First area event", EventId = 1, Price = 100 };
@@ -93,7 +93,7 @@ namespace TicketManagement.UnitTests.ServiceTests
         public void GetEventAreas_GetEventAreasCount()
         {
             // Arrange
-            var eventAreaRepository = this.Mock.Create<IRepository<EventArea>>();
+            var eventAreaRepository = this.Mock.Create<IRepository<EventArea, int>>();
             this.eventAreaService = this.Mock.Create<EventAreaService>();
             var expected = new List<EventArea>
             {

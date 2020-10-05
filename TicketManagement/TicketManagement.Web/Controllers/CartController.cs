@@ -1,75 +1,39 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using System.Web.Mvc;
-using TicketManagement.BLL.Interfaces;
-using TicketManagement.DAL.Models;
-using TicketManagement.Web.Models.Cart;
+﻿using System.Web.Mvc;
+using TicketManagement.Web.Interfaces;
 
 namespace TicketManagement.Web.Controllers
 {
     public class CartController : Controller
     {
-        private readonly IUserService userService;
-        private readonly IOrderService orderService;
-        private readonly IEventSeatService eventSeatService;
+        private readonly ICartService cartService;
 
-        public CartController(IUserService userService, IOrderService orderService)
+        public CartController(ICartService cartService)
         {
-            this.userService = userService;
-            this.orderService = orderService;
+            this.cartService = cartService;
         }
 
         [Authorize(Roles = "user")]
         public ActionResult Index()
         {
-            var userCartOrders = this.orderService.GetCartOrdersByName(this.User.Identity.Name);
-
-            return this.View(this.MapToCartViewModel(userCartOrders));
+            return this.View(this.cartService.GetCartViewModelByUserName(this.User.Identity.Name));
         }
 
         [Authorize(Roles = "user")]
         [HttpPost]
-        public ActionResult Buy(int? orderId)
+        public ActionResult Buy(int orderId)
         {
-            this.orderService.Buy(orderId.Value);
+            this.cartService.Buy(orderId);
 
             return this.View("Index");
         }
 
         [Authorize(Roles = "user")]
         [HttpPost]
-        public ActionResult DeleteFromCart(int? orderId)
+        public ActionResult DeleteFromCart(int orderId)
         {
-            this.orderService.DeleteFromCart(orderId.Value);
+            this.cartService.Delete(orderId);
 
             return this.View("Index");
-        }
-
-        private CartViewModel MapToCartViewModel(List<Order> userCartOrders)
-        {
-            var purchaseHistoryVM = new CartViewModel()
-            {
-                Orders = new List<OrderViewModel>(),
-            };
-
-            foreach (Order order in userCartOrders)
-            {
-                var @event = this.eventSeatService.GetEventByEventSeatId(order.EventSeatId);
-
-                var orderVm = new OrderViewModel
-                {
-                    OrderId = order.Id,
-                    EventCost = this.eventSeatService.GetSeatCost(order.EventSeatId),
-                    EventName = @event.Name,
-                    EventDescription = @event.Description,
-                };
-
-                purchaseHistoryVM.Orders.Add(orderVm);
-            }
-
-            return purchaseHistoryVM;
         }
     }
 }

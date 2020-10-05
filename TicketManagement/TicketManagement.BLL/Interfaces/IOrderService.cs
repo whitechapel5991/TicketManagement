@@ -7,7 +7,6 @@
 
 using System.Collections.Generic;
 using TicketManagement.DAL.Models;
-using TicketManagement.DAL.Models.Identity;
 
 namespace TicketManagement.BLL.Interfaces
 {

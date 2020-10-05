@@ -6,14 +6,12 @@
 // ****************************************************************************
 
 using System.Data.Entity;
-using Microsoft.AspNet.Identity.EntityFramework;
 using TicketManagement.DAL.Models;
 using TicketManagement.DAL.Models.Identity;
 
 namespace TicketManagement.DAL.EFContext
 {
-    public class TicketManagementContext : IdentityDbContext<TicketManagementUser, Role, int,
-        UserLogin, UserRole, UserClaim>
+    public class TicketManagementContext : DbContext
     {
         public TicketManagementContext(string connectionString)
             : base(connectionString)
@@ -35,5 +33,15 @@ namespace TicketManagement.DAL.EFContext
         public DbSet<Venue> Venues { get; set; }
 
         public DbSet<Order> Orders { get; set; }
+
+        public DbSet<Role> Roles { get; set; }
+
+        public DbSet<TicketManagementUser> Users { get; set; }
+
+        public DbSet<UserClaim> UserClaims { get; set; }
+
+        public DbSet<UserLogin> UserLogins { get; set; }
+
+        public DbSet<UserRole> UserRoles { get; set; }
     }
 }

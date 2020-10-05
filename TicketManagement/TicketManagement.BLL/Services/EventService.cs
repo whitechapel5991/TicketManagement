@@ -18,18 +18,18 @@ namespace TicketManagement.BLL.Services
 {
     public class EventService : IEventService
     {
-        private readonly IRepository<Event> eventRepository;
-        private readonly IRepository<Layout> layoutRepository;
-        private readonly IRepository<EventArea> eventAreaRepository;
-        private readonly IRepository<EventSeat> eventSeatRepository;
+        private readonly IRepository<Event, int> eventRepository;
+        private readonly IRepository<Layout, int> layoutRepository;
+        private readonly IRepository<EventArea, int> eventAreaRepository;
+        private readonly IRepository<EventSeat, int> eventSeatRepository;
 
         private readonly IEventValidator eventValidator;
 
         public EventService(
-            IRepository<Event> eventRepository,
-            IRepository<Layout> layoutRepository,
-            IRepository<EventArea> eventAreaRepository,
-            IRepository<EventSeat> eventSeatRepository,
+            IRepository<Event, int> eventRepository,
+            IRepository<Layout, int> layoutRepository,
+            IRepository<EventArea, int> eventAreaRepository,
+            IRepository<EventSeat, int> eventSeatRepository,
             IEventValidator eventValidator)
         {
             this.eventRepository = eventRepository;

@@ -5,7 +5,6 @@
 // </copyright>
 // ****************************************************************************
 
-using Microsoft.AspNet.Identity;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,40 +14,40 @@ using TicketManagement.BLL.Interfaces;
 using TicketManagement.BLL.ServiceValidators.Interfaces;
 using TicketManagement.DAL.Constants;
 using TicketManagement.DAL.Models;
-using TicketManagement.DAL.Models.Identity;
 using TicketManagement.DAL.Repositories.Base;
+using TicketManagement.DAL.Repositories.Identity;
 
 namespace TicketManagement.BLL.Services
 {
     internal class OrderService : IOrderService
     {
-        private readonly IRepository<Order> orderRepository;
+        private readonly IRepository<Order, int> orderRepository;
 
-        private readonly IRepository<EventSeat> eventSeatRepository;
-        private readonly IRepository<EventArea> eventAreaRepository;
-        private readonly IRepository<Event> eventRepository;
-        private readonly IRepository<Layout> layoutRepository;
-        private readonly UserManager<TicketManagementUser, int> userManager;
+        private readonly IRepository<EventSeat, int> eventSeatRepository;
+        private readonly IRepository<EventArea, int> eventAreaRepository;
+        private readonly IRepository<Event, int> eventRepository;
+        private readonly IRepository<Layout, int> layoutRepository;
+        private readonly IUserRepository userRepository;
         private readonly IEmailHelper emailHelper;
         private readonly IHtmlHelper htmlHelper;
         private readonly IOrderValidator orderValidator;
         private readonly ISeatUnlockScheduler seatUnlockScheduler;
 
         public OrderService(
-            IRepository<Order> orderRepository,
-            IRepository<EventSeat> eventSeatRepository,
-            UserManager<TicketManagementUser, int> userManager,
+            IRepository<Order, int> orderRepository,
+            IRepository<EventSeat, int> eventSeatRepository,
+            IUserRepository userRepository,
             IEmailHelper emailHelper,
             IHtmlHelper htmlHelper,
-            IRepository<EventArea> eventAreaRepository,
-            IRepository<Event> eventRepository,
-            IRepository<Layout> layoutRepository,
+            IRepository<EventArea, int> eventAreaRepository,
+            IRepository<Event, int> eventRepository,
+            IRepository<Layout, int> layoutRepository,
             IOrderValidator orderValidator,
             ISeatUnlockScheduler seatUnlockScheduler)
         {
             this.orderRepository = orderRepository;
             this.eventSeatRepository = eventSeatRepository;
-            this.userManager = userManager;
+            this.userRepository = userRepository;
             this.emailHelper = emailHelper;
             this.htmlHelper = htmlHelper;
             this.eventAreaRepository = eventAreaRepository;
@@ -90,7 +89,7 @@ namespace TicketManagement.BLL.Services
             var @event = this.eventRepository.GetById(eventArea.EventId);
             var layout = this.layoutRepository.GetById(@event.LayoutId);
             string eventHtml = this.htmlHelper.GetEventHtml(eventSeat, eventArea, @event, layout);
-            var userEmail = this.userManager.FindById(order.UserId).Email;
+            var userEmail = this.userRepository.GetById(order.UserId).Email;
             this.emailHelper.SendEmail(userEmail, @event.Name, eventHtml);
         }
 
@@ -113,7 +112,7 @@ namespace TicketManagement.BLL.Services
 
         public List<Order> GetCartOrdersByName(string userName)
         {
-            var userId = this.userManager.FindByName(userName).Id;
+            var userId = this.userRepository.FindByNormalizedUserName(userName).Id;
             return (from userOrderQ in this.orderRepository.GetAll().Where(x => x.UserId == userId).ToArray()
                     join eventSeatQ in this.eventSeatRepository.GetAll().Where(x => x.State == EventSeatState.InBasket) on userOrderQ.EventSeatId equals eventSeatQ.Id
                     select new Order { Id = userOrderQ.Id, Date = userOrderQ.Date, EventSeatId = userOrderQ.EventSeatId, UserId = userOrderQ.UserId }).ToList();
@@ -128,7 +127,7 @@ namespace TicketManagement.BLL.Services
 
         public List<Order> GetHistoryOrdersByName(string userName)
         {
-            var userId = this.userManager.FindByName(userName).Id;
+            var userId = this.userRepository.FindByNormalizedUserName(userName).Id;
             return (from userOrderQ in this.orderRepository.GetAll().Where(x => x.UserId == userId).ToArray()
                     join eventSeatQ in this.eventSeatRepository.GetAll().Where(x => x.State == EventSeatState.Sold) on userOrderQ.EventSeatId equals eventSeatQ.Id
                     select new Order { Id = userOrderQ.Id, Date = userOrderQ.Date, EventSeatId = userOrderQ.EventSeatId, UserId = userOrderQ.UserId }).ToList();

@@ -14,11 +14,14 @@ namespace TicketManagement.BLL.Services
 {
     public class EventSeatService : IEventSeatService
     {
-        private readonly IRepository<EventSeat> eventSeatRepository;
-        private readonly IRepository<EventArea> eventAreaRepository;
-        private readonly IRepository<Event> eventRepository;
+        private readonly IRepository<EventSeat, int> eventSeatRepository;
+        private readonly IRepository<EventArea, int> eventAreaRepository;
+        private readonly IRepository<Event, int> eventRepository;
 
-        public EventSeatService(IRepository<EventSeat> eventSeatRepository, IRepository<EventArea> eventAreaRepository, IRepository<Event> eventRepository)
+        public EventSeatService(
+            IRepository<EventSeat, int> eventSeatRepository,
+            IRepository<EventArea, int> eventAreaRepository,
+            IRepository<Event, int> eventRepository)
         {
             this.eventSeatRepository = eventSeatRepository;
             this.eventAreaRepository = eventAreaRepository;
