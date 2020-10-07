@@ -15,7 +15,7 @@ namespace TicketManagement.DAL.Repositories.Identity
 {
     internal class UserLoginRepository : IUserLoginRepository
     {
-        protected UserLoginRepository(TicketManagementContext context)
+        public UserLoginRepository(TicketManagementContext context)
         {
             this.Context = context;
             this.DbSet = this.Context.Set<UserLogin>();

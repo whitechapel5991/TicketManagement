@@ -22,11 +22,11 @@ namespace TicketManagement.Web.Filters
 
                 File.AppendAllText(HttpContext.Current.Server.MapPath("~/Log/LogExceptions.txt"), Message);
 
-                filterContext.ExceptionHandled = true;
-                filterContext.Result = new ViewResult()
-                {
-                    ViewName = "Error"
-                };
+                //filterContext.ExceptionHandled = true;
+                //filterContext.Result = new ViewResult()
+                //{
+                //    ViewName = "Error"
+                //};
             }
         }
     }

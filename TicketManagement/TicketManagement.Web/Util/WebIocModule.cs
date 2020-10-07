@@ -53,9 +53,14 @@ namespace TicketManagement.Web.Util
                 .As<IAccountService>()
                 .InstancePerLifetimeScope();
 
+            builder.RegisterType<UserManager<IdentityUser, int>>()
+                .AsSelf()
+                .InstancePerLifetimeScope();
+
             builder.Register<IAuthenticationManager>(context => HttpContext.Current.GetOwinContext().Authentication)
                 .InstancePerRequest();
-
+            
+            builder.RegisterModule(new WebServicesModule());
             builder.RegisterModule(new EfAutofacModule(this.connectionString));
             builder.RegisterModule(new ServiceAutofacModule(this.email, this.emailPassword, this.lockTime));
         }

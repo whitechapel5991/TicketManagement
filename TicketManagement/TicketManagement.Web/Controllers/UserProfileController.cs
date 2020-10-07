@@ -21,17 +21,20 @@ namespace TicketManagement.Web.Controllers
         }
 
         [Authorize]
+        [HttpGet]
         public ActionResult Index()
         {
             return this.View(this.userProfileService.GetUserProfileViewModel(this.User.Identity.Name));
         }
 
         [Authorize]
+        [HttpGet]
         public ActionResult Edit()
         {
             return this.View(this.userProfileService.GetEditUserProfileViewModel(this.User.Identity.Name));
         }
 
+        [Authorize]
         [HttpPost]
         public ActionResult Edit(EditUserProfileViewModel userProfile)
         {
@@ -42,6 +45,7 @@ namespace TicketManagement.Web.Controllers
         }
 
         [Authorize]
+        [HttpGet]
         public ActionResult ChangePassword()
         {
             return this.View(new UserPasswordViewModel());
@@ -59,11 +63,13 @@ namespace TicketManagement.Web.Controllers
         }
 
         [Authorize(Roles = "user")]
+        [HttpPost]
         public ActionResult IncreaseBalance()
         {
             return this.View(this.userProfileService.GetBalanceViewModel(this.User.Identity.Name));
         }
 
+        [Authorize]
         [HttpPost]
         public ActionResult IncreaseBalance(BalanceViewModel balanceModel)
         {
@@ -74,6 +80,7 @@ namespace TicketManagement.Web.Controllers
         }
 
         [Authorize(Roles = "user")]
+        [HttpGet]
         public ActionResult PurchaseHistory()
         {
             return this.View(this.userProfileService.GetPurchaseHistoryViewModel(this.User.Identity.Name));

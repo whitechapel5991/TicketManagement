@@ -33,6 +33,7 @@ namespace TicketManagement.Web.Areas.EventManager.Controllers
 
         [Authorize(Roles = "event manager, admin")]
         [HandleError]
+        [HttpGet]
         public ActionResult Index()
         {
             return this.View(this.eventServiceEventManager.GetIndexEventViewModels());
@@ -40,6 +41,7 @@ namespace TicketManagement.Web.Areas.EventManager.Controllers
 
         [Authorize(Roles = "event manager, admin")]
         [HandleError]
+        [HttpGet]
         public ActionResult Create()
         {
             return this.View(this.eventServiceEventManager.GetEventViewModel());
@@ -73,6 +75,7 @@ namespace TicketManagement.Web.Areas.EventManager.Controllers
 
         [Authorize(Roles = "event manager, admin")]
         [HandleError]
+        [HttpGet]
         public ActionResult Update(int id)
         {
             try
@@ -146,6 +149,7 @@ namespace TicketManagement.Web.Areas.EventManager.Controllers
         }
 
         [Authorize(Roles = "admin, event manager")]
+        [HttpGet]
         public ActionResult EventDetail(int id)
         {
             var eventDto = this.eventService.GetEventMap(id);
@@ -154,6 +158,7 @@ namespace TicketManagement.Web.Areas.EventManager.Controllers
         }
 
         [Authorize(Roles = "admin, event manager")]
+        [HttpGet]
         public ActionResult EventAreaDetail(int id)
         {
             var eventAreaDto = this.eventAreaService.GetEventAreaMap(id);

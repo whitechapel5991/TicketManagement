@@ -1,0 +1,39 @@
+﻿<nav class="navbar navbar-expand-lg navbar-light bg-light bg-primary rounded">
+    <div class="container">
+        <div class="navbar-nav">
+            <button type="button" class="navbar-toggler" data-toggle="collapse" data-target=".navbar-collapse">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            @Html.ActionLink("Ticket Management", "Events", "Event", new { area = "" }, new { @class = "navbar-brand" })
+        </div>
+
+
+        <div class="navbar-collapse collapse">
+            <ul class="navbar-nav mr-auto">
+                @if (User.Identity.IsAuthenticated && (User.IsInRole("event manager") || User.IsInRole("admin")))
+                {
+                    <li class="nav-item">@Html.ActionLink(@Resources.TicketManagementResource.ManagerEvents, "Events", "Event", new { area = "EventManager", controller = "Event" }, new { @class = "nav-link" })</li>
+                }
+                
+                
+                <li class="nav-item">@Html.ActionLink("Events", "Events", "Event", new { area = "" }, new { @class = "nav-link" })</li>
+                
+            </ul>
+            <ul class="navbar-nav ml-auto">
+                @{ Html.RenderPartial("_Language"); }
+                @if (HttpContext.Current.User.Identity.IsAuthenticated)
+                {
+                    <li class="nav-item">@Html.ActionLink("Profile", "Index", "UserProfile", new {area = ""}, new {@class = "nav-link"})</li>
+                    <li class="nav-item">@Html.ActionLink("Cart", "Index", "Cart", new {area = ""}, new {@class = "nav-link"})</li>
+                    <li class="nav-item active">@Html.ActionLink("Logout", "Logout", "Account", new {area = ""}, new {@class = "nav-link"})</li>
+                }
+                else
+                {
+                    <li class="nav-item mr-sm-2">@Html.ActionLink("Register", "Register", "Account", new {area = ""}, new {@class = "nav-link"})</li>
+                    <li class="nav-item my-2 my-sm-0">@Html.ActionLink("Login", "Login", "Account", new {area = ""}, new {@class = "nav-link"})</li>
+                }
+            </ul>
+        </div>
+    </div>
+</nav>
