@@ -56,9 +56,9 @@ namespace TicketManagement.UnitTests.ValidatorTests
             this.Mock = AutoMock.GetLoose(builder =>
             {
                 builder.RegisterInstance(fakeLayoutRepository)
-                .As<IRepository<Layout, int>>();
+                .As<IRepository<Layout>>();
                 builder.RegisterInstance(fakeVenueRepository)
-                .As<IRepository<Venue, int>>();
+                .As<IRepository<Venue>>();
             });
         }
 
@@ -69,7 +69,7 @@ namespace TicketManagement.UnitTests.ValidatorTests
         }
 
         [Test]
-        public void AddLayout_NonexistentVenue_GetException()
+        public void Validation_WhenValidationLayoutWithNonexistentVenueIdParameter_ShouldBeThrowEntityDoesNotExistException()
         {
             // Arrange
             this.layoutValidator = this.Mock.Create<LayoutValidator>();
@@ -77,14 +77,14 @@ namespace TicketManagement.UnitTests.ValidatorTests
             var dto = this.Fixture.Build<Layout>().With(e => e.VenueId, nonexistingVenueId).Create();
 
             // Act
-            Action validate = () => this.layoutValidator.Validate(dto);
+            Action validate = () => this.layoutValidator.Validation(dto);
 
-            // Act - delegate. Assert
+            // Assert
             validate.Should().Throw<EntityDoesNotExistException>();
         }
 
         [Test]
-        public void AddLayout_IsSeatRowAndNumber_GetException()
+        public void Validation_WhenValidationLayoutWithExistingLayoutNameInTheVenue_ShouldBeThrowLayoutWithSameNameInTheVenueExistException()
         {
             // Arrange
             this.layoutValidator = this.Mock.Create<LayoutValidator>();
@@ -92,25 +92,27 @@ namespace TicketManagement.UnitTests.ValidatorTests
                 .With(e => e.VenueId, 1)
                 .With(e => e.Name, "first").Create();
 
-            Action validate = () => this.layoutValidator.Validate(dto);
+            // Act
+            Action validate = () => this.layoutValidator.Validation(dto);
 
-            // Act - delegate. Assert
+            // Assert
             validate.Should().Throw<LayoutWithSameNameInTheVenueExistException>();
         }
 
         [Test]
-        public void AddLayout_IsSeatRowAndNumber_NotThrowException()
+        public void Validation_WhenValidationLayoutWithNotExistingNameInVenueAndExistingVenueId_ShouldNotBeThrowException()
         {
             // Arrange
             this.layoutValidator = this.Mock.Create<LayoutValidator>();
             var dto = this.Fixture.Build<Layout>()
-    .With(e => e.VenueId, 1)
-    .With(e => e.Name, "third").Create();
+                .With(e => e.VenueId, 1)
+                .With(e => e.Name, "third").Create();
 
-            Action validate = () => this.layoutValidator.Validate(dto);
+            // Act
+            Action validate = () => this.layoutValidator.Validation(dto);
 
-            // Act - delegate. Assert
-            validate.Should().NotThrow<LayoutWithSameNameInTheVenueExistException>();
+            // Assert
+            validate.Should().NotThrow();
         }
     }
 }

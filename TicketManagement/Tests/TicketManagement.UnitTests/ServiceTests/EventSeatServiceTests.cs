@@ -62,7 +62,7 @@ namespace TicketManagement.UnitTests.ServiceTests
             this.Mock = AutoMock.GetLoose(builder =>
             {
                 builder.RegisterInstance(fakeEventSeatRepository)
-                .As<IRepository<EventSeat, int>>();
+                .As<IRepository<EventSeat>>();
             });
         }
 
@@ -73,10 +73,10 @@ namespace TicketManagement.UnitTests.ServiceTests
         }
 
         [Test]
-        public void UpdateEventSeat_NewEventSeat_GetEventSeatState()
+        public void UpdateEventSeat_WhenUpdateEventSeat_ShouldBeUpdateOnlyEventSeatState()
         {
             // Arrange
-            var eventSeatRepository = this.Mock.Create<IRepository<EventSeat, int>>();
+            var eventSeatRepository = this.Mock.Create<IRepository<EventSeat>>();
             this.eventSeatService = this.Mock.Create<EventSeatService>();
             var id = 1;
             var expectedDto = this.Fixture.Build<EventSeat>()
@@ -91,10 +91,10 @@ namespace TicketManagement.UnitTests.ServiceTests
         }
 
         [Test]
-        public void GetEventSeat_EventSeatId_GetEventState()
+        public void GetEventSeat_WhenGetEventSeatWithExistingEventSeatId_ShouldBeReturnThisEventSeat()
         {
             // Arrange
-            var eventSeatRepository = this.Mock.Create<IRepository<EventSeat, int>>();
+            var eventSeatRepository = this.Mock.Create<IRepository<EventSeat>>();
             this.eventSeatService = this.Mock.Create<EventSeatService>();
             var id = 1;
             var expectedDto = new EventSeat() { Id = 1, State = EventSeatState.Free, EventAreaId = 1, Row = 1, Number = 1 };
@@ -107,10 +107,10 @@ namespace TicketManagement.UnitTests.ServiceTests
         }
 
         [Test]
-        public void GetEventSeats_GetEventSeatCount()
+        public void GetEventSeats_WhenGetEventSeats_ShouldBeReturnAllEventSeats()
         {
             // Arrange
-            var eventSeatRepository = this.Mock.Create<IRepository<EventSeat, int>>();
+            var eventSeatRepository = this.Mock.Create<IRepository<EventSeat>>();
             this.eventSeatService = this.Mock.Create<EventSeatService>();
             var expected = new List<EventSeat>
             {

@@ -45,7 +45,7 @@ namespace TicketManagement.UnitTests.ValidatorTests
             this.Mock = AutoMock.GetLoose(builder =>
             {
                 builder.RegisterInstance(fakeVenueRepository)
-                .As<IRepository<Venue, int>>();
+                .As<IRepository<Venue>>();
             });
         }
 
@@ -56,7 +56,7 @@ namespace TicketManagement.UnitTests.ValidatorTests
         }
 
         [Test]
-        public void AddVenue_Nothing()
+        public void Validation_WhenValidationVenueWithNotExistingVenueName_ShouldNotBeThrowException()
         {
             // Arrange
             this.venueValidator = this.Mock.Create<VenueValidator>();
@@ -64,25 +64,25 @@ namespace TicketManagement.UnitTests.ValidatorTests
             var dto = this.Fixture.Build<Venue>().With(e => e.Name, existingName).Create();
 
             // Act
-            Action validate = () => this.venueValidator.Validate(dto);
+            Action validate = () => this.venueValidator.Validation(dto);
 
-            // Act - delegate. Assert
-            validate.Should().NotThrow<VenueWithThisNameExistException>();
+            // Assert
+            validate.Should().NotThrow();
         }
 
         [Test]
-        public void AddVenue_IsVenueName_GetException()
+        public void Validation_WhenValidationVenueWithExistingVenueName_ShouldBeThrowExceptionVenueWithThisNameExistException()
         {
             // Arrange
-            var venueRepository = this.Mock.Create<IRepository<Venue, int>>();
+            var venueRepository = this.Mock.Create<IRepository<Venue>>();
             this.venueValidator = this.Mock.Create<VenueValidator>();
             var existingName = "first";
             var dto = this.Fixture.Build<Venue>().With(e => e.Name, existingName).Create();
 
             // Act
-            Action validate = () => this.venueValidator.Validate(dto);
+            Action validate = () => this.venueValidator.Validation(dto);
 
-            // Act - delegate. Assert
+            // Assert
             validate.Should().Throw<VenueWithThisNameExistException>();
         }
     }

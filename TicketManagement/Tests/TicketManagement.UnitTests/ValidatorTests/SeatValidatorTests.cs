@@ -82,15 +82,15 @@ namespace TicketManagement.UnitTests.ValidatorTests
 
             var areas = new List<Area>
             {
-                new Area() { Id = 1, Description = "First area of first layout", CoordX = 1, CoordY = 1, LayoutId = 1 },
-                new Area() { Id = 2, Description = "Second area of first layout", CoordX = 2, CoordY = 2, LayoutId = 1 },
-                new Area() { Id = 3, Description = "First area of second layout", CoordX = 3, CoordY = 3, LayoutId = 2 },
-                new Area() { Id = 4, Description = "Second area of second layout", CoordX = 4, CoordY = 4, LayoutId = 2 },
-                new Area() { Id = 5, Description = "First area of third layout", CoordX = 1, CoordY = 1, LayoutId = 3 },
-                new Area() { Id = 6, Description = "Second area of third layout", CoordX = 2, CoordY = 2, LayoutId = 3 },
-                new Area() { Id = 7, Description = "First area of fourth layout", CoordX = 3, CoordY = 3, LayoutId = 4 },
-                new Area() { Id = 8, Description = "Second area of fourth layout", CoordX = 4, CoordY = 4, LayoutId = 4 },
-                new Area() { Id = 101, Description = "Second area of fourth layout", CoordX = 4, CoordY = 4, LayoutId = 101 },
+                new Area() { Id = 1, Description = "First area of first layout", CoordinateX = 1, CoordinateY = 1, LayoutId = 1 },
+                new Area() { Id = 2, Description = "Second area of first layout", CoordinateX = 2, CoordinateY = 2, LayoutId = 1 },
+                new Area() { Id = 3, Description = "First area of second layout", CoordinateX = 3, CoordinateY = 3, LayoutId = 2 },
+                new Area() { Id = 4, Description = "Second area of second layout", CoordinateX = 4, CoordinateY = 4, LayoutId = 2 },
+                new Area() { Id = 5, Description = "First area of third layout", CoordinateX = 1, CoordinateY = 1, LayoutId = 3 },
+                new Area() { Id = 6, Description = "Second area of third layout", CoordinateX = 2, CoordinateY = 2, LayoutId = 3 },
+                new Area() { Id = 7, Description = "First area of fourth layout", CoordinateX = 3, CoordinateY = 3, LayoutId = 4 },
+                new Area() { Id = 8, Description = "Second area of fourth layout", CoordinateX = 4, CoordinateY = 4, LayoutId = 4 },
+                new Area() { Id = 101, Description = "Second area of fourth layout", CoordinateX = 4, CoordinateY = 4, LayoutId = 101 },
             };
             var fakeSeatsRepository = new RepositoryFake<Seat>(seats);
             var fakeAreasRepository = new RepositoryFake<Area>(areas);
@@ -98,9 +98,9 @@ namespace TicketManagement.UnitTests.ValidatorTests
             this.Mock = AutoMock.GetLoose(builder =>
             {
                 builder.RegisterInstance(fakeSeatsRepository)
-                .As<IRepository<Seat, int>>();
+                .As<IRepository<Seat>>();
                 builder.RegisterInstance(fakeAreasRepository)
-                .As<IRepository<Area, int>>();
+                .As<IRepository<Area>>();
             });
         }
 
@@ -111,10 +111,10 @@ namespace TicketManagement.UnitTests.ValidatorTests
         }
 
         [Test]
-        public void AddSeat_NonexistentArea_GetException()
+        public void Validation_WhenValidationSeatWithNonexistentAreaId_ShouldBeThrowEntityDoesNotExistException()
         {
             // Arrange
-            var seatRepository = this.Mock.Create<IRepository<Seat, int>>();
+            var seatRepository = this.Mock.Create<IRepository<Seat>>();
             this.seatValidator = this.Mock.Create<SeatValidator>();
             var nonexistingAreaId = 100000;
             var dto = new Seat
@@ -125,17 +125,18 @@ namespace TicketManagement.UnitTests.ValidatorTests
                 AreaId = nonexistingAreaId,
             };
 
-            Action validate = () => this.seatValidator.Validate(dto);
+            // Act
+            Action validate = () => this.seatValidator.Validation(dto);
 
-            // Act - delegate. Assert
+            // Assert
             validate.Should().Throw<EntityDoesNotExistException>();
         }
 
         [Test]
-        public void AddSeat_IsSeatRowAndNumber_GetException()
+        public void Validation_WhenValidationSeatWithExistingSeatWithRowAndNumberInThisArea_ShouldBeThrowSeatWithSameRowAndNumberInTheAreaExistException()
         {
             // Arrange
-            var seatRepository = this.Mock.Create<IRepository<Seat, int>>();
+            var seatRepository = this.Mock.Create<IRepository<Seat>>();
             this.seatValidator = this.Mock.Create<SeatValidator>();
             var dto = new Seat
             {
@@ -145,17 +146,18 @@ namespace TicketManagement.UnitTests.ValidatorTests
                 AreaId = 1,
             };
 
-            Action validate = () => this.seatValidator.Validate(dto);
+            // Act
+            Action validate = () => this.seatValidator.Validation(dto);
 
-            // Act - delegate. Assert
+            // Assert
             validate.Should().Throw<SeatWithSameRowAndNumberInTheAreaExistException>();
         }
 
         [Test]
-        public void AddSeat_IsSeatRowAndNumber_NotThrowException()
+        public void Validation_WhenValidationSeatWithNotExistingSeatWithTheSameRowAndNumberInThisArea_ShouldNotBeThrowException()
         {
             // Arrange
-            var seatRepository = this.Mock.Create<IRepository<Seat, int>>();
+            var seatRepository = this.Mock.Create<IRepository<Seat>>();
             this.seatValidator = this.Mock.Create<SeatValidator>();
             var dto = new Seat
             {
@@ -165,10 +167,11 @@ namespace TicketManagement.UnitTests.ValidatorTests
                 AreaId = 1,
             };
 
-            Action validate = () => this.seatValidator.Validate(dto);
+            // Act
+            Action validate = () => this.seatValidator.Validation(dto);
 
-            // Act - delegate. Assert
-            validate.Should().NotThrow<SeatWithSameRowAndNumberInTheAreaExistException>();
+            // Assert
+            validate.Should().NotThrow();
         }
     }
 }

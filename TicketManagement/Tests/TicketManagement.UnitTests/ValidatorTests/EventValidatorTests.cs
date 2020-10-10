@@ -66,15 +66,15 @@ namespace TicketManagement.UnitTests.ValidatorTests
 
             var areas = new List<Area>
             {
-                new Area() { Id = 1, Description = "First area of first layout", CoordX = 1, CoordY = 1, LayoutId = 1 },
-                new Area() { Id = 2, Description = "Second area of first layout", CoordX = 2, CoordY = 2, LayoutId = 1 },
-                new Area() { Id = 3, Description = "First area of second layout", CoordX = 3, CoordY = 3, LayoutId = 2 },
-                new Area() { Id = 4, Description = "Second area of second layout", CoordX = 4, CoordY = 4, LayoutId = 2 },
-                new Area() { Id = 5, Description = "First area of third layout", CoordX = 1, CoordY = 1, LayoutId = 3 },
-                new Area() { Id = 6, Description = "Second area of third layout", CoordX = 2, CoordY = 2, LayoutId = 3 },
-                new Area() { Id = 7, Description = "First area of fourth layout", CoordX = 3, CoordY = 3, LayoutId = 4 },
-                new Area() { Id = 8, Description = "Second area of fourth layout", CoordX = 4, CoordY = 4, LayoutId = 4 },
-                new Area() { Id = 101, Description = "Second area of fourth layout", CoordX = 4, CoordY = 4, LayoutId = 101 },
+                new Area() { Id = 1, Description = "First area of first layout", CoordinateX = 1, CoordinateY = 1, LayoutId = 1 },
+                new Area() { Id = 2, Description = "Second area of first layout", CoordinateX = 2, CoordinateY = 2, LayoutId = 1 },
+                new Area() { Id = 3, Description = "First area of second layout", CoordinateX = 3, CoordinateY = 3, LayoutId = 2 },
+                new Area() { Id = 4, Description = "Second area of second layout", CoordinateX = 4, CoordinateY = 4, LayoutId = 2 },
+                new Area() { Id = 5, Description = "First area of third layout", CoordinateX = 1, CoordinateY = 1, LayoutId = 3 },
+                new Area() { Id = 6, Description = "Second area of third layout", CoordinateX = 2, CoordinateY = 2, LayoutId = 3 },
+                new Area() { Id = 7, Description = "First area of fourth layout", CoordinateX = 3, CoordinateY = 3, LayoutId = 4 },
+                new Area() { Id = 8, Description = "Second area of fourth layout", CoordinateX = 4, CoordinateY = 4, LayoutId = 4 },
+                new Area() { Id = 101, Description = "Second area of fourth layout", CoordinateX = 4, CoordinateY = 4, LayoutId = 101 },
             };
             var fakeAreaRepository = new RepositoryFake<Area>(areas);
 
@@ -125,11 +125,11 @@ namespace TicketManagement.UnitTests.ValidatorTests
 
             var eventAreas = new List<EventArea>
             {
-                new EventArea() { Id = 1, CoordX = 1, CoordY = 1, Description = "First area event", EventId = 1, Price = 100 },
-                new EventArea() { Id = 2, CoordX = 1, CoordY = 1, Description = "Second area event", EventId = 1, Price = 100 },
-                new EventArea() { Id = 3, CoordX = 2, CoordY = 2, Description = "First area event", EventId = 2, Price = 200 },
-                new EventArea() { Id = 4, CoordX = 2, CoordY = 2, Description = "Second area event", EventId = 2, Price = 200 },
-                new EventArea() { Id = 4, CoordX = 2, CoordY = 2, Description = "Area event without price", EventId = 2, Price = 0 },
+                new EventArea() { Id = 1, CoordinateX = 1, CoordinateY = 1, Description = "First area event", EventId = 1, Price = 100 },
+                new EventArea() { Id = 2, CoordinateX = 1, CoordinateY = 1, Description = "Second area event", EventId = 1, Price = 100 },
+                new EventArea() { Id = 3, CoordinateX = 2, CoordinateY = 2, Description = "First area event", EventId = 2, Price = 200 },
+                new EventArea() { Id = 4, CoordinateX = 2, CoordinateY = 2, Description = "Second area event", EventId = 2, Price = 200 },
+                new EventArea() { Id = 4, CoordinateX = 2, CoordinateY = 2, Description = "Area event without price", EventId = 2, Price = 0 },
             };
             var fakeEventAreaRepository = new RepositoryFake<EventArea>(eventAreas);
 
@@ -161,17 +161,17 @@ namespace TicketManagement.UnitTests.ValidatorTests
             this.Mock = AutoMock.GetLoose(builder =>
             {
                 builder.RegisterInstance(fakeLayoutRepository)
-                .As<IRepository<Layout, int>>();
+                .As<IRepository<Layout>>();
                 builder.RegisterInstance(fakeEventRepository)
-                .As<IRepository<Event, int>>();
+                .As<IRepository<Event>>();
                 builder.RegisterInstance(fakeAreaRepository)
-                .As<IRepository<Area, int>>();
+                .As<IRepository<Area>>();
                 builder.RegisterInstance(fakeSeatsRepository)
-               .As<IRepository<Seat, int>>();
+               .As<IRepository<Seat>>();
                 builder.RegisterInstance(fakeEventAreaRepository)
-               .As<IRepository<EventArea, int>>();
+               .As<IRepository<EventArea>>();
                 builder.RegisterInstance(fakeEventSeatRepository)
-               .As<IRepository<EventSeat, int>>();
+               .As<IRepository<EventSeat>>();
             });
         }
 
@@ -182,7 +182,7 @@ namespace TicketManagement.UnitTests.ValidatorTests
         }
 
         [Test]
-        public void WhenEventNotPublishAndAllAreaInEventHavePrice_EventPublish()
+        public void PublishValidation_WhenPublishValidationEventWithNotPublishStatusAndAllAreaInEventHavePrice_ShouldNotBeThrowException()
         {
             // Arrange
             this.eventValidator = this.Mock.Create<EventValidator>();
@@ -191,14 +191,14 @@ namespace TicketManagement.UnitTests.ValidatorTests
                 .Create();
 
             // Act
-            Action validate = () => this.eventValidator.PublishValidate(dto);
+            Action validate = () => this.eventValidator.PublishValidation(dto);
 
-            // Act - delegate. Assert
+            // Assert
             validate.Should().NotThrow();
         }
 
         [Test]
-        public void WhenEventPublishAndAllAreaInEventHavePrice_ThrowEventAlreadyPublishedException()
+        public void PublishValidation_WhenPublishValidationEventWithPublishStatusAndAllAreaInEventHavePrice_ShouldBeThrowEventAlreadyPublishedException()
         {
             // Arrange
             this.eventValidator = this.Mock.Create<EventValidator>();
@@ -207,14 +207,14 @@ namespace TicketManagement.UnitTests.ValidatorTests
                 .Create();
 
             // Act
-            Action validate = () => this.eventValidator.PublishValidate(dto);
+            Action validate = () => this.eventValidator.PublishValidation(dto);
 
-            // Act - delegate. Assert
+            // Assert
             validate.Should().Throw<EventAlreadyPublishedException>();
         }
 
         [Test]
-        public void WhenEventNotPublishButSomeAreaInEventHaveNotPrice_ThrowSomeAreaHasNotPriceException()
+        public void PublishValidation_WhenPublishValidationEventWithNotPublishStatusButSomeAreasInEventHaveNotPrice_ShouldBeThrowSomeAreaHasNotPriceException()
         {
             // Arrange
             this.eventValidator = this.Mock.Create<EventValidator>();
@@ -223,14 +223,14 @@ namespace TicketManagement.UnitTests.ValidatorTests
                 .Create();
 
             // Act
-            Action validate = () => this.eventValidator.PublishValidate(dto);
+            Action validate = () => this.eventValidator.PublishValidation(dto);
 
-            // Act - delegate. Assert
+            // Assert
             validate.Should().Throw<SomeAreaHasNotPriceException>();
         }
 
         [Test]
-        public void AddEvent_NonexistentLayout_GetException()
+        public void Validation_WhenValidationEventWithBeginDateInPast_ShouldBeThrowEventInPastException()
         {
             // Arrange
             this.eventValidator = this.Mock.Create<EventValidator>();
@@ -239,14 +239,14 @@ namespace TicketManagement.UnitTests.ValidatorTests
                 .With(e => e.BeginDate, beginDate).Create();
 
             // Act
-            Action validate = () => this.eventValidator.Validate(dto);
+            Action validate = () => this.eventValidator.Validation(dto);
 
-            // Act - delegate. Assert
+            // Assert
             validate.Should().Throw<EventInPastException>();
         }
 
         [Test]
-        public void AddEvent_IsBeginDateLongerThenEndDate_GetException()
+        public void Validation_WhenValidationEventWithBeginDateLongerThenEndDate_ShouldBeThrowBeginDateLongerThenEndDateException()
         {
             // Arrange
             this.eventValidator = this.Mock.Create<EventValidator>();
@@ -258,14 +258,14 @@ namespace TicketManagement.UnitTests.ValidatorTests
                 .Create();
 
             // Act
-            Action validate = () => this.eventValidator.Validate(dto);
+            Action validate = () => this.eventValidator.Validation(dto);
 
-            // Act - delegate. Assert
+            // Assert
             validate.Should().Throw<BeginDateLongerThenEndDateException>();
         }
 
         [Test]
-        public void AddEvent_EventInLayoutInTheSameTimeExist_GetException()
+        public void Validation_WhenValidationEventWithExistingAnotherEventInLayoutInTheSameTime_ShouldBeThrowEventExistInTheLayoutInThisTimeException()
         {
             // Arrange
             this.eventValidator = this.Mock.Create<EventValidator>();
@@ -277,14 +277,14 @@ namespace TicketManagement.UnitTests.ValidatorTests
                 .Create();
 
             // Act
-            Action validate = () => this.eventValidator.Validate(dto);
+            Action validate = () => this.eventValidator.Validation(dto);
 
-            // Act - delegate. Assert
+            // Assert
             validate.Should().Throw<EventExistInTheLayoutInThisTimeException>();
         }
 
         [Test]
-        public void AddEvent_AreaInLayoutNotExist_GetException()
+        public void Validation_WhenValidationEventWithLayoutsWithoutAnyArea_ShouldBeThrowLayoutHasNotAreaException()
         {
             // Arrange
             this.eventValidator = this.Mock.Create<EventValidator>();
@@ -297,14 +297,14 @@ namespace TicketManagement.UnitTests.ValidatorTests
                 .Create();
 
             // Act
-            Action validate = () => this.eventValidator.Validate(dto);
+            Action validate = () => this.eventValidator.Validation(dto);
 
-            // Act - delegate. Assert
+            // Assert
             validate.Should().Throw<LayoutHasNotAreaException>();
         }
 
         [Test]
-        public void AddEvent_NonexistentSeats_GetException()
+        public void Validation_WhenValidationEventWithNonexistentSeatsInLayouts_ShouldBeThrowLayoutHasNotSeatException()
         {
             // Arrange
             this.eventValidator = this.Mock.Create<EventValidator>();
@@ -317,14 +317,14 @@ namespace TicketManagement.UnitTests.ValidatorTests
                 .Create();
 
             // Act
-            Action validate = () => this.eventValidator.Validate(dto);
+            Action validate = () => this.eventValidator.Validation(dto);
 
-            // Act - delegate. Assert
+            // Assert
             validate.Should().Throw<LayoutHasNotSeatException>();
         }
 
         [Test]
-        public void UpdateValidate_TheSameLayout_NotException()
+        public void UpdateValidation_WhenUpdateValidationEventWithTheSameLayout_ShouldNotBeThrowException()
         {
             // Arrange
             this.eventValidator = this.Mock.Create<EventValidator>();
@@ -339,14 +339,14 @@ namespace TicketManagement.UnitTests.ValidatorTests
             };
 
             // Act
-            Action validate = () => this.eventValidator.UpdateValidate(dto);
+            Action validate = () => this.eventValidator.UpdateValidation(dto);
 
-            // Act - delegate. Assert
+            // Assert
             validate.Should().NotThrow();
         }
 
         [Test]
-        public void UpdateValidate_SoldSeatExist_Exception()
+        public void UpdateValidation_WhenUpdateValidationEventWithAnotherLayoutIdAndExistingSoldSeats_ShouldBeThrowLayoutHasSoldSeatAndCouldNotBeChangeException()
         {
             // Arrange
             this.eventValidator = this.Mock.Create<EventValidator>();
@@ -361,14 +361,14 @@ namespace TicketManagement.UnitTests.ValidatorTests
             };
 
             // Act
-            Action validate = () => this.eventValidator.UpdateValidate(dto);
+            Action validate = () => this.eventValidator.UpdateValidation(dto);
 
-            // Act - delegate. Assert
+            // Assert
             validate.Should().Throw<LayoutHasSoldSeatAndCouldNotBeChangeException>();
         }
 
         [Test]
-        public void UpdateValidate_SoldSeatNotExist_NotException()
+        public void UpdateValidation_WhenUpdateValidationEventWithoutSoldSeats_ShouldNotBeThrowException()
         {
             // Arrange
             this.eventValidator = this.Mock.Create<EventValidator>();
@@ -383,35 +383,35 @@ namespace TicketManagement.UnitTests.ValidatorTests
             };
 
             // Act
-            Action validate = () => this.eventValidator.UpdateValidate(dto);
+            Action validate = () => this.eventValidator.UpdateValidation(dto);
 
-            // Act - delegate. Assert
+            // Assert
             validate.Should().NotThrow();
         }
 
         [Test]
-        public void DeleteValidate_SoldSeatExist_Exception()
+        public void DeleteValidation_WhenDeleteValidationEventWithExistingSoldSeats_ShouldBeThrowLayoutHasSoldSeatAndCouldNotBeChangeException()
         {
             // Arrange
             this.eventValidator = this.Mock.Create<EventValidator>();
 
             // Act
-            Action validate = () => this.eventValidator.DeleteValidate(1);
+            Action validate = () => this.eventValidator.DeleteValidation(1);
 
-            // Act - delegate. Assert
+            // Assert
             validate.Should().Throw<LayoutHasSoldSeatAndCouldNotBeChangeException>();
         }
 
         [Test]
-        public void DeleteValidate_SoldSeatNotExist_NotException()
+        public void DeleteValidation_WhenDeleteValidationEventWithoutSoldSeats_ShouldNotBeThrowException()
         {
             // Arrange
             this.eventValidator = this.Mock.Create<EventValidator>();
 
             // Act
-            Action validate = () => this.eventValidator.DeleteValidate(2);
+            Action validate = () => this.eventValidator.DeleteValidation(2);
 
-            // Act - delegate. Assert
+            // Assert
             validate.Should().NotThrow();
         }
     }

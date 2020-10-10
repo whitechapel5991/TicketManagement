@@ -43,7 +43,7 @@ namespace TicketManagement.UnitTests.ServiceTests
             this.Mock = AutoMock.GetLoose(builder =>
             {
                 builder.RegisterInstance(fakeVenueRepository)
-                .As<IRepository<Venue, int>>();
+                .As<IRepository<Venue>>();
             });
         }
 
@@ -54,10 +54,10 @@ namespace TicketManagement.UnitTests.ServiceTests
         }
 
         [Test]
-        public void AddVenue_AddNewVenue_GetCountVenues()
+        public void AddVenue_WhenAddNewVenue_ShouldBeSaveNewVenueInRepositoryAndReturnNewEntityId()
         {
             // Arrange
-            var venueRepository = this.Mock.Create<IRepository<Venue, int>>();
+            var venueRepository = this.Mock.Create<IRepository<Venue>>();
             this.venueService = this.Mock.Create<VenueService>();
             var dto = this.Fixture.Build<Venue>().Create();
             var expected = new List<Venue>
@@ -75,10 +75,10 @@ namespace TicketManagement.UnitTests.ServiceTests
         }
 
         [Test]
-        public void UpdateVenue_NewVenue_GetVenueProperties()
+        public void UpdateVenue_WhenUpdateVenueWithExistingVenueId_ShouldBeUpdateAllFieldsInTheRepository()
         {
             // Arrange
-            var venueRepository = this.Mock.Create<IRepository<Venue, int>>();
+            var venueRepository = this.Mock.Create<IRepository<Venue>>();
             this.venueService = this.Mock.Create<VenueService>();
             var id = 1;
             var expectedDto = this.Fixture.Build<Venue>().With(e => e.Id, id).Create();
@@ -91,12 +91,12 @@ namespace TicketManagement.UnitTests.ServiceTests
         }
 
         [Test]
-        public void DeleteVenue_VenueId_GetVenuesCount()
+        public void DeleteVenue_WhenDeleteVenueWithExistingVenueId_ShouldBeDeleteFromTheRepository()
         {
             // Arrange
-            var venueRepository = this.Mock.Create<IRepository<Venue, int>>();
+            var venueRepository = this.Mock.Create<IRepository<Venue>>();
             this.venueService = this.Mock.Create<VenueService>();
-            int id = 1;
+            var id = 1;
             var expected = new List<Venue>
             {
                 new Venue() { Id = 2, Description = "Second venue", Name = "second", Address = "Second venue address", Phone = "123 45 678 90 12" },
@@ -110,10 +110,10 @@ namespace TicketManagement.UnitTests.ServiceTests
         }
 
         [Test]
-        public void GetVenue_VenueId_GetVenueProperties()
+        public void GetVenue_WhenGetVenueWithExistingVenueId_ShouldBeReturnThisVenue()
         {
             // Arrange
-            var venueRepository = this.Mock.Create<IRepository<Venue, int>>();
+            var venueRepository = this.Mock.Create<IRepository<Venue>>();
             this.venueService = this.Mock.Create<VenueService>();
             var id = 1;
             var expectedDto = new Venue() { Id = 1, Description = "First venue", Name = "first", Address = "First venue address", Phone = "123 45 678 90 12" };
@@ -126,10 +126,10 @@ namespace TicketManagement.UnitTests.ServiceTests
         }
 
         [Test]
-        public void GetVenues_GetVenuesCount()
+        public void GetVenues_WhenGetVenues_ShouldBeReturnAllVenues()
         {
             // Arrange
-            var venueRepository = this.Mock.Create<IRepository<Venue, int>>();
+            var venueRepository = this.Mock.Create<IRepository<Venue>>();
             this.venueService = this.Mock.Create<VenueService>();
             var expected = new List<Venue>
             {

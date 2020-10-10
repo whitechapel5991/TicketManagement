@@ -38,15 +38,15 @@ namespace TicketManagement.UnitTests.ValidatorTests
 
             var areas = new List<Area>
             {
-                new Area() { Id = 1, Description = "First area of first layout", CoordX = 1, CoordY = 1, LayoutId = 1 },
-                new Area() { Id = 2, Description = "Second area of first layout", CoordX = 2, CoordY = 2, LayoutId = 1 },
-                new Area() { Id = 3, Description = "First area of second layout", CoordX = 3, CoordY = 3, LayoutId = 2 },
-                new Area() { Id = 4, Description = "Second area of second layout", CoordX = 4, CoordY = 4, LayoutId = 2 },
-                new Area() { Id = 5, Description = "First area of third layout", CoordX = 1, CoordY = 1, LayoutId = 3 },
-                new Area() { Id = 6, Description = "Second area of third layout", CoordX = 2, CoordY = 2, LayoutId = 3 },
-                new Area() { Id = 7, Description = "First area of fourth layout", CoordX = 3, CoordY = 3, LayoutId = 4 },
-                new Area() { Id = 8, Description = "Second area of fourth layout", CoordX = 4, CoordY = 4, LayoutId = 4 },
-                new Area() { Id = 101, Description = "Second area of fourth layout", CoordX = 4, CoordY = 4, LayoutId = 101 },
+                new Area() { Id = 1, Description = "First area of first layout", CoordinateX = 1, CoordinateY = 1, LayoutId = 1 },
+                new Area() { Id = 2, Description = "Second area of first layout", CoordinateX = 2, CoordinateY = 2, LayoutId = 1 },
+                new Area() { Id = 3, Description = "First area of second layout", CoordinateX = 3, CoordinateY = 3, LayoutId = 2 },
+                new Area() { Id = 4, Description = "Second area of second layout", CoordinateX = 4, CoordinateY = 4, LayoutId = 2 },
+                new Area() { Id = 5, Description = "First area of third layout", CoordinateX = 1, CoordinateY = 1, LayoutId = 3 },
+                new Area() { Id = 6, Description = "Second area of third layout", CoordinateX = 2, CoordinateY = 2, LayoutId = 3 },
+                new Area() { Id = 7, Description = "First area of fourth layout", CoordinateX = 3, CoordinateY = 3, LayoutId = 4 },
+                new Area() { Id = 8, Description = "Second area of fourth layout", CoordinateX = 4, CoordinateY = 4, LayoutId = 4 },
+                new Area() { Id = 101, Description = "Second area of fourth layout", CoordinateX = 4, CoordinateY = 4, LayoutId = 101 },
             };
             var fakeAreasRepository = new RepositoryFake<Area>(areas);
             var layouts = new List<Layout>
@@ -63,9 +63,9 @@ namespace TicketManagement.UnitTests.ValidatorTests
             this.Mock = AutoMock.GetLoose(builder =>
             {
                 builder.RegisterInstance(fakeAreasRepository)
-                .As<IRepository<Area, int>>();
+                .As<IRepository<Area>>();
                 builder.RegisterInstance(fakeLayoutRepository)
-                .As<IRepository<Layout, int>>();
+                .As<IRepository<Layout>>();
             });
         }
 
@@ -76,7 +76,7 @@ namespace TicketManagement.UnitTests.ValidatorTests
         }
 
         [Test]
-        public void AddArea_NonexistentVenue_GetException()
+        public void Validation_WhenValidationAreaWithNonexistentVenue_ShouldBeThrowEntityDoesNotExistException()
         {
             // Arrange
             this.areaValidator = this.Mock.Create<AreaValidator>();
@@ -84,14 +84,14 @@ namespace TicketManagement.UnitTests.ValidatorTests
             var dto = this.Fixture.Build<Area>().With(e => e.LayoutId, nonexistingLayoutId).Create();
 
             // Act
-            Action validate = () => this.areaValidator.Validate(dto);
+            Action validate = () => this.areaValidator.Validation(dto);
 
-            // Act - delegate. Assert
+            // Assert
             validate.Should().Throw<EntityDoesNotExistException>();
         }
 
         [Test]
-        public void AddArea_IsSeatRowAndNumber_GetException()
+        public void Validation_WhenValidationAreaWithExistingDescriptionInThisLayout_ShouldBeThrowAreaWithSameDescriptionInTheLayoutExistException()
         {
             // Arrange
             this.areaValidator = this.Mock.Create<AreaValidator>();
@@ -99,14 +99,15 @@ namespace TicketManagement.UnitTests.ValidatorTests
                 .With(e => e.LayoutId, 1)
                 .With(e => e.Description, "Second area of first layout").Create();
 
-            Action validate = () => this.areaValidator.Validate(dto);
+            // Act
+            Action validate = () => this.areaValidator.Validation(dto);
 
-            // Act - delegate. Assert
+            // Assert
             validate.Should().Throw<AreaWithSameDescriptionInTheLayoutExistException>();
         }
 
         [Test]
-        public void AddArea_IsSeatRowAndNumber_NotThrowException()
+        public void Validation_WhenValidationValidArea_ShouldNotBeThrowException()
         {
             // Arrange
             this.areaValidator = this.Mock.Create<AreaValidator>();
@@ -114,10 +115,11 @@ namespace TicketManagement.UnitTests.ValidatorTests
                  .With(e => e.LayoutId, 1)
                  .With(e => e.Description, "2. Second area of first layout").Create();
 
-            Action validate = () => this.areaValidator.Validate(dto);
+            // Act
+            Action validate = () => this.areaValidator.Validation(dto);
 
-            // Act - delegate. Assert
-            validate.Should().NotThrow<AreaWithSameDescriptionInTheLayoutExistException>();
+            // Assert
+            validate.Should().NotThrow();
         }
     }
 }

@@ -35,17 +35,17 @@ namespace TicketManagement.UnitTests.ServiceTests
 
             var eventAreas = new List<EventArea>
             {
-                new EventArea() { Id = 1, CoordX = 1, CoordY = 1, Description = "First area event", EventId = 1, Price = 100 },
-                new EventArea() { Id = 2, CoordX = 1, CoordY = 1, Description = "Second area event", EventId = 1, Price = 100 },
-                new EventArea() { Id = 3, CoordX = 2, CoordY = 2, Description = "First area event", EventId = 2, Price = 200 },
-                new EventArea() { Id = 4, CoordX = 2, CoordY = 2, Description = "Second area event", EventId = 2, Price = 200 },
+                new EventArea() { Id = 1, CoordinateX = 1, CoordinateY = 1, Description = "First area event", EventId = 1, Price = 100 },
+                new EventArea() { Id = 2, CoordinateX = 1, CoordinateY = 1, Description = "Second area event", EventId = 1, Price = 100 },
+                new EventArea() { Id = 3, CoordinateX = 2, CoordinateY = 2, Description = "First area event", EventId = 2, Price = 200 },
+                new EventArea() { Id = 4, CoordinateX = 2, CoordinateY = 2, Description = "Second area event", EventId = 2, Price = 200 },
             };
             var fakeEventAreaRepository = new RepositoryFake<EventArea>(eventAreas);
 
             this.Mock = AutoMock.GetLoose(builder =>
             {
                 builder.RegisterInstance(fakeEventAreaRepository)
-                .As<IRepository<EventArea, int>>();
+                .As<IRepository<EventArea>>();
             });
         }
 
@@ -56,10 +56,10 @@ namespace TicketManagement.UnitTests.ServiceTests
         }
 
         [Test]
-        public void UpdateEventArea_NewEventArea_GetEventAreaPrice()
+        public void UpdateEventArea_WhenUpdateEventArea_ShouldBeUpdateOnlyEventAreaPrice()
         {
             // Arrange
-            var eventAreaRepository = this.Mock.Create<IRepository<EventArea, int>>();
+            var eventAreaRepository = this.Mock.Create<IRepository<EventArea>>();
             this.eventAreaService = this.Mock.Create<EventAreaService>();
             var id = 1;
             var expectedDto = this.Fixture.Build<EventArea>()
@@ -74,13 +74,13 @@ namespace TicketManagement.UnitTests.ServiceTests
         }
 
         [Test]
-        public void GetEventArea_EventAreaId_GetEventAreaDescription()
+        public void GetEventArea_WhenGetEventAreaWithExistingEventAreaId_ShouldBeReturnThisEventArea()
         {
             // Arrange
-            var eventAreaRepository = this.Mock.Create<IRepository<EventArea, int>>();
+            var eventAreaRepository = this.Mock.Create<IRepository<EventArea>>();
             this.eventAreaService = this.Mock.Create<EventAreaService>();
             var id = 1;
-            var expectedDto = new EventArea() { Id = 1, CoordX = 1, CoordY = 1, Description = "First area event", EventId = 1, Price = 100 };
+            var expectedDto = new EventArea() { Id = 1, CoordinateX = 1, CoordinateY = 1, Description = "First area event", EventId = 1, Price = 100 };
 
             // Act
             var actualDto = this.eventAreaService.GetEventArea(id);
@@ -90,17 +90,17 @@ namespace TicketManagement.UnitTests.ServiceTests
         }
 
         [Test]
-        public void GetEventAreas_GetEventAreasCount()
+        public void GetEventAreas_WhenGetEventAreas_ShouldBeReturnAllEventAreas()
         {
             // Arrange
-            var eventAreaRepository = this.Mock.Create<IRepository<EventArea, int>>();
+            var eventAreaRepository = this.Mock.Create<IRepository<EventArea>>();
             this.eventAreaService = this.Mock.Create<EventAreaService>();
             var expected = new List<EventArea>
             {
-                new EventArea() { Id = 1, CoordX = 1, CoordY = 1, Description = "First area event", EventId = 1, Price = 100 },
-                new EventArea() { Id = 2, CoordX = 1, CoordY = 1, Description = "Second area event", EventId = 1, Price = 100 },
-                new EventArea() { Id = 3, CoordX = 2, CoordY = 2, Description = "First area event", EventId = 2, Price = 200 },
-                new EventArea() { Id = 4, CoordX = 2, CoordY = 2, Description = "Second area event", EventId = 2, Price = 200 },
+                new EventArea() { Id = 1, CoordinateX = 1, CoordinateY = 1, Description = "First area event", EventId = 1, Price = 100 },
+                new EventArea() { Id = 2, CoordinateX = 1, CoordinateY = 1, Description = "Second area event", EventId = 1, Price = 100 },
+                new EventArea() { Id = 3, CoordinateX = 2, CoordinateY = 2, Description = "First area event", EventId = 2, Price = 200 },
+                new EventArea() { Id = 4, CoordinateX = 2, CoordinateY = 2, Description = "Second area event", EventId = 2, Price = 200 },
             };
 
             // Act

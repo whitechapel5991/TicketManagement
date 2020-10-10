@@ -81,7 +81,7 @@ namespace TicketManagement.UnitTests.ServiceTests
             this.Mock = AutoMock.GetLoose(builder =>
             {
                 builder.RegisterInstance(fakeSeatsRepository)
-                .As<IRepository<Seat, int>>();
+                .As<IRepository<Seat>>();
             });
         }
 
@@ -92,10 +92,10 @@ namespace TicketManagement.UnitTests.ServiceTests
         }
 
         [Test]
-        public void AddSeat_AddNewSeat_GetCountSeats()
+        public void AddSeat_WhenAddNewSeat_ShouldBeSaveNewSeatInRepositoryAndReturnNewEntityId()
         {
             // Arrange
-            var seatRepository = this.Mock.Create<IRepository<Seat, int>>();
+            var seatRepository = this.Mock.Create<IRepository<Seat>>();
             this.seatService = this.Mock.Create<SeatService>();
             var seatDto = new Seat
             {
@@ -156,10 +156,10 @@ namespace TicketManagement.UnitTests.ServiceTests
         }
 
         [Test]
-        public void UpdateSeat_NewSeat_GetSeatRow()
+        public void UpdateSeat_WhenUpdateSeatWithExistingId_ShouldBeUpdateAllFieldInTheRepository()
         {
             // Arrange
-            var seatRepository = this.Mock.Create<IRepository<Seat, int>>();
+            var seatRepository = this.Mock.Create<IRepository<Seat>>();
             this.seatService = this.Mock.Create<SeatService>();
             var expectedDto = new Seat
             {
@@ -177,12 +177,12 @@ namespace TicketManagement.UnitTests.ServiceTests
         }
 
         [Test]
-        public void DeleteSeat_SeatId_GetSeatsCount()
+        public void DeleteSeat_WhenDeleteSeatWithExistingSeatId_ShouldBeDeleteFromTheRepository()
         {
             // Arrange
-            var seatRepository = this.Mock.Create<IRepository<Seat, int>>();
+            var seatRepository = this.Mock.Create<IRepository<Seat>>();
             this.seatService = this.Mock.Create<SeatService>();
-            int id = 1;
+            var id = 1;
             var expected = new List<Seat>()
             {
                 new Seat() { Id = 2, AreaId = 1, Number = 2, Row = 1 },
@@ -234,10 +234,10 @@ namespace TicketManagement.UnitTests.ServiceTests
         }
 
         [Test]
-        public void GetSeat_SeatId_GetSeatNumber()
+        public void GetSeat_WhenGetSeatWithExistingSeatId_ShouldBeReturnThisSeat()
         {
             // Arrange
-            var seatRepository = this.Mock.Create<IRepository<Seat, int>>();
+            var seatRepository = this.Mock.Create<IRepository<Seat>>();
             this.seatService = this.Mock.Create<SeatService>();
             var expectedDto = new Seat() { Id = 1, AreaId = 1, Number = 1, Row = 1 };
 
@@ -249,10 +249,10 @@ namespace TicketManagement.UnitTests.ServiceTests
         }
 
         [Test]
-        public void GetSeats_GetSeatsCount()
+        public void GetSeats_WhenGetSeats_ShouldBeReturnAllSeats()
         {
             // Arrange
-            var seatRepository = this.Mock.Create<IRepository<Seat, int>>();
+            var seatRepository = this.Mock.Create<IRepository<Seat>>();
             this.seatService = this.Mock.Create<SeatService>();
             var expected = new List<Seat>()
             {
