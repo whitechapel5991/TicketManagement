@@ -27,9 +27,9 @@ namespace TicketManagement.UnitTests.ValidatorTests
     {
         private IAreaValidator areaValidator;
 
-        protected AutoMock Mock { get; private set; }
+        private AutoMock Mock { get; set; }
 
-        protected Fixture Fixture { get; private set; }
+        private Fixture Fixture { get; set; }
 
         [SetUp]
         public void Init()
@@ -80,8 +80,8 @@ namespace TicketManagement.UnitTests.ValidatorTests
         {
             // Arrange
             this.areaValidator = this.Mock.Create<AreaValidator>();
-            var nonexistingLayoutId = 100000;
-            var dto = this.Fixture.Build<Area>().With(e => e.LayoutId, nonexistingLayoutId).Create();
+            const int nonexistentLayoutId = 100000;
+            var dto = this.Fixture.Build<Area>().With(e => e.LayoutId, nonexistentLayoutId).Create();
 
             // Act
             Action validate = () => this.areaValidator.Validation(dto);
@@ -95,9 +95,10 @@ namespace TicketManagement.UnitTests.ValidatorTests
         {
             // Arrange
             this.areaValidator = this.Mock.Create<AreaValidator>();
+            const string existentLayoutDescription = "Second area of first layout";
             var dto = this.Fixture.Build<Area>()
                 .With(e => e.LayoutId, 1)
-                .With(e => e.Description, "Second area of first layout").Create();
+                .With(e => e.Description, existentLayoutDescription).Create();
 
             // Act
             Action validate = () => this.areaValidator.Validation(dto);

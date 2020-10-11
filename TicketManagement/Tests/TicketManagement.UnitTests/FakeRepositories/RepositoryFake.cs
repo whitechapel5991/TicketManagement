@@ -13,7 +13,7 @@ using TicketManagement.DAL.Repositories.Base;
 
 namespace TicketManagement.UnitTests.FakeRepositories
 {
-    internal class RepositoryFake<TEntity> : IRepository<TEntity, int>
+    internal class RepositoryFake<TEntity> : IRepository<TEntity>
         where TEntity : class, IEntity, new()
     {
         private readonly List<TEntity> repositoryData;
@@ -31,17 +31,19 @@ namespace TicketManagement.UnitTests.FakeRepositories
 
         public void Update(TEntity entity)
         {
-            int index = this.repositoryData.FindIndex(x => x.Id == entity.Id);
-            if (index != -1)
+            var index = this.repositoryData.FindIndex(x => x.Id == entity.Id);
+            if (index == -1)
             {
-                this.repositoryData.RemoveAt(index);
-                this.repositoryData.Insert(index, entity);
+                return;
             }
+
+            this.repositoryData.RemoveAt(index);
+            this.repositoryData.Insert(index, entity);
         }
 
         public void Delete(int id)
         {
-            int index = this.repositoryData.FindIndex(x => x.Id == id);
+            var index = this.repositoryData.FindIndex(x => x.Id == id);
             if (index != -1)
             {
                 this.repositoryData.RemoveAt(index);

@@ -129,12 +129,19 @@
   <ItemGroup>
     <Compile Include="FakeRepositories\RepositoryFake.cs" />
     <Compile Include="FakeRepositories\RoleRepositoryFake.cs" />
+    <Compile Include="FakeRepositories\UserClaimRepositoryFake.cs" />
+    <Compile Include="FakeRepositories\UserLoginRepositoryFake.cs" />
     <Compile Include="FakeRepositories\UserRepositoryFake.cs" />
+    <Compile Include="FakeRepositories\UserRoleRepositoryFake.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ServiceTests\AreaServiceTests.cs" />
     <Compile Include="ServiceTests\EventAreaServiceTests.cs" />
     <Compile Include="ServiceTests\EventSeatServiceTests.cs" />
     <Compile Include="ServiceTests\EventServiceTests.cs" />
+    <Compile Include="ServiceTests\Identity\RoleServiceTests.cs" />
+    <Compile Include="ServiceTests\Identity\UserClaimServiceTests.cs" />
+    <Compile Include="ServiceTests\Identity\UserLoginServiceTests.cs" />
+    <Compile Include="ServiceTests\Identity\UserServiceTests.cs" />
     <Compile Include="ServiceTests\LayoutServiceTests.cs" />
     <Compile Include="ServiceTests\SeatServiceTests.cs" />
     <Compile Include="ServiceTests\VenueServiceTests.cs" />

@@ -27,9 +27,9 @@ namespace TicketManagement.UnitTests.ValidatorTests
     {
         private ISeatValidator seatValidator;
 
-        protected AutoMock Mock { get; private set; }
+        private AutoMock Mock { get; set; }
 
-        protected Fixture Fixture { get; private set; }
+        private Fixture Fixture { get; set; }
 
         [SetUp]
         public void Init()
@@ -114,15 +114,14 @@ namespace TicketManagement.UnitTests.ValidatorTests
         public void Validation_WhenValidationSeatWithNonexistentAreaId_ShouldBeThrowEntityDoesNotExistException()
         {
             // Arrange
-            var seatRepository = this.Mock.Create<IRepository<Seat>>();
             this.seatValidator = this.Mock.Create<SeatValidator>();
-            var nonexistingAreaId = 100000;
+            const int nonexistentAreaId = 100000;
             var dto = new Seat
             {
                 Id = 9,
                 Row = 9,
                 Number = 9,
-                AreaId = nonexistingAreaId,
+                AreaId = nonexistentAreaId,
             };
 
             // Act
@@ -136,14 +135,17 @@ namespace TicketManagement.UnitTests.ValidatorTests
         public void Validation_WhenValidationSeatWithExistingSeatWithRowAndNumberInThisArea_ShouldBeThrowSeatWithSameRowAndNumberInTheAreaExistException()
         {
             // Arrange
-            var seatRepository = this.Mock.Create<IRepository<Seat>>();
             this.seatValidator = this.Mock.Create<SeatValidator>();
+            const int areaId = 1;
+            const int existingSeatRow = 1;
+            const int existingSeatNumber = 1;
+
             var dto = new Seat
             {
                 Id = 41,
-                Row = 1,
-                Number = 1,
-                AreaId = 1,
+                Row = existingSeatRow,
+                Number = existingSeatNumber,
+                AreaId = areaId,
             };
 
             // Act
@@ -157,7 +159,6 @@ namespace TicketManagement.UnitTests.ValidatorTests
         public void Validation_WhenValidationSeatWithNotExistingSeatWithTheSameRowAndNumberInThisArea_ShouldNotBeThrowException()
         {
             // Arrange
-            var seatRepository = this.Mock.Create<IRepository<Seat>>();
             this.seatValidator = this.Mock.Create<SeatValidator>();
             var dto = new Seat
             {

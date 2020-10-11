@@ -27,9 +27,9 @@ namespace TicketManagement.UnitTests.ValidatorTests
     {
         private IEventValidator eventValidator;
 
-        protected AutoMock Mock { get; private set; }
+        private AutoMock Mock { get; set; }
 
-        protected Fixture Fixture { get; private set; }
+        private Fixture Fixture { get; set; }
 
         [SetUp]
         public void Init()
@@ -186,7 +186,7 @@ namespace TicketManagement.UnitTests.ValidatorTests
         {
             // Arrange
             this.eventValidator = this.Mock.Create<EventValidator>();
-            var dto = this.Fixture.Build<Event>().With(e => e.Id, 1)
+            var dto = this.Fixture.Build<Event>()
                 .With(e => e.Published, false)
                 .Create();
 
@@ -202,7 +202,7 @@ namespace TicketManagement.UnitTests.ValidatorTests
         {
             // Arrange
             this.eventValidator = this.Mock.Create<EventValidator>();
-            var dto = this.Fixture.Build<Event>().With(e => e.Id, 1)
+            var dto = this.Fixture.Build<Event>()
                 .With(e => e.Published, true)
                 .Create();
 
@@ -218,7 +218,8 @@ namespace TicketManagement.UnitTests.ValidatorTests
         {
             // Arrange
             this.eventValidator = this.Mock.Create<EventValidator>();
-            var dto = this.Fixture.Build<Event>().With(e => e.Id, 2)
+            var dto = this.Fixture.Build<Event>()
+                .With(e => e.Id, 2)
                 .With(e => e.Published, false)
                 .Create();
 
@@ -235,8 +236,10 @@ namespace TicketManagement.UnitTests.ValidatorTests
             // Arrange
             this.eventValidator = this.Mock.Create<EventValidator>();
             var beginDate = DateTime.Now.AddDays(-1);
-            var dto = this.Fixture.Build<Event>().With(e => e.LayoutId, 2)
-                .With(e => e.BeginDate, beginDate).Create();
+            var dto = this.Fixture.Build<Event>()
+                .With(e => e.LayoutId, 2)
+                .With(e => e.BeginDate, beginDate)
+                .Create();
 
             // Act
             Action validate = () => this.eventValidator.Validation(dto);
@@ -252,7 +255,8 @@ namespace TicketManagement.UnitTests.ValidatorTests
             this.eventValidator = this.Mock.Create<EventValidator>();
             var beginDate = DateTime.Now.AddDays(5);
             var endDate = DateTime.Now.AddDays(4);
-            var dto = this.Fixture.Build<Event>().With(e => e.LayoutId, 2)
+            var dto = this.Fixture.Build<Event>()
+                .With(e => e.LayoutId, 2)
                 .With(e => e.BeginDate, beginDate)
                 .With(e => e.EndDate, endDate)
                 .Create();
@@ -269,9 +273,11 @@ namespace TicketManagement.UnitTests.ValidatorTests
         {
             // Arrange
             this.eventValidator = this.Mock.Create<EventValidator>();
+            const int layoutId = 1;
             var beginDate = new DateTime(2025, 12, 12, 12, 00, 00);
             var endDate = new DateTime(2025, 12, 12, 13, 00, 00);
-            var dto = this.Fixture.Build<Event>().With(e => e.LayoutId, 1)
+            var dto = this.Fixture.Build<Event>()
+                .With(e => e.LayoutId, layoutId)
                 .With(e => e.BeginDate, beginDate)
                 .With(e => e.EndDate, endDate)
                 .Create();
@@ -288,10 +294,11 @@ namespace TicketManagement.UnitTests.ValidatorTests
         {
             // Arrange
             this.eventValidator = this.Mock.Create<EventValidator>();
-            var layoutWithoutAreasId = 100;
+            const int layoutWithoutAreasId = 100;
             var beginDate = new DateTime(2025, 10, 20, 8, 30, 59);
             var endDate = new DateTime(2025, 10, 20, 10, 30, 59);
-            var dto = this.Fixture.Build<Event>().With(e => e.LayoutId, layoutWithoutAreasId)
+            var dto = this.Fixture.Build<Event>()
+                .With(e => e.LayoutId, layoutWithoutAreasId)
                 .With(e => e.BeginDate, beginDate)
                 .With(e => e.EndDate, endDate)
                 .Create();
@@ -308,10 +315,11 @@ namespace TicketManagement.UnitTests.ValidatorTests
         {
             // Arrange
             this.eventValidator = this.Mock.Create<EventValidator>();
-            var layoutWithoutSeatsId = 101;
+            const int layoutWithoutSeatsId = 101;
             var beginDate = new DateTime(2025, 10, 20, 8, 30, 59);
             var endDate = new DateTime(2025, 10, 20, 10, 30, 59);
-            var dto = this.Fixture.Build<Event>().With(e => e.LayoutId, layoutWithoutSeatsId)
+            var dto = this.Fixture.Build<Event>()
+                .With(e => e.LayoutId, layoutWithoutSeatsId)
                 .With(e => e.BeginDate, beginDate)
                 .With(e => e.EndDate, endDate)
                 .Create();
@@ -324,17 +332,40 @@ namespace TicketManagement.UnitTests.ValidatorTests
         }
 
         [Test]
+        public void Validation_WhenValidationEventWithValidFields_ShouldNotBeThrowException()
+        {
+            // Arrange
+            this.eventValidator = this.Mock.Create<EventValidator>();
+            const int layoutWithoutSeatsId = 1;
+            var beginDate = new DateTime(2025, 10, 20, 8, 30, 59);
+            var endDate = new DateTime(2025, 10, 20, 10, 30, 59);
+            var dto = this.Fixture.Build<Event>()
+                .With(e => e.LayoutId, layoutWithoutSeatsId)
+                .With(e => e.BeginDate, beginDate)
+                .With(e => e.EndDate, endDate)
+                .Create();
+
+            // Act
+            Action validate = () => this.eventValidator.Validation(dto);
+
+            // Assert
+            validate.Should().NotThrow();
+        }
+
+        [Test]
         public void UpdateValidation_WhenUpdateValidationEventWithTheSameLayout_ShouldNotBeThrowException()
         {
             // Arrange
             this.eventValidator = this.Mock.Create<EventValidator>();
+            const int eventId = 1;
+            const int layoutId = 1;
             var dto = new Event()
             {
-                Id = 1,
+                Id = eventId,
                 BeginDate = new DateTime(2026, 12, 12, 12, 00, 00),
                 EndDate = new DateTime(2026, 12, 12, 13, 00, 00),
                 Description = "First2",
-                LayoutId = 1,
+                LayoutId = layoutId,
                 Name = "First event2",
             };
 
@@ -350,13 +381,15 @@ namespace TicketManagement.UnitTests.ValidatorTests
         {
             // Arrange
             this.eventValidator = this.Mock.Create<EventValidator>();
+            const int eventId = 1;
+            const int layoutId = 2;
             var dto = new Event()
             {
-                Id = 1,
+                Id = eventId,
                 BeginDate = new DateTime(2026, 12, 12, 12, 00, 00),
                 EndDate = new DateTime(2026, 12, 12, 13, 00, 00),
                 Description = "First2",
-                LayoutId = 2,
+                LayoutId = layoutId,
                 Name = "First event2",
             };
 
@@ -372,9 +405,10 @@ namespace TicketManagement.UnitTests.ValidatorTests
         {
             // Arrange
             this.eventValidator = this.Mock.Create<EventValidator>();
+            const int eventId = 2;
             var dto = new Event()
             {
-                Id = 2,
+                Id = eventId,
                 BeginDate = new DateTime(2028, 12, 12, 13, 00, 00),
                 EndDate = new DateTime(2028, 12, 12, 14, 00, 00),
                 Description = "Second",
@@ -394,9 +428,10 @@ namespace TicketManagement.UnitTests.ValidatorTests
         {
             // Arrange
             this.eventValidator = this.Mock.Create<EventValidator>();
+            const int eventIdWithExistingSoldSeats = 1;
 
             // Act
-            Action validate = () => this.eventValidator.DeleteValidation(1);
+            Action validate = () => this.eventValidator.DeleteValidation(eventIdWithExistingSoldSeats);
 
             // Assert
             validate.Should().Throw<LayoutHasSoldSeatAndCouldNotBeChangeException>();
@@ -407,9 +442,10 @@ namespace TicketManagement.UnitTests.ValidatorTests
         {
             // Arrange
             this.eventValidator = this.Mock.Create<EventValidator>();
+            const int eventWithoutSoldSeats = 2;
 
             // Act
-            Action validate = () => this.eventValidator.DeleteValidation(2);
+            Action validate = () => this.eventValidator.DeleteValidation(eventWithoutSoldSeats);
 
             // Assert
             validate.Should().NotThrow();

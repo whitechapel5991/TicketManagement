@@ -27,9 +27,9 @@ namespace TicketManagement.UnitTests.ValidatorTests
     {
         private ILayoutValidator layoutValidator;
 
-        protected AutoMock Mock { get; private set; }
+        private AutoMock Mock { get; set; }
 
-        protected Fixture Fixture { get; private set; }
+        private Fixture Fixture { get; set; }
 
         [SetUp]
         public void Init()
@@ -73,8 +73,10 @@ namespace TicketManagement.UnitTests.ValidatorTests
         {
             // Arrange
             this.layoutValidator = this.Mock.Create<LayoutValidator>();
-            var nonexistingVenueId = 100000;
-            var dto = this.Fixture.Build<Layout>().With(e => e.VenueId, nonexistingVenueId).Create();
+            const int nonexistentVenueId = 100000;
+            var dto = this.Fixture.Build<Layout>()
+                .With(e => e.VenueId, nonexistentVenueId)
+                .Create();
 
             // Act
             Action validate = () => this.layoutValidator.Validation(dto);
@@ -88,9 +90,12 @@ namespace TicketManagement.UnitTests.ValidatorTests
         {
             // Arrange
             this.layoutValidator = this.Mock.Create<LayoutValidator>();
+            const int venueId = 1;
+            const string layoutName = "first";
             var dto = this.Fixture.Build<Layout>()
-                .With(e => e.VenueId, 1)
-                .With(e => e.Name, "first").Create();
+                .With(e => e.VenueId, venueId)
+                .With(e => e.Name, layoutName)
+                .Create();
 
             // Act
             Action validate = () => this.layoutValidator.Validation(dto);

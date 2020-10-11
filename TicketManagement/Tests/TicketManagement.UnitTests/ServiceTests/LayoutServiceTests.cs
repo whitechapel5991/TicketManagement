@@ -24,9 +24,11 @@ namespace TicketManagement.UnitTests.ServiceTests
     {
         private ILayoutService layoutService;
 
-        protected AutoMock Mock { get; private set; }
+        private IRepository<Layout> layoutRepository;
 
-        protected Fixture Fixture { get; private set; }
+        private AutoMock Mock { get; set; }
+
+        private Fixture Fixture { get; set; }
 
         [SetUp]
         public void Init()
@@ -61,7 +63,7 @@ namespace TicketManagement.UnitTests.ServiceTests
         public void AddLayout_WhenAddNewLayout_ShouldBeSaveNewLayoutInRepositoryAndReturnNewEntityId()
         {
             // Arrange
-            var layoutRepository = this.Mock.Create<IRepository<Layout>>();
+            this.layoutRepository = this.Mock.Create<IRepository<Layout>>();
             this.layoutService = this.Mock.Create<LayoutService>();
             var dto = this.Fixture.Build<Layout>().Create();
             var expected = new List<Layout>
@@ -76,37 +78,38 @@ namespace TicketManagement.UnitTests.ServiceTests
             };
 
             // Act
-            this.layoutService.AddLayout(dto);
+            var expectedEntityId = this.layoutService.AddLayout(dto);
 
             // Assert
-            expected.Should().BeEquivalentTo(layoutRepository.GetAll());
+            expected.Should().BeEquivalentTo(this.layoutRepository.GetAll());
+            dto.Id.Should().Be(expectedEntityId);
         }
 
         [Test]
         public void UpdateLayout_WhenUpdateLayoutWithExistingId_ShouldBeUpdateAllFieldsInTheRepository()
         {
             // Arrange
-            var layoutRepository = this.Mock.Create<IRepository<Layout>>();
+            this.layoutRepository = this.Mock.Create<IRepository<Layout>>();
             this.layoutService = this.Mock.Create<LayoutService>();
-            var id = 1;
+            const int existingLayoutId = 1;
             var expectedDto = this.Fixture.Build<Layout>()
-                .With(e => e.Id, id)
+                .With(e => e.Id, existingLayoutId)
                 .Create();
 
             // Act
             this.layoutService.UpdateLayout(expectedDto);
 
             // Assert
-            layoutRepository.GetById(id).Should().BeEquivalentTo(expectedDto);
+            this.layoutRepository.GetById(existingLayoutId).Should().BeEquivalentTo(expectedDto);
         }
 
         [Test]
         public void DeleteLayout_WhenDeleteLayoutWithExistingLayoutId_ShouldBeDeleteFromTheRepository()
         {
             // Arrange
-            var layoutRepository = this.Mock.Create<IRepository<Layout>>();
+            this.layoutRepository = this.Mock.Create<IRepository<Layout>>();
             this.layoutService = this.Mock.Create<LayoutService>();
-            var id = 1;
+            const int existingLayoutId = 1;
             var expected = new List<Layout>
             {
                 new Layout() { Id = 2, Name = "second", Description = "Second layout", VenueId = 1 },
@@ -117,33 +120,31 @@ namespace TicketManagement.UnitTests.ServiceTests
             };
 
             // Act
-            this.layoutService.DeleteLayout(id);
+            this.layoutService.DeleteLayout(existingLayoutId);
 
             // Assert
-            expected.Should().BeEquivalentTo(layoutRepository.GetAll());
+            expected.Should().BeEquivalentTo(this.layoutRepository.GetAll());
         }
 
         [Test]
         public void GetLayout_WhenGetLayoutWithExistingLayoutId_ShouldBeReturnThisLayout()
         {
             // Arrange
-            var layoutRepository = this.Mock.Create<IRepository<Layout>>();
             this.layoutService = this.Mock.Create<LayoutService>();
-            var id = 1;
-            var expectedDto = new Layout() { Id = 1, Name = "first", Description = "First layout", VenueId = 1 };
+            const int existingLayoutId = 1;
+            var expectedDto = new Layout() { Id = existingLayoutId, Name = "first", Description = "First layout", VenueId = 1 };
 
             // Act
-            var actualDto = this.layoutService.GetLayout(id);
+            var actualDto = this.layoutService.GetLayout(existingLayoutId);
 
             // Assert
             actualDto.Should().BeEquivalentTo(expectedDto);
         }
 
         [Test]
-        public void GetEvents_WhenGetLayouts_SholdBeReturnAllLayouts()
+        public void GetEvents_WhenGetLayouts_ShouldBeReturnAllLayouts()
         {
             // Arrange
-            var layoutRepository = this.Mock.Create<IRepository<Layout>>();
             this.layoutService = this.Mock.Create<LayoutService>();
             var expected = new List<Layout>
             {

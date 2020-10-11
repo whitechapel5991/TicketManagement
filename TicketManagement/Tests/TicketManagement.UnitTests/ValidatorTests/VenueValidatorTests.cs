@@ -26,9 +26,9 @@ namespace TicketManagement.UnitTests.ValidatorTests
     {
         private IVenueValidator venueValidator;
 
-        protected AutoMock Mock { get; private set; }
+        private AutoMock Mock { get; set; }
 
-        protected Fixture Fixture { get; private set; }
+        private Fixture Fixture { get; set; }
 
         [SetUp]
         public void Init()
@@ -60,8 +60,10 @@ namespace TicketManagement.UnitTests.ValidatorTests
         {
             // Arrange
             this.venueValidator = this.Mock.Create<VenueValidator>();
-            var existingName = "third";
-            var dto = this.Fixture.Build<Venue>().With(e => e.Name, existingName).Create();
+            const string existingName = "third";
+            var dto = this.Fixture.Build<Venue>()
+                .With(e => e.Name, existingName)
+                .Create();
 
             // Act
             Action validate = () => this.venueValidator.Validation(dto);
@@ -74,10 +76,11 @@ namespace TicketManagement.UnitTests.ValidatorTests
         public void Validation_WhenValidationVenueWithExistingVenueName_ShouldBeThrowExceptionVenueWithThisNameExistException()
         {
             // Arrange
-            var venueRepository = this.Mock.Create<IRepository<Venue>>();
             this.venueValidator = this.Mock.Create<VenueValidator>();
-            var existingName = "first";
-            var dto = this.Fixture.Build<Venue>().With(e => e.Name, existingName).Create();
+            const string existingName = "first";
+            var dto = this.Fixture.Build<Venue>()
+                .With(e => e.Name, existingName)
+                .Create();
 
             // Act
             Action validate = () => this.venueValidator.Validation(dto);

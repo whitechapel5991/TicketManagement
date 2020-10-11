@@ -25,9 +25,9 @@ namespace TicketManagement.UnitTests.ServiceTests
     {
         private IEventSeatService eventSeatService;
 
-        protected AutoMock Mock { get; private set; }
+        private AutoMock Mock { get; set; }
 
-        protected Fixture Fixture { get; private set; }
+        private Fixture Fixture { get; set; }
 
         [SetUp]
         public void Init()
@@ -73,34 +73,41 @@ namespace TicketManagement.UnitTests.ServiceTests
         }
 
         [Test]
-        public void UpdateEventSeat_WhenUpdateEventSeat_ShouldBeUpdateOnlyEventSeatState()
+        public void UpdateEventSeat_WhenUpdateEventSeatWithExistingId_ShouldBeUpdateOnlyEventSeatState()
         {
             // Arrange
             var eventSeatRepository = this.Mock.Create<IRepository<EventSeat>>();
             this.eventSeatService = this.Mock.Create<EventSeatService>();
-            var id = 1;
+            const int existingEventSeatId = 1;
             var expectedDto = this.Fixture.Build<EventSeat>()
-                .With(e => e.Id, id)
+                .With(e => e.Id, existingEventSeatId)
                 .Create();
 
             // Act
             this.eventSeatService.UpdateEventSeat(expectedDto);
 
             // Assert
-            eventSeatRepository.GetById(id).Should().BeEquivalentTo(expectedDto);
+            var actualEventSeat = eventSeatRepository.GetById(existingEventSeatId);
+            actualEventSeat.Should().BeEquivalentTo(expectedDto, option => option
+                .Including(p => p.State)
+                .ExcludingMissingMembers());
+            actualEventSeat.Should().NotBeEquivalentTo(expectedDto, option => option
+                .Including(p => p.Row)
+                .Including(p => p.Number)
+                .Including(p => p.EventAreaId)
+                .ExcludingMissingMembers());
         }
 
         [Test]
         public void GetEventSeat_WhenGetEventSeatWithExistingEventSeatId_ShouldBeReturnThisEventSeat()
         {
             // Arrange
-            var eventSeatRepository = this.Mock.Create<IRepository<EventSeat>>();
             this.eventSeatService = this.Mock.Create<EventSeatService>();
-            var id = 1;
-            var expectedDto = new EventSeat() { Id = 1, State = EventSeatState.Free, EventAreaId = 1, Row = 1, Number = 1 };
+            const int existingEventSeatId = 1;
+            var expectedDto = new EventSeat() { Id = existingEventSeatId, State = EventSeatState.Free, EventAreaId = 1, Row = 1, Number = 1 };
 
             // Act
-            var actualDto = this.eventSeatService.GetEventSeat(id);
+            var actualDto = this.eventSeatService.GetEventSeat(existingEventSeatId);
 
             // Assert
             actualDto.Should().BeEquivalentTo(expectedDto);
@@ -110,7 +117,6 @@ namespace TicketManagement.UnitTests.ServiceTests
         public void GetEventSeats_WhenGetEventSeats_ShouldBeReturnAllEventSeats()
         {
             // Arrange
-            var eventSeatRepository = this.Mock.Create<IRepository<EventSeat>>();
             this.eventSeatService = this.Mock.Create<EventSeatService>();
             var expected = new List<EventSeat>
             {

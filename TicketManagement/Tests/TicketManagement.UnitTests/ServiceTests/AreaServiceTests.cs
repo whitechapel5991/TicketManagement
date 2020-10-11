@@ -5,14 +5,12 @@
 // </copyright>
 // ****************************************************************************
 
-using System;
 using System.Collections.Generic;
 using Autofac;
 using Autofac.Extras.Moq;
 using AutoFixture;
 using FluentAssertions;
 using NUnit.Framework;
-using TicketManagement.BLL.Exceptions.EventExceptions;
 using TicketManagement.BLL.Interfaces;
 using TicketManagement.BLL.Services;
 using TicketManagement.DAL.Models;
@@ -25,6 +23,8 @@ namespace TicketManagement.UnitTests.ServiceTests
     internal class AreaServiceTests
     {
         private IAreaService areaService;
+
+        private IRepository<Area> areaRepository;
 
         private AutoMock Mock { get; set; }
 
@@ -66,7 +66,7 @@ namespace TicketManagement.UnitTests.ServiceTests
         public void AddArea_WhenAddNewValidArea_ShouldSaveNewDataInRepositoryAndReturnNewEntityId()
         {
             // Arrange
-            var areaRepository = this.Mock.Create<IRepository<Area>>();
+            this.areaRepository = this.Mock.Create<IRepository<Area>>();
             this.areaService = this.Mock.Create<AreaService>();
             var dto = this.Fixture.Build<Area>().Create();
             var expected = new List<Area>
@@ -84,18 +84,18 @@ namespace TicketManagement.UnitTests.ServiceTests
             };
 
             // Act
-            var entityId = this.areaService.AddArea(dto);
+            var expectedEntityId = this.areaService.AddArea(dto);
 
             // Assert
-            expected.Should().BeEquivalentTo(areaRepository.GetAll());
-            dto.Id.Should().Be(entityId);
+            expected.Should().BeEquivalentTo(this.areaRepository.GetAll());
+            dto.Id.Should().Be(expectedEntityId);
         }
 
         [Test]
         public void UpdateArea_WhenUpdateAreaWithExistingId_ShouldBeUpdateAllFieldsInTheRepository()
         {
             // Arrange
-            var areaRepository = this.Mock.Create<IRepository<Area>>();
+            this.areaRepository = this.Mock.Create<IRepository<Area>>();
             this.areaService = this.Mock.Create<AreaService>();
             const int existingAreaId = 1;
             var expectedDto = this.Fixture.Build<Area>()
@@ -106,16 +106,16 @@ namespace TicketManagement.UnitTests.ServiceTests
             this.areaService.UpdateArea(expectedDto);
 
             // Assert
-            areaRepository.GetById(existingAreaId).Should().BeEquivalentTo(expectedDto);
+            this.areaRepository.GetById(existingAreaId).Should().BeEquivalentTo(expectedDto);
         }
 
         [Test]
         public void DeleteArea_WhenDeleteAreaWithExistingAreaId_ShouldBeDeleteFromTheRepository()
         {
             // Arrange
-            var areaRepository = this.Mock.Create<IRepository<Area>>();
+            this.areaRepository = this.Mock.Create<IRepository<Area>>();
             this.areaService = this.Mock.Create<AreaService>();
-            var id = 1;
+            const int existingAreaId = 1;
             var expected = new List<Area>
             {
                 new Area() { Id = 2, Description = "Second area of first layout", CoordinateX = 2, CoordinateY = 2, LayoutId = 1 },
@@ -129,10 +129,10 @@ namespace TicketManagement.UnitTests.ServiceTests
             };
 
             // Act
-            this.areaService.DeleteArea(id);
+            this.areaService.DeleteArea(existingAreaId);
 
             // Assert
-            expected.Should().BeEquivalentTo(areaRepository.GetAll());
+            expected.Should().BeEquivalentTo(this.areaRepository.GetAll());
         }
 
         [Test]
@@ -140,10 +140,11 @@ namespace TicketManagement.UnitTests.ServiceTests
         {
             // Arrange
             this.areaService = this.Mock.Create<AreaService>();
+            const int existingAreaId = 1;
             var expectedDto = new Area() { Id = 1, Description = "First area of first layout", CoordinateX = 1, CoordinateY = 1, LayoutId = 1 };
 
             // Act
-            var actualDto = this.areaService.GetArea(1);
+            var actualDto = this.areaService.GetArea(existingAreaId);
 
             // Assert
             actualDto.Should().BeEquivalentTo(expectedDto);

@@ -24,9 +24,11 @@ namespace TicketManagement.UnitTests.ServiceTests
     {
         private IVenueService venueService;
 
-        protected AutoMock Mock { get; private set; }
+        private IRepository<Venue> venueRepository;
 
-        protected Fixture Fixture { get; private set; }
+        private AutoMock Mock { get; set; }
+
+        private Fixture Fixture { get; set; }
 
         [SetUp]
         public void Init()
@@ -57,7 +59,7 @@ namespace TicketManagement.UnitTests.ServiceTests
         public void AddVenue_WhenAddNewVenue_ShouldBeSaveNewVenueInRepositoryAndReturnNewEntityId()
         {
             // Arrange
-            var venueRepository = this.Mock.Create<IRepository<Venue>>();
+            this.venueRepository = this.Mock.Create<IRepository<Venue>>();
             this.venueService = this.Mock.Create<VenueService>();
             var dto = this.Fixture.Build<Venue>().Create();
             var expected = new List<Venue>
@@ -68,58 +70,58 @@ namespace TicketManagement.UnitTests.ServiceTests
             };
 
             // Act
-            this.venueService.AddVenue(dto);
+            var expectedEntityId = this.venueService.AddVenue(dto);
 
             // Assert
-            expected.Should().BeEquivalentTo(venueRepository.GetAll());
+            expected.Should().BeEquivalentTo(this.venueRepository.GetAll());
+            dto.Id.Should().Be(expectedEntityId);
         }
 
         [Test]
         public void UpdateVenue_WhenUpdateVenueWithExistingVenueId_ShouldBeUpdateAllFieldsInTheRepository()
         {
             // Arrange
-            var venueRepository = this.Mock.Create<IRepository<Venue>>();
+            this.venueRepository = this.Mock.Create<IRepository<Venue>>();
             this.venueService = this.Mock.Create<VenueService>();
-            var id = 1;
-            var expectedDto = this.Fixture.Build<Venue>().With(e => e.Id, id).Create();
+            const int existingVenueId = 1;
+            var expectedDto = this.Fixture.Build<Venue>().With(e => e.Id, existingVenueId).Create();
 
             // Act
             this.venueService.UpdateVenue(expectedDto);
 
             // Assert
-            venueRepository.GetById(id).Should().BeEquivalentTo(expectedDto);
+            this.venueRepository.GetById(existingVenueId).Should().BeEquivalentTo(expectedDto);
         }
 
         [Test]
         public void DeleteVenue_WhenDeleteVenueWithExistingVenueId_ShouldBeDeleteFromTheRepository()
         {
             // Arrange
-            var venueRepository = this.Mock.Create<IRepository<Venue>>();
+            this.venueRepository = this.Mock.Create<IRepository<Venue>>();
             this.venueService = this.Mock.Create<VenueService>();
-            var id = 1;
+            const int existingVenueId = 1;
             var expected = new List<Venue>
             {
                 new Venue() { Id = 2, Description = "Second venue", Name = "second", Address = "Second venue address", Phone = "123 45 678 90 12" },
             };
 
             // Act
-            this.venueService.DeleteVenue(id);
+            this.venueService.DeleteVenue(existingVenueId);
 
             // Assert
-            expected.Should().BeEquivalentTo(venueRepository.GetAll());
+            expected.Should().BeEquivalentTo(this.venueRepository.GetAll());
         }
 
         [Test]
         public void GetVenue_WhenGetVenueWithExistingVenueId_ShouldBeReturnThisVenue()
         {
             // Arrange
-            var venueRepository = this.Mock.Create<IRepository<Venue>>();
             this.venueService = this.Mock.Create<VenueService>();
-            var id = 1;
-            var expectedDto = new Venue() { Id = 1, Description = "First venue", Name = "first", Address = "First venue address", Phone = "123 45 678 90 12" };
+            const int existingVenueId = 1;
+            var expectedDto = new Venue() { Id = existingVenueId, Description = "First venue", Name = "first", Address = "First venue address", Phone = "123 45 678 90 12" };
 
             // Act
-            var actualDto = this.venueService.GetVenue(id);
+            var actualDto = this.venueService.GetVenue(existingVenueId);
 
             // Assert
             actualDto.Should().BeEquivalentTo(expectedDto);
@@ -129,7 +131,6 @@ namespace TicketManagement.UnitTests.ServiceTests
         public void GetVenues_WhenGetVenues_ShouldBeReturnAllVenues()
         {
             // Arrange
-            var venueRepository = this.Mock.Create<IRepository<Venue>>();
             this.venueService = this.Mock.Create<VenueService>();
             var expected = new List<Venue>
             {
