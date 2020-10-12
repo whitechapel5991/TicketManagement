@@ -16,9 +16,9 @@ namespace TicketManagement.Web.Filters
                 var controllerName = filterContext.RouteData.Values["controller"].ToString();
                 var actionName = filterContext.RouteData.Values["action"].ToString();
 
-                string Message = "Date :" + DateTime.Now.ToString() + ", Controller: " + controllerName + ", Action:" + actionName +
-                                 "Error Message : " + exceptionMessage
-                                + Environment.NewLine + "Stack Trace : " + stackTrace;
+                var Message = "Date :" + DateTime.Now.ToString() + ", Controller: " + controllerName + ", Action:" + actionName +
+                              "Error Message : " + exceptionMessage
+                              + Environment.NewLine + "Stack Trace : " + stackTrace;
 
                 File.AppendAllText(HttpContext.Current.Server.MapPath("~/Log/LogExceptions.txt"), Message);
 

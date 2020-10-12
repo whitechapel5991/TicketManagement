@@ -288,7 +288,10 @@
     <Compile Include="Areas\EventManager\Data\IndexEventViewModel.cs" />
     <Compile Include="Areas\EventManager\Data\AreaViewModel.cs" />
     <Compile Include="Areas\EventManager\EventManagerAreaRegistration.cs" />
+    <Compile Include="Constants\Extension\EnumRoleAttribute.cs" />
+    <Compile Include="Constants\Extension\RoleExtension.cs" />
     <Compile Include="Constants\Language.cs" />
+    <Compile Include="Constants\Roles.cs" />
     <Compile Include="Constants\SeatColor.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\CartController.cs" />

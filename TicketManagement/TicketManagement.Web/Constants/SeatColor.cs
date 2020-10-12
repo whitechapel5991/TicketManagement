@@ -6,7 +6,7 @@ namespace TicketManagement.Web.Constants
     {
         public static string GetSeatColor(EventSeatState seatState)
         {
-            string seatColor = "blue";
+            var seatColor = "blue";
             switch (seatState)
             {
                 case EventSeatState.Free:

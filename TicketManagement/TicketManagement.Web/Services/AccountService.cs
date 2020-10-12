@@ -1,7 +1,8 @@
 ﻿using System.Linq;
-using System.Security.Claims;
 using Microsoft.AspNet.Identity;
 using Microsoft.Owin.Security;
+using TicketManagement.Web.Constants;
+using TicketManagement.Web.Constants.Extension;
 using TicketManagement.Web.Interfaces;
 using TicketManagement.Web.Models.Account;
 using TicketManagement.Web.Services.Identity;
@@ -20,17 +21,20 @@ namespace TicketManagement.Web.Services
             this.authenticationManager = authenticationManager;
         }
 
-        public ClaimsIdentity GetUserClaimIdentity(string userName, string password)
+        public void SignIn(string userName, string password)
         {
             var user = this.userManager.FindAsync(userName, password).Result;
-            return userManager.CreateIdentityAsync(user,
+            var claimIdentity = userManager.CreateIdentityAsync(user,
                 DefaultAuthenticationTypes.ApplicationCookie).Result;
-        }
 
-        public void Authenticate(ClaimsIdentity claimIdentity)
-        {
             this.authenticationManager.SignOut();
             this.authenticationManager.SignIn(claimIdentity);
+        }
+
+        public bool IsUserEventManager(int userId)
+        {
+            return this.userManager.GetRolesAsync(userId).Result
+                .Any(x => x == Roles.UserManager.GetStringValue());
         }
 
         public void SignOut()
@@ -38,14 +42,9 @@ namespace TicketManagement.Web.Services
             this.authenticationManager.SignOut(DefaultAuthenticationTypes.ApplicationCookie);
         }
 
-        public bool IsRoleInClaimIdentity(ClaimsIdentity claimIdentity, string roleName)
+        public void RegisterUser(IdentityUser user)
         {
-            return claimIdentity.Claims.FirstOrDefault(x => x.Type == ClaimTypes.Role)?.Value == roleName;
-        }
-
-        public IdentityResult RegisterUser(IdentityUser user)
-        {
-            return this.userManager.Create(user);
+            var registerResult = this.userManager.Create(user);
         }
 
         public IdentityUser MapIdentityUser(RegisterViewModel viewModel)

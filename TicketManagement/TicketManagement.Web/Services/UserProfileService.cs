@@ -74,19 +74,19 @@ namespace TicketManagement.Web.Services
                 Orders = new List<OrderViewModel>(),
             };
 
-            foreach (Order order in orderList)
+            foreach (var order in orderList)
             {
-                var @event = this.eventSeatService.GetEventByEventSeatId(order.EventSeatId);
+                //var @event = this.eventSeatService.GetEventByEventSeatId(order.EventSeatId);
 
-                var orderVm = new OrderViewModel
-                {
-                    DatePurchase = order.Date,
-                    TicketCost = this.eventSeatService.GetSeatCost(order.EventSeatId),
-                    EventName = @event.Name,
-                    EventDescription = @event.Description,
-                };
+                //var orderVm = new OrderViewModel
+                //{
+                //    DatePurchase = order.Date,
+                //    TicketCost = this.eventSeatService.GetSeatCost(order.EventSeatId),
+                //    EventName = @event.Name,
+                //    EventDescription = @event.Description,
+                //};
 
-                purchaseHistoryVM.Orders.Add(orderVm);
+                //purchaseHistoryVM.Orders.Add(orderVm);
             }
 
             return purchaseHistoryVM;

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Web.Mvc;
+using Microsoft.AspNet.Identity;
 using TicketManagement.Web.Filters;
 using TicketManagement.Web.Interfaces;
 using TicketManagement.Web.Models.Account;
@@ -31,29 +32,20 @@ namespace TicketManagement.Web.Controllers
 
             try
             {
-                var claimIdentity = this.accountService.GetUserClaimIdentity(model.UserName, model.Password);
+                this.accountService.SignIn(model.UserName, model.Password);
 
-                if (claimIdentity == default)
-                {
-                    this.ModelState.AddModelError(string.Empty, "Wrong login or password.");
-                    return this.View(model);
-                }
-
-                this.accountService.Authenticate(claimIdentity);
-
-                this.ViewBag.claim = claimIdentity;
-
-                if (this.accountService.IsRoleInClaimIdentity(claimIdentity, "event manager"))
-                {
-                    return this.RedirectToAction("Index", new { area = "EventManager", controller = "Event" });
-                }
-
-                return this.RedirectToAction("Events", "Event");
+                return this.accountService.IsUserEventManager(this.User.Identity.GetUserId<int>()) ?
+                    this.RedirectToAction("Index", new { area = "EventManager", controller = "Event" }) :
+                    this.RedirectToAction("Events", "Event");
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                this.ModelState.AddModelError("Login", ex.Message);
+                this.ModelState.AddModelError(string.Empty, "Wrong login or password.");
             }
+            //catch (Exception ex)
+            //{
+            //    this.ModelState.AddModelError("Login", ex.Message);
+            //}
 
             return this.View(model);
         }
@@ -83,20 +75,20 @@ namespace TicketManagement.Web.Controllers
 
             try
             {
-                var registerResult = this.accountService.RegisterUser(this.accountService.MapIdentityUser(model));
-
-                if (!registerResult.Succeeded)
-                {
-                    foreach (var error in registerResult.Errors)
-                    {
-                        this.ModelState.AddModelError(string.Empty, error);
-                    }
-
-                    return this.View(model);
-                }
+                this.accountService.RegisterUser(this.accountService.MapIdentityUser(model));
 
                 return this.RedirectToAction("Login", "Account");
             }
+            //catch (Exception)
+            //{
+            //    if (!registerResult.Succeeded)
+            //    {
+            //        foreach (var error in registerResult.Errors)
+            //        {
+            //            this.ModelState.AddModelError(string.Empty, error);
+            //        }
+            //    }
+            //}
             catch (Exception ex)
             {
                 this.ModelState.AddModelError("Register", ex.Message);

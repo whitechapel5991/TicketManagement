@@ -61,8 +61,8 @@ namespace TicketManagement.Web.Util
                 .InstancePerRequest();
             
             builder.RegisterModule(new WebServicesModule());
-            builder.RegisterModule(new EfAutofacModule(this.connectionString));
-            builder.RegisterModule(new ServiceAutofacModule(this.email, this.emailPassword, this.lockTime));
+            builder.RegisterModule(new EfModule(this.connectionString));
+            builder.RegisterModule(new ServiceModule(this.email, this.emailPassword, this.lockTime));
         }
     }
 }

@@ -42,10 +42,10 @@ namespace TicketManagement.Web.Services
 
         private IEnumerable<EventViewModel> MapToEventViewModel(IEnumerable<Event> events)
         {
-            List<EventViewModel> eventViewModelList = new List<EventViewModel>();
-            foreach (Event @event in events)
+            var eventViewModelList = new List<EventViewModel>();
+            foreach (var @event in events)
             {
-                EventViewModel eventViewModel = new EventViewModel
+                var eventViewModel = new EventViewModel
                 {
                     Id = @event.Id,
                     Name = @event.Name,
@@ -54,7 +54,7 @@ namespace TicketManagement.Web.Services
                     EndDate = @event.EndDate,
                     BeginTime = @event.BeginDate,
                     EndTime = @event.EndDate,
-                    CountFreeSeats = this.eventService.AvailibleSeatCount(@event.Id),
+                    CountFreeSeats = this.eventService.GetAvailableSeatCount(@event.Id),
                     LayoutName = layoutService.GetLayout(@event.LayoutId).Name,
                 };
 

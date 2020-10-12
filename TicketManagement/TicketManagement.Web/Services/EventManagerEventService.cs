@@ -42,7 +42,7 @@ namespace TicketManagement.Web.Services
         public EventViewModel GetEventViewModel(int eventId)
         {
             var eventDto = this.eventService.GetEvent(eventId);
-            List<Layout> layouts = this.layoutService.GetLayouts().ToList();
+            var layouts = this.layoutService.GetLayouts().ToList();
 
             return new EventViewModel
             {
@@ -120,11 +120,11 @@ namespace TicketManagement.Web.Services
 
         private List<IndexEventViewModel> MapToIndexEventViewModel(List<Event> eventList)
         {
-            List<IndexEventViewModel> eventVMList = new List<IndexEventViewModel>();
+            var eventVMList = new List<IndexEventViewModel>();
 
             foreach (var eventDto in eventList)
             {
-                IndexEventViewModel vm = new IndexEventViewModel
+                var vm = new IndexEventViewModel
                 {
                     Id = eventDto.Id,
                     BeginDate = eventDto.BeginDate,
