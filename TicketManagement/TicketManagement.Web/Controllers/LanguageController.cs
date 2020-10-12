@@ -4,9 +4,12 @@ using System.Threading;
 using System.Web;
 using System.Web.Mvc;
 using TicketManagement.Web.Constants;
+using TicketManagement.Web.Filters;
 
 namespace TicketManagement.Web.Controllers
 {
+    [LogCustomExceptionFilter]
+    [AllowAnonymous]
     public class LanguageController : Controller
     {
         private const string CookieLangName = "lang";

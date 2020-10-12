@@ -1,8 +1,11 @@
 ﻿using System.Web.Mvc;
+using TicketManagement.Web.Filters;
 using TicketManagement.Web.Interfaces;
 
 namespace TicketManagement.Web.Controllers
 {
+    [LogCustomExceptionFilter]
+    [Authorize(Roles = "user")]
     public class CartController : Controller
     {
         private readonly ICartService cartService;
@@ -12,13 +15,11 @@ namespace TicketManagement.Web.Controllers
             this.cartService = cartService;
         }
 
-        [Authorize(Roles = "user")]
         public ActionResult Index()
         {
             return this.View(this.cartService.GetCartViewModelByUserName(this.User.Identity.Name));
         }
 
-        [Authorize(Roles = "user")]
         [HttpPost]
         public ActionResult Buy(int orderId)
         {
@@ -27,7 +28,6 @@ namespace TicketManagement.Web.Controllers
             return this.View("Index");
         }
 
-        [Authorize(Roles = "user")]
         [HttpPost]
         public ActionResult DeleteFromCart(int orderId)
         {

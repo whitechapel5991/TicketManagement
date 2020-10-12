@@ -42,7 +42,7 @@ namespace TicketManagement.Web.Services
         public EventViewModel GetEventViewModel(int eventId)
         {
             var eventDto = this.eventService.GetEvent(eventId);
-            var layouts = this.layoutService.GetLayouts().ToList();
+            var layouts = this.layoutService.GetLayouts().Distinct().ToDictionary(x => x.Id, x => x.Name);
 
             return new EventViewModel
             {
@@ -57,7 +57,7 @@ namespace TicketManagement.Web.Services
                     LayoutId = eventDto.LayoutId,
                     Name = eventDto.Name,
                     Published = eventDto.Published,
-                    LayoutName = this.layoutService.GetLayout(eventDto.LayoutId).Name,
+                    LayoutName = layouts[eventDto.LayoutId],
                 },
                 LayoutId = eventDto.LayoutId,
                 LayoutList = new SelectList(layouts, "Id", "Name", eventDto.LayoutId),
@@ -120,28 +120,22 @@ namespace TicketManagement.Web.Services
 
         private List<IndexEventViewModel> MapToIndexEventViewModel(List<Event> eventList)
         {
-            var eventVMList = new List<IndexEventViewModel>();
+            var layouts = this.layoutService.GetLayouts().Distinct().ToDictionary(x => x.Id, x => x.Name);
 
-            foreach (var eventDto in eventList)
+            return eventList.Select(eventDto => new IndexEventViewModel
             {
-                var vm = new IndexEventViewModel
-                {
-                    Id = eventDto.Id,
-                    BeginDate = eventDto.BeginDate,
-                    BeginTime = eventDto.BeginDate,
-                    Description = eventDto.Description,
-                    EndDate = eventDto.EndDate,
-                    EndTime = eventDto.EndDate,
-                    LayoutId = eventDto.LayoutId,
-                    Name = eventDto.Name,
-                    Published = eventDto.Published,
-                    LayoutName = this.layoutService.GetLayout(eventDto.LayoutId).Name,
-                };
-
-                eventVMList.Add(vm);
-            }
-
-            return eventVMList;
+                Id = eventDto.Id,
+                BeginDate = eventDto.BeginDate,
+                BeginTime = eventDto.BeginDate,
+                Description = eventDto.Description,
+                EndDate = eventDto.EndDate,
+                EndTime = eventDto.EndDate,
+                LayoutId = eventDto.LayoutId,
+                Name = eventDto.Name,
+                Published = eventDto.Published,
+                LayoutName = layouts[eventDto.LayoutId],
+            })
+                .ToList();
         }
     }
 }
