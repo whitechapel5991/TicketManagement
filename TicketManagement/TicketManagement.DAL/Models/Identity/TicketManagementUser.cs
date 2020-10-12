@@ -15,26 +15,41 @@ namespace TicketManagement.DAL.Models.Identity
     [Table("AspNetUsers")]
     public class TicketManagementUser : Entity
     {
+        [Required]
+        [MaxLength(256)]
+        [EmailAddress]
         public string Email { get; set; }
 
+        [Required]
         public bool EmailConfirmed { get; set; }
 
+        [MaxLength(int.MaxValue)]
         public string PasswordHash { get; set; }
 
+        [MaxLength(int.MaxValue)]
         public string SecurityStamp { get; set; }
 
+        [MaxLength(int.MaxValue)]
+        [Phone]
         public string PhoneNumber { get; set; }
 
+        [Required]
         public bool PhoneNumberConfirmed { get; set; }
 
+        [Required]
         public bool TwoFactorEnabled { get; set; }
 
+        [Required]
         public bool LockoutEnabled { get; set; }
 
+        [DataType(DataType.DateTime)]
         public DateTimeOffset? LockoutEndDateUtc { get; set; }
 
+        [Required]
+        [Range(0, int.MaxValue)]
         public int AccessFailedCount { get; set; }
 
+        [MaxLength(256)]
         public string UserName { get; set; }
 
         [Required]

@@ -21,9 +21,9 @@ namespace TicketManagement.DAL.Repositories.Identity
             this.DbSet = this.Context.Set<UserLogin>();
         }
 
-        private TicketManagementContext Context { get; set; }
+        private TicketManagementContext Context { get; }
 
-        private DbSet<UserLogin> DbSet { get; set; }
+        private DbSet<UserLogin> DbSet { get; }
 
         public UserLoginKey Create(UserLogin entity)
         {
@@ -34,7 +34,7 @@ namespace TicketManagement.DAL.Repositories.Identity
 
         public void Delete(UserLoginKey id)
         {
-            UserLogin entity = this.GetById(id);
+            var entity = this.GetById(id);
             if (entity != null)
             {
                 this.DbSet.Remove(entity);
@@ -54,7 +54,7 @@ namespace TicketManagement.DAL.Repositories.Identity
 
         public UserLogin GetById(UserLoginKey id)
         {
-            return this.DbSet.Find(id);
+            return this.DbSet.First(x => x.LoginProvider == id.LoginProvider && x.ProviderKey == id.ProviderKey);
         }
 
         public void Update(UserLogin entity)

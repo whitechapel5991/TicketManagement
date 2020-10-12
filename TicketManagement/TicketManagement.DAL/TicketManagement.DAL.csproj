@@ -106,7 +106,7 @@
     <Compile Include="Repositories\Identity\UserRepository.cs" />
     <Compile Include="Repositories\Identity\UserRoleRepository.cs" />
     <Compile Include="Repositories\Repository.cs" />
-    <Compile Include="Util\EfAutofacModule.cs" />
+    <Compile Include="Util\EfModule.cs" />
     <Compile Include="Util\IdentityModule.cs" />
   </ItemGroup>
   <ItemGroup>

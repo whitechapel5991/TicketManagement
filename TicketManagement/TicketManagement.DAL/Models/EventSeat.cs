@@ -26,6 +26,7 @@ namespace TicketManagement.DAL.Models
         public int Number { get; set; }
 
         [Column("State")]
+        [EnumDataType(typeof(EventSeatState))]
         public EventSeatState State { get; set; }
 
         [Required]

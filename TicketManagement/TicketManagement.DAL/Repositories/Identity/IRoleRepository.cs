@@ -10,7 +10,7 @@ using TicketManagement.DAL.Repositories.Base;
 
 namespace TicketManagement.DAL.Repositories.Identity
 {
-    public interface IRoleRepository : IRepository<Role, int>
+    public interface IRoleRepository : IRepository<Role>
     {
         Role FindByName(string roleName);
     }

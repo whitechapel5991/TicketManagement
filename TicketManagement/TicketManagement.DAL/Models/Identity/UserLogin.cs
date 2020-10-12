@@ -15,6 +15,7 @@ namespace TicketManagement.DAL.Models.Identity
     {
         [Key]
         [Column(Order = 1)]
+        [Range(0, int.MaxValue)]
         public int UserId { get; set; }
     }
 }

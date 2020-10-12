@@ -48,7 +48,7 @@ namespace TicketManagement.DAL.Repositories.Identity
         public void Remove(int userId, string roleName)
         {
             var roleId = this.Context.Roles.First(x => x.Name == roleName).Id;
-            var entity = this.DbSet.Find(new UserRole() { RoleId = roleId, UserId = userId });
+            var entity = this.DbSet.First(x => x.RoleId == roleId && x.UserId == userId);
             this.DbSet.Remove(entity);
             this.Context.SaveChanges();
         }

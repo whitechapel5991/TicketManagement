@@ -31,10 +31,10 @@ namespace TicketManagement.DAL.Repositories
 
         public override int Create(Event entity)
         {
-            const string CreateEventStoredProcedureName = "CreateEvent";
+            const string createEventStoredProcedureName = "CreateEvent";
 
             var resultId = this.Context.Database.SqlQuery<int>(
-                $"{CreateEventStoredProcedureName} {NameParamName}, {DescriptionParamName}, {LayoutIdParamName}, {BeginDateParamName}, {EndDateParamName}",
+                $"{createEventStoredProcedureName} {NameParamName}, {DescriptionParamName}, {LayoutIdParamName}, {BeginDateParamName}, {EndDateParamName}",
                 new SqlParameter(NameParamName, entity.Name),
                 new SqlParameter(DescriptionParamName, entity.Description),
                 new SqlParameter(LayoutIdParamName, entity.LayoutId),
@@ -48,10 +48,10 @@ namespace TicketManagement.DAL.Repositories
 
         public override void Update(Event entity)
         {
-            const string UpdateEventStoredProcedureName = "UpdateEvent";
+            const string updateEventStoredProcedureName = "UpdateEvent";
 
             this.Context.Database.ExecuteSqlCommand(
-                $"{UpdateEventStoredProcedureName} {IdParamName}, {NameParamName}, {DescriptionParamName}, {LayoutIdParamName}, {BeginDateParamName}, {EndDateParamName}, {PublishParamName}",
+                $"{updateEventStoredProcedureName} {IdParamName}, {NameParamName}, {DescriptionParamName}, {LayoutIdParamName}, {BeginDateParamName}, {EndDateParamName}, {PublishParamName}",
                 new SqlParameter(IdParamName, entity.Id),
                 new SqlParameter(NameParamName, entity.Name),
                 new SqlParameter(DescriptionParamName, entity.Description),
@@ -65,10 +65,10 @@ namespace TicketManagement.DAL.Repositories
 
         public override void Delete(int id)
         {
-            const string DeleteEventStoredProcedureName = "DeleteEvent";
+            const string deleteEventStoredProcedureName = "DeleteEvent";
 
             this.Context.Database.ExecuteSqlCommand(
-                $"{DeleteEventStoredProcedureName} {IdParamName}",
+                $"{deleteEventStoredProcedureName} {IdParamName}",
                 new SqlParameter(IdParamName, id));
             this.Context.SaveChanges();
         }

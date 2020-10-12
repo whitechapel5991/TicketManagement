@@ -11,7 +11,7 @@ using TicketManagement.DAL.Repositories.Base;
 
 namespace TicketManagement.DAL.Repositories.Identity
 {
-    public interface IUserClaimRepository : IRepository<UserClaim, int>
+    public interface IUserClaimRepository : IRepository<UserClaim>
     {
         IEnumerable<UserClaim> GetByUserId(int userId);
 

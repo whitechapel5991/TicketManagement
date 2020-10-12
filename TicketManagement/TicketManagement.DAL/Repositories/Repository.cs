@@ -36,12 +36,14 @@ namespace TicketManagement.DAL.Repositories
 
         public override void Delete(int id)
         {
-            TDalEntity entity = this.GetById(id);
-            if (entity != null)
+            var entity = this.GetById(id);
+            if (entity == null)
             {
-                this.DbSet.Remove(entity);
-                this.Context.SaveChanges();
+                return;
             }
+
+            this.DbSet.Remove(entity);
+            this.Context.SaveChanges();
         }
 
         public override TDalEntity GetById(int id)

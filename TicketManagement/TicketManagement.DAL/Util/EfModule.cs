@@ -1,5 +1,5 @@
 ﻿// ****************************************************************************
-// <copyright file="AdoAutofacModule.cs" company="EPAM Systems">
+// <copyright file="EfModule.cs" company="EPAM Systems">
 // Copyright (c) EPAM Systems. All rights reserved.
 // Author Dzianis Shcharbakou.
 // </copyright>
@@ -13,11 +13,11 @@ using TicketManagement.DAL.Repositories.Base;
 
 namespace TicketManagement.DAL.Util
 {
-    public class EfAutofacModule : Module
+    public class EfModule : Module
     {
         private readonly string connectionString;
 
-        public EfAutofacModule(string connectionString)
+        public EfModule(string connectionString)
         {
             this.connectionString = connectionString;
         }
@@ -29,11 +29,11 @@ namespace TicketManagement.DAL.Util
                 .SingleInstance();
 
             builder.RegisterGeneric(typeof(Repository<>))
-                .As(typeof(IRepository<,>))
+                .As(typeof(IRepository<>))
                 .InstancePerLifetimeScope();
 
             builder.RegisterType<EventRepository>()
-                .As<IRepository<Event, int>>()
+                .As<IRepository<Event>>()
                 .InstancePerLifetimeScope();
 
             builder.RegisterModule(new IdentityModule());

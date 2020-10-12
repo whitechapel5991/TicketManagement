@@ -20,14 +20,14 @@ namespace TicketManagement.DAL.Models
         public string Description { get; set; }
 
         [Required]
-        [Range(0, 10000)]
+        [Range(0, int.MaxValue)]
         [Column("CoordX")]
-        public int CoordX { get; set; }
+        public int CoordinateX { get; set; }
 
         [Required]
         [Range(0, int.MaxValue)]
         [Column("CoordY")]
-        public int CoordY { get; set; }
+        public int CoordinateY { get; set; }
 
         [Required]
         [Range(0, int.MaxValue)]

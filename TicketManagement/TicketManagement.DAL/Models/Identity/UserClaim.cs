@@ -5,6 +5,7 @@
 // </copyright>
 // ****************************************************************************
 
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace TicketManagement.DAL.Models.Identity
@@ -13,6 +14,8 @@ namespace TicketManagement.DAL.Models.Identity
 
     public class UserClaim : ClaimBase
     {
+        [Required]
+        [Range(0, int.MaxValue)]
         public int UserId { get; set; }
     }
 }

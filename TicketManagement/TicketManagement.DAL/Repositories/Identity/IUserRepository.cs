@@ -10,7 +10,7 @@ using TicketManagement.DAL.Repositories.Base;
 
 namespace TicketManagement.DAL.Repositories.Identity
 {
-    public interface IUserRepository : IRepository<TicketManagementUser, int>
+    public interface IUserRepository : IRepository<TicketManagementUser>
     {
         TicketManagementUser FindByNormalizedUserName(string normalizedUserName);
 
