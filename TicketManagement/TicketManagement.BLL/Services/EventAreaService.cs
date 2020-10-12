@@ -76,13 +76,13 @@ namespace TicketManagement.BLL.Services
             };
 
             var eventSeatDtoList = query.Select(eventSeat => new EventSeatDto()
-                {
-                    Id = eventSeat.Id,
-                    Number = eventSeat.Number,
-                    Row = eventSeat.Row,
-                    State = eventSeat.State,
-                    EventArea = eventAreaDto,
-                })
+            {
+                Id = eventSeat.Id,
+                Number = eventSeat.Number,
+                Row = eventSeat.Row,
+                State = eventSeat.State,
+                EventArea = eventAreaDto,
+            })
                 .ToList();
 
             eventAreaDto.EventSeats = eventSeatDtoList;

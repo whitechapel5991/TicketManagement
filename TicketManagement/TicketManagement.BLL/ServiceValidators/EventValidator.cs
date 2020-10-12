@@ -81,8 +81,8 @@ namespace TicketManagement.BLL.ServiceValidators
             }
 
             var isSeatInLayout = (from areasQ in this.areaRepository.GetAll().Where(x => x.LayoutId == entity.LayoutId).AsEnumerable()
-                join seatsQ in this.seatRepository.GetAll().AsEnumerable() on areasQ.Id equals seatsQ.AreaId
-                select new Seat { Id = seatsQ.Id, AreaId = seatsQ.AreaId, Number = seatsQ.Number, Row = seatsQ.Row }).Any();
+                                  join seatsQ in this.seatRepository.GetAll().AsEnumerable() on areasQ.Id equals seatsQ.AreaId
+                                  select new Seat { Id = seatsQ.Id, AreaId = seatsQ.AreaId, Number = seatsQ.Number, Row = seatsQ.Row }).Any();
 
             if (!isSeatInLayout)
             {
