@@ -29,6 +29,8 @@ namespace TicketManagement.BLL.Interfaces
 
         IEnumerable<Event> GetPublishEvents();
 
-        int AvailibleSeatCount(int eventId);
+        int GetAvailableSeatCount(int eventId);
+
+        Event GetEventByEventSeatId(int eventSeatId);
     }
 }

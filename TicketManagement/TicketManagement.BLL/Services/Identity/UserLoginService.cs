@@ -44,7 +44,7 @@ namespace TicketManagement.BLL.Services.Identity
             return this.userLoginRepository.GetById(userLoginKey);
         }
 
-        public IList<UserLogin> GetLoginsByUserId(int userId)
+        public IEnumerable<UserLogin> GetLoginsByUserId(int userId)
         {
             return this.userLoginRepository.FindByUserId(userId).ToList();
         }

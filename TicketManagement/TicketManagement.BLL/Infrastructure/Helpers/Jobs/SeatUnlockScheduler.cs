@@ -24,12 +24,12 @@ namespace TicketManagement.BLL.Infrastructure.Helpers.Jobs
         {
             await this.scheduler.Start();
 
-            IJobDetail job = JobBuilder.Create<SeatUnlockerJob>()
+            var job = JobBuilder.Create<SeatUnlockerJob>()
                 .WithIdentity($"job{eventSeatId}", "seatLockerGroup")
                 .UsingJobData("eventSeatId", eventSeatId)
                 .Build();
 
-            ITrigger trigger = TriggerBuilder.Create()
+            var trigger = TriggerBuilder.Create()
                 .WithIdentity($"trigger{eventSeatId}", "seatLockerGroup")
                 .StartAt(DateBuilder.FutureDate(/*this.locktimeMinutes*/1, IntervalUnit.Second))
                 .WithPriority(1)

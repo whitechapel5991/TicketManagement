@@ -21,12 +21,11 @@ namespace TicketManagement.BLL.Services
 {
     internal class OrderService : IOrderService
     {
-        private readonly IRepository<Order, int> orderRepository;
-
-        private readonly IRepository<EventSeat, int> eventSeatRepository;
-        private readonly IRepository<EventArea, int> eventAreaRepository;
-        private readonly IRepository<Event, int> eventRepository;
-        private readonly IRepository<Layout, int> layoutRepository;
+        private readonly IRepository<Order> orderRepository;
+        private readonly IRepository<EventSeat> eventSeatRepository;
+        private readonly IRepository<EventArea> eventAreaRepository;
+        private readonly IRepository<Event> eventRepository;
+        private readonly IRepository<Layout> layoutRepository;
         private readonly IUserRepository userRepository;
         private readonly IEmailHelper emailHelper;
         private readonly IHtmlHelper htmlHelper;
@@ -34,14 +33,14 @@ namespace TicketManagement.BLL.Services
         private readonly ISeatUnlockScheduler seatUnlockScheduler;
 
         public OrderService(
-            IRepository<Order, int> orderRepository,
-            IRepository<EventSeat, int> eventSeatRepository,
+            IRepository<Order> orderRepository,
+            IRepository<EventSeat> eventSeatRepository,
             IUserRepository userRepository,
             IEmailHelper emailHelper,
             IHtmlHelper htmlHelper,
-            IRepository<EventArea, int> eventAreaRepository,
-            IRepository<Event, int> eventRepository,
-            IRepository<Layout, int> layoutRepository,
+            IRepository<EventArea> eventAreaRepository,
+            IRepository<Event> eventRepository,
+            IRepository<Layout> layoutRepository,
             IOrderValidator orderValidator,
             ISeatUnlockScheduler seatUnlockScheduler)
         {
@@ -59,14 +58,14 @@ namespace TicketManagement.BLL.Services
 
         public void AddToCart(int eventSeatId, int userId)
         {
-            Order newOrder = new Order()
+            var newOrder = new Order()
             {
                 Date = DateTime.Now,
                 EventSeatId = eventSeatId,
                 UserId = userId,
             };
 
-            EventSeat eventSeat = this.eventSeatRepository.GetById(eventSeatId);
+            var eventSeat = this.eventSeatRepository.GetById(eventSeatId);
             this.orderValidator.SeatIsBlocked(eventSeat);
             eventSeat.State = EventSeatState.InBasket;
             this.eventSeatRepository.Update(eventSeat);
@@ -88,7 +87,7 @@ namespace TicketManagement.BLL.Services
             var eventArea = this.eventAreaRepository.GetById(eventSeat.EventAreaId);
             var @event = this.eventRepository.GetById(eventArea.EventId);
             var layout = this.layoutRepository.GetById(@event.LayoutId);
-            string eventHtml = this.htmlHelper.GetEventHtml(eventSeat, eventArea, @event, layout);
+            var eventHtml = this.htmlHelper.GetEventHtml(eventSeat, eventArea, @event, layout);
             var userEmail = this.userRepository.GetById(order.UserId).Email;
             this.emailHelper.SendEmail(userEmail, @event.Name, eventHtml);
         }

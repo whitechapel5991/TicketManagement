@@ -19,10 +19,10 @@ namespace TicketManagement.BLL.Dto
         public string Description { get; set; }
 
         [Required]
-        public int CoordX { get; set; }
+        public int CoordinateX { get; set; }
 
         [Required]
-        public int CoordY { get; set; }
+        public int CoordinateY { get; set; }
 
         public decimal Price { get; set; }
 

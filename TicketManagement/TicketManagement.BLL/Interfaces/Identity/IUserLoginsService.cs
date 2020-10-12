@@ -16,7 +16,7 @@ namespace TicketManagement.BLL.Interfaces.Identity
 
         UserLogin Find(UserLoginKey userLoginKey);
 
-        IList<UserLogin> GetLoginsByUserId(int userId);
+        IEnumerable<UserLogin> GetLoginsByUserId(int userId);
 
         void DeleteUserLogin(int userId, UserLogin userLogin);
     }

@@ -15,12 +15,11 @@ namespace TicketManagement.BLL.Services
 {
     public class LayoutService : ILayoutService
     {
-        private readonly IRepository<Layout, int> layoutRepository;
-
+        private readonly IRepository<Layout> layoutRepository;
         private readonly ILayoutValidator layoutValidator;
 
         public LayoutService(
-            IRepository<Layout, int> layoutRepository,
+            IRepository<Layout> layoutRepository,
             ILayoutValidator layoutValidator)
         {
             this.layoutRepository = layoutRepository;
@@ -29,13 +28,13 @@ namespace TicketManagement.BLL.Services
 
         public int AddLayout(Layout layoutDto)
         {
-            this.layoutValidator.Validate(layoutDto);
+            this.layoutValidator.Validation(layoutDto);
             return this.layoutRepository.Create(layoutDto);
         }
 
         public void UpdateLayout(Layout layoutDto)
         {
-            this.layoutValidator.Validate(layoutDto);
+            this.layoutValidator.Validation(layoutDto);
             this.layoutRepository.Update(layoutDto);
         }
 

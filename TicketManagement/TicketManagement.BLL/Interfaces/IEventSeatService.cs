@@ -17,9 +17,5 @@ namespace TicketManagement.BLL.Interfaces
         EventSeat GetEventSeat(int id);
 
         void UpdateEventSeat(EventSeat entity);
-
-        decimal GetSeatCost(int seatId);
-
-        Event GetEventByEventSeatId(int seatId);
     }
 }

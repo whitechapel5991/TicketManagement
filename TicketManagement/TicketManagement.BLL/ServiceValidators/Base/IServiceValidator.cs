@@ -9,9 +9,9 @@ using TicketManagement.DAL.Models.Base;
 
 namespace TicketManagement.BLL.ServiceValidators.Base
 {
-    public interface IServiceValidator<TDalEntity>
+    public interface IServiceValidator<in TDalEntity>
         where TDalEntity : IEntity, new()
     {
-        void Validate(TDalEntity entity);
+        void Validation(TDalEntity entity);
     }
 }

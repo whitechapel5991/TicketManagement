@@ -15,10 +15,10 @@ namespace TicketManagement.BLL.Services
 {
     internal class VenueService : IVenueService
     {
-        private readonly IRepository<Venue, int> venueRepository;
+        private readonly IRepository<Venue> venueRepository;
         private readonly IVenueValidator venueValidator;
 
-        public VenueService(IRepository<Venue, int> venueRepository, IVenueValidator validator)
+        public VenueService(IRepository<Venue> venueRepository, IVenueValidator validator)
         {
             this.venueRepository = venueRepository;
             this.venueValidator = validator;
@@ -26,7 +26,7 @@ namespace TicketManagement.BLL.Services
 
         public int AddVenue(Venue entity)
         {
-            this.venueValidator.Validate(entity);
+            this.venueValidator.Validation(entity);
             return this.venueRepository.Create(entity);
         }
 
@@ -47,7 +47,7 @@ namespace TicketManagement.BLL.Services
 
         public void UpdateVenue(Venue entity)
         {
-            this.venueValidator.Validate(entity);
+            this.venueValidator.Validation(entity);
             this.venueRepository.Update(entity);
         }
     }

@@ -18,16 +18,16 @@ namespace TicketManagement.BLL.Infrastructure.Helpers.Jobs
     [DisallowConcurrentExecution]
     public class SeatUnlockerJob : IJob
     {
-        private readonly IRepository<EventSeat, int> eventSeatRepository;
+        private readonly IRepository<EventSeat> eventSeatRepository;
 
-        public SeatUnlockerJob(IRepository<EventSeat, int> eventSeatRepository)
+        public SeatUnlockerJob(IRepository<EventSeat> eventSeatRepository)
         {
             this.eventSeatRepository = eventSeatRepository;
         }
 
         public Task Execute(IJobExecutionContext context)
         {
-            JobDataMap dataMap = context.MergedJobDataMap;
+            var dataMap = context.MergedJobDataMap;
 
             var eventSeat = this.eventSeatRepository.GetById(dataMap.GetIntValue("eventSeatId"));
             if (eventSeat.State == EventSeatState.InBasket)

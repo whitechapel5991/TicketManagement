@@ -16,7 +16,7 @@ namespace TicketManagement.BLL.Interfaces.Identity
 
         TicketManagementUser FindById(int userId);
 
-        void Add(TicketManagementUser userDto);
+        int Add(TicketManagementUser userDto);
 
         void Update(TicketManagementUser userDto);
 

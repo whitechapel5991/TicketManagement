@@ -12,10 +12,10 @@ namespace TicketManagement.BLL.ServiceValidators.Interfaces
 {
     public interface IEventValidator : IServiceValidator<Event>
     {
-        void UpdateValidate(Event entity);
+        void UpdateValidation(Event entity);
 
-        void DeleteValidate(int eventId);
+        void DeleteValidation(int eventId);
 
-        void PublishValidate(Event @event);
+        void PublishValidation(Event @event);
     }
 }

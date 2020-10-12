@@ -248,7 +248,7 @@
     <Compile Include="ServiceValidators\SeatValidator.cs" />
     <Compile Include="ServiceValidators\VenueValidator.cs" />
     <Compile Include="Util\IdentityModule.cs" />
-    <Compile Include="Util\ServiceAutofacModule.cs" />
+    <Compile Include="Util\ServiceModule.cs" />
   </ItemGroup>
   <ItemGroup>
     <AdditionalFiles Include="..\stylecop.json">

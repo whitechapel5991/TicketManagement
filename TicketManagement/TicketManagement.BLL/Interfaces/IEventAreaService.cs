@@ -20,5 +20,7 @@ namespace TicketManagement.BLL.Interfaces
         void UpdateEventArea(EventArea entity);
 
         EventAreaDto GetEventAreaMap(int eventAreaId);
+
+        decimal GetEventAreaCost(int seatId);
     }
 }

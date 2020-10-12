@@ -30,14 +30,14 @@ namespace TicketManagement.BLL.Infrastructure.Helpers
         {
             try
             {
-                using (MailMessage mailMessage = new MailMessage())
+                using (var mailMessage = new MailMessage())
                 {
                     mailMessage.From = new MailAddress(this.email);
                     mailMessage.To.Add(recipient);
                     mailMessage.Subject = subject;
                     mailMessage.IsBodyHtml = true;
                     mailMessage.Body = htmlMessage;
-                    using (SmtpClient smtp = new SmtpClient(Hostname, Port))
+                    using (var smtp = new SmtpClient(Hostname, Port))
                     {
                         smtp.EnableSsl = UseSsl;
                         smtp.UseDefaultCredentials = false;

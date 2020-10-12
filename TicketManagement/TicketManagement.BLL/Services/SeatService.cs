@@ -15,11 +15,11 @@ namespace TicketManagement.BLL.Services
 {
     internal class SeatService : ISeatService
     {
-        private readonly IRepository<Seat, int> seatRepository;
+        private readonly IRepository<Seat> seatRepository;
         private readonly ISeatValidator seatValidator;
 
         public SeatService(
-            IRepository<Seat, int> seatRepository,
+            IRepository<Seat> seatRepository,
             ISeatValidator seatValidator)
         {
             this.seatRepository = seatRepository;
@@ -28,13 +28,13 @@ namespace TicketManagement.BLL.Services
 
         public int AddSeat(Seat seatDto)
         {
-            this.seatValidator.Validate(seatDto);
+            this.seatValidator.Validation(seatDto);
             return this.seatRepository.Create(seatDto);
         }
 
         public void UpdateSeat(Seat seatDto)
         {
-            this.seatValidator.Validate(seatDto);
+            this.seatValidator.Validation(seatDto);
             this.seatRepository.Update(seatDto);
         }
 

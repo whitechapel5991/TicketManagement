@@ -15,24 +15,19 @@ namespace TicketManagement.BLL.ServiceValidators
 {
     public class VenueValidator : IVenueValidator
     {
-        private readonly IRepository<Venue, int> venueRepository;
+        private readonly IRepository<Venue> venueRepository;
 
-        public VenueValidator(IRepository<Venue, int> venueRepository)
+        public VenueValidator(IRepository<Venue> venueRepository)
         {
             this.venueRepository = venueRepository;
         }
 
-        public void Validate(Venue entity)
+        public void Validation(Venue entity)
         {
-            if (this.VenueNameExist(entity.Name))
+            if (this.venueRepository.GetAll().Any(x => x.Name == entity.Name))
             {
                 throw new VenueWithThisNameExistException($"Venue with name:{entity.Name} already exist.");
             }
-        }
-
-        private bool VenueNameExist(string nameVenue)
-        {
-            return this.venueRepository.GetAll().Where(x => x.Name == nameVenue).Any();
         }
     }
 }

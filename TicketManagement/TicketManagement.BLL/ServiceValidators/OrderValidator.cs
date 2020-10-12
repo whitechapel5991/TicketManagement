@@ -23,7 +23,7 @@ namespace TicketManagement.BLL.ServiceValidators
             }
         }
 
-        public void Validate(Order entity)
+        public void Validation(Order entity)
         {
             throw new NotImplementedException();
         }

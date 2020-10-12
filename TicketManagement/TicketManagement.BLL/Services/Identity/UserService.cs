@@ -27,9 +27,9 @@ namespace TicketManagement.BLL.Services.Identity
             this.userRoleRepository = userRoleRepository;
         }
 
-        public void Add(TicketManagementUser userDto)
+        public int Add(TicketManagementUser userDto)
         {
-            this.userRepository.Create(userDto);
+            return this.userRepository.Create(userDto);
         }
 
         public void AddRole(int userId, string roleName)
@@ -74,7 +74,7 @@ namespace TicketManagement.BLL.Services.Identity
 
         public bool HasPassword(int userId)
         {
-            return string.IsNullOrWhiteSpace(this.userRepository.GetById(userId).PasswordHash);
+            return !string.IsNullOrWhiteSpace(this.userRepository.GetById(userId).PasswordHash);
         }
 
         public bool IsRole(int userId, string roleName)
@@ -103,7 +103,7 @@ namespace TicketManagement.BLL.Services.Identity
 
         public void IncreaseBalance(decimal money, string userName)
         {
-            TicketManagementUser user = this.userRepository.FindByNormalizedUserName(userName);
+            var user = this.userRepository.FindByNormalizedUserName(userName);
             user.Balance += money;
             this.userRepository.Update(user);
         }

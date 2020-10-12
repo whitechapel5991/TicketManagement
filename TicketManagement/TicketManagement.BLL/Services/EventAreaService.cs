@@ -16,12 +16,12 @@ namespace TicketManagement.BLL.Services
 {
     public class EventAreaService : IEventAreaService
     {
-        private readonly IRepository<EventArea, int> eventAreaRepository;
-        private readonly IRepository<EventSeat, int> eventSeatRepository;
+        private readonly IRepository<EventArea> eventAreaRepository;
+        private readonly IRepository<EventSeat> eventSeatRepository;
 
         public EventAreaService(
-            IRepository<EventArea, int> eventAreaRepository,
-            IRepository<EventSeat, int> eventSeatRepository)
+            IRepository<EventArea> eventAreaRepository,
+            IRepository<EventSeat> eventSeatRepository)
         {
             this.eventAreaRepository = eventAreaRepository;
             this.eventSeatRepository = eventSeatRepository;
@@ -29,7 +29,9 @@ namespace TicketManagement.BLL.Services
 
         public void UpdateEventArea(EventArea eventAreaDto)
         {
-            this.eventAreaRepository.Update(eventAreaDto);
+            var eventArea = this.eventAreaRepository.GetById(eventAreaDto.Id);
+            eventArea.Price = eventAreaDto.Price;
+            this.eventAreaRepository.Update(eventArea);
         }
 
         public EventArea GetEventArea(int id)
@@ -42,6 +44,13 @@ namespace TicketManagement.BLL.Services
             return this.eventAreaRepository.GetAll();
         }
 
+        public decimal GetEventAreaCost(int seatId)
+        {
+            var eventAreaId = this.eventSeatRepository.GetById(seatId).EventAreaId;
+            return this.eventAreaRepository.GetById(eventAreaId).Price;
+        }
+
+        // ?
         public EventAreaDto GetEventAreaMap(int eventAreaId)
         {
             var eventArea = this.eventAreaRepository.GetById(eventAreaId);
@@ -56,31 +65,25 @@ namespace TicketManagement.BLL.Services
                              EventAreaId = eventAreaId,
                          }).ToList();
 
-            EventAreaDto eventAreaDto = new EventAreaDto()
+            var eventAreaDto = new EventAreaDto()
             {
                 Id = eventArea.Id,
-                CoordX = eventArea.CoordX,
-                CoordY = eventArea.CoordY,
+                CoordinateX = eventArea.CoordinateX,
+                CoordinateY = eventArea.CoordinateY,
                 Description = eventArea.Description,
                 Price = eventArea.Price,
                 Event = new EventDto { Id = eventArea.EventId },
             };
 
-            var eventSeatDtoList = new List<EventSeatDto>();
-
-            foreach (var eventSeat in query)
-            {
-                EventSeatDto eventSeatDto = new EventSeatDto()
+            var eventSeatDtoList = query.Select(eventSeat => new EventSeatDto()
                 {
                     Id = eventSeat.Id,
                     Number = eventSeat.Number,
                     Row = eventSeat.Row,
                     State = eventSeat.State,
                     EventArea = eventAreaDto,
-                };
-
-                eventSeatDtoList.Add(eventSeatDto);
-            }
+                })
+                .ToList();
 
             eventAreaDto.EventSeats = eventSeatDtoList;
 

@@ -16,18 +16,18 @@ namespace TicketManagement.BLL.ServiceValidators
 {
     internal class LayoutValidator : ILayoutValidator
     {
-        private readonly IRepository<Layout, int> layoutRepository;
-        private readonly IRepository<Venue, int> venueRepository;
+        private readonly IRepository<Layout> layoutRepository;
+        private readonly IRepository<Venue> venueRepository;
 
         public LayoutValidator(
-            IRepository<Layout, int> layoutRepository,
-            IRepository<Venue, int> venueRepository)
+            IRepository<Layout> layoutRepository,
+            IRepository<Venue> venueRepository)
         {
             this.layoutRepository = layoutRepository;
             this.venueRepository = venueRepository;
         }
 
-        public void Validate(Layout entity)
+        public void Validation(Layout entity)
         {
             var venue = this.venueRepository.GetById(entity.VenueId);
             if (venue == default(Venue))
@@ -35,16 +35,11 @@ namespace TicketManagement.BLL.ServiceValidators
                 throw new EntityDoesNotExistException($"Venue with id={entity.VenueId} doesn't exist.");
             }
 
-            if (this.LayoutNameExist(entity.Name, entity.VenueId))
+            if (this.layoutRepository
+                .GetAll().Any(x => x.Name == entity.Name && x.VenueId == entity.VenueId))
             {
                 throw new LayoutWithSameNameInTheVenueExistException($"Layout with name={entity.Name} exist in the venue with id={entity.VenueId}");
             }
-        }
-
-        private bool LayoutNameExist(string nameLayout, int venueId)
-        {
-            return this.layoutRepository.GetAll()
-                .Where(x => x.Name == nameLayout && x.VenueId == venueId).Any();
         }
     }
 }

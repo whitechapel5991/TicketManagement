@@ -14,23 +14,19 @@ namespace TicketManagement.BLL.Services
 {
     public class EventSeatService : IEventSeatService
     {
-        private readonly IRepository<EventSeat, int> eventSeatRepository;
-        private readonly IRepository<EventArea, int> eventAreaRepository;
-        private readonly IRepository<Event, int> eventRepository;
+        private readonly IRepository<EventSeat> eventSeatRepository;
 
         public EventSeatService(
-            IRepository<EventSeat, int> eventSeatRepository,
-            IRepository<EventArea, int> eventAreaRepository,
-            IRepository<Event, int> eventRepository)
+            IRepository<EventSeat> eventSeatRepository)
         {
             this.eventSeatRepository = eventSeatRepository;
-            this.eventAreaRepository = eventAreaRepository;
-            this.eventRepository = eventRepository;
         }
 
         public void UpdateEventSeat(EventSeat eventSeatDto)
         {
-            this.eventSeatRepository.Update(eventSeatDto);
+            var eventSeat = this.eventSeatRepository.GetById(eventSeatDto.Id);
+            eventSeat.State = eventSeatDto.State;
+            this.eventSeatRepository.Update(eventSeat);
         }
 
         public EventSeat GetEventSeat(int id)
@@ -41,20 +37,6 @@ namespace TicketManagement.BLL.Services
         public IEnumerable<EventSeat> GetEventSeats()
         {
             return this.eventSeatRepository.GetAll();
-        }
-
-        public decimal GetSeatCost(int seatId)
-        {
-            var eventAreaId = this.eventSeatRepository.GetById(seatId).EventAreaId;
-            return this.eventAreaRepository.GetById(eventAreaId).Price;
-        }
-
-        public Event GetEventByEventSeatId(int seatId)
-        {
-            var eventAreaId = this.eventSeatRepository.GetById(seatId).EventAreaId;
-            var eventId = this.eventAreaRepository.GetById(eventAreaId).EventId;
-
-            return this.eventRepository.GetById(eventId);
         }
     }
 }

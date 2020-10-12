@@ -19,20 +19,20 @@ namespace TicketManagement.BLL.ServiceValidators
 {
     internal class EventValidator : IEventValidator
     {
-        private readonly IRepository<Event, int> eventRepository;
-        private readonly IRepository<Layout, int> layoutRepository;
-        private readonly IRepository<Area, int> areaRepository;
-        private readonly IRepository<Seat, int> seatRepository;
-        private readonly IRepository<EventArea, int> eventAreaRepository;
-        private readonly IRepository<EventSeat, int> eventSeatRepository;
+        private readonly IRepository<Event> eventRepository;
+        private readonly IRepository<Layout> layoutRepository;
+        private readonly IRepository<Area> areaRepository;
+        private readonly IRepository<Seat> seatRepository;
+        private readonly IRepository<EventArea> eventAreaRepository;
+        private readonly IRepository<EventSeat> eventSeatRepository;
 
         public EventValidator(
-            IRepository<Event, int> eventRepository,
-            IRepository<EventArea, int> eventAreaRepository,
-            IRepository<EventSeat, int> eventSeatRepository,
-            IRepository<Layout, int> layoutRepository,
-            IRepository<Area, int> areaRepository,
-            IRepository<Seat, int> seatRepository)
+            IRepository<Event> eventRepository,
+            IRepository<EventArea> eventAreaRepository,
+            IRepository<EventSeat> eventSeatRepository,
+            IRepository<Layout> layoutRepository,
+            IRepository<Area> areaRepository,
+            IRepository<Seat> seatRepository)
         {
             this.eventRepository = eventRepository;
             this.eventAreaRepository = eventAreaRepository;
@@ -42,7 +42,7 @@ namespace TicketManagement.BLL.ServiceValidators
             this.seatRepository = seatRepository;
         }
 
-        public void Validate(Event entity)
+        public void Validation(Event entity)
         {
             var layout = this.layoutRepository.GetById(entity.LayoutId);
 
@@ -51,37 +51,48 @@ namespace TicketManagement.BLL.ServiceValidators
                 throw new EntityDoesNotExistException("Layout doesn't exist.");
             }
 
-            if (this.IsDateInPast(entity.BeginDate))
+            var now = (long)TimeSpan.FromTicks(DateTime.Now.Ticks).TotalMinutes;
+            var eventBeginDate = (long)TimeSpan.FromTicks(entity.BeginDate.Ticks).TotalMinutes;
+
+            if (now > eventBeginDate)
             {
                 throw new EventInPastException("Event can not be in the past.");
             }
 
-            if (this.IsBeginDateLongerThenEndDate(entity.BeginDate, entity.EndDate))
+            eventBeginDate = (long)TimeSpan.FromTicks(entity.BeginDate.Ticks).TotalMinutes;
+            var eventEndDate = (long)TimeSpan.FromTicks(entity.EndDate.Ticks).TotalMinutes;
+
+            if (eventBeginDate >= eventEndDate)
             {
                 throw new BeginDateLongerThenEndDateException("Begin date cannot be longer than end date.");
             }
 
             if (this.EventInLayoutInTheSameTimeExist(
                 entity.LayoutId,
-                entity.BeginDate.ToString("dd.MM.yyyy HH:mm"),
-                entity.EndDate.ToString("dd.MM.yyyy HH:mm")))
+                entity.BeginDate,
+                entity.EndDate))
             {
                 throw new EventExistInTheLayoutInThisTimeException($"Event in the layout={entity.LayoutId} exist in the same time");
             }
 
-            if (!this.AreaInLayoutExist(entity.LayoutId))
+            if (!this.areaRepository.GetAll().Any(x => x.LayoutId == entity.LayoutId))
             {
                 throw new LayoutHasNotAreaException($"Layout with id={entity.LayoutId} has not area.");
             }
 
-            if (!this.SeatInLayoutExist(entity.LayoutId))
+            var isSeatInLayout = (from areasQ in this.areaRepository.GetAll().Where(x => x.LayoutId == entity.LayoutId).AsEnumerable()
+                join seatsQ in this.seatRepository.GetAll().AsEnumerable() on areasQ.Id equals seatsQ.AreaId
+                select new Seat { Id = seatsQ.Id, AreaId = seatsQ.AreaId, Number = seatsQ.Number, Row = seatsQ.Row }).Any();
+
+            if (!isSeatInLayout)
             {
                 throw new LayoutHasNotSeatException($"Layout with id={entity.LayoutId} has not seat.");
             }
         }
 
-        public void UpdateValidate(Event entity)
+        public void UpdateValidation(Event entity)
         {
+            this.Validation(entity);
             var @event = this.eventRepository.GetById(entity.Id);
 
             if (entity.LayoutId == @event.LayoutId)
@@ -95,7 +106,7 @@ namespace TicketManagement.BLL.ServiceValidators
             }
         }
 
-        public void DeleteValidate(int eventId)
+        public void DeleteValidation(int eventId)
         {
             var @event = this.eventRepository.GetById(eventId);
 
@@ -105,22 +116,17 @@ namespace TicketManagement.BLL.ServiceValidators
             }
         }
 
-        public void PublishValidate(Event @event)
+        public void PublishValidation(Event @event)
         {
             if (@event.Published)
             {
                 throw new EventAlreadyPublishedException("Event already published");
             }
 
-            if (this.SomeAreaInEventHasNotPrice(@event.Id))
+            if (this.eventAreaRepository.GetAll().Any(x => x.Price == decimal.Zero && x.EventId == @event.Id))
             {
                 throw new SomeAreaHasNotPriceException("All areas in event must have a price");
             }
-        }
-
-        private bool SomeAreaInEventHasNotPrice(int eventId)
-        {
-            return this.eventAreaRepository.GetAll().Where(x => x.Price == decimal.Zero && x.EventId == eventId).Any();
         }
 
         private bool SoldSeatExist(int eventId)
@@ -131,47 +137,17 @@ namespace TicketManagement.BLL.ServiceValidators
                     select new { eventSeat.State }).Any();
         }
 
-        private bool AreaInLayoutExist(int layoutId)
+        private bool EventInLayoutInTheSameTimeExist(int layoutId, DateTime beginDate, DateTime endDate)
         {
-            return this.areaRepository.GetAll().Where(x => x.LayoutId == layoutId).Any();
-        }
+            var begin = Convert.ToDateTime(beginDate.ToString("dd.MM.yyyy HH:mm"), new CultureInfo("ru"));
+            var end = Convert.ToDateTime(endDate.ToString("dd.MM.yyyy HH:mm"), new CultureInfo("ru"));
 
-        private bool SeatInLayoutExist(int layoutId)
-        {
-            return (from areasQ in this.areaRepository.GetAll().Where(x => x.LayoutId == layoutId).AsEnumerable()
-                    join seatsQ in this.seatRepository.GetAll().AsEnumerable() on areasQ.Id equals seatsQ.AreaId
-                    select new Seat { Id = seatsQ.Id, AreaId = seatsQ.AreaId, Number = seatsQ.Number, Row = seatsQ.Row }).Any();
-        }
-
-        private bool IsDateInPast(DateTime dateTime)
-        {
-            DateTime dt = DateTime.Now;
-            long now = (long)TimeSpan.FromTicks(dt.Ticks).TotalMinutes;
-            long begin = (long)TimeSpan.FromTicks(dateTime.Ticks).TotalMinutes;
-            return now > begin;
-        }
-
-        private bool IsBeginDateLongerThenEndDate(DateTime beginDate, DateTime endDate)
-        {
-            long begin = (long)TimeSpan.FromTicks(beginDate.Ticks).TotalMinutes;
-            long end = (long)TimeSpan.FromTicks(endDate.Ticks).TotalMinutes;
-            return begin >= end;
-        }
-
-        private bool EventInLayoutInTheSameTimeExist(int layoutId, string beginDate, string endDate)
-        {
-            DateTime begin = Convert.ToDateTime(beginDate, new CultureInfo("ru"));
-            DateTime end = Convert.ToDateTime(endDate, new CultureInfo("ru"));
-
-            var seatsInAreasQvery =
-                from a in this.eventRepository.GetAll().Where(x => x.LayoutId == layoutId)
-                where (a.BeginDate <= begin && a.EndDate >= begin) ||
+            return (from a in this.eventRepository.GetAll().Where(x => x.LayoutId == layoutId)
+                    where (a.BeginDate <= begin && a.EndDate >= begin) ||
                           (a.BeginDate <= end && a.EndDate >= end) ||
-                      (a.BeginDate >= begin && a.BeginDate <= end) ||
+                          (a.BeginDate >= begin && a.BeginDate <= end) ||
                           (a.EndDate >= begin && a.EndDate <= end)
-                select new { a.Id };
-            var events = seatsInAreasQvery.Any();
-            return events;
+                    select new { a.Id }).Any();
         }
     }
 }

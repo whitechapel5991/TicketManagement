@@ -1,12 +1,12 @@
 ﻿// ****************************************************************************
-// <copyright file="ServiceAutofacModule.cs" company="EPAM Systems">
+// <copyright file="ServiceModule.cs" company="EPAM Systems">
 // Copyright (c) EPAM Systems. All rights reserved.
 // Author Dzianis Shcharbakou.
 // </copyright>
 // ****************************************************************************
 
-using Autofac;
 using System.Reflection;
+using Autofac;
 using Quartz;
 using Quartz.Impl;
 using TicketManagement.BLL.Infrastructure.Helpers;
@@ -20,13 +20,13 @@ using Module = Autofac.Module;
 
 namespace TicketManagement.BLL.Util
 {
-    public class ServiceAutofacModule : Module
+    public class ServiceModule : Module
     {
         private readonly string email;
         private readonly string emailPassword;
         private readonly int lockTime;
 
-        public ServiceAutofacModule(string email, string password, int lockTime)
+        public ServiceModule(string email, string password, int lockTime)
         {
             this.email = email;
             this.emailPassword = password;
@@ -64,10 +64,10 @@ namespace TicketManagement.BLL.Util
                 .InstancePerLifetimeScope();
 
             builder.RegisterType<OrderService>()
-    .As<IOrderService>()
-    .InstancePerLifetimeScope();
+                .As<IOrderService>()
+                .InstancePerLifetimeScope();
 
-            // helpers
+            // Helpers
             builder.RegisterType<HtmlHelper>()
               .As<IHtmlHelper>()
               .InstancePerLifetimeScope();
@@ -78,7 +78,7 @@ namespace TicketManagement.BLL.Util
              .WithParameter(new NamedParameter("email", this.email))
              .WithParameter(new NamedParameter("password", this.emailPassword));
 
-            // vaidators
+            // Validators
             builder.RegisterType<VenueValidator>()
                 .As<IVenueValidator>()
                 .InstancePerLifetimeScope();

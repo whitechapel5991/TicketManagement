@@ -18,18 +18,17 @@ namespace TicketManagement.BLL.Services
 {
     public class EventService : IEventService
     {
-        private readonly IRepository<Event, int> eventRepository;
-        private readonly IRepository<Layout, int> layoutRepository;
-        private readonly IRepository<EventArea, int> eventAreaRepository;
-        private readonly IRepository<EventSeat, int> eventSeatRepository;
-
+        private readonly IRepository<Event> eventRepository;
+        private readonly IRepository<Layout> layoutRepository;
+        private readonly IRepository<EventArea> eventAreaRepository;
+        private readonly IRepository<EventSeat> eventSeatRepository;
         private readonly IEventValidator eventValidator;
 
         public EventService(
-            IRepository<Event, int> eventRepository,
-            IRepository<Layout, int> layoutRepository,
-            IRepository<EventArea, int> eventAreaRepository,
-            IRepository<EventSeat, int> eventSeatRepository,
+            IRepository<Event> eventRepository,
+            IRepository<Layout> layoutRepository,
+            IRepository<EventArea> eventAreaRepository,
+            IRepository<EventSeat> eventSeatRepository,
             IEventValidator eventValidator)
         {
             this.eventRepository = eventRepository;
@@ -41,28 +40,26 @@ namespace TicketManagement.BLL.Services
 
         public void UpdateEvent(Event eventDto)
         {
-            this.eventValidator.Validate(eventDto);
-            this.eventValidator.UpdateValidate(eventDto);
-
+            this.eventValidator.UpdateValidation(eventDto);
             this.eventRepository.Update(eventDto);
         }
 
         public int AddEvent(Event eventDto)
         {
-            this.eventValidator.Validate(eventDto);
+            this.eventValidator.Validation(eventDto);
             return this.eventRepository.Create(eventDto);
         }
 
         public void DeleteEvent(int id)
         {
-            this.eventValidator.DeleteValidate(id);
+            this.eventValidator.DeleteValidation(id);
             this.eventRepository.Delete(id);
         }
 
         public void PublishEvent(int id)
         {
             var @event = this.eventRepository.GetById(id);
-            this.eventValidator.PublishValidate(@event);
+            this.eventValidator.PublishValidation(@event);
 
             @event.Published = true;
 
@@ -84,28 +81,39 @@ namespace TicketManagement.BLL.Services
             return this.eventRepository.GetAll().Where(x => x.Published == true);
         }
 
-        public int AvailibleSeatCount(int eventId)
+        public int GetAvailableSeatCount(int eventId)
         {
-            var eventAreaIdList = this.eventAreaRepository.GetAll().Where(x => x.EventId == eventId).Select(x => x.Id);
-            var seats = this.eventSeatRepository.GetAll().Where(e => eventAreaIdList.Contains(e.EventAreaId)).Where(x => x.State == EventSeatState.Free);
-            var countFreeSeats = seats.Count();
-            return countFreeSeats;
+            var eventAreaIdList = this.eventAreaRepository.GetAll()
+                .Where(x => x.EventId == eventId)
+                .Select(x => x.Id);
+            return this.eventSeatRepository.GetAll()
+                .Where(e => eventAreaIdList.Contains(e.EventAreaId))
+                .Count(x => x.State == EventSeatState.Free);
         }
 
+        public Event GetEventByEventSeatId(int eventSeatId)
+        {
+            var eventAreaId = this.eventSeatRepository.GetById(eventSeatId).EventAreaId;
+            var eventId = this.eventAreaRepository.GetById(eventAreaId).EventId;
+
+            return this.eventRepository.GetById(eventId);
+        }
+
+        // ?
         public EventDto GetEventMap(int eventId)
         {
-            var @event = this.eventRepository.GetById(eventId);
-            var layout = this.layoutRepository.GetById(@event.LayoutId);
+            var eventDetails = this.eventRepository.GetById(eventId);
+            var layout = this.layoutRepository.GetById(eventDetails.LayoutId);
 
-            var eventDto = this.MapToEventDto(@event, layout);
+            var eventDto = this.MapToEventDto(eventDetails, layout);
 
-            var query = (from eventArea in this.eventAreaRepository.GetAll().Where(x => x.EventId == @event.Id)
+            var query = (from eventArea in this.eventAreaRepository.GetAll().Where(x => x.EventId == eventDetails.Id)
                          join eventSeat in this.eventSeatRepository.GetAll() on eventArea.Id equals eventSeat.EventAreaId into eventSeatJoin
                          select new
                          {
                              eventArea.Id,
-                             eventArea.CoordX,
-                             eventArea.CoordY,
+                             CoordX = eventArea.CoordinateX,
+                             CoordY = eventArea.CoordinateY,
                              eventArea.Description,
                              eventArea.Price,
                              EventSeats = eventSeatJoin,
@@ -114,11 +122,11 @@ namespace TicketManagement.BLL.Services
             var eventAreaDtoList = new List<EventAreaDto>();
             foreach (var eventArea in query)
             {
-                EventAreaDto eventAreaDto = new EventAreaDto()
+                var eventAreaDto = new EventAreaDto()
                 {
                     Id = eventArea.Id,
-                    CoordX = eventArea.CoordX,
-                    CoordY = eventArea.CoordY,
+                    CoordinateX = eventArea.CoordX,
+                    CoordinateY = eventArea.CoordY,
                     Description = eventArea.Description,
                     Price = eventArea.Price,
                     Event = eventDto,
@@ -128,7 +136,7 @@ namespace TicketManagement.BLL.Services
 
                 foreach (var eventSeat in eventArea.EventSeats)
                 {
-                    EventSeatDto eventSeatDto = new EventSeatDto()
+                    var eventSeatDto = new EventSeatDto()
                     {
                         Id = eventSeat.Id,
                         Number = eventSeat.Number,
@@ -149,16 +157,16 @@ namespace TicketManagement.BLL.Services
             return eventDto;
         }
 
-        private EventDto MapToEventDto(Event @event, Layout layout)
+        private EventDto MapToEventDto(Event eventDetail, Layout layout)
         {
             return new EventDto()
             {
-                Id = @event.Id,
-                Description = @event.Description,
-                BeginDate = @event.BeginDate,
-                EndDate = @event.EndDate,
-                Name = @event.Name,
-                Published = @event.Published,
+                Id = eventDetail.Id,
+                Description = eventDetail.Description,
+                BeginDate = eventDetail.BeginDate,
+                EndDate = eventDetail.EndDate,
+                Name = eventDetail.Name,
+                Published = eventDetail.Published,
                 Layout = layout,
             };
         }

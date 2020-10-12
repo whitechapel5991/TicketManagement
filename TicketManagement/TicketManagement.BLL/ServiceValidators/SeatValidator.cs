@@ -16,18 +16,18 @@ namespace TicketManagement.BLL.ServiceValidators
 {
     internal class SeatValidator : ISeatValidator
     {
-        private readonly IRepository<Seat, int> seatRepository;
-        private readonly IRepository<Area, int> areaRepository;
+        private readonly IRepository<Seat> seatRepository;
+        private readonly IRepository<Area> areaRepository;
 
         public SeatValidator(
-            IRepository<Seat, int> seatRepository,
-            IRepository<Area, int> areaRepository)
+            IRepository<Seat> seatRepository,
+            IRepository<Area> areaRepository)
         {
             this.seatRepository = seatRepository;
             this.areaRepository = areaRepository;
         }
 
-        public void Validate(Seat entity)
+        public void Validation(Seat entity)
         {
             var area = this.areaRepository.GetById(entity.AreaId);
             if (area == default(Area))
@@ -35,16 +35,11 @@ namespace TicketManagement.BLL.ServiceValidators
                 throw new EntityDoesNotExistException($"Area with id={entity.AreaId} doesn't exist.");
             }
 
-            if (this.SeatWithRowAndNumberInTheAreaExist(entity.AreaId, entity.Row, entity.Number))
+            if (this.seatRepository
+                .GetAll().Any(x => x.AreaId == entity.AreaId && x.Row == entity.Row && x.Number == entity.Number))
             {
                 throw new SeatWithSameRowAndNumberInTheAreaExistException("Row and number of seat should be unique for area.");
             }
-        }
-
-        private bool SeatWithRowAndNumberInTheAreaExist(int areaId, int row, int number)
-        {
-            return this.seatRepository.GetAll()
-                .Where(x => x.AreaId == areaId && x.Row == row && x.Number == number).Any();
         }
     }
 }
