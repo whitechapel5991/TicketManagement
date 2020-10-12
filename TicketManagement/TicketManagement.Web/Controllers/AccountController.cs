@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Web.Mvc;
 using Microsoft.AspNet.Identity;
+using TicketManagement.Web.Exceptions.Account;
 using TicketManagement.Web.Filters;
 using TicketManagement.Web.Interfaces;
 using TicketManagement.Web.Models.Account;
@@ -38,14 +39,10 @@ namespace TicketManagement.Web.Controllers
                     this.RedirectToAction("Index", new { area = "EventManager", controller = "Event" }) :
                     this.RedirectToAction("Events", "Event");
             }
-            catch (Exception)
+            catch (UserNameOrPasswordWrongException ex)
             {
-                this.ModelState.AddModelError(string.Empty, "Wrong login or password.");
+                this.ModelState.AddModelError("Login", ex.Message);
             }
-            //catch (Exception ex)
-            //{
-            //    this.ModelState.AddModelError("Login", ex.Message);
-            //}
 
             return this.View(model);
         }
@@ -79,17 +76,7 @@ namespace TicketManagement.Web.Controllers
 
                 return this.RedirectToAction("Login", "Account");
             }
-            //catch (Exception)
-            //{
-            //    if (!registerResult.Succeeded)
-            //    {
-            //        foreach (var error in registerResult.Errors)
-            //        {
-            //            this.ModelState.AddModelError(string.Empty, error);
-            //        }
-            //    }
-            //}
-            catch (Exception ex)
+            catch (RegisterUserWrongDataException ex)
             {
                 this.ModelState.AddModelError("Register", ex.Message);
             }

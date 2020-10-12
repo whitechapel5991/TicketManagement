@@ -3,6 +3,7 @@ using Microsoft.AspNet.Identity;
 using Microsoft.Owin.Security;
 using TicketManagement.Web.Constants;
 using TicketManagement.Web.Constants.Extension;
+using TicketManagement.Web.Exceptions.Account;
 using TicketManagement.Web.Interfaces;
 using TicketManagement.Web.Models.Account;
 using TicketManagement.Web.Services.Identity;
@@ -24,6 +25,12 @@ namespace TicketManagement.Web.Services
         public void SignIn(string userName, string password)
         {
             var user = this.userManager.FindAsync(userName, password).Result;
+
+            if (user == null)
+            {
+                throw new UserNameOrPasswordWrongException(Resources.TicketManagementResource.WrongCredentials);
+            }
+
             var claimIdentity = userManager.CreateIdentityAsync(user,
                 DefaultAuthenticationTypes.ApplicationCookie).Result;
 
@@ -45,6 +52,10 @@ namespace TicketManagement.Web.Services
         public void RegisterUser(IdentityUser user)
         {
             var registerResult = this.userManager.Create(user);
+            if (!registerResult.Succeeded)
+            {
+                throw new RegisterUserWrongDataException(string.Join(", ", registerResult.Errors));
+            }
         }
 
         public IdentityUser MapIdentityUser(RegisterViewModel viewModel)
