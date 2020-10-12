@@ -48,7 +48,7 @@ namespace TicketManagement.IntegrationTests.ServiceTests.Identity
             this.userClaimService.Add(userId, claim);
 
             // Assert
-            expected.Should().BeEquivalentTo(this.userClaimRepository.GetByUserId(userId));
+            this.userClaimRepository.GetByUserId(userId).Should().BeEquivalentTo(expected);
         }
 
         [Test]
@@ -66,7 +66,7 @@ namespace TicketManagement.IntegrationTests.ServiceTests.Identity
             var actual = this.userClaimService.GetClaims(userId);
 
             // Assert
-            expected.Should().BeEquivalentTo(actual);
+            actual.Should().BeEquivalentTo(expected);
         }
 
         [Test]
@@ -84,7 +84,7 @@ namespace TicketManagement.IntegrationTests.ServiceTests.Identity
             this.userClaimService.Remove(userId, deletingClaim);
 
             // Assert
-            expected.Should().BeEquivalentTo(this.userClaimRepository.GetByUserId(userId));
+            this.userClaimRepository.GetByUserId(userId).Should().BeEquivalentTo(expected);
         }
     }
 }

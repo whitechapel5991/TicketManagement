@@ -52,7 +52,7 @@ namespace TicketManagement.IntegrationTests.ServiceTests.Identity
             this.userLoginsService.Add(userLogin);
 
             // Assert
-            expected.Should().BeEquivalentTo(this.userLoginRepository.FindByUserId(userLogin.UserId));
+            this.userLoginRepository.FindByUserId(userLogin.UserId).Should().BeEquivalentTo(expected);
         }
 
         [Test]
@@ -75,7 +75,7 @@ namespace TicketManagement.IntegrationTests.ServiceTests.Identity
             this.userLoginsService.DeleteUserLogin(userLogin.UserId, userLogin);
 
             // Assert
-            expected.Should().BeEquivalentTo(this.userLoginRepository.FindByUserId(userLogin.UserId));
+            this.userLoginRepository.FindByUserId(userLogin.UserId).Should().BeEquivalentTo(expected);
         }
 
         [Test]
@@ -89,13 +89,13 @@ namespace TicketManagement.IntegrationTests.ServiceTests.Identity
             };
 
             var expected = new UserLogin()
-                { ProviderKey = "test provider key 1", LoginProvider = "test login provider 1", UserId = 1 };
+            { ProviderKey = "test provider key 1", LoginProvider = "test login provider 1", UserId = 1 };
 
             // Act
             var actual = this.userLoginsService.Find(userLogin);
 
             // Assert
-            expected.Should().BeEquivalentTo(actual);
+            actual.Should().BeEquivalentTo(expected);
         }
 
         [Test]
@@ -114,7 +114,7 @@ namespace TicketManagement.IntegrationTests.ServiceTests.Identity
             var actual = this.userLoginsService.GetLoginsByUserId(userId);
 
             // Assert
-            expected.Should().BeEquivalentTo(actual);
+            actual.Should().BeEquivalentTo(expected);
         }
     }
 }

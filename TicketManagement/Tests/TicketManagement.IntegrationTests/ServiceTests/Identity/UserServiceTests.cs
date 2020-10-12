@@ -72,7 +72,7 @@ namespace TicketManagement.IntegrationTests.ServiceTests.Identity
             this.userService.AddRole(userId, roleName);
 
             // Assert
-            expected.Should().BeEquivalentTo(this.userRoleRepository.GetRoleNamesByUserId(userId));
+            this.userRoleRepository.GetRoleNamesByUserId(userId).Should().BeEquivalentTo(expected);
         }
 
         [Test]
@@ -86,7 +86,7 @@ namespace TicketManagement.IntegrationTests.ServiceTests.Identity
 
             var expected = new List<TicketManagementUser>
             {
-                new TicketManagementUser() { Id = 2, UserName = "user", Email = "user@user.com", PasswordHash = "AM1rNg7ocbR18loZOEsl4dqaX+fKjjmt5UbeKNM32rNYLeDVfi0mtAXkE7etqtZjng==", TimeZone = "Belarus Standard Time", Language = "en", FirstName = "User", Surname = "UserS", Balance = 300, EmailConfirmed = true },
+                new TicketManagementUser() { Id = 2, UserName = "user", Email = "user@user.com", PasswordHash = "AM1rNg7ocbR18loZOEsl4dqaX+fKjjmt5UbeKNM32rNYLeDVfi0mtAXkE7etqtZjng==", TimeZone = "Belarus Standard Time", Language = "en", FirstName = "User", Surname = "UserS", Balance = 300, EmailConfirmed = true, SecurityStamp = "SomeSecureStamp" },
                 new TicketManagementUser() { Id = 3, UserName = "event manager", Email = "manager@manager.com", PasswordHash = "AIIyby5JGrXPBYaW+uc3WDX68f5ol82JHm4FIi9UHTJSRmD5WzKrP7DfG0nRbbCMpw==", TimeZone = "Belarus Standard Time", Language = "ru", FirstName = "Manager", Surname = "ManagerS", Balance = 1000, EmailConfirmed = true },
             };
 
@@ -94,7 +94,7 @@ namespace TicketManagement.IntegrationTests.ServiceTests.Identity
             this.userService.Delete(dto);
 
             // Assert
-            expected.Should().BeEquivalentTo(this.userRepository.GetAll());
+            this.userRepository.GetAll().Should().BeEquivalentTo(expected);
         }
 
         [Test]
@@ -109,7 +109,7 @@ namespace TicketManagement.IntegrationTests.ServiceTests.Identity
             this.userService.DeleteRole(userId, roleName);
 
             // Assert
-            expected.Should().BeEquivalentTo(this.userRoleRepository.GetRoleNamesByUserId(userId));
+            this.userRoleRepository.GetRoleNamesByUserId(userId).Should().BeEquivalentTo(expected);
         }
 
         [Test]
@@ -136,7 +136,7 @@ namespace TicketManagement.IntegrationTests.ServiceTests.Identity
             var actual = this.userService.FindById(userId);
 
             // Assert
-            expected.Should().BeEquivalentTo(actual);
+            actual.Should().BeEquivalentTo(expected);
         }
 
         [Test]
@@ -163,7 +163,7 @@ namespace TicketManagement.IntegrationTests.ServiceTests.Identity
             var actual = this.userService.FindByName(userName);
 
             // Assert
-            expected.Should().BeEquivalentTo(actual);
+            actual.Should().BeEquivalentTo(expected);
         }
 
         [Test]
@@ -177,7 +177,7 @@ namespace TicketManagement.IntegrationTests.ServiceTests.Identity
             var actual = this.userService.GetPasswordHash(userId);
 
             // Assert
-            expected.Should().BeEquivalentTo(actual);
+            actual.Should().BeEquivalentTo(expected);
         }
 
         [Test]
@@ -194,7 +194,7 @@ namespace TicketManagement.IntegrationTests.ServiceTests.Identity
             var actual = this.userService.GetRoles(userId);
 
             // Assert
-            expected.Should().BeEquivalentTo(actual);
+            actual.Should().BeEquivalentTo(expected);
         }
 
         [Test]
@@ -208,7 +208,7 @@ namespace TicketManagement.IntegrationTests.ServiceTests.Identity
             var actual = this.userService.GetSecurityStamp(userId);
 
             // Assert
-            expected.Should().BeEquivalentTo(actual);
+            actual.Should().BeEquivalentTo(expected);
         }
 
         [Test]
@@ -222,7 +222,7 @@ namespace TicketManagement.IntegrationTests.ServiceTests.Identity
             var actual = this.userService.HasPassword(userId);
 
             // Assert
-            expected.Should().Be(actual);
+            actual.Should().Be(expected);
         }
 
         [Test]
@@ -250,7 +250,7 @@ namespace TicketManagement.IntegrationTests.ServiceTests.Identity
             this.userService.SetSecurityStamp(userId, securityStamp);
 
             // Assert
-            securityStamp.Should().Be(this.userRepository.GetById(userId).SecurityStamp);
+            this.userRepository.GetById(userId).SecurityStamp.Should().Be(securityStamp);
         }
 
         [Test]
@@ -273,7 +273,7 @@ namespace TicketManagement.IntegrationTests.ServiceTests.Identity
             this.userService.Update(user);
 
             // Assert
-            user.Should().BeEquivalentTo(this.userRepository.GetById(user.Id));
+            this.userRepository.GetById(user.Id).Should().BeEquivalentTo(user);
         }
 
         [Test]
@@ -288,7 +288,7 @@ namespace TicketManagement.IntegrationTests.ServiceTests.Identity
             this.userService.IncreaseBalance(increasingMoney, userName);
 
             // Assert
-            expectedBalance.Should().Be(this.userRepository.FindByNormalizedUserName(userName).Balance);
+            this.userRepository.FindByNormalizedUserName(userName).Balance.Should().Be(expectedBalance);
         }
     }
 }

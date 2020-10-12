@@ -99,7 +99,7 @@ namespace TicketManagement.IntegrationTests.ServiceTests
         {
             // Arrange
             const int existingLayoutId = 1;
-            var expected = new Layout() {Id = 1, Name = "first", Description = "First layout", VenueId = 1};
+            var expected = new Layout() { Id = 1, Name = "first", Description = "First layout", VenueId = 1 };
 
             // Act
             var actual = this.layoutService.GetLayout(existingLayoutId);

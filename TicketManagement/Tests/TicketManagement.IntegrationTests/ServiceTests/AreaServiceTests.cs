@@ -98,7 +98,7 @@ namespace TicketManagement.IntegrationTests.ServiceTests
             // Arrange
             const int areaId = 1;
             var expected = new Area()
-                {Id = 1, Description = "First area of first layout", CoordinateX = 1, CoordinateY = 1, LayoutId = 1};
+            { Id = 1, Description = "First area of first layout", CoordinateX = 1, CoordinateY = 1, LayoutId = 1 };
 
             // Act
             var actual = this.areaService.GetArea(areaId);
