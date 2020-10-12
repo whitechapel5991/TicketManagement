@@ -287,8 +287,8 @@ INSERT INTO [dbo].[AspNetUsers] ([Id], [UserName], [Email], [EmailConfirmed], [P
 VALUES (1, 'admin', 'whitechapel5991@gmail.com', 1, 'AN+dimATtnynaDlFB1TFqB0XWDWbytYMwSQMwWGVT2Pdd3ASxUmvmQSHY9eNc9DU9A==', 'ru', 'Belarus Standard Time', 'Admin', 'AdminS', 100000, 0, 0, 0, 0)
 GO
 
-INSERT INTO [dbo].[AspNetUsers] ([Id],[UserName], [Email], [EmailConfirmed],[PasswordHash], [Language], [TimeZone], [FirstName], [Surname], [Balance], [PhoneNumberConfirmed], [TwoFactorEnabled],[LockoutEnabled],[AccessFailedCount]) 
-VALUES (2, 'user', 'user@user.com', 1,'AM1rNg7ocbR18loZOEsl4dqaX+fKjjmt5UbeKNM32rNYLeDVfi0mtAXkE7etqtZjng==', 'en','Belarus Standard Time', 'User', 'UserS', 300, 0, 0, 0, 0)
+INSERT INTO [dbo].[AspNetUsers] ([Id],[UserName], [Email], [EmailConfirmed],[PasswordHash], [Language], [TimeZone], [FirstName], [Surname], [Balance], [PhoneNumberConfirmed], [TwoFactorEnabled],[LockoutEnabled],[AccessFailedCount],[SecurityStamp]) 
+VALUES (2, 'user', 'user@user.com', 1,'AM1rNg7ocbR18loZOEsl4dqaX+fKjjmt5UbeKNM32rNYLeDVfi0mtAXkE7etqtZjng==', 'en','Belarus Standard Time', 'User', 'UserS', 300, 0, 0, 0, 0, 'SomeSecureStamp')
 GO
 
 INSERT INTO [dbo].[AspNetUsers] ([Id],[UserName], [Email], [EmailConfirmed],[PasswordHash], [Language], [TimeZone], [FirstName], [Surname], [Balance], [PhoneNumberConfirmed], [TwoFactorEnabled],[LockoutEnabled],[AccessFailedCount]) 
@@ -323,6 +323,36 @@ INSERT INTO [dbo].[AspNetUserRoles] ([UserId], [RoleId]) VALUES (2,2)
 GO
 
 INSERT INTO [dbo].[AspNetUserRoles] ([UserId], [RoleId]) VALUES (3,3)
+GO
+
+INSERT INTO [dbo].[AspNetUserLogins] ([LoginProvider], [ProviderKey], [UserId]) VALUES ('test login provider 1','test provider key 1',1)
+GO
+
+INSERT INTO [dbo].[AspNetUserLogins] ([LoginProvider], [ProviderKey], [UserId]) VALUES ('test login provider 2','test provider key 2',1)
+GO
+
+INSERT INTO [dbo].[AspNetUserLogins] ([LoginProvider], [ProviderKey], [UserId]) VALUES ('test login provider 3','test provider key 3',2)
+GO
+
+INSERT INTO [dbo].[AspNetUserLogins] ([LoginProvider], [ProviderKey], [UserId]) VALUES ('test login provider 4','test provider key 4',3)
+GO
+
+SET IDENTITY_INSERT [dbo].[AspNetUserClaims] ON
+GO
+
+INSERT INTO [dbo].[AspNetUserClaims] ([Id], [UserId], [ClaimType],[ClaimValue]) VALUES (1, 1, 'test claim type 1','test claim value 1')
+GO
+
+INSERT INTO [dbo].[AspNetUserClaims] ([Id], [UserId], [ClaimType],[ClaimValue]) VALUES (2, 1, 'test claim type 2','test claim value 2')
+GO
+
+INSERT INTO [dbo].[AspNetUserClaims] ([Id], [UserId], [ClaimType],[ClaimValue]) VALUES (3, 2, 'test claim type 3','test claim value 3')
+GO
+
+INSERT INTO [dbo].[AspNetUserClaims] ([Id], [UserId], [ClaimType],[ClaimValue]) VALUES (4, 3, 'test claim type 4','test claim value 4')
+GO
+
+SET IDENTITY_INSERT [dbo].[AspNetUserClaims] OFF
 GO
 
 SET IDENTITY_INSERT [dbo].[Orders] ON
