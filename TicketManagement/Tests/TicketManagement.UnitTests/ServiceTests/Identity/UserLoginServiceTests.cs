@@ -117,7 +117,7 @@ namespace TicketManagement.UnitTests.ServiceTests.Identity
             };
 
             var expected = new UserLogin()
-                { ProviderKey = "test provider key 1", LoginProvider = "test login provider 1", UserId = 1 };
+            { ProviderKey = "test provider key 1", LoginProvider = "test login provider 1", UserId = 1 };
 
             // Act
             var actual = this.userLoginsService.Find(userLogin);

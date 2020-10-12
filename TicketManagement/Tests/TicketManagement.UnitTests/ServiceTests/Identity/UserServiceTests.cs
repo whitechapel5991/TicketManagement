@@ -174,9 +174,14 @@ namespace TicketManagement.UnitTests.ServiceTests.Identity
 
             var expected = new TicketManagementUser()
             {
-                Id = userId, UserName = "admin", Email = "admin@admin.com",
+                Id = userId,
+                UserName = "admin",
+                Email = "admin@admin.com",
                 PasswordHash = "AN+dimATtnynaDlFB1TFqB0XWDWbytYMwSQMwWGVT2Pdd3ASxUmvmQSHY9eNc9DU9A==",
-                TimeZone = "Belarus Standard Time", Language = "ru", FirstName = "Admin", Surname = "Admin",
+                TimeZone = "Belarus Standard Time",
+                Language = "ru",
+                FirstName = "Admin",
+                Surname = "Admin",
                 SecurityStamp = "SomeSecureStamp",
                 Balance = 100000,
             };
@@ -319,8 +324,14 @@ namespace TicketManagement.UnitTests.ServiceTests.Identity
             this.userService = this.Mock.Create<UserService>();
             var user = new TicketManagementUser()
             {
-                Id = 4, UserName = "test user changes", Email = "testChanges@test.com", TimeZone = "England Standard Time",
-                Language = "en", FirstName = "TestUserChange", Surname = "TestUserChange", Balance = 1500,
+                Id = 4,
+                UserName = "test user changes",
+                Email = "testChanges@test.com",
+                TimeZone = "England Standard Time",
+                Language = "en",
+                FirstName = "TestUserChange",
+                Surname = "TestUserChange",
+                Balance = 1500,
             };
 
             // Act
