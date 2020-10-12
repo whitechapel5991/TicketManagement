@@ -31,6 +31,7 @@ namespace TicketManagement.Web.Areas.EventManager.Controllers
             this.eventServiceEventManager = eventServiceEventManager;
         }
 
+        [Authorize(Roles = "event manager, admin")]
         [HandleError]
         [HttpGet]
         public ActionResult Index()
@@ -38,6 +39,7 @@ namespace TicketManagement.Web.Areas.EventManager.Controllers
             return this.View(this.eventServiceEventManager.GetIndexEventViewModels());
         }
 
+        [Authorize(Roles = "event manager, admin")]
         [HandleError]
         [HttpGet]
         public ActionResult Create()
@@ -46,6 +48,7 @@ namespace TicketManagement.Web.Areas.EventManager.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = "event manager, admin")]
         [ValidateAntiForgeryToken]
         [HandleError]
         public ActionResult Create(EventViewModel eventViewModel)
@@ -70,6 +73,7 @@ namespace TicketManagement.Web.Areas.EventManager.Controllers
             }
         }
 
+        [Authorize(Roles = "event manager, admin")]
         [HandleError]
         [HttpGet]
         public ActionResult Update(int id)
@@ -86,6 +90,7 @@ namespace TicketManagement.Web.Areas.EventManager.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = "event manager, admin")]
         [ValidateAntiForgeryToken]
         public ActionResult Update(EventViewModel @event)
         {
@@ -109,6 +114,7 @@ namespace TicketManagement.Web.Areas.EventManager.Controllers
             }
         }
 
+        [Authorize(Roles = "event manager, admin")]
         [HttpPost]
         public ActionResult Delete(int id)
         {
@@ -126,6 +132,7 @@ namespace TicketManagement.Web.Areas.EventManager.Controllers
             }
         }
 
+        [Authorize(Roles = "event manager, admin")]
         [HttpPost]
         public ActionResult Publish(int id)
         {
@@ -141,6 +148,7 @@ namespace TicketManagement.Web.Areas.EventManager.Controllers
             }
         }
 
+        [Authorize(Roles = "admin, event manager")]
         [HttpGet]
         public ActionResult EventDetail(int id)
         {
@@ -149,6 +157,7 @@ namespace TicketManagement.Web.Areas.EventManager.Controllers
             return this.View(eventDto);
         }
 
+        [Authorize(Roles = "admin, event manager")]
         [HttpGet]
         public ActionResult EventAreaDetail(int id)
         {
@@ -157,12 +166,14 @@ namespace TicketManagement.Web.Areas.EventManager.Controllers
             return this.View(eventAreaDto);
         }
 
+        [Authorize(Roles = "admin, event manager")]
         [HttpGet]
         public ActionResult ChangeCost(int areaId)
         {
             return this.View(this.eventServiceEventManager.GetAreaViewModel(areaId));
         }
 
+        [Authorize(Roles = "admin, event manager")]
         [HttpPost]
         public void ChangeCost(AreaViewModel areaVm)
         {
