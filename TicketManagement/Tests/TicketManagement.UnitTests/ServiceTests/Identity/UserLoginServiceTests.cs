@@ -8,7 +8,6 @@
 using System.Collections.Generic;
 using Autofac;
 using Autofac.Extras.Moq;
-using AutoFixture;
 using FluentAssertions;
 using NUnit.Framework;
 using TicketManagement.BLL.Interfaces.Identity;
@@ -78,7 +77,7 @@ namespace TicketManagement.UnitTests.ServiceTests.Identity
             this.userLoginsService.Add(userLogin);
 
             // Assert
-            expected.Should().BeEquivalentTo(this.userLoginRepository.FindByUserId(userLogin.UserId));
+            this.userLoginRepository.FindByUserId(userLogin.UserId).Should().BeEquivalentTo(expected);
         }
 
         [Test]
@@ -103,7 +102,7 @@ namespace TicketManagement.UnitTests.ServiceTests.Identity
             this.userLoginsService.DeleteUserLogin(userLogin.UserId, userLogin);
 
             // Assert
-            expected.Should().BeEquivalentTo(this.userLoginRepository.FindByUserId(userLogin.UserId));
+            this.userLoginRepository.FindByUserId(userLogin.UserId).Should().BeEquivalentTo(expected);
         }
 
         [Test]
@@ -124,7 +123,7 @@ namespace TicketManagement.UnitTests.ServiceTests.Identity
             var actual = this.userLoginsService.Find(userLogin);
 
             // Assert
-            expected.Should().BeEquivalentTo(actual);
+            actual.Should().BeEquivalentTo(expected);
         }
 
         [Test]
@@ -145,7 +144,7 @@ namespace TicketManagement.UnitTests.ServiceTests.Identity
             var actual = this.userLoginsService.GetLoginsByUserId(userId);
 
             // Assert
-            expected.Should().BeEquivalentTo(actual);
+            actual.Should().BeEquivalentTo(expected);
         }
     }
 }

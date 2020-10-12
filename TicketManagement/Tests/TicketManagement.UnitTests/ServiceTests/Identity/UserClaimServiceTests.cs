@@ -9,7 +9,6 @@ using System.Collections.Generic;
 using System.Security.Claims;
 using Autofac;
 using Autofac.Extras.Moq;
-using AutoFixture;
 using FluentAssertions;
 using NUnit.Framework;
 using TicketManagement.BLL.Interfaces.Identity;
@@ -81,7 +80,7 @@ namespace TicketManagement.UnitTests.ServiceTests.Identity
             this.userClaimService.Add(userId, claim);
 
             // Assert
-            expected.Should().BeEquivalentTo(this.userClaimRepository.GetByUserId(userId));
+            this.userClaimRepository.GetByUserId(userId).Should().BeEquivalentTo(expected);
         }
 
         [Test]
@@ -100,7 +99,7 @@ namespace TicketManagement.UnitTests.ServiceTests.Identity
             var actual = this.userClaimService.GetClaims(userId);
 
             // Assert
-            expected.Should().BeEquivalentTo(actual);
+            actual.Should().BeEquivalentTo(expected);
         }
 
         [Test]
@@ -120,7 +119,7 @@ namespace TicketManagement.UnitTests.ServiceTests.Identity
             this.userClaimService.Remove(userId, deletingClaim);
 
             // Assert
-            expected.Should().BeEquivalentTo(this.userClaimRepository.GetByUserId(userId));
+            this.userClaimRepository.GetByUserId(userId).Should().BeEquivalentTo(expected);
         }
     }
 }

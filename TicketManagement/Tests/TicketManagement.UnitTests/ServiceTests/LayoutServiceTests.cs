@@ -10,6 +10,7 @@ using Autofac;
 using Autofac.Extras.Moq;
 using AutoFixture;
 using FluentAssertions;
+using FluentAssertions.Execution;
 using NUnit.Framework;
 using TicketManagement.BLL.Interfaces;
 using TicketManagement.BLL.Services;
@@ -81,8 +82,11 @@ namespace TicketManagement.UnitTests.ServiceTests
             var expectedEntityId = this.layoutService.AddLayout(dto);
 
             // Assert
-            expected.Should().BeEquivalentTo(this.layoutRepository.GetAll());
-            dto.Id.Should().Be(expectedEntityId);
+            using (new AssertionScope())
+            {
+                this.layoutRepository.GetAll().Should().BeEquivalentTo(expected);
+                dto.Id.Should().Be(expectedEntityId);
+            }
         }
 
         [Test]
@@ -123,7 +127,7 @@ namespace TicketManagement.UnitTests.ServiceTests
             this.layoutService.DeleteLayout(existingLayoutId);
 
             // Assert
-            expected.Should().BeEquivalentTo(this.layoutRepository.GetAll());
+            this.layoutRepository.GetAll().Should().BeEquivalentTo(expected);
         }
 
         [Test]

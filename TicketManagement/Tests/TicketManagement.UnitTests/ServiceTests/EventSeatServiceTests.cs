@@ -10,6 +10,7 @@ using Autofac;
 using Autofac.Extras.Moq;
 using AutoFixture;
 using FluentAssertions;
+using FluentAssertions.Execution;
 using NUnit.Framework;
 using TicketManagement.BLL.Interfaces;
 using TicketManagement.BLL.Services;
@@ -87,15 +88,18 @@ namespace TicketManagement.UnitTests.ServiceTests
             this.eventSeatService.UpdateEventSeat(expectedDto);
 
             // Assert
-            var actualEventSeat = eventSeatRepository.GetById(existingEventSeatId);
-            actualEventSeat.Should().BeEquivalentTo(expectedDto, option => option
-                .Including(p => p.State)
-                .ExcludingMissingMembers());
-            actualEventSeat.Should().NotBeEquivalentTo(expectedDto, option => option
-                .Including(p => p.Row)
-                .Including(p => p.Number)
-                .Including(p => p.EventAreaId)
-                .ExcludingMissingMembers());
+            using (new AssertionScope())
+            {
+                var actualEventSeat = eventSeatRepository.GetById(existingEventSeatId);
+                actualEventSeat.Should().BeEquivalentTo(expectedDto, option => option
+                    .Including(p => p.State)
+                    .ExcludingMissingMembers());
+                actualEventSeat.Should().NotBeEquivalentTo(expectedDto, option => option
+                    .Including(p => p.Row)
+                    .Including(p => p.Number)
+                    .Including(p => p.EventAreaId)
+                    .ExcludingMissingMembers());
+            }
         }
 
         [Test]

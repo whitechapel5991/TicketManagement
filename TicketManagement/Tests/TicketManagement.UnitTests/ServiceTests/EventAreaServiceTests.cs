@@ -10,6 +10,7 @@ using Autofac;
 using Autofac.Extras.Moq;
 using AutoFixture;
 using FluentAssertions;
+using FluentAssertions.Execution;
 using NUnit.Framework;
 using TicketManagement.BLL.Interfaces;
 using TicketManagement.BLL.Services;
@@ -101,15 +102,18 @@ namespace TicketManagement.UnitTests.ServiceTests
 
             // Assert
             var actualEventArea = this.eventAreaRepository.GetById(existingEventAreaId);
-            actualEventArea.Should().BeEquivalentTo(expectedDto, option => option
-                .Including(p => p.Price)
-                .ExcludingMissingMembers());
-            actualEventArea.Should().NotBeEquivalentTo(expectedDto, option => option
+            using (new AssertionScope())
+            {
+                actualEventArea.Should().BeEquivalentTo(expectedDto, option => option
+                    .Including(p => p.Price)
+                    .ExcludingMissingMembers());
+                actualEventArea.Should().NotBeEquivalentTo(expectedDto, option => option
                     .Including(p => p.CoordinateX)
                     .Including(p => p.CoordinateY)
                     .Including(p => p.Description)
                     .Including(p => p.EventId)
                     .ExcludingMissingMembers());
+            }
         }
 
         [Test]

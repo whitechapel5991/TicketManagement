@@ -10,6 +10,7 @@ using Autofac;
 using Autofac.Extras.Moq;
 using AutoFixture;
 using FluentAssertions;
+using FluentAssertions.Execution;
 using NUnit.Framework;
 using TicketManagement.BLL.Interfaces;
 using TicketManagement.BLL.Services;
@@ -87,8 +88,11 @@ namespace TicketManagement.UnitTests.ServiceTests
             var expectedEntityId = this.areaService.AddArea(dto);
 
             // Assert
-            expected.Should().BeEquivalentTo(this.areaRepository.GetAll());
-            dto.Id.Should().Be(expectedEntityId);
+            using (new AssertionScope())
+            {
+                this.areaRepository.GetAll().Should().BeEquivalentTo(expected);
+                dto.Id.Should().Be(expectedEntityId);
+            }
         }
 
         [Test]
@@ -132,7 +136,7 @@ namespace TicketManagement.UnitTests.ServiceTests
             this.areaService.DeleteArea(existingAreaId);
 
             // Assert
-            expected.Should().BeEquivalentTo(this.areaRepository.GetAll());
+            this.areaRepository.GetAll().Should().BeEquivalentTo(expected);
         }
 
         [Test]

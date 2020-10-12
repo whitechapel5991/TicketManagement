@@ -8,7 +8,6 @@
 using System.Collections.Generic;
 using Autofac;
 using Autofac.Extras.Moq;
-using AutoFixture;
 using FluentAssertions;
 using NUnit.Framework;
 using TicketManagement.BLL.Interfaces.Identity;
@@ -72,7 +71,7 @@ namespace TicketManagement.UnitTests.ServiceTests.Identity
             this.roleService.Add(role);
 
             // Assert
-            expected.Should().BeEquivalentTo(this.roleRepository.GetAll());
+            this.roleRepository.GetAll().Should().BeEquivalentTo(expected);
         }
 
         [Test]
@@ -92,7 +91,7 @@ namespace TicketManagement.UnitTests.ServiceTests.Identity
             this.roleService.Delete(role);
 
             // Assert
-            expected.Should().BeEquivalentTo(this.roleRepository.GetAll());
+            this.roleRepository.GetAll().Should().BeEquivalentTo(expected);
         }
 
         [Test]
@@ -107,7 +106,7 @@ namespace TicketManagement.UnitTests.ServiceTests.Identity
             var actual = this.roleService.FindById(roleId);
 
             // Assert
-            expected.Should().BeEquivalentTo(actual);
+            actual.Should().BeEquivalentTo(expected);
         }
 
         [Test]
@@ -122,7 +121,7 @@ namespace TicketManagement.UnitTests.ServiceTests.Identity
             var actual = this.roleService.FindByName(roleName);
 
             // Assert
-            expected.Should().BeEquivalentTo(actual);
+            actual.Should().BeEquivalentTo(expected);
         }
 
         [Test]
@@ -137,7 +136,7 @@ namespace TicketManagement.UnitTests.ServiceTests.Identity
             this.roleService.Update(expected);
 
             // Assert
-            expected.Should().BeEquivalentTo(this.roleRepository.GetById(expected.Id));
+            this.roleRepository.GetById(expected.Id).Should().BeEquivalentTo(expected);
         }
 
         [Test]
@@ -156,7 +155,7 @@ namespace TicketManagement.UnitTests.ServiceTests.Identity
             var actual = this.roleService.GetAll();
 
             // Assert
-            expected.Should().BeEquivalentTo(actual);
+            actual.Should().BeEquivalentTo(expected);
         }
     }
 }

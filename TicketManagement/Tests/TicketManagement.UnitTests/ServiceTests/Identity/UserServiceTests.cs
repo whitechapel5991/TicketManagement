@@ -10,6 +10,7 @@ using Autofac;
 using Autofac.Extras.Moq;
 using AutoFixture;
 using FluentAssertions;
+using FluentAssertions.Execution;
 using NUnit.Framework;
 using TicketManagement.BLL.Interfaces.Identity;
 using TicketManagement.BLL.Services.Identity;
@@ -94,8 +95,11 @@ namespace TicketManagement.UnitTests.ServiceTests.Identity
             var entityId = this.userService.Add(dto);
 
             // Assert
-            expected.Should().BeEquivalentTo(this.userRepository.GetAll());
-            dto.Id.Should().Be(entityId);
+            using (new AssertionScope())
+            {
+                this.userRepository.GetAll().Should().BeEquivalentTo(expected);
+                dto.Id.Should().Be(entityId);
+            }
         }
 
         [Test]
@@ -116,7 +120,7 @@ namespace TicketManagement.UnitTests.ServiceTests.Identity
             this.userService.AddRole(userId, role.Name);
 
             // Assert
-            expected.Should().BeEquivalentTo(this.userRoleRepository.GetRoleNamesByUserId(userId));
+            this.userRoleRepository.GetRoleNamesByUserId(userId).Should().BeEquivalentTo(expected);
         }
 
         [Test]
@@ -141,7 +145,7 @@ namespace TicketManagement.UnitTests.ServiceTests.Identity
             this.userService.Delete(dto);
 
             // Assert
-            expected.Should().BeEquivalentTo(this.userRepository.GetAll());
+            this.userRepository.GetAll().Should().BeEquivalentTo(expected);
         }
 
         [Test]
@@ -158,7 +162,7 @@ namespace TicketManagement.UnitTests.ServiceTests.Identity
             this.userService.DeleteRole(userId, roleName);
 
             // Assert
-            expected.Should().BeEquivalentTo(this.userRoleRepository.GetRoleNamesByUserId(userId));
+            this.userRoleRepository.GetRoleNamesByUserId(userId).Should().BeEquivalentTo(expected);
         }
 
         [Test]
@@ -181,7 +185,7 @@ namespace TicketManagement.UnitTests.ServiceTests.Identity
             var actual = this.userService.FindById(userId);
 
             // Assert
-            expected.Should().BeEquivalentTo(actual);
+            actual.Should().BeEquivalentTo(expected);
         }
 
         [Test]
@@ -209,7 +213,7 @@ namespace TicketManagement.UnitTests.ServiceTests.Identity
             var actual = this.userService.FindByName(userName);
 
             // Assert
-            expected.Should().BeEquivalentTo(actual);
+            actual.Should().BeEquivalentTo(expected);
         }
 
         [Test]
@@ -224,7 +228,7 @@ namespace TicketManagement.UnitTests.ServiceTests.Identity
             var actual = this.userService.GetPasswordHash(userId);
 
             // Assert
-            expected.Should().BeEquivalentTo(actual);
+            actual.Should().BeEquivalentTo(expected);
         }
 
         [Test]
@@ -242,7 +246,7 @@ namespace TicketManagement.UnitTests.ServiceTests.Identity
             var actual = this.userService.GetRoles(userId);
 
             // Assert
-            expected.Should().BeEquivalentTo(actual);
+            actual.Should().BeEquivalentTo(expected);
         }
 
         [Test]
@@ -257,7 +261,7 @@ namespace TicketManagement.UnitTests.ServiceTests.Identity
             var actual = this.userService.GetSecurityStamp(userId);
 
             // Assert
-            expected.Should().BeEquivalentTo(actual);
+            actual.Should().BeEquivalentTo(expected);
         }
 
         [Test]
@@ -272,7 +276,7 @@ namespace TicketManagement.UnitTests.ServiceTests.Identity
             var actual = this.userService.HasPassword(userId);
 
             // Assert
-            expected.Should().Be(actual);
+            actual.Should().Be(expected);
         }
 
         [Test]
@@ -288,7 +292,7 @@ namespace TicketManagement.UnitTests.ServiceTests.Identity
             this.userService.SetPassword(userId, password);
 
             // Assert
-            password.Should().Be(this.userRepository.GetById(userId).PasswordHash);
+            this.userRepository.GetById(userId).PasswordHash.Should().Be(password);
         }
 
         [Test]
@@ -304,7 +308,7 @@ namespace TicketManagement.UnitTests.ServiceTests.Identity
             this.userService.SetSecurityStamp(userId, securityStamp);
 
             // Assert
-            securityStamp.Should().Be(this.userRepository.GetById(userId).SecurityStamp);
+            this.userRepository.GetById(userId).SecurityStamp.Should().Be(securityStamp);
         }
 
         [Test]
@@ -323,7 +327,7 @@ namespace TicketManagement.UnitTests.ServiceTests.Identity
             this.userService.Update(user);
 
             // Assert
-            user.Should().BeEquivalentTo(this.userRepository.GetById(user.Id));
+            this.userRepository.GetById(user.Id).Should().BeEquivalentTo(user);
         }
 
         [Test]
@@ -340,7 +344,7 @@ namespace TicketManagement.UnitTests.ServiceTests.Identity
             this.userService.IncreaseBalance(increasingMoney, userName);
 
             // Assert
-            expectedBalance.Should().Be(this.userRepository.FindByNormalizedUserName(userName).Balance);
+            this.userRepository.FindByNormalizedUserName(userName).Balance.Should().Be(expectedBalance);
         }
     }
 }
