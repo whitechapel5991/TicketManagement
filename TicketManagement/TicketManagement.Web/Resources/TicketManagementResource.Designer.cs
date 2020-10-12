@@ -959,5 +959,14 @@ namespace Resources {
                 return ResourceManager.GetString("Welcome", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Неверные данные.
+        /// </summary>
+        public static string WrongCredentials {
+            get {
+                return ResourceManager.GetString("WrongCredentials", resourceCulture);
+            }
+        }
     }
 }

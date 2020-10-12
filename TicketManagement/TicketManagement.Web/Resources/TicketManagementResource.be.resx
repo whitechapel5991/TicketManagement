@@ -417,4 +417,7 @@
   <data name="Welcome" xml:space="preserve">
     <value>Вітаем вас</value>
   </data>
+  <data name="WrongCredentials" xml:space="preserve">
+    <value>Няслушныя дадзеныя</value>
+  </data>
 </root>
