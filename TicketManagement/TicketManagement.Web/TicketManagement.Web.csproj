@@ -298,6 +298,8 @@
     <Compile Include="Controllers\EventController.cs" />
     <Compile Include="Controllers\LanguageController.cs" />
     <Compile Include="Controllers\UserProfileController.cs" />
+    <Compile Include="Exceptions\Account\RegisterUserWrongDataException.cs" />
+    <Compile Include="Exceptions\Account\UserNameOrPasswordWrongException.cs" />
     <Compile Include="Filters\LogAttribute.cs" />
     <Compile Include="Filters\LogCustomExceptionFilter.cs" />
     <Compile Include="Global.asax.cs">
@@ -358,7 +360,7 @@
     <None Include="packages.config" />
     <Content Include="Views\_ViewStart.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
-    <Content Include="Views\Shared\Error.cshtml" />
+    <Content Include="Views\Shared\AdminError.cshtml" />
     <Content Include="Scripts\umd\popper.min.js.map" />
     <Content Include="Scripts\umd\popper.js.map" />
     <Content Include="Scripts\umd\popper.js.flow" />
@@ -375,6 +377,7 @@
     <Content Include="Views\Shared\_MenuBar.cshtml" />
     <Content Include="Views\Shared\_Footer.cshtml" />
     <Content Include="Views\Shared\_Language.cshtml" />
+    <Content Include="Views\Shared\UserError.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
