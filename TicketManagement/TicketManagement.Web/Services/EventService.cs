@@ -42,26 +42,23 @@ namespace TicketManagement.Web.Services
 
         private IEnumerable<EventViewModel> MapToEventViewModel(IEnumerable<Event> events)
         {
-            var eventViewModelList = new List<EventViewModel>();
-            foreach (var @event in events)
+            var layouts = this.layoutService.GetLayouts().Distinct().ToDictionary(x => x.Id, x => x.Name);
+            var eventList = events.ToList();
+            var eventsDictionary = eventList.ToDictionary(x => x.Id, x => this.eventService.GetAvailableSeatCount(x.Id));
+
+            return eventList.Select(@event => new EventViewModel
             {
-                var eventViewModel = new EventViewModel
-                {
-                    Id = @event.Id,
-                    Name = @event.Name,
-                    Description = @event.Description,
-                    BeginDate = @event.BeginDate,
-                    EndDate = @event.EndDate,
-                    BeginTime = @event.BeginDate,
-                    EndTime = @event.EndDate,
-                    CountFreeSeats = this.eventService.GetAvailableSeatCount(@event.Id),
-                    LayoutName = layoutService.GetLayout(@event.LayoutId).Name,
-                };
-
-                eventViewModelList.Add(eventViewModel);
-            }
-
-            return eventViewModelList;
+                Id = @event.Id,
+                Name = @event.Name,
+                Description = @event.Description,
+                BeginDate = @event.BeginDate,
+                EndDate = @event.EndDate,
+                BeginTime = @event.BeginDate,
+                EndTime = @event.EndDate,
+                CountFreeSeats = eventsDictionary[@event.Id],
+                LayoutName = layouts[@event.LayoutId],
+            })
+                .ToList();
         }
     }
 }

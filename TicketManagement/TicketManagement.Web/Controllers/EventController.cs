@@ -27,13 +27,12 @@ namespace TicketManagement.Web.Controllers
 
         [HttpGet]
         [AllowAnonymous]
-        [Authorize(Roles = "user, admin, event manager")]
         public ActionResult Events()
         {
             return this.View(this.eventWebService.GetPublishEvents());
         }
 
-        [Authorize(Roles = "user, admin, event manager")]
+        [Authorize()]
         public ActionResult EventDetail(int id)
         {
             var eventDto = this.eventService.GetEventMap(id);
@@ -45,7 +44,7 @@ namespace TicketManagement.Web.Controllers
             return this.View(eventDto);
         }
 
-        [Authorize(Roles = "user, admin, event manager")]
+        [Authorize()]
         public ActionResult EventAreaDetail(int id)
         {
             var eventAreaDto = this.eventAreaService.GetEventAreaMap(id);
