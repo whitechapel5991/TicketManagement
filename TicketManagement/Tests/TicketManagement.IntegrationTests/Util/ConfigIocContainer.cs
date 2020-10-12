@@ -9,7 +9,7 @@ using Autofac;
 
 namespace TicketManagement.IntegrationTests.Util
 {
-    internal class ConfigIocContainer
+    internal static class ConfigIocContainer
     {
         public static IContainer GetIocContainer()
         {

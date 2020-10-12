@@ -25,13 +25,13 @@ namespace TicketManagement.IntegrationTests.TestBase
         {
             this.Fixture = new Fixture();
 
-            if (DatabaseHelper.SnapshotExists())
+            if (DataBaseHelper.SnapshotExists())
             {
-                DatabaseHelper.RestoreFromSnapshot();
-                DatabaseHelper.DropSnapshot();
+                DataBaseHelper.RestoreFromSnapshot();
+                DataBaseHelper.DropSnapshot();
             }
 
-            DatabaseHelper.CreateSnapshot();
+            DataBaseHelper.CreateSnapshot();
 
             this.Container = ConfigIocContainer.GetIocContainer();
         }
@@ -39,8 +39,8 @@ namespace TicketManagement.IntegrationTests.TestBase
         [TearDown]
         public void TearDown()
         {
-            DatabaseHelper.RestoreFromSnapshot();
-            DatabaseHelper.DropSnapshot();
+            DataBaseHelper.RestoreFromSnapshot();
+            DataBaseHelper.DropSnapshot();
         }
 
         public virtual void Dispose()

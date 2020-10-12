@@ -32,11 +32,11 @@ namespace TicketManagement.IntegrationTests.Util
         {
             if (builder == null)
             {
-                throw new ArgumentNullException("builder");
+                throw new ArgumentNullException(nameof(builder));
             }
 
-            builder.RegisterModule(new EfAutofacModule(this.connectionString));
-            builder.RegisterModule(new ServiceAutofacModule(this.email, this.emailPassword, this.lockTime));
+            builder.RegisterModule(new EfModule(this.connectionString));
+            builder.RegisterModule(new ServiceModule(this.email, this.emailPassword, this.lockTime));
         }
     }
 }

@@ -5,11 +5,14 @@
 // </copyright>
 // ****************************************************************************
 
+using System.Collections.Generic;
 using System.Linq;
 using Autofac;
+using FluentAssertions;
 using NUnit.Framework;
 using TicketManagement.BLL.Interfaces;
 using TicketManagement.DAL.Models;
+using TicketManagement.DAL.Repositories.Base;
 using Test = TicketManagement.IntegrationTests.TestBase.TestBase;
 
 namespace TicketManagement.IntegrationTests.ServiceTests
@@ -18,55 +21,78 @@ namespace TicketManagement.IntegrationTests.ServiceTests
     internal class EventAreaServiceTests : Test
     {
         private IEventAreaService eventAreaService;
+        private IRepository<EventArea> eventAreaRepository;
+        private IRepository<EventSeat> eventSeatRepository;
 
         [SetUp]
         public void Init()
         {
             this.eventAreaService = this.Container.Resolve<IEventAreaService>();
+            this.eventAreaRepository = this.Container.Resolve<IRepository<EventArea>>();
+            this.eventSeatRepository = this.Container.Resolve<IRepository<EventSeat>>();
         }
 
         [Test]
-        public void UpdateEventArea_NewPrice_GetEventArea()
+        public void UpdateEventArea_WhenUpdateEventAreaWithExistingId_ShouldBeUpdateOnlyEventAreaPrice()
         {
-            EventArea eventAreaDto = new EventArea
+            // Arrange
+            var expected = new EventArea
             {
                 Id = 1,
-                Description = "blabla5",
-                CoordX = 1000,
-                CoordY = 1000,
+                Description = "blab-la5",
+                CoordinateX = 1000,
+                CoordinateY = 1000,
                 Price = 1000,
                 EventId = 2,
             };
 
-            this.eventAreaService.UpdateEventArea(eventAreaDto);
+            // Act
+            this.eventAreaService.UpdateEventArea(expected);
 
-            EventArea eventAreaDtoTemp = this.eventAreaService.GetEventArea(1);
-
-            Assert.AreEqual("blabla5", eventAreaDtoTemp.Description);
-            Assert.AreEqual(1000, eventAreaDtoTemp.CoordX);
-            Assert.AreEqual(1000, eventAreaDtoTemp.CoordY);
-            Assert.AreEqual(1000, eventAreaDtoTemp.Price);
-            Assert.AreEqual(2, eventAreaDtoTemp.EventId);
+            // Assert
+            var actual = this.eventAreaRepository.GetById(expected.Id);
+            expected.Should().BeEquivalentTo(actual, option => option
+                .Including(p => p.Price)
+                .ExcludingMissingMembers());
+            expected.Should().NotBeEquivalentTo(actual, option => option
+                .Including(p => p.CoordinateX)
+                .Including(p => p.CoordinateY)
+                .Including(p => p.Description)
+                .Including(p => p.EventId)
+                .ExcludingMissingMembers());
         }
 
         [Test]
-        public void GetEventArea_EventAreaId_GetEventArea()
+        public void GetEventArea_WhenGetEventAreaWithExistingId_ShouldBeReturnEventArea()
         {
-            EventArea eventAreaDtoTemp = this.eventAreaService.GetEventArea(1);
+            // Arrange
+            const int eventAreaId = 1;
+            var expected = new EventArea() { Id = eventAreaId, CoordinateX = 1, CoordinateY = 1, Description = "First area of first layout", EventId = 1, Price = 100 };
 
-            Assert.AreEqual("First area of first layout", eventAreaDtoTemp.Description);
-            Assert.AreEqual(1, eventAreaDtoTemp.CoordX);
-            Assert.AreEqual(1, eventAreaDtoTemp.CoordY);
-            Assert.AreEqual(100, eventAreaDtoTemp.Price);
-            Assert.AreEqual(1, eventAreaDtoTemp.EventId);
+            // Act
+            var actual = this.eventAreaService.GetEventArea(eventAreaId);
+
+            // Assert
+            actual.Should().BeEquivalentTo(expected);
         }
 
         [Test]
-        public void GetEventAreas_GetEventAreasCount()
+        public void GetEventAreas_WhenGetEventAreas_ShouldBeReturnAllEventAreas()
         {
-            int eventAreaDtoCount = this.eventAreaService.GetEventAreas().Count();
+            // Arrange
+            var expected = new List<EventArea>
+            {
+                new EventArea() { Id = 1, CoordinateX = 1, CoordinateY = 1, Description = "First area of first layout", EventId = 1, Price = 100 },
+                new EventArea() { Id = 2, CoordinateX = 1, CoordinateY = 1, Description = "Second area of first layout", EventId = 1, Price = 100 },
+                new EventArea() { Id = 3, CoordinateX = 2, CoordinateY = 2, Description = "First area of second layout", EventId = 2, Price = 200 },
+                new EventArea() { Id = 4, CoordinateX = 2, CoordinateY = 2, Description = "Second area of second layout", EventId = 2, Price = 200 },
+            };
 
-            Assert.AreEqual(4, eventAreaDtoCount);
+            // Act
+            var actual = this.eventAreaService.GetEventAreas();
+
+            // Assert
+            expected.Should().BeEquivalentTo(actual);
         }
     }
 }

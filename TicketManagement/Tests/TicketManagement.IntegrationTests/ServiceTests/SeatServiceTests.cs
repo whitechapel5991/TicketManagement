@@ -5,11 +5,14 @@
 // </copyright>
 // ****************************************************************************
 
+using System.Collections.Generic;
 using System.Linq;
 using Autofac;
+using FluentAssertions;
 using NUnit.Framework;
 using TicketManagement.BLL.Interfaces;
 using TicketManagement.DAL.Models;
+using TicketManagement.DAL.Repositories.Base;
 using Test = TicketManagement.IntegrationTests.TestBase.TestBase;
 
 namespace TicketManagement.IntegrationTests.ServiceTests
@@ -18,76 +21,217 @@ namespace TicketManagement.IntegrationTests.ServiceTests
     internal class SeatServiceTests : Test
     {
         private ISeatService seatService;
+        private IRepository<Seat> seatRepository;
 
         [SetUp]
         public void Init()
         {
             this.seatService = this.Container.Resolve<ISeatService>();
+            this.seatRepository = this.Container.Resolve<IRepository<Seat>>();
         }
 
         [Test]
-        public void AddSeat_AddNewSeat_GetSeats()
+        public void AddSeat_WhenAddNewSeat_ShouldBeSaveNewSeatInRepositoryAndReturnNewEntityId()
         {
+            // Arrange
             var seatDto = new Seat
             {
                 Row = 2,
                 Number = 2,
                 AreaId = 2,
             };
+            var expected = new List<Seat>()
+            {
+                new Seat() { Id = 1, AreaId = 1, Number = 1, Row = 1 },
+                new Seat() { Id = 2, AreaId = 1, Number = 2, Row = 1 },
+                new Seat() { Id = 3, AreaId = 1, Number = 3, Row = 1 },
+                new Seat() { Id = 4, AreaId = 1, Number = 4, Row = 1 },
+                new Seat() { Id = 5, AreaId = 1, Number = 5, Row = 1 },
+                new Seat() { Id = 6, AreaId = 2, Number = 1, Row = 1 },
+                new Seat() { Id = 7, AreaId = 2, Number = 2, Row = 1 },
+                new Seat() { Id = 8, AreaId = 2, Number = 3, Row = 1 },
+                new Seat() { Id = 9, AreaId = 2, Number = 4, Row = 1 },
+                new Seat() { Id = 10, AreaId = 2, Number = 5, Row = 1 },
+                new Seat() { Id = 11, AreaId = 3, Number = 1, Row = 1 },
+                new Seat() { Id = 12, AreaId = 3, Number = 2, Row = 1 },
+                new Seat() { Id = 13, AreaId = 3, Number = 3, Row = 1 },
+                new Seat() { Id = 14, AreaId = 3, Number = 4, Row = 1 },
+                new Seat() { Id = 15, AreaId = 3, Number = 5, Row = 1 },
+                new Seat() { Id = 16, AreaId = 4, Number = 1, Row = 1 },
+                new Seat() { Id = 17, AreaId = 4, Number = 2, Row = 1 },
+                new Seat() { Id = 18, AreaId = 4, Number = 3, Row = 1 },
+                new Seat() { Id = 19, AreaId = 4, Number = 4, Row = 1 },
+                new Seat() { Id = 20, AreaId = 4, Number = 5, Row = 1 },
+                new Seat() { Id = 21, AreaId = 5, Number = 1, Row = 1 },
+                new Seat() { Id = 22, AreaId = 5, Number = 2, Row = 1 },
+                new Seat() { Id = 23, AreaId = 5, Number = 3, Row = 1 },
+                new Seat() { Id = 24, AreaId = 5, Number = 4, Row = 1 },
+                new Seat() { Id = 4007, AreaId = 5, Number = 5, Row = 1 },
+                new Seat() { Id = 4008, AreaId = 6, Number = 1, Row = 1 },
+                new Seat() { Id = 4009, AreaId = 6, Number = 2, Row = 1 },
+                new Seat() { Id = 4010, AreaId = 6, Number = 3, Row = 1 },
+                new Seat() { Id = 4011, AreaId = 6, Number = 4, Row = 1 },
+                new Seat() { Id = 4012, AreaId = 6, Number = 5, Row = 1 },
+                new Seat() { Id = 4014, AreaId = 7, Number = 1, Row = 1 },
+                new Seat() { Id = 4015, AreaId = 7, Number = 2, Row = 1 },
+                new Seat() { Id = 4016, AreaId = 7, Number = 3, Row = 1 },
+                new Seat() { Id = 4017, AreaId = 7, Number = 4, Row = 1 },
+                new Seat() { Id = 4018, AreaId = 7, Number = 5, Row = 1 },
+                new Seat() { Id = 4019, AreaId = 8, Number = 1, Row = 1 },
+                new Seat() { Id = 4020, AreaId = 8, Number = 2, Row = 1 },
+                new Seat() { Id = 4021, AreaId = 8, Number = 3, Row = 1 },
+                new Seat() { Id = 4022, AreaId = 8, Number = 4, Row = 1 },
+                new Seat() { Id = 4023, AreaId = 8, Number = 5, Row = 1 },
+                seatDto,
+            };
 
-            int id = this.seatService.AddSeat(seatDto);
+            // Act
+            this.seatService.AddSeat(seatDto);
 
-            var seatDtoTemp = this.seatService.GetSeat(id);
-
-            Assert.AreEqual(2, seatDtoTemp.Row);
-            Assert.AreEqual(2, seatDtoTemp.Number);
-            Assert.AreEqual(2, seatDtoTemp.AreaId);
+            // Assert
+            this.seatRepository.GetAll().Should().BeEquivalentTo(expected);
         }
 
         [Test]
-        public void UpdateSeat_NewSeat_GetSeat()
+        public void UpdateSeat_WhenUpdateSeatWithExistingId_ShouldBeUpdateAllFieldInTheRepository()
         {
-            var seatDto = new Seat
+            // Arrange
+            var expected = new Seat
             {
                 Id = 2,
                 Row = 2,
                 Number = 2,
                 AreaId = 2,
             };
-            this.seatService.UpdateSeat(seatDto);
 
-            var seatDtoTemp = this.seatService.GetSeat(2);
+            // Act
+            this.seatService.UpdateSeat(expected);
 
-            Assert.AreEqual(2, seatDtoTemp.Row);
-            Assert.AreEqual(2, seatDtoTemp.Number);
-            Assert.AreEqual(2, seatDtoTemp.AreaId);
+            // Assert
+            this.seatRepository.GetById(expected.Id).Should().BeEquivalentTo(expected);
         }
 
         [Test]
-        public void DeleteSeat_SeatId_GetSeatsCount()
+        public void DeleteSeat_WhenDeleteSeatWithExistingSeatId_ShouldBeDeleteFromTheRepository()
         {
-            this.seatService.DeleteSeat(1);
+            // Arrange
+            const int existingSeatId = 1;
+            var expected = new List<Seat>()
+            {
+                new Seat() { Id = 2, AreaId = 1, Number = 2, Row = 1 },
+                new Seat() { Id = 3, AreaId = 1, Number = 3, Row = 1 },
+                new Seat() { Id = 4, AreaId = 1, Number = 4, Row = 1 },
+                new Seat() { Id = 5, AreaId = 1, Number = 5, Row = 1 },
+                new Seat() { Id = 6, AreaId = 2, Number = 1, Row = 1 },
+                new Seat() { Id = 7, AreaId = 2, Number = 2, Row = 1 },
+                new Seat() { Id = 8, AreaId = 2, Number = 3, Row = 1 },
+                new Seat() { Id = 9, AreaId = 2, Number = 4, Row = 1 },
+                new Seat() { Id = 10, AreaId = 2, Number = 5, Row = 1 },
+                new Seat() { Id = 11, AreaId = 3, Number = 1, Row = 1 },
+                new Seat() { Id = 12, AreaId = 3, Number = 2, Row = 1 },
+                new Seat() { Id = 13, AreaId = 3, Number = 3, Row = 1 },
+                new Seat() { Id = 14, AreaId = 3, Number = 4, Row = 1 },
+                new Seat() { Id = 15, AreaId = 3, Number = 5, Row = 1 },
+                new Seat() { Id = 16, AreaId = 4, Number = 1, Row = 1 },
+                new Seat() { Id = 17, AreaId = 4, Number = 2, Row = 1 },
+                new Seat() { Id = 18, AreaId = 4, Number = 3, Row = 1 },
+                new Seat() { Id = 19, AreaId = 4, Number = 4, Row = 1 },
+                new Seat() { Id = 20, AreaId = 4, Number = 5, Row = 1 },
+                new Seat() { Id = 21, AreaId = 5, Number = 1, Row = 1 },
+                new Seat() { Id = 22, AreaId = 5, Number = 2, Row = 1 },
+                new Seat() { Id = 23, AreaId = 5, Number = 3, Row = 1 },
+                new Seat() { Id = 24, AreaId = 5, Number = 4, Row = 1 },
+                new Seat() { Id = 4007, AreaId = 5, Number = 5, Row = 1 },
+                new Seat() { Id = 4008, AreaId = 6, Number = 1, Row = 1 },
+                new Seat() { Id = 4009, AreaId = 6, Number = 2, Row = 1 },
+                new Seat() { Id = 4010, AreaId = 6, Number = 3, Row = 1 },
+                new Seat() { Id = 4011, AreaId = 6, Number = 4, Row = 1 },
+                new Seat() { Id = 4012, AreaId = 6, Number = 5, Row = 1 },
+                new Seat() { Id = 4014, AreaId = 7, Number = 1, Row = 1 },
+                new Seat() { Id = 4015, AreaId = 7, Number = 2, Row = 1 },
+                new Seat() { Id = 4016, AreaId = 7, Number = 3, Row = 1 },
+                new Seat() { Id = 4017, AreaId = 7, Number = 4, Row = 1 },
+                new Seat() { Id = 4018, AreaId = 7, Number = 5, Row = 1 },
+                new Seat() { Id = 4019, AreaId = 8, Number = 1, Row = 1 },
+                new Seat() { Id = 4020, AreaId = 8, Number = 2, Row = 1 },
+                new Seat() { Id = 4021, AreaId = 8, Number = 3, Row = 1 },
+                new Seat() { Id = 4022, AreaId = 8, Number = 4, Row = 1 },
+                new Seat() { Id = 4023, AreaId = 8, Number = 5, Row = 1 },
+            };
 
-            int seatCount = this.seatService.GetSeats().Count();
-            Assert.AreEqual(39, seatCount);
+            // Act
+            this.seatService.DeleteSeat(existingSeatId);
+
+            // Assert
+            this.seatRepository.GetAll().Should().BeEquivalentTo(expected);
         }
 
         [Test]
-        public void GetSeat_SeatId_GetSeat()
+        public void GetSeat_WhenGetSeatWithExistingSeatId_ShouldBeReturnThisSeat()
         {
-            var seatDtoTemp = this.seatService.GetSeat(1);
+            // Arrange
+            const int existingSeatId = 1;
+            var expectedDto = new Seat() { Id = existingSeatId, AreaId = 1, Number = 1, Row = 1 };
 
-            Assert.AreEqual(1, seatDtoTemp.Row);
-            Assert.AreEqual(1, seatDtoTemp.Number);
-            Assert.AreEqual(1, seatDtoTemp.AreaId);
+            // Act
+            var actualDto = this.seatService.GetSeat(existingSeatId);
+
+            // Assert
+            actualDto.Should().BeEquivalentTo(expectedDto);
         }
 
         [Test]
-        public void GetSeats_GetSeatsCount()
+        public void GetSeats_WhenGetSeats_ShouldBeReturnAllSeats()
         {
-            int seatDtoCount = this.seatService.GetSeats().Count();
+            var expected = new List<Seat>()
+            {
+                new Seat() { Id = 1, AreaId = 1, Number = 1, Row = 1 },
+                new Seat() { Id = 2, AreaId = 1, Number = 2, Row = 1 },
+                new Seat() { Id = 3, AreaId = 1, Number = 3, Row = 1 },
+                new Seat() { Id = 4, AreaId = 1, Number = 4, Row = 1 },
+                new Seat() { Id = 5, AreaId = 1, Number = 5, Row = 1 },
+                new Seat() { Id = 6, AreaId = 2, Number = 1, Row = 1 },
+                new Seat() { Id = 7, AreaId = 2, Number = 2, Row = 1 },
+                new Seat() { Id = 8, AreaId = 2, Number = 3, Row = 1 },
+                new Seat() { Id = 9, AreaId = 2, Number = 4, Row = 1 },
+                new Seat() { Id = 10, AreaId = 2, Number = 5, Row = 1 },
+                new Seat() { Id = 11, AreaId = 3, Number = 1, Row = 1 },
+                new Seat() { Id = 12, AreaId = 3, Number = 2, Row = 1 },
+                new Seat() { Id = 13, AreaId = 3, Number = 3, Row = 1 },
+                new Seat() { Id = 14, AreaId = 3, Number = 4, Row = 1 },
+                new Seat() { Id = 15, AreaId = 3, Number = 5, Row = 1 },
+                new Seat() { Id = 16, AreaId = 4, Number = 1, Row = 1 },
+                new Seat() { Id = 17, AreaId = 4, Number = 2, Row = 1 },
+                new Seat() { Id = 18, AreaId = 4, Number = 3, Row = 1 },
+                new Seat() { Id = 19, AreaId = 4, Number = 4, Row = 1 },
+                new Seat() { Id = 20, AreaId = 4, Number = 5, Row = 1 },
+                new Seat() { Id = 21, AreaId = 5, Number = 1, Row = 1 },
+                new Seat() { Id = 22, AreaId = 5, Number = 2, Row = 1 },
+                new Seat() { Id = 23, AreaId = 5, Number = 3, Row = 1 },
+                new Seat() { Id = 24, AreaId = 5, Number = 4, Row = 1 },
+                new Seat() { Id = 4007, AreaId = 5, Number = 5, Row = 1 },
+                new Seat() { Id = 4008, AreaId = 6, Number = 1, Row = 1 },
+                new Seat() { Id = 4009, AreaId = 6, Number = 2, Row = 1 },
+                new Seat() { Id = 4010, AreaId = 6, Number = 3, Row = 1 },
+                new Seat() { Id = 4011, AreaId = 6, Number = 4, Row = 1 },
+                new Seat() { Id = 4012, AreaId = 6, Number = 5, Row = 1 },
+                new Seat() { Id = 4014, AreaId = 7, Number = 1, Row = 1 },
+                new Seat() { Id = 4015, AreaId = 7, Number = 2, Row = 1 },
+                new Seat() { Id = 4016, AreaId = 7, Number = 3, Row = 1 },
+                new Seat() { Id = 4017, AreaId = 7, Number = 4, Row = 1 },
+                new Seat() { Id = 4018, AreaId = 7, Number = 5, Row = 1 },
+                new Seat() { Id = 4019, AreaId = 8, Number = 1, Row = 1 },
+                new Seat() { Id = 4020, AreaId = 8, Number = 2, Row = 1 },
+                new Seat() { Id = 4021, AreaId = 8, Number = 3, Row = 1 },
+                new Seat() { Id = 4022, AreaId = 8, Number = 4, Row = 1 },
+                new Seat() { Id = 4023, AreaId = 8, Number = 5, Row = 1 },
+            };
 
-            Assert.AreEqual(40, seatDtoCount);
+            // Act
+            var actual = this.seatService.GetSeats();
+
+            // Assert
+            actual.Should().BeEquivalentTo(expected);
         }
     }
 }

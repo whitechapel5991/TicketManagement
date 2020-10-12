@@ -5,11 +5,14 @@
 // </copyright>
 // ****************************************************************************
 
+using System.Collections.Generic;
 using System.Linq;
 using Autofac;
+using FluentAssertions;
 using NUnit.Framework;
 using TicketManagement.BLL.Interfaces;
 using TicketManagement.DAL.Models;
+using TicketManagement.DAL.Repositories.Base;
 using Test = TicketManagement.IntegrationTests.TestBase.TestBase;
 
 namespace TicketManagement.IntegrationTests.ServiceTests
@@ -18,81 +21,113 @@ namespace TicketManagement.IntegrationTests.ServiceTests
     internal class AreaServiceTests : Test
     {
         private IAreaService areaService;
+        private IRepository<Area> areaRepository;
 
         [SetUp]
         public void Init()
         {
             this.areaService = this.Container.Resolve<IAreaService>();
+            this.areaRepository = this.Container.Resolve<IRepository<Area>>();
         }
 
         [Test]
-        public void AddArea_AddNewArea_GetAreas()
+        public void AddArea_WhenAddNewArea_ShouldSaveNewDataInRepository()
         {
-            Area areaDto = new Area
+            // Arrange
+            var expected = new Area
             {
-                Description = "blabla5",
-                CoordX = 1000,
-                CoordY = 1000,
+                Description = "blab-la5",
+                CoordinateX = 1000,
+                CoordinateY = 1000,
                 LayoutId = 1,
             };
 
-            int id = this.areaService.AddArea(areaDto);
+            // Act
+            var id = this.areaService.AddArea(expected);
 
-            Area areaDtoTemp = this.areaService.GetArea(id);
-
-            Assert.AreEqual("blabla5", areaDtoTemp.Description);
-            Assert.AreEqual(1000, areaDtoTemp.CoordX);
-            Assert.AreEqual(1000, areaDtoTemp.CoordY);
-            Assert.AreEqual(1, areaDtoTemp.LayoutId);
+            // Assert
+            expected.Should().BeEquivalentTo(this.areaRepository.GetById(id));
         }
 
         [Test]
-        public void UpdateArea_NewArea_GetArea()
+        public void UpdateArea_WhenUpdateExistingArea_ShouldBeUpdateAllFields()
         {
-            Area areaDto = new Area
+            // Arrange
+            var expected = new Area
             {
                 Id = 1,
-                Description = "blablabla",
-                CoordX = 9999,
-                CoordY = 9999,
+                Description = "blameable",
+                CoordinateX = 9999,
+                CoordinateY = 9999,
                 LayoutId = 2,
             };
-            this.areaService.UpdateArea(areaDto);
 
-            Area areaDtoTemp = this.areaService.GetArea(1);
+            // Act
+            this.areaService.UpdateArea(expected);
 
-            Assert.AreEqual("blablabla", areaDtoTemp.Description);
-            Assert.AreEqual(9999, areaDtoTemp.CoordX);
-            Assert.AreEqual(9999, areaDtoTemp.CoordY);
-            Assert.AreEqual(2, areaDtoTemp.LayoutId);
+            // Assert
+            expected.Should().BeEquivalentTo(this.areaRepository.GetById(expected.Id));
         }
 
         [Test]
-        public void DeleteArea_AreaId_GetAreasCount()
+        public void DeleteArea_WhenDeleteAreaWithExistingId_ShouldBeContainWitoutThisArea()
         {
-            this.areaService.DeleteArea(8);
+            // Arrange
+            const int areaId = 8;
+            var expected = new List<Area>
+            {
+                new Area() { Id = 1, Description = "First area of first layout", CoordinateX = 1, CoordinateY = 1, LayoutId = 1 },
+                new Area() { Id = 2, Description = "Second area of first layout", CoordinateX = 2, CoordinateY = 2, LayoutId = 1 },
+                new Area() { Id = 3, Description = "First area of second layout", CoordinateX = 3, CoordinateY = 3, LayoutId = 2 },
+                new Area() { Id = 4, Description = "Second area of second layout", CoordinateX = 4, CoordinateY = 4, LayoutId = 2 },
+                new Area() { Id = 5, Description = "First area of third layout", CoordinateX = 1, CoordinateY = 1, LayoutId = 3 },
+                new Area() { Id = 6, Description = "Second area of third layout", CoordinateX = 2, CoordinateY = 2, LayoutId = 3 },
+                new Area() { Id = 7, Description = "First area of fourth layout", CoordinateX = 3, CoordinateY = 3, LayoutId = 4 },
+            };
 
-            int areaDtoTemp = this.areaService.GetAreas().Count();
-            Assert.AreEqual(7, areaDtoTemp);
+            // Act
+            this.areaService.DeleteArea(areaId);
+
+            // Assert
+            expected.Should().BeEquivalentTo(this.areaRepository.GetAll());
         }
 
         [Test]
-        public void GetArea_AreaId_GetArea()
+        public void GetArea_WhenGetAreaWithExistingId_ShouldBeReturnThisArea()
         {
-            Area areaDtoTemp = this.areaService.GetArea(1);
+            // Arrange
+            const int areaId = 1;
+            var expected = new Area()
+                {Id = 1, Description = "First area of first layout", CoordinateX = 1, CoordinateY = 1, LayoutId = 1};
 
-            Assert.AreEqual("First area of first layout", areaDtoTemp.Description);
-            Assert.AreEqual(1, areaDtoTemp.CoordX);
-            Assert.AreEqual(1, areaDtoTemp.CoordY);
-            Assert.AreEqual(1, areaDtoTemp.LayoutId);
+            // Act
+            var actual = this.areaService.GetArea(areaId);
+
+            // Assert
+            expected.Should().BeEquivalentTo(actual);
         }
 
         [Test]
-        public void GetAreas_GetAreasCount()
+        public void GetAreas_WhenGetAllAreas_ShouldBeReturnAllAreas()
         {
-            int areaDtoCount = this.areaService.GetAreas().Count();
+            // Arrange
+            var expected = new List<Area>
+            {
+                new Area() { Id = 1, Description = "First area of first layout", CoordinateX = 1, CoordinateY = 1, LayoutId = 1 },
+                new Area() { Id = 2, Description = "Second area of first layout", CoordinateX = 2, CoordinateY = 2, LayoutId = 1 },
+                new Area() { Id = 3, Description = "First area of second layout", CoordinateX = 3, CoordinateY = 3, LayoutId = 2 },
+                new Area() { Id = 4, Description = "Second area of second layout", CoordinateX = 4, CoordinateY = 4, LayoutId = 2 },
+                new Area() { Id = 5, Description = "First area of third layout", CoordinateX = 1, CoordinateY = 1, LayoutId = 3 },
+                new Area() { Id = 6, Description = "Second area of third layout", CoordinateX = 2, CoordinateY = 2, LayoutId = 3 },
+                new Area() { Id = 7, Description = "First area of fourth layout", CoordinateX = 3, CoordinateY = 3, LayoutId = 4 },
+                new Area() { Id = 8, Description = "Second area of fourth layout", CoordinateX = 4, CoordinateY = 4, LayoutId = 4 },
+            };
 
-            Assert.AreEqual(8, areaDtoCount);
+            // Act
+            var actual = this.areaService.GetAreas();
+
+            // Assert
+            expected.Should().BeEquivalentTo(actual);
         }
     }
 }

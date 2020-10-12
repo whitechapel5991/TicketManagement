@@ -11,7 +11,7 @@ using System.Data.SqlClient;
 
 namespace TicketManagement.IntegrationTests.Helper
 {
-    internal class DatabaseHelper
+    internal static class DataBaseHelper
     {
         private static readonly string ConnectionString = ConfigurationManager.ConnectionStrings["TicketManagementTest"].ConnectionString;
         private static readonly string SnapshotName = "D177A4D5_6947_461A_B1A1_3E5FD51036E9";
@@ -52,7 +52,26 @@ namespace TicketManagement.IntegrationTests.Helper
             }
         }
 
-        internal static string GetSnapshotPath()
+        internal static void RestoreFromSnapshot()
+        {
+            using (var connection = new SqlConnection(ConnectionString))
+            {
+                connection.Open();
+
+                ExecuteNonQuery(connection, $"USE master; ALTER DATABASE {MainDbName} SET SINGLE_USER WITH ROLLBACK IMMEDIATE;");
+                ExecuteNonQuery(connection, $"USE master; RESTORE DATABASE {MainDbName} FROM DATABASE_SNAPSHOT = '{SnapshotName}' WITH REPLACE,RECOVERY");
+                ExecuteNonQuery(connection, $"USE master; ALTER DATABASE {MainDbName} SET MULTI_USER WITH ROLLBACK IMMEDIATE;");
+
+                connection.Close();
+            }
+        }
+
+        internal static void DropSnapshot()
+        {
+            ExecuteNonQuery($"USE master; DROP DATABASE {SnapshotName}");
+        }
+
+        private static string GetSnapshotPath()
         {
             using (var connection = new SqlConnection(ConnectionString))
             {
@@ -74,26 +93,7 @@ namespace TicketManagement.IntegrationTests.Helper
             throw new Exception("Failed to get snaphot path");
         }
 
-        internal static void RestoreFromSnapshot()
-        {
-            using (var connection = new SqlConnection(ConnectionString))
-            {
-                connection.Open();
-
-                ExecuteNonQuery(connection, $"USE master; ALTER DATABASE {MainDbName} SET SINGLE_USER WITH ROLLBACK IMMEDIATE;");
-                ExecuteNonQuery(connection, $"USE master; RESTORE DATABASE {MainDbName} FROM DATABASE_SNAPSHOT = '{SnapshotName}' WITH REPLACE,RECOVERY");
-                ExecuteNonQuery(connection, $"USE master; ALTER DATABASE {MainDbName} SET MULTI_USER WITH ROLLBACK IMMEDIATE;");
-
-                connection.Close();
-            }
-        }
-
-        internal static void DropSnapshot()
-        {
-            ExecuteNonQuery($"USE master; DROP DATABASE {SnapshotName}");
-        }
-
-        internal static void ExecuteNonQuery(SqlConnection connection, string sql)
+        private static void ExecuteNonQuery(SqlConnection connection, string sql)
         {
             using (var sqlCommand = new SqlCommand(sql, connection))
             {
@@ -101,7 +101,7 @@ namespace TicketManagement.IntegrationTests.Helper
             }
         }
 
-        internal static void ExecuteNonQuery(string sql)
+        private static void ExecuteNonQuery(string sql)
         {
             using (var connection = new SqlConnection(ConnectionString))
             {

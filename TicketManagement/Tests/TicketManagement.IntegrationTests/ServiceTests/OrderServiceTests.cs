@@ -8,7 +8,6 @@
 using Autofac;
 using NUnit.Framework;
 using TicketManagement.BLL.Interfaces;
-using TicketManagement.BLL.Interfaces.Identity;
 using Test = TicketManagement.IntegrationTests.TestBase.TestBase;
 
 namespace TicketManagement.IntegrationTests.ServiceTests
@@ -27,7 +26,7 @@ namespace TicketManagement.IntegrationTests.ServiceTests
         [Test]
         public void Create_AddNewUser_GetNewUserByName()
         {
-            int eventSeatId = 2;
+            var eventSeatId = 2;
 
             this.orderService.AddToCart(eventSeatId, 1);
         }

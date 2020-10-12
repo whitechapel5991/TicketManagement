@@ -5,11 +5,14 @@
 // </copyright>
 // ****************************************************************************
 
+using System.Collections.Generic;
 using System.Linq;
 using Autofac;
+using FluentAssertions;
 using NUnit.Framework;
 using TicketManagement.BLL.Interfaces;
 using TicketManagement.DAL.Models;
+using TicketManagement.DAL.Repositories.Base;
 using Test = TicketManagement.IntegrationTests.TestBase.TestBase;
 
 namespace TicketManagement.IntegrationTests.ServiceTests
@@ -18,75 +21,110 @@ namespace TicketManagement.IntegrationTests.ServiceTests
     internal class LayoutServiceTests : Test
     {
         private ILayoutService layoutService;
+        private IRepository<Layout> layoutRepository;
 
         [SetUp]
         public void Init()
         {
             this.layoutService = this.Container.Resolve<ILayoutService>();
+            this.layoutRepository = this.Container.Resolve<IRepository<Layout>>();
         }
 
         [Test]
-        public void AddLayout_AddNewLayout_GetLayouts()
+        public void AddLayout_WhenAddNewLayout_ShouldBeSaveNewLayoutInRepository()
         {
-            var layoutDto = new Layout
+            // Arrange
+            var addLayout = new Layout
             {
                 Description = "2",
                 VenueId = 2,
                 Name = "2",
             };
+            var expected = new List<Layout>
+            {
+                new Layout() { Id = 1, Name = "first", Description = "First layout", VenueId = 1 },
+                new Layout() { Id = 2, Name = "second", Description = "Second layout", VenueId = 1 },
+                new Layout() { Id = 3, Name = "third", Description = "First layout", VenueId = 2 },
+                new Layout() { Id = 4, Name = "forth", Description = "Second layout", VenueId = 2 },
+                addLayout,
+            };
 
-            int id = this.layoutService.AddLayout(layoutDto);
+            // Act
+            this.layoutService.AddLayout(addLayout);
 
-            var layoutDtoTemp = this.layoutService.GetLayout(id);
-
-            Assert.AreEqual("2", layoutDtoTemp.Description);
-            Assert.AreEqual(2, layoutDtoTemp.VenueId);
-            Assert.AreEqual("2", layoutDtoTemp.Name);
+            // Assert
+            this.layoutRepository.GetAll().Should().BeEquivalentTo(expected);
         }
 
         [Test]
-        public void UpdateLayout_NewLayout_GetLayout()
+        public void UpdateLayout_WhenUpdateLayoutWithExistingId_ShouldBeUpdateAllFieldsInTheRepository()
         {
-            var layoutDto = new Layout
+            // Arrange
+            var expected = new Layout
             {
                 Id = 2,
                 Description = "2",
                 VenueId = 2,
                 Name = "2",
             };
-            this.layoutService.UpdateLayout(layoutDto);
 
-            var layoutDtoTemp = this.layoutService.GetLayout(2);
+            // Act
+            this.layoutService.UpdateLayout(expected);
 
-            Assert.AreEqual("2", layoutDtoTemp.Description);
-            Assert.AreEqual(2, layoutDtoTemp.VenueId);
-            Assert.AreEqual("2", layoutDtoTemp.Name);
+            // Assert
+            this.layoutRepository.GetById(expected.Id).Should().BeEquivalentTo(expected);
         }
 
         [Test]
-        public void DeleteLayout_LayoutId_GetLayoutsCount()
+        public void DeleteLayout_WhenDeleteLayoutWithExistingLayoutId_ShouldBeDeleteFromTheRepository()
         {
-            this.layoutService.DeleteLayout(1);
+            // Arrange
+            const int existingLayoutId = 1;
+            var expected = new List<Layout>
+            {
+                new Layout() { Id = 2, Name = "second", Description = "Second layout", VenueId = 1 },
+                new Layout() { Id = 3, Name = "third", Description = "First layout", VenueId = 2 },
+                new Layout() { Id = 4, Name = "forth", Description = "Second layout", VenueId = 2 },
+            };
 
-            int layoutCount = this.layoutService.GetLayouts().Count();
-            Assert.AreEqual(3, layoutCount);
+            // Act
+            this.layoutService.DeleteLayout(existingLayoutId);
+
+            // Assert
+            this.layoutRepository.GetAll().Should().BeEquivalentTo(expected);
         }
 
         [Test]
-        public void GetLayout_LayoutId_GetLayout()
+        public void GetLayout_WhenGetLayoutWithExistingLayoutId_ShouldBeReturnThisLayout()
         {
-            var layoutDtoTemp = this.layoutService.GetLayout(1);
+            // Arrange
+            const int existingLayoutId = 1;
+            var expected = new Layout() {Id = 1, Name = "first", Description = "First layout", VenueId = 1};
 
-            Assert.AreEqual("First layout", layoutDtoTemp.Description);
-            Assert.AreEqual("first", layoutDtoTemp.Name);
-            Assert.AreEqual(1, layoutDtoTemp.VenueId);
+            // Act
+            var actual = this.layoutService.GetLayout(existingLayoutId);
+
+            // Assert
+            actual.Should().BeEquivalentTo(expected);
         }
 
         [Test]
-        public void GetLayouts_GetLayoutsCount()
+        public void GetEvents_WhenGetLayouts_ShouldBeReturnAllLayouts()
         {
-            int layoutDtoCount = this.layoutService.GetLayouts().Count();
-            Assert.AreEqual(4, layoutDtoCount);
+            // Arrange
+            var expected = new List<Layout>
+            {
+                new Layout() { Id = 1, Name = "first", Description = "First layout", VenueId = 1 },
+                new Layout() { Id = 2, Name = "second", Description = "Second layout", VenueId = 1 },
+                new Layout() { Id = 3, Name = "third", Description = "First layout", VenueId = 2 },
+                new Layout() { Id = 4, Name = "forth", Description = "Second layout", VenueId = 2 },
+            };
+
+            // Act
+            var actual = this.layoutService.GetLayouts();
+
+            // Assert
+            actual.Should().BeEquivalentTo(expected);
         }
     }
 }

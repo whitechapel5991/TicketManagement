@@ -5,11 +5,14 @@
 // </copyright>
 // ****************************************************************************
 
+using System.Collections.Generic;
 using System.Linq;
 using Autofac;
+using FluentAssertions;
 using NUnit.Framework;
 using TicketManagement.BLL.Interfaces;
 using TicketManagement.DAL.Models;
+using TicketManagement.DAL.Repositories.Base;
 using Test = TicketManagement.IntegrationTests.TestBase.TestBase;
 
 namespace TicketManagement.IntegrationTests.ServiceTests
@@ -18,16 +21,19 @@ namespace TicketManagement.IntegrationTests.ServiceTests
     internal class VenueServiceTests : Test
     {
         private IVenueService venueService;
+        private IRepository<Venue> venueRepository;
 
         [SetUp]
         public void Init()
         {
             this.venueService = this.Container.Resolve<IVenueService>();
+            this.venueRepository = this.Container.Resolve<IRepository<Venue>>();
         }
 
         [Test]
-        public void AddVenue_AddNewVenue_GetVenues()
+        public void AddVenue_WhenAddNewVenue_ShouldBeSaveNewVenueInRepositoryAndReturnNewEntityId()
         {
+            // Arrange
             var venueDto = new Venue
             {
                 Description = "3",
@@ -35,19 +41,24 @@ namespace TicketManagement.IntegrationTests.ServiceTests
                 Address = "3",
                 Phone = "3",
             };
+            var expected = new List<Venue>
+            {
+                new Venue() { Id = 1, Description = "First venue", Name = "first", Address = "First venue address", Phone = "123 45 678 90 12" },
+                new Venue() { Id = 2, Description = "Second venue", Name = "second", Address = "Second venue address", Phone = "123 45 678 90 12" },
+                venueDto,
+            };
 
-            int id = this.venueService.AddVenue(venueDto);
-            var seatDtoTemp = this.venueService.GetVenue(id);
+            // Act
+            this.venueService.AddVenue(venueDto);
 
-            Assert.AreEqual("3", seatDtoTemp.Name);
-            Assert.AreEqual("3", seatDtoTemp.Address);
-            Assert.AreEqual("3", seatDtoTemp.Description);
-            Assert.AreEqual("3", seatDtoTemp.Phone);
+            // Assert
+            this.venueRepository.GetAll().Should().BeEquivalentTo(expected);
         }
 
         [Test]
-        public void UpdateVenue_NewVenue_GetVenue()
+        public void UpdateVenue_WhenUpdateVenueWithExistingVenueId_ShouldBeUpdateAllFieldsInTheRepository()
         {
+            // Arrange
             var venueDto = new Venue
             {
                 Id = 2,
@@ -56,42 +67,60 @@ namespace TicketManagement.IntegrationTests.ServiceTests
                 Address = "3",
                 Phone = "3",
             };
+
+            // Act
             this.venueService.UpdateVenue(venueDto);
 
-            var venueDtoTemp = this.venueService.GetVenue(2);
-
-            Assert.AreEqual("3", venueDtoTemp.Description);
-            Assert.AreEqual("3", venueDtoTemp.Name);
-            Assert.AreEqual("3", venueDtoTemp.Address);
-            Assert.AreEqual("3", venueDtoTemp.Phone);
+            // Assert
+            this.venueRepository.GetById(venueDto.Id).Should().BeEquivalentTo(venueDto);
         }
 
         [Test]
-        public void DeleteVenue_VenueId_GetVenuesCount()
+        public void DeleteVenue_WhenDeleteVenueWithExistingVenueId_ShouldBeDeleteFromTheRepository()
         {
-            this.venueService.DeleteVenue(1);
+            // Arrange
+            const int existingVenueId = 1;
+            var expected = new List<Venue>
+            {
+                new Venue() { Id = 2, Description = "Second venue", Name = "second", Address = "Second venue address", Phone = "123 45 678 90 12" },
+            };
 
-            int venueCount = this.venueService.GetVenues().Count();
-            Assert.AreEqual(1, venueCount);
+            // Act
+            this.venueService.DeleteVenue(existingVenueId);
+
+            // Assert
+            this.venueRepository.GetAll().Should().BeEquivalentTo(expected);
         }
 
         [Test]
-        public void GetVenue_VenueId_GetVenue()
+        public void GetVenue_WhenGetVenueWithExistingVenueId_ShouldBeReturnThisVenue()
         {
-            var venueDtoTemp = this.venueService.GetVenue(1);
+            // Arrange
+            const int existingVenueId = 1;
+            var expectedDto = new Venue() { Id = existingVenueId, Description = "First venue", Name = "first", Address = "First venue address", Phone = "123 45 678 90 12" };
 
-            Assert.AreEqual("First venue", venueDtoTemp.Description);
-            Assert.AreEqual("first", venueDtoTemp.Name);
-            Assert.AreEqual("First venue address", venueDtoTemp.Address);
-            Assert.AreEqual("123 45 678 90 12", venueDtoTemp.Phone);
+            // Act
+            var actualDto = this.venueService.GetVenue(existingVenueId);
+
+            // Assert
+            actualDto.Should().BeEquivalentTo(expectedDto);
         }
 
         [Test]
         public void GetVenues_GetVenuesCount()
         {
-            int venueDtoCount = this.venueService.GetVenues().Count();
+            // Arrange
+            var expected = new List<Venue>
+            {
+                new Venue() { Id = 1, Description = "First venue", Name = "first", Address = "First venue address", Phone = "123 45 678 90 12" },
+                new Venue() { Id = 2, Description = "Second venue", Name = "second", Address = "Second venue address", Phone = "123 45 678 90 12" },
+            };
 
-            Assert.AreEqual(2, venueDtoCount);
+            // Act
+            var actual = this.venueService.GetVenues();
+
+            // Assert
+            actual.Should().BeEquivalentTo(expected);
         }
     }
 }
