@@ -1,9 +1,9 @@
 ﻿using System.Web.Mvc;
 using TicketManagement.Web.Filters;
 
-namespace TicketManagement.Web.App_Start
+namespace TicketManagement.Web
 {
-    public class FilterConfig
+    public static class FilterConfig
     {
         public static void RegisterGlobalFilters(GlobalFilterCollection filters)
         {

@@ -5,7 +5,6 @@ using System.Web;
 using System.Web.Mvc;
 using System.Web.Optimization;
 using System.Web.Routing;
-using TicketManagement.Web.App_Start;
 using TicketManagement.Web.Constants;
 
 namespace TicketManagement.Web

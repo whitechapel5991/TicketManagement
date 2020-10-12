@@ -1,12 +1,12 @@
-﻿using Autofac;
-using Autofac.Integration.Mvc;
-using System.Configuration;
+﻿using System.Configuration;
 using System.Web.Mvc;
+using Autofac;
+using Autofac.Integration.Mvc;
 using TicketManagement.Web.Util;
 
-namespace TicketManagement.Web.App_Start
+namespace TicketManagement.Web
 {
-    public class IocContainerConfig
+    public static class IocContainerConfig
     {
         public static void ConfigureContainer()
         {

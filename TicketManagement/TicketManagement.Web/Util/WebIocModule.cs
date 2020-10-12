@@ -59,7 +59,7 @@ namespace TicketManagement.Web.Util
 
             builder.Register<IAuthenticationManager>(context => HttpContext.Current.GetOwinContext().Authentication)
                 .InstancePerRequest();
-            
+
             builder.RegisterModule(new WebServicesModule());
             builder.RegisterModule(new EfModule(this.connectionString));
             builder.RegisterModule(new ServiceModule(this.email, this.emailPassword, this.lockTime));

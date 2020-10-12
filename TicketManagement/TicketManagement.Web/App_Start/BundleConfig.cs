@@ -1,8 +1,8 @@
 ﻿using System.Web.Optimization;
 
-namespace TicketManagement.Web.App_Start
+namespace TicketManagement.Web
 {
-    public class BundleConfig
+    public static class BundleConfig
     {
         public static void RegisterBundles(BundleCollection bundles)
         {
