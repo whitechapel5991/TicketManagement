@@ -16,6 +16,7 @@ namespace TicketManagement.IntegrationTests.Util
     internal class TestsIocModule : Module
     {
         private readonly string connectionString;
+        private readonly string hangFireConnectionString;
         private readonly string email;
         private readonly string emailPassword;
         private readonly int lockTime;
@@ -26,6 +27,7 @@ namespace TicketManagement.IntegrationTests.Util
             this.email = ConfigurationManager.AppSettings["Email"];
             this.emailPassword = ConfigurationManager.AppSettings["EmailPassword"];
             this.lockTime = int.Parse(ConfigurationManager.AppSettings["lockTime"]);
+            this.hangFireConnectionString = ConfigurationManager.ConnectionStrings["TicketManagementHangFire"].ConnectionString;
         }
 
         protected override void Load(ContainerBuilder builder)
@@ -36,7 +38,7 @@ namespace TicketManagement.IntegrationTests.Util
             }
 
             builder.RegisterModule(new EfModule(this.connectionString));
-            builder.RegisterModule(new ServiceModule(this.email, this.emailPassword, this.lockTime));
+            builder.RegisterModule(new ServiceModule(this.email, this.emailPassword, this.lockTime, this.connectionString));
         }
     }
 }

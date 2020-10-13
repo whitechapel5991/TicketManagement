@@ -5,13 +5,12 @@
 // </copyright>
 // ****************************************************************************
 
-using System.Reflection;
+using System;
 using Autofac;
-using Quartz;
-using Quartz.Impl;
+using Hangfire;
+using Hangfire.SqlServer;
 using TicketManagement.BLL.Infrastructure.Helpers;
 using TicketManagement.BLL.Infrastructure.Helpers.Interfaces;
-using TicketManagement.BLL.Infrastructure.Helpers.Jobs;
 using TicketManagement.BLL.Interfaces;
 using TicketManagement.BLL.Services;
 using TicketManagement.BLL.ServiceValidators;
@@ -25,12 +24,14 @@ namespace TicketManagement.BLL.Util
         private readonly string email;
         private readonly string emailPassword;
         private readonly int lockTime;
+        private readonly string hangFireConnectionString;
 
-        public ServiceModule(string email, string password, int lockTime)
+        public ServiceModule(string email, string password, int lockTime, string hangFireConnectionString)
         {
             this.email = email;
             this.emailPassword = password;
             this.lockTime = lockTime;
+            this.hangFireConnectionString = hangFireConnectionString;
         }
 
         protected override void Load(ContainerBuilder builder)
@@ -65,13 +66,10 @@ namespace TicketManagement.BLL.Util
 
             builder.RegisterType<OrderService>()
                 .As<IOrderService>()
-                .InstancePerLifetimeScope();
+                .InstancePerLifetimeScope()
+                .WithParameter(new NamedParameter("seatLockTimeMinutes", this.lockTime));
 
             // Helpers
-            builder.RegisterType<HtmlHelper>()
-              .As<IHtmlHelper>()
-              .InstancePerLifetimeScope();
-
             builder.RegisterType<GmailHelper>()
              .As<IEmailHelper>()
              .InstancePerLifetimeScope()
@@ -98,18 +96,28 @@ namespace TicketManagement.BLL.Util
               .As<IOrderValidator>()
               .InstancePerLifetimeScope();
 
-            // Schedule
-            builder.Register(x => new StdSchedulerFactory().GetScheduler().Result).As<IScheduler>();
-
-            // Schedule jobs
-            builder.RegisterAssemblyTypes(Assembly.GetExecutingAssembly()).Where(x => typeof(IJob).IsAssignableFrom(x));
-
-            builder.RegisterType<SeatUnlockScheduler>()
-                .As<ISeatUnlockScheduler>()
-                .InstancePerLifetimeScope()
-                .WithParameter(new NamedParameter("lockTime", this.lockTime));
+            // HangFire
+            this.HangFireConfig(this.hangFireConnectionString);
+            builder.RegisterType<BackgroundJobClient>().As<IBackgroundJobClient>().InstancePerLifetimeScope();
+            builder.Register(c => JobStorage.Current).As<JobStorage>().InstancePerLifetimeScope();
+            builder.RegisterType<SeatLocker>()
+                .As<ISeatLocker>()
+                .InstancePerLifetimeScope();
 
             builder.RegisterModule(new IdentityModule());
+        }
+
+        private void HangFireConfig(string connectionString)
+        {
+            GlobalConfiguration.Configuration
+                .UseSqlServerStorage(connectionString, new SqlServerStorageOptions
+                {
+                    CommandBatchMaxTimeout = TimeSpan.FromMinutes(1),
+                    SlidingInvisibilityTimeout = TimeSpan.FromMinutes(1),
+                    QueuePollInterval = TimeSpan.Zero,
+                    UseRecommendedIsolationLevel = true,
+                    DisableGlobalLocks = true,
+                });
         }
     }
 }

@@ -6,6 +6,7 @@
 // ****************************************************************************
 
 using Autofac;
+using Hangfire;
 
 namespace TicketManagement.IntegrationTests.Util
 {
@@ -16,7 +17,9 @@ namespace TicketManagement.IntegrationTests.Util
             var builder = new ContainerBuilder();
             builder.RegisterModule(new TestsIocModule());
 
-            return builder.Build();
+            var container = builder.Build();
+            GlobalConfiguration.Configuration.UseAutofacActivator(container);
+            return container;
         }
     }
 }
