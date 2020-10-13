@@ -6,6 +6,7 @@
 // ****************************************************************************
 
 using Autofac;
+using Hangfire;
 using NUnit.Framework;
 using TicketManagement.BLL.Interfaces;
 using Test = TicketManagement.IntegrationTests.TestBase.TestBase;
@@ -26,9 +27,12 @@ namespace TicketManagement.IntegrationTests.ServiceTests
         [Test]
         public void Create_AddNewUser_GetNewUserByName()
         {
-            var eventSeatId = 2;
+            using (var server = new BackgroundJobServer())
+            {
+                const int eventSeatId = 2;
 
-            this.orderService.AddToCart(eventSeatId, 1);
+                this.orderService.AddToCart(eventSeatId, 1);
+            }
         }
     }
 }
