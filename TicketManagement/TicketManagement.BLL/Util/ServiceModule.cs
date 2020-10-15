@@ -76,6 +76,10 @@ namespace TicketManagement.BLL.Util
              .WithParameter(new NamedParameter("email", this.email))
              .WithParameter(new NamedParameter("password", this.emailPassword));
 
+            builder.RegisterType<DataTimeHelper>()
+                .As<IDataTimeHelper>()
+                .InstancePerLifetimeScope();
+
             // Validators
             builder.RegisterType<VenueValidator>()
                 .As<IVenueValidator>()

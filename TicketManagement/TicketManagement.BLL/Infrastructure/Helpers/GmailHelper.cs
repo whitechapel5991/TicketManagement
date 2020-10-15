@@ -28,29 +28,22 @@ namespace TicketManagement.BLL.Infrastructure.Helpers
 
         public void SendEmail(string recipient, string subject, string htmlMessage)
         {
-            try
+            using (var mailMessage = new MailMessage())
             {
-                using (var mailMessage = new MailMessage())
+                mailMessage.From = new MailAddress(this.email);
+                mailMessage.To.Add(recipient);
+                mailMessage.Subject = subject;
+                mailMessage.IsBodyHtml = true;
+                mailMessage.Body = htmlMessage;
+                using (var smtp = new SmtpClient(Hostname, Port))
                 {
-                    mailMessage.From = new MailAddress(this.email);
-                    mailMessage.To.Add(recipient);
-                    mailMessage.Subject = subject;
-                    mailMessage.IsBodyHtml = true;
-                    mailMessage.Body = htmlMessage;
-                    using (var smtp = new SmtpClient(Hostname, Port))
-                    {
-                        smtp.EnableSsl = UseSsl;
-                        smtp.UseDefaultCredentials = false;
-                        smtp.Credentials = new NetworkCredential(this.email, this.emailPassword);
-                        smtp.DeliveryMethod = SmtpDeliveryMethod.Network;
-                        smtp.Timeout = 20000;
-                        smtp.Send(mailMessage);
-                    }
+                    smtp.EnableSsl = UseSsl;
+                    smtp.UseDefaultCredentials = false;
+                    smtp.Credentials = new NetworkCredential(this.email, this.emailPassword);
+                    smtp.DeliveryMethod = SmtpDeliveryMethod.Network;
+                    smtp.Timeout = 20000;
+                    smtp.Send(mailMessage);
                 }
-            }
-            catch (Exception ex)
-            {
-                throw ex;
             }
         }
     }
