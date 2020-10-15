@@ -29,13 +29,9 @@ namespace TicketManagement.UnitTests.ValidatorTests
 
         private AutoMock Mock { get; set; }
 
-        private Fixture Fixture { get; set; }
-
         [SetUp]
         public void Init()
         {
-            this.Fixture = new Fixture();
-
             var seats = new List<Seat>()
             {
                 new Seat() { Id = 1, AreaId = 1, Number = 1, Row = 1 },

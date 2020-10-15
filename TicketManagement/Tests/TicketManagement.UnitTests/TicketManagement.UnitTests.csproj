@@ -65,6 +65,9 @@
     <Reference Include="FluentAssertions, Version=5.10.3.0, Culture=neutral, PublicKeyToken=33f2691a05b67b6a, processorArchitecture=MSIL">
       <HintPath>..\..\packages\FluentAssertions.5.10.3\lib\net47\FluentAssertions.dll</HintPath>
     </Reference>
+    <Reference Include="Hangfire.Core, Version=1.7.15.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Hangfire.Core.1.7.15\lib\net46\Hangfire.Core.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.AspNet.Identity.Core, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\..\packages\Microsoft.AspNet.Identity.Core.2.2.3\lib\net45\Microsoft.AspNet.Identity.Core.dll</HintPath>
     </Reference>
@@ -77,8 +80,14 @@
     <Reference Include="Moq, Version=4.7.0.0, Culture=neutral, PublicKeyToken=69f491c39445e920, processorArchitecture=MSIL">
       <HintPath>..\..\packages\Moq.4.7.0\lib\net45\Moq.dll</HintPath>
     </Reference>
+    <Reference Include="Newtonsoft.Json, Version=4.5.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Newtonsoft.Json.5.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
     <Reference Include="nunit.framework, Version=3.12.0.0, Culture=neutral, PublicKeyToken=2638cd05610744eb, processorArchitecture=MSIL">
       <HintPath>..\..\packages\NUnit.3.12.0\lib\net45\nunit.framework.dll</HintPath>
+    </Reference>
+    <Reference Include="Owin, Version=1.0.0.0, Culture=neutral, PublicKeyToken=f0ebd12fd5e55cc5, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Owin.1.0\lib\net40\Owin.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Buffers, Version=4.0.3.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
@@ -143,11 +152,13 @@
     <Compile Include="ServiceTests\Identity\UserLoginServiceTests.cs" />
     <Compile Include="ServiceTests\Identity\UserServiceTests.cs" />
     <Compile Include="ServiceTests\LayoutServiceTests.cs" />
+    <Compile Include="ServiceTests\OrderServiceTests.cs" />
     <Compile Include="ServiceTests\SeatServiceTests.cs" />
     <Compile Include="ServiceTests\VenueServiceTests.cs" />
     <Compile Include="ValidatorTests\AreaValidatorTests.cs" />
     <Compile Include="ValidatorTests\EventValidatorTests.cs" />
     <Compile Include="ValidatorTests\LayoutValidatorTests.cs" />
+    <Compile Include="ValidatorTests\OrderValidatorTests.cs" />
     <Compile Include="ValidatorTests\SeatValidatorTests.cs" />
     <Compile Include="ValidatorTests\VenueValidatorTests.cs" />
   </ItemGroup>
