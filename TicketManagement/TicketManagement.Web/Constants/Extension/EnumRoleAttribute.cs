@@ -9,6 +9,6 @@ namespace TicketManagement.Web.Constants.Extension
             this.StringValue = stringValue;
         }
 
-        public string StringValue { get; private set; }
+        public string StringValue { get; }
     }
 }

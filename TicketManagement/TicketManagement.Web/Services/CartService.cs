@@ -34,7 +34,7 @@ namespace TicketManagement.Web.Services
 
         private CartViewModel MapToCartViewModel(List<Order> userCartOrders)
         {
-            var purchaseHistoryVM = new CartViewModel()
+            var purchaseHistoryVm = new CartViewModel()
             {
                 Orders = new List<OrderViewModel>(),
             };
@@ -54,7 +54,7 @@ namespace TicketManagement.Web.Services
                 //purchaseHistoryVM.Orders.Add(orderVm);
             }
 
-            return purchaseHistoryVM;
+            return purchaseHistoryVm;
         }
     }
 }

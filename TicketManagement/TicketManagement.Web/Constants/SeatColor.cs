@@ -2,7 +2,7 @@
 
 namespace TicketManagement.Web.Constants
 {
-    public class SeatColor
+    public static class SeatColor
     {
         public static string GetSeatColor(EventSeatState seatState)
         {

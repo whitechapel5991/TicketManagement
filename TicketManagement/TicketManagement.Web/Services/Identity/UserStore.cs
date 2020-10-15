@@ -99,7 +99,7 @@ namespace TicketManagement.Web.Services.Identity
 
         public Task<IList<UserLoginInfo>> GetLoginsAsync(IdentityUser user)
         {
-            return Task.Run(() => (IList<UserLoginInfo>)this.userLoginService.GetLoginsByUserId(user.Id).Select(x => this.GetUserLoginInfo(x)).ToList());
+            return Task.Run(() => (IList<UserLoginInfo>)this.userLoginService.GetLoginsByUserId(user.Id).Select(this.GetUserLoginInfo).ToList());
 
         }
 

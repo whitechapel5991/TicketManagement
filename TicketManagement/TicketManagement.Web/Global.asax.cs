@@ -27,9 +27,9 @@ namespace TicketManagement.Web
 
         protected void Application_BeginRequest()
         {
-            const string CookieLangName = "lang";
+            const string cookieLangName = "lang";
 
-            var cultureCookie = HttpContext.Current.Request.Cookies[CookieLangName];
+            var cultureCookie = HttpContext.Current.Request.Cookies[cookieLangName];
             var cultureName = cultureCookie != null ? cultureCookie.Value : Language.En.ToString();
 
             Language langEnum;

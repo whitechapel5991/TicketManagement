@@ -32,9 +32,7 @@ namespace TicketManagement.Web.Filters
         {
             var controllerName = routeData.Values["controller"];
             var actionName = routeData.Values["action"];
-            var message = String.Format("{0}- controller:{1} action:{2}", methodName,
-                                                                        controllerName,
-                                                                        actionName);
+            var message = $"{methodName}- controller:{controllerName} action:{actionName}";
 
             File.AppendAllText(HttpContext.Current.Server.MapPath("~/Log/LogActions.txt"), message);
         }

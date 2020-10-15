@@ -4,13 +4,7 @@ namespace TicketManagement.Web.Areas.EventManager
 {
     public class EventManagerAreaRegistration : AreaRegistration
     {
-        public override string AreaName
-        {
-            get
-            {
-                return "EventManager";
-            }
-        }
+        public override string AreaName => "EventManager";
 
         public override void RegisterArea(AreaRegistrationContext context)
         {

@@ -34,7 +34,7 @@ namespace TicketManagement.Web.Util
         {
             if (builder == null)
             {
-                throw new ArgumentNullException("builder");
+                throw new ArgumentNullException(nameof(builder));
             }
 
             builder.RegisterControllers(typeof(MvcApplication).Assembly);

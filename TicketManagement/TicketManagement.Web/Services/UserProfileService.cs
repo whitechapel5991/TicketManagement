@@ -69,7 +69,7 @@ namespace TicketManagement.Web.Services
 
         private PurchaseHistoryViewModel MapToPurchaseHistoryViewModel(List<Order> orderList)
         {
-            var purchaseHistoryVM = new PurchaseHistoryViewModel()
+            var purchaseHistoryVm = new PurchaseHistoryViewModel()
             {
                 Orders = new List<OrderViewModel>(),
             };
@@ -89,7 +89,7 @@ namespace TicketManagement.Web.Services
                 //purchaseHistoryVM.Orders.Add(orderVm);
             }
 
-            return purchaseHistoryVM;
+            return purchaseHistoryVm;
         }
 
         private IdentityUser UpdateIdentityUserModel(IdentityUser identityUser, EditUserProfileViewModel editUserProfile)
