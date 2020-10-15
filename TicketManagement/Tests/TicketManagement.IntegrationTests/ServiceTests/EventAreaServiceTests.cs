@@ -21,14 +21,12 @@ namespace TicketManagement.IntegrationTests.ServiceTests
     {
         private IEventAreaService eventAreaService;
         private IRepository<EventArea> eventAreaRepository;
-        private IRepository<EventSeat> eventSeatRepository;
 
         [SetUp]
         public void Init()
         {
             this.eventAreaService = this.Container.Resolve<IEventAreaService>();
             this.eventAreaRepository = this.Container.Resolve<IRepository<EventArea>>();
-            this.eventSeatRepository = this.Container.Resolve<IRepository<EventSeat>>();
         }
 
         [Test]

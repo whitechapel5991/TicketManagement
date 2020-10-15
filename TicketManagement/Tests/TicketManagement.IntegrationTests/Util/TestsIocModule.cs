@@ -27,7 +27,7 @@ namespace TicketManagement.IntegrationTests.Util
             this.email = ConfigurationManager.AppSettings["Email"];
             this.emailPassword = ConfigurationManager.AppSettings["EmailPassword"];
             this.lockTime = int.Parse(ConfigurationManager.AppSettings["lockTime"]);
-            this.hangFireConnectionString = ConfigurationManager.ConnectionStrings["TicketManagementHangFire"].ConnectionString;
+            this.hangFireConnectionString = ConfigurationManager.ConnectionStrings["TicketManagementTest"].ConnectionString;
         }
 
         protected override void Load(ContainerBuilder builder)
@@ -38,7 +38,7 @@ namespace TicketManagement.IntegrationTests.Util
             }
 
             builder.RegisterModule(new EfModule(this.connectionString));
-            builder.RegisterModule(new ServiceModule(this.email, this.emailPassword, this.lockTime, this.connectionString));
+            builder.RegisterModule(new ServiceModule(this.email, this.emailPassword, this.lockTime, this.hangFireConnectionString));
         }
     }
 }
