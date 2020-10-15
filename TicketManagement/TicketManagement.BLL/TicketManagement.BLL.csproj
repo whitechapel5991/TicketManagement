@@ -201,10 +201,14 @@
     <Compile Include="Exceptions\EventExceptions\LayoutHasSoldSeatAndCouldNotBeChangeException.cs" />
     <Compile Include="Exceptions\EventExceptions\SomeAreaHasNotPriceException.cs" />
     <Compile Include="Exceptions\LayoutExceptions\LayoutWithSameNameInTheVenueExistException.cs" />
-    <Compile Include="Exceptions\OrderExceptions\SeatCurrentlySoldOrBlocked.cs" />
+    <Compile Include="Exceptions\OrderExceptions\NotEnoughMoneyException.cs" />
+    <Compile Include="Exceptions\OrderExceptions\SeatCurrentlySoldOrBlockedException.cs" />
+    <Compile Include="Exceptions\OrderExceptions\SeatIsNotInTheBasketException.cs" />
     <Compile Include="Exceptions\SeatExceptions\SeatWithSameRowAndNumberInTheAreaExistException.cs" />
     <Compile Include="Exceptions\VenueExceptions\VenueWithThisNameExistException.cs" />
+    <Compile Include="Infrastructure\Helpers\DataTimeHelper.cs" />
     <Compile Include="Infrastructure\Helpers\GmailHelper.cs" />
+    <Compile Include="Infrastructure\Helpers\Interfaces\IDataTimeHelper.cs" />
     <Compile Include="Infrastructure\Helpers\Interfaces\IEmailHelper.cs" />
     <Compile Include="Infrastructure\Helpers\Interfaces\ISeatLocker.cs" />
     <Compile Include="Infrastructure\Helpers\SeatLocker.cs" />

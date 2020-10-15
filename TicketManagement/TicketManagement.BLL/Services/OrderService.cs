@@ -6,6 +6,7 @@
 // ****************************************************************************
 
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using Hangfire;
@@ -21,7 +22,7 @@ namespace TicketManagement.BLL.Services
 {
     internal class OrderService : IOrderService
     {
-        private static readonly Dictionary<int, string> JobIdList;
+        private static readonly ConcurrentDictionary<int, string> JobIdList;
         private readonly IRepository<Order> orderRepository;
         private readonly IRepository<EventSeat> eventSeatRepository;
         private readonly IRepository<EventArea> eventAreaRepository;
@@ -31,11 +32,12 @@ namespace TicketManagement.BLL.Services
         private readonly IEmailHelper emailHelper;
         private readonly IOrderValidator orderValidator;
         private readonly IBackgroundJobClient jobClient;
+        private readonly IDataTimeHelper dataTimeHelper;
         private readonly int seatLockTimeMinutes;
 
         static OrderService()
         {
-            JobIdList = new Dictionary<int, string>();
+            JobIdList = new ConcurrentDictionary<int, string>();
         }
 
         public OrderService(
@@ -48,6 +50,7 @@ namespace TicketManagement.BLL.Services
             IRepository<Layout> layoutRepository,
             IOrderValidator orderValidator,
             IBackgroundJobClient jobClient,
+            IDataTimeHelper dataTimeHelper,
             int seatLockTimeMinutes)
         {
             this.orderRepository = orderRepository;
@@ -60,59 +63,64 @@ namespace TicketManagement.BLL.Services
             this.orderValidator = orderValidator;
             this.jobClient = jobClient;
             this.seatLockTimeMinutes = seatLockTimeMinutes;
+            this.dataTimeHelper = dataTimeHelper;
         }
 
         public void AddToCart(int eventSeatId, int userId)
         {
             var newOrder = new Order()
             {
-                Date = DateTime.Now,
+                Date = this.dataTimeHelper.GetDateTimeNow(),
                 EventSeatId = eventSeatId,
                 UserId = userId,
             };
 
+            this.orderValidator.AddToCartValidation(newOrder);
+
             var eventSeat = this.eventSeatRepository.GetById(eventSeatId);
-            this.orderValidator.SeatIsBlocked(eventSeat);
             eventSeat.State = EventSeatState.InBasket;
             this.eventSeatRepository.Update(eventSeat);
 
             var orderId = this.orderRepository.Create(newOrder);
 
-            var jobId = this.jobClient.Schedule<ISeatLocker>(
+            var unlockJobId = this.jobClient.Schedule<ISeatLocker>(
                 x =>
                     x.UnlockSeat(orderId),
                 TimeSpan.FromMinutes(this.seatLockTimeMinutes));
 
-            JobIdList.Add(eventSeatId, jobId);
+            JobIdList.TryAdd(eventSeatId, unlockJobId);
         }
 
         public void Buy(int orderId)
         {
+            const string buyTicket = "Buy Ticket";
+            this.orderValidator.BuyValidation(orderId);
+
             var order = this.orderRepository.GetById(orderId);
             var eventSeat = this.eventSeatRepository.GetById(order.EventSeatId);
-            this.jobClient.Delete(JobIdList[eventSeat.Id]);
-            JobIdList.Remove(eventSeat.Id);
+            this.RemoveUnlockJob(eventSeat.Id);
             eventSeat.State = EventSeatState.Sold;
-            order.Date = DateTime.Now;
+            order.Date = this.dataTimeHelper.GetDateTimeNow();
             this.eventSeatRepository.Update(eventSeat);
             this.orderRepository.Update(order);
 
+            var eventAreaPrice = this.eventAreaRepository.GetById(eventSeat.EventAreaId).Price;
+            var user = this.userRepository.GetById(order.UserId);
+            user.Balance -= eventAreaPrice;
+            this.userRepository.Update(user);
+
             // Send letter
-            var eventArea = this.eventAreaRepository.GetById(eventSeat.EventAreaId);
-            var @event = this.eventRepository.GetById(eventArea.EventId);
-            var layout = this.layoutRepository.GetById(@event.LayoutId);
-            var eventHtml = this.GetEventHtml(eventSeat, eventArea, @event, layout);
-            var userEmail = this.userRepository.GetById(order.UserId).Email;
-            this.emailHelper.SendEmail(userEmail, @event.Name, eventHtml);
+            this.emailHelper.SendEmail(this.userRepository.GetById(order.UserId).Email, buyTicket, this.GetEventHtml(eventSeat));
         }
 
         public void DeleteFromCart(int orderId)
         {
+            this.orderValidator.DeleteFromCartValidation(orderId);
+
             var order = this.orderRepository.GetById(orderId);
             var eventSeat = this.eventSeatRepository.GetById(order.EventSeatId);
             eventSeat.State = EventSeatState.Free;
-            this.jobClient.Delete(JobIdList[eventSeat.Id]);
-            JobIdList.Remove(eventSeat.Id);
+            this.RemoveUnlockJob(eventSeat.Id);
             this.eventSeatRepository.Update(eventSeat);
             this.orderRepository.Delete(orderId);
         }
@@ -147,8 +155,12 @@ namespace TicketManagement.BLL.Services
                     select new Order { Id = userOrderQ.Id, Date = userOrderQ.Date, EventSeatId = userOrderQ.EventSeatId, UserId = userOrderQ.UserId }).ToList();
         }
 
-        private string GetEventHtml(EventSeat eventSeat, EventArea eventArea, Event @event, Layout layout)
+        private string GetEventHtml(EventSeat eventSeat)
         {
+            var eventArea = this.eventAreaRepository.GetById(eventSeat.EventAreaId);
+            var @event = this.eventRepository.GetById(eventArea.EventId);
+            var layout = this.layoutRepository.GetById(@event.LayoutId);
+
             const string htmlTableStart = "<table style=\"background: #ffffff; border-radius: 3px; width: 100%;\" > " +
                                           "<tr> " +
                                           "<td style=\"box-sizing: border-box; padding: 20px;\"> " +
@@ -178,6 +190,17 @@ namespace TicketManagement.BLL.Services
             htmlBody += htmlTableEnd;
 
             return htmlBody;
+        }
+
+        private void RemoveUnlockJob(int eventSeatId)
+        {
+            if (!JobIdList.ContainsKey(eventSeatId))
+            {
+                return;
+            }
+
+            this.jobClient.Delete(JobIdList[eventSeatId]);
+            JobIdList.TryRemove(eventSeatId, out _);
         }
     }
 }

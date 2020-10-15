@@ -10,8 +10,12 @@ using TicketManagement.DAL.Models;
 
 namespace TicketManagement.BLL.ServiceValidators.Interfaces
 {
-    public interface IOrderValidator : IServiceValidator<Order>
+    public interface IOrderValidator
     {
-        void SeatIsBlocked(EventSeat eventSeat);
+        void AddToCartValidation(Order newOrder);
+
+        void BuyValidation(int orderId);
+
+        void DeleteFromCartValidation(int orderId);
     }
 }
