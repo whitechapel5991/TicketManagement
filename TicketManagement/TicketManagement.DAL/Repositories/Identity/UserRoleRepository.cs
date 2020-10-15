@@ -21,9 +21,9 @@ namespace TicketManagement.DAL.Repositories.Identity
             this.DbSet = this.Context.Set<UserRole>();
         }
 
-        private TicketManagementContext Context { get; set; }
+        private TicketManagementContext Context { get; }
 
-        private DbSet<UserRole> DbSet { get; set; }
+        private DbSet<UserRole> DbSet { get; }
 
         public void Add(int userId, string roleName)
         {
