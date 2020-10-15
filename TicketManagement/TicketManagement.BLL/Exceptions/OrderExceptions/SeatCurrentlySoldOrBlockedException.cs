@@ -9,9 +9,9 @@ using System;
 
 namespace TicketManagement.BLL.Exceptions.OrderExceptions
 {
-    public class SeatCurrentlySoldOrBlocked : Exception
+    public class SeatCurrentlySoldOrBlockedException : Exception
     {
-        public SeatCurrentlySoldOrBlocked(string message)
+        public SeatCurrentlySoldOrBlockedException(string message)
             : base(message)
         {
         }
