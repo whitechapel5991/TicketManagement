@@ -77,6 +77,9 @@
     <Reference Include="Microsoft.Bcl.AsyncInterfaces, Version=1.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
       <HintPath>..\..\packages\Microsoft.Bcl.AsyncInterfaces.1.1.1\lib\net461\Microsoft.Bcl.AsyncInterfaces.dll</HintPath>
     </Reference>
+    <Reference Include="Microsoft.Web.Infrastructure, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Microsoft.Web.Infrastructure.1.0.0.0\lib\net40\Microsoft.Web.Infrastructure.dll</HintPath>
+    </Reference>
     <Reference Include="Moq, Version=4.7.0.0, Culture=neutral, PublicKeyToken=69f491c39445e920, processorArchitecture=MSIL">
       <HintPath>..\..\packages\Moq.4.7.0\lib\net45\Moq.dll</HintPath>
     </Reference>
@@ -128,6 +131,24 @@
     <Reference Include="System.Threading.Tasks.Extensions, Version=4.2.0.1, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
       <HintPath>..\..\packages\System.Threading.Tasks.Extensions.4.5.4\lib\net461\System.Threading.Tasks.Extensions.dll</HintPath>
     </Reference>
+    <Reference Include="System.Web.Helpers, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Microsoft.AspNet.WebPages.3.2.7\lib\net45\System.Web.Helpers.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Mvc, Version=5.2.7.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Microsoft.AspNet.Mvc.5.2.7\lib\net45\System.Web.Mvc.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Razor, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Microsoft.AspNet.Razor.3.2.7\lib\net45\System.Web.Razor.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.WebPages, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Microsoft.AspNet.WebPages.3.2.7\lib\net45\System.Web.WebPages.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.WebPages.Deployment, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Microsoft.AspNet.WebPages.3.2.7\lib\net45\System.Web.WebPages.Deployment.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.WebPages.Razor, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Microsoft.AspNet.WebPages.3.2.7\lib\net45\System.Web.WebPages.Razor.dll</HintPath>
+    </Reference>
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -142,19 +163,24 @@
     <Compile Include="FakeRepositories\UserLoginRepositoryFake.cs" />
     <Compile Include="FakeRepositories\UserRepositoryFake.cs" />
     <Compile Include="FakeRepositories\UserRoleRepositoryFake.cs" />
+    <Compile Include="MvcServicesTests\CartServiceTests.cs" />
+    <Compile Include="MvcServicesTests\EventManagerEventServiceTests.cs" />
+    <Compile Include="MvcServicesTests\EventServiceTests.cs" />
+    <Compile Include="MvcServicesTests\UserProfileServiceTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="ServiceTests\AreaServiceTests.cs" />
-    <Compile Include="ServiceTests\EventAreaServiceTests.cs" />
-    <Compile Include="ServiceTests\EventSeatServiceTests.cs" />
-    <Compile Include="ServiceTests\EventServiceTests.cs" />
-    <Compile Include="ServiceTests\Identity\RoleServiceTests.cs" />
-    <Compile Include="ServiceTests\Identity\UserClaimServiceTests.cs" />
-    <Compile Include="ServiceTests\Identity\UserLoginServiceTests.cs" />
-    <Compile Include="ServiceTests\Identity\UserServiceTests.cs" />
-    <Compile Include="ServiceTests\LayoutServiceTests.cs" />
-    <Compile Include="ServiceTests\OrderServiceTests.cs" />
-    <Compile Include="ServiceTests\SeatServiceTests.cs" />
-    <Compile Include="ServiceTests\VenueServiceTests.cs" />
+    <Compile Include="BllServicesTests\AreaServiceTests.cs" />
+    <Compile Include="BllServicesTests\EventAreaServiceTests.cs" />
+    <Compile Include="BllServicesTests\EventSeatServiceTests.cs" />
+    <Compile Include="BllServicesTests\EventServiceTests.cs" />
+    <Compile Include="BllServicesTests\Identity\RoleServiceTests.cs" />
+    <Compile Include="BllServicesTests\Identity\UserClaimServiceTests.cs" />
+    <Compile Include="BllServicesTests\Identity\UserLoginServiceTests.cs" />
+    <Compile Include="BllServicesTests\Identity\UserServiceTests.cs" />
+    <Compile Include="BllServicesTests\LayoutServiceTests.cs" />
+    <Compile Include="BllServicesTests\OrderServiceTests.cs" />
+    <Compile Include="BllServicesTests\SeatLockerTests.cs" />
+    <Compile Include="BllServicesTests\SeatServiceTests.cs" />
+    <Compile Include="BllServicesTests\VenueServiceTests.cs" />
     <Compile Include="ValidatorTests\AreaValidatorTests.cs" />
     <Compile Include="ValidatorTests\EventValidatorTests.cs" />
     <Compile Include="ValidatorTests\LayoutValidatorTests.cs" />
@@ -181,6 +207,10 @@
     <ProjectReference Include="..\..\TicketManagement.DAL\TicketManagement.DAL.csproj">
       <Project>{6adbb0c8-8a69-4f66-a817-fc79d2995799}</Project>
       <Name>TicketManagement.DAL</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\TicketManagement.Web\TicketManagement.Web.csproj">
+      <Project>{64fdd61c-a15c-46d4-b868-ba92462deb24}</Project>
+      <Name>TicketManagement.Web</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup />

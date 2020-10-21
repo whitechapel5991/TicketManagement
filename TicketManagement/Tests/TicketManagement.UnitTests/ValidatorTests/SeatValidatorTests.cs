@@ -9,7 +9,6 @@ using System;
 using System.Collections.Generic;
 using Autofac;
 using Autofac.Extras.Moq;
-using AutoFixture;
 using FluentAssertions;
 using NUnit.Framework;
 using TicketManagement.BLL.Exceptions.Base;
