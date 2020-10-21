@@ -19,26 +19,29 @@ namespace TicketManagement.Web.Services.Identity
         #region IRoleStore<IdentityRole, int> Members
         public Task CreateAsync(IdentityRole role)
         {
-            return Task.Run(() => this.roleService.Add(role.Name));
+            this.roleService.Add(role.Name);
+            return Task.CompletedTask;
         }
 
         public Task DeleteAsync(IdentityRole role)
         {
-            return Task.Run(() => this.roleService.Delete(role.Name));
+            this.roleService.Delete(role.Name);
+            return Task.CompletedTask;
         }
 
         public Task<IdentityRole> FindByIdAsync(int roleId)
         {
-            return Task.Run(() => this.GetIdentityRole(this.roleService.FindById(roleId)));
+            return Task.FromResult(this.GetIdentityRole(this.roleService.FindById(roleId)));
         }
 
         public Task<IdentityRole> FindByNameAsync(string roleName)
         {
-            return Task.Run(() => this.GetIdentityRole(this.roleService.FindByName(roleName)));
+            return Task.FromResult(this.GetIdentityRole(this.roleService.FindByName(roleName)));
         }
         public Task UpdateAsync(IdentityRole role)
         {
-            return Task.Run(() => this.roleService.Update(this.GetRole(role)));
+            this.roleService.Update(this.GetRole(role));
+            return Task.CompletedTask;
         }
         #endregion
 

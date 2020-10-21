@@ -1,5 +1,7 @@
 ﻿using System.Collections.Generic;
 using TicketManagement.Web.Areas.EventManager.Data;
+using TicketManagement.Web.Models.Event;
+using EventViewModel = TicketManagement.Web.Areas.EventManager.Data.EventViewModel;
 
 namespace TicketManagement.Web.Interfaces
 {
@@ -14,5 +16,7 @@ namespace TicketManagement.Web.Interfaces
         void PublishEvent(int id);
         AreaViewModel GetAreaViewModel(int areaId);
         void ChangeCost(AreaViewModel areaVm);
+        EventDetailViewModel GetEventDetailViewModel(int eventId);
+        EventAreaDetailViewModel GetEventAreaDetailViewModel(int eventAreaId);
     }
 }

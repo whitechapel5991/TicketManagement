@@ -1,14 +1,13 @@
-﻿using TicketManagement.Web.Models.Account;
-using TicketManagement.Web.Services.Identity;
+﻿using System.Threading.Tasks;
+using TicketManagement.Web.Models.Account;
 
 namespace TicketManagement.Web.Interfaces
 {
     public interface IAccountService
     {
-        bool IsUserEventManager(int userId);
+        Task<bool> IsUserEventManagerAsync(int userId);
         void SignOut();
-        void SignIn(string userName, string password);
-        void RegisterUser(IdentityUser user);
-        IdentityUser MapIdentityUser(RegisterViewModel viewModel);
+        Task<int> SignInAsync(string userName, string password);
+        Task RegisterUserAsync(RegisterViewModel registerVm);
     }
 }

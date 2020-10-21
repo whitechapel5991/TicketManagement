@@ -28,27 +28,30 @@ namespace TicketManagement.Web.Services.Identity
 
         public Task CreateAsync(IdentityUser user)
         {
-            return Task.Run(() => this.userService.Add(this.GetTicketManagementUser(user)));
+            this.userService.Add(this.GetTicketManagementUser(user));
+            return Task.CompletedTask;
         }
 
         public Task DeleteAsync(IdentityUser user)
         {
-            return Task.Run(() => this.userService.Delete(this.GetTicketManagementUser(user)));
+            this.userService.Delete(this.GetTicketManagementUser(user));
+            return Task.CompletedTask;
         }
 
         public Task<IdentityUser> FindByIdAsync(int userId)
         {
-            return Task.Run(() => this.GetIdentityUser(this.userService.FindById(userId)));
+            return Task.FromResult(this.GetIdentityUser(this.userService.FindById(userId)));
         }
 
         public Task<IdentityUser> FindByNameAsync(string userName)
         {
-            return Task.Run(() => this.GetIdentityUser(this.userService.FindByName(userName)));
+            return Task.FromResult(this.GetIdentityUser(this.userService.FindByName(userName)));
         }
 
         public Task UpdateAsync(IdentityUser user)
         {
-            return Task.Run(() => this.userService.Update(this.GetTicketManagementUser(user)));
+            this.userService.Update(this.GetTicketManagementUser(user));
+            return Task.CompletedTask;
         }
 
         #endregion
@@ -66,17 +69,19 @@ namespace TicketManagement.Web.Services.Identity
 
         public Task AddClaimAsync(IdentityUser user, Claim claim)
         {
-            return Task.Run(() => this.userClaimService.Add(user.Id, claim));
+            this.userClaimService.Add(user.Id, claim);
+            return Task.CompletedTask;
         }
 
         public Task<IList<Claim>> GetClaimsAsync(IdentityUser user)
         {
-            return Task.Run(() => this.userClaimService.GetClaims(user.Id));
+            return Task.FromResult(this.userClaimService.GetClaims(user.Id));
         }
 
         public Task RemoveClaimAsync(IdentityUser user, Claim claim)
         {
-            return Task.Run(() => this.userClaimService.Remove(user.Id, claim));
+            this.userClaimService.Remove(user.Id, claim);
+            return Task.CompletedTask;
         }
 
         #endregion
@@ -85,50 +90,51 @@ namespace TicketManagement.Web.Services.Identity
 
         public Task AddLoginAsync(IdentityUser user, UserLoginInfo login)
         {
-            return Task.Run(() => this.userLoginService.Add(this.GetUserLogin(user, login)));
+            this.userLoginService.Add(this.GetUserLogin(user, login));
+            return Task.CompletedTask;
         }
 
         public Task<IdentityUser> FindAsync(UserLoginInfo login)
         {
-            return Task.Run(() =>
-            {
-                var userLoginKey = this.userLoginService.Find(this.GetUserLoginKey(login));
-                return this.GetIdentityUser(this.userService.FindById(userLoginKey.UserId));
-            });
+            var userLoginKey = this.userLoginService.Find(this.GetUserLoginKey(login));
+            return Task.FromResult(this.GetIdentityUser(this.userService.FindById(userLoginKey.UserId)));
         }
 
         public Task<IList<UserLoginInfo>> GetLoginsAsync(IdentityUser user)
         {
-            return Task.Run(() => (IList<UserLoginInfo>)this.userLoginService.GetLoginsByUserId(user.Id).Select(this.GetUserLoginInfo).ToList());
+            return Task.FromResult((IList<UserLoginInfo>)this.userLoginService.GetLoginsByUserId(user.Id).Select(this.GetUserLoginInfo));
 
         }
 
         public Task RemoveLoginAsync(IdentityUser user, UserLoginInfo login)
         {
-            return Task.Run(() => this.userLoginService.DeleteUserLogin(user.Id, this.GetUserLogin(user, login)));
+            this.userLoginService.DeleteUserLogin(user.Id, this.GetUserLogin(user, login));
+            return Task.CompletedTask;
         }
         #endregion
 
         #region IUserRoleStore<IdentityUser, int> Members
         public Task AddToRoleAsync(IdentityUser user, string roleName)
         {
-            return Task.Run(() => this.userService.AddRole(user.Id, roleName));
+            this.userService.AddRole(user.Id, roleName);
+            return Task.CompletedTask;
 
         }
 
         public Task<IList<string>> GetRolesAsync(IdentityUser user)
         {
-            return Task.Run(() => this.userService.GetRoles(user.Id));
+            return Task.FromResult(this.userService.GetRoles(user.Id));
         }
 
         public Task<bool> IsInRoleAsync(IdentityUser user, string roleName)
         {
-            return Task.Run(() => this.userService.IsRole(user.Id, roleName));
+            return Task.FromResult(this.userService.IsRole(user.Id, roleName));
         }
 
         public Task RemoveFromRoleAsync(IdentityUser user, string roleName)
         {
-            return Task.Run(() => this.userService.DeleteRole(user.Id, roleName));
+            this.userService.DeleteRole(user.Id, roleName);
+            return Task.CompletedTask;
         }
         #endregion
 
@@ -136,17 +142,18 @@ namespace TicketManagement.Web.Services.Identity
 
         public Task<string> GetPasswordHashAsync(IdentityUser user)
         {
-            return Task.Run(() => this.userService.GetPasswordHash(user.Id));
+            return Task.FromResult(this.userService.GetPasswordHash(user.Id));
         }
 
         public Task<bool> HasPasswordAsync(IdentityUser user)
         {
-            return Task.Run(() => this.userService.HasPassword(user.Id));
+            return Task.FromResult(this.userService.HasPassword(user.Id));
         }
 
         public Task SetPasswordHashAsync(IdentityUser user, string passwordHash)
         {
-            return Task.Run(() => this.userService.SetPassword(user.Id, passwordHash));
+            this.userService.SetPassword(user.Id, passwordHash);
+            return Task.CompletedTask;
         }
         #endregion
 
@@ -154,12 +161,13 @@ namespace TicketManagement.Web.Services.Identity
 
         public Task<string> GetSecurityStampAsync(IdentityUser user)
         {
-            return Task.Run(() => this.userService.GetSecurityStamp(user.Id));
+            return Task.FromResult(this.userService.GetSecurityStamp(user.Id));
         }
 
         public Task SetSecurityStampAsync(IdentityUser user, string stamp)
         {
-            return Task.Run(() => this.userService.SetSecurityStamp(user.Id, stamp));
+            this.userService.SetSecurityStamp(user.Id, stamp);
+            return Task.CompletedTask;
         }
         #endregion
 

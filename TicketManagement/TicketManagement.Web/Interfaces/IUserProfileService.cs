@@ -1,4 +1,5 @@
-﻿using TicketManagement.Web.Models.UserProfile;
+﻿using System.Threading.Tasks;
+using TicketManagement.Web.Models.UserProfile;
 
 namespace TicketManagement.Web.Interfaces
 {
@@ -6,9 +7,9 @@ namespace TicketManagement.Web.Interfaces
     {
         UserProfileViewModel GetUserProfileViewModel(string userName);
         EditUserProfileViewModel GetEditUserProfileViewModel(string userName);
-        void Update(string userName, EditUserProfileViewModel userProfile);
-        void ChangePassword(string userName, UserPasswordViewModel userPasswordModel);
-        BalanceViewModel GetBalanceViewModel(string userName);
+        Task UpdateAsync(string userName, EditUserProfileViewModel userProfile);
+        Task ChangePasswordAsync(string userName, UserPasswordViewModel userPasswordModel);
+        Task<BalanceViewModel> GetBalanceViewModelAsync(string userName);
         PurchaseHistoryViewModel GetPurchaseHistoryViewModel(string userName);
     }
 }

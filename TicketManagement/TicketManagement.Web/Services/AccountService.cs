@@ -1,4 +1,5 @@
 ﻿using System.Linq;
+using System.Threading.Tasks;
 using Microsoft.AspNet.Identity;
 using Microsoft.Owin.Security;
 using TicketManagement.Web.Constants;
@@ -22,26 +23,27 @@ namespace TicketManagement.Web.Services
             this.authenticationManager = authenticationManager;
         }
 
-        public void SignIn(string userName, string password)
+        public async Task<int> SignInAsync(string userName, string password)
         {
-            var user = this.userManager.FindAsync(userName, password).Result;
+            var user = await this.userManager.FindAsync(userName, password);
 
             if (user == null)
             {
                 throw new UserNameOrPasswordWrongException(Resources.TicketManagementResource.WrongCredentials);
             }
 
-            var claimIdentity = userManager.CreateIdentityAsync(user,
-                DefaultAuthenticationTypes.ApplicationCookie).Result;
+            var claimIdentity = await userManager.CreateIdentityAsync(user,
+                DefaultAuthenticationTypes.ApplicationCookie);
 
             this.authenticationManager.SignOut();
             this.authenticationManager.SignIn(claimIdentity);
+            return user.Id;
         }
 
-        public bool IsUserEventManager(int userId)
+        public async Task<bool> IsUserEventManagerAsync(int userId)
         {
-            return this.userManager.GetRolesAsync(userId).Result
-                .Any(x => x == Roles.UserManager.GetStringValue());
+            var roles = await this.userManager.GetRolesAsync(userId);
+            return roles.Any(x => x == Roles.UserManager.GetStringValue());
         }
 
         public void SignOut()
@@ -49,16 +51,17 @@ namespace TicketManagement.Web.Services
             this.authenticationManager.SignOut(DefaultAuthenticationTypes.ApplicationCookie);
         }
 
-        public void RegisterUser(IdentityUser user)
+        public async Task RegisterUserAsync(RegisterViewModel registerVm)
         {
-            var registerResult = this.userManager.Create(user);
+            var user = this.MapIdentityUser(registerVm);
+            var registerResult = await this.userManager.CreateAsync(user);
             if (!registerResult.Succeeded)
             {
                 throw new RegisterUserWrongDataException(string.Join(", ", registerResult.Errors));
             }
         }
 
-        public IdentityUser MapIdentityUser(RegisterViewModel viewModel)
+        private IdentityUser MapIdentityUser(RegisterViewModel viewModel)
         {
             return new IdentityUser
             {

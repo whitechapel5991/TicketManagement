@@ -5,6 +5,8 @@ using TicketManagement.BLL.Interfaces;
 using TicketManagement.DAL.Models;
 using TicketManagement.Web.Areas.EventManager.Data;
 using TicketManagement.Web.Interfaces;
+using TicketManagement.Web.Models.Event;
+using EventViewModel = TicketManagement.Web.Areas.EventManager.Data.EventViewModel;
 using IEventService = TicketManagement.BLL.Interfaces.IEventService;
 
 namespace TicketManagement.Web.Services
@@ -14,15 +16,18 @@ namespace TicketManagement.Web.Services
         private readonly IEventService eventService;
         private readonly ILayoutService layoutService;
         private readonly IEventAreaService eventAreaService;
+        private readonly IEventSeatService eventSeatService;
 
         public EventManagerEventService(
             IEventService eventService,
             ILayoutService layoutService,
-            IEventAreaService eventAreaService)
+            IEventAreaService eventAreaService,
+            IEventSeatService eventSeatService)
         {
             this.eventService = eventService;
             this.layoutService = layoutService;
             this.eventAreaService = eventAreaService;
+            this.eventSeatService = eventSeatService;
         }
 
         public List<IndexEventViewModel> GetIndexEventViewModels()
@@ -103,11 +108,10 @@ namespace TicketManagement.Web.Services
 
         public AreaViewModel GetAreaViewModel(int areaId)
         {
-            var areaCost = this.eventAreaService.GetEventArea(areaId).Price;
             return new AreaViewModel
             {
                 EventAreaId = areaId,
-                Price = areaCost,
+                Price = this.eventAreaService.GetEventArea(areaId).Price,
             };
         }
 
@@ -118,9 +122,61 @@ namespace TicketManagement.Web.Services
             this.eventAreaService.UpdateEventArea(area);
         }
 
+        public EventDetailViewModel GetEventDetailViewModel(int eventId)
+        {
+            var eventDetails = this.eventService.GetEvent(eventId);
+            var layout = this.layoutService.GetLayout(eventDetails.LayoutId);
+            var eventAreas = this.eventAreaService.GetEventAreasByEventId(eventId);
+
+            var eventDetailVm = new EventDetailViewModel
+            {
+                Name = eventDetails.Name,
+                Description = eventDetails.Description,
+                BeginDate = eventDetails.BeginDate,
+                EndDate = eventDetails.EndDate,
+                LayoutName = layout.Name,
+                EventAreas = new List<EventAreaViewModel>(),
+            };
+
+            foreach (var eventArea in eventAreas)
+            {
+                eventDetailVm.EventAreas.Add(this.MapToEventAreaViewModel(eventArea));
+            }
+
+            return eventDetailVm;
+        }
+
+        public EventAreaDetailViewModel GetEventAreaDetailViewModel(int eventAreaId)
+        {
+            var eventArea = this.eventAreaService.GetEventArea(eventAreaId);
+            var eventSeats = this.eventSeatService.GetEventSeatsByEventAreaId(eventAreaId);
+
+            var eventAreaDetailVm = new EventAreaDetailViewModel
+            {
+                EventArea = this.MapToEventAreaViewModel(eventArea),
+                EventId = eventArea.EventId,
+                EventSeats = new List<EventSeatViewModel>(),
+            };
+
+            foreach (var eventSeat in eventSeats)
+            {
+                var eventSeatVm = new EventSeatViewModel
+                {
+                    Id = eventSeat.Id,
+                    Row = eventSeat.Row,
+                    Number = eventSeat.Number,
+                    State = eventSeat.State,
+                };
+
+                eventAreaDetailVm.EventSeats.Add(eventSeatVm);
+            }
+
+            return eventAreaDetailVm;
+        }
+
         private List<IndexEventViewModel> MapToIndexEventViewModel(List<Event> eventList)
         {
-            var layouts = this.layoutService.GetLayouts().Distinct().ToDictionary(x => x.Id, x => x.Name);
+            var layouts = this.layoutService.GetLayoutsByLayoutIds(eventList.Select(x => x.LayoutId).ToArray()).Distinct().ToDictionary(x => x.Id, x => x.Name);
 
             return eventList.Select(eventDto => new IndexEventViewModel
             {
@@ -134,8 +190,19 @@ namespace TicketManagement.Web.Services
                 Name = eventDto.Name,
                 Published = eventDto.Published,
                 LayoutName = layouts[eventDto.LayoutId],
-            })
-                .ToList();
+            }).ToList();
+        }
+
+        private EventAreaViewModel MapToEventAreaViewModel(EventArea eventArea)
+        {
+            return new EventAreaViewModel
+            {
+                Id = eventArea.Id,
+                Description = eventArea.Description,
+                CoordinateX = eventArea.CoordinateX,
+                CoordinateY = eventArea.CoordinateY,
+                Price = eventArea.Price,
+            };
         }
     }
 }

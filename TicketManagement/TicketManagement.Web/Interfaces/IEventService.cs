@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Security.Claims;
 using TicketManagement.Web.Models.Event;
 
 namespace TicketManagement.Web.Interfaces
@@ -7,6 +6,10 @@ namespace TicketManagement.Web.Interfaces
     public interface IEventService
     {
         IEnumerable<EventViewModel> GetPublishEvents();
-        void AddToCart(int seatId, ClaimsIdentity claimIDentity);
+        void AddToCart(int seatId, int userId);
+
+        EventDetailViewModel GetEventDetailViewModel(int eventId);
+
+        EventAreaDetailViewModel GetEventAreaDetailViewModel(int eventAreaId);
     }
 }

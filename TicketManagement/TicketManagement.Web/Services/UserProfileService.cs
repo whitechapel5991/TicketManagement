@@ -1,8 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using Microsoft.AspNet.Identity;
+using System.Threading.Tasks;
 using TicketManagement.BLL.Interfaces;
-using TicketManagement.BLL.Interfaces.Identity;
 using TicketManagement.DAL.Models;
 using TicketManagement.Web.Constants;
 using TicketManagement.Web.Interfaces;
@@ -14,19 +15,23 @@ namespace TicketManagement.Web.Services
     public class UserProfileService : IUserProfileService
     {
         private readonly UserManager<IdentityUser, int> userManager;
-        private readonly IUserService userService;
         private readonly IOrderService orderService;
         private readonly IEventSeatService eventSeatService;
+        private readonly IEventAreaService eventAreaService;
+        private readonly BLL.Interfaces.IEventService eventService;
 
-        public UserProfileService(UserManager<IdentityUser, int> userManager,
+        public UserProfileService(
+            UserManager<IdentityUser, int> userManager,
             IOrderService orderService,
             IEventSeatService eventSeatService,
-            IUserService userService)
+            IEventAreaService eventAreaService, 
+            BLL.Interfaces.IEventService eventService)
         {
             this.userManager = userManager;
-            this.userService = userService;
             this.orderService = orderService;
             this.eventSeatService = eventSeatService;
+            this.eventAreaService = eventAreaService;
+            this.eventService = eventService;
         }
 
         public UserProfileViewModel GetUserProfileViewModel(string userName)
@@ -39,22 +44,22 @@ namespace TicketManagement.Web.Services
             return this.MapToEditUserProfileViewModel(this.userManager.FindByName(userName));
         }
 
-        public void Update(string userName, EditUserProfileViewModel userProfile)
+        public async Task UpdateAsync(string userName, EditUserProfileViewModel userProfile)
         {
-            var user = this.userManager.FindByName(userName);
+            var user = await this.userManager.FindByNameAsync(userName);
 
-            this.userManager.UpdateAsync(this.UpdateIdentityUserModel(user, userProfile));
+            await this.userManager.UpdateAsync(this.UpdateIdentityUserModel(user, userProfile));
         }
 
-        public void ChangePassword(string userName, UserPasswordViewModel userPasswordModel)
+        public async Task ChangePasswordAsync(string userName, UserPasswordViewModel userPasswordModel)
         {
-            var user = this.userManager.FindByName(userName);
-            this.userManager.ChangePasswordAsync(user.Id, userPasswordModel.OldPassword, userPasswordModel.Password);
+            var user = await this.userManager.FindByNameAsync(userName);
+            await this.userManager.ChangePasswordAsync(user.Id, userPasswordModel.OldPassword, userPasswordModel.Password);
         }
 
-        public BalanceViewModel GetBalanceViewModel(string userName)
+        public async Task<BalanceViewModel> GetBalanceViewModelAsync(string userName)
         {
-            var user = this.userManager.FindByName(userName);
+            var user = await this.userManager.FindByNameAsync(userName);
 
             return new BalanceViewModel
             {
@@ -64,7 +69,7 @@ namespace TicketManagement.Web.Services
 
         public PurchaseHistoryViewModel GetPurchaseHistoryViewModel(string userName)
         {
-            return this.MapToPurchaseHistoryViewModel(this.orderService.GetHistoryOrdersByName(userName));
+            return this.MapToPurchaseHistoryViewModel(this.orderService.GetHistoryOrdersByName(userName).ToList());
         }
 
         private PurchaseHistoryViewModel MapToPurchaseHistoryViewModel(List<Order> orderList)
@@ -74,19 +79,35 @@ namespace TicketManagement.Web.Services
                 Orders = new List<OrderViewModel>(),
             };
 
+            var eventSeatIdArray = orderList.Select(x => x.EventSeatId).Distinct().ToArray();
+
+            var eventSeats = this.eventSeatService.GetEventSeatsByEventSeatIds(eventSeatIdArray).Distinct().ToList();
+
+            var eventAreas = this.eventAreaService.GetEventAreasByEventSeatIds(eventSeatIdArray).Distinct().ToList();
+                
+            // Event Area dictionary, Key is event seats array in cart which belong to the event area.
+            var eventAreasDictionary = eventAreas.ToDictionary(x => eventSeats.Where(y => y.EventAreaId == x.Id).Select(z => z.Id), x => x);
+
+            var events = this.eventService.GetEventsByEventSeatIds(eventSeatIdArray).Distinct().ToList();
+            
+            // Event dictionary, Key is event seats array in cart which belong to the event.
+            var eventDictionary = events.ToDictionary(x => eventSeats.Where(y => eventAreas.Any(z => z.EventId == x.Id && y.EventAreaId == z.Id)).Select(z => z.Id), x=> x);
+
+
             foreach (var order in orderList)
             {
-                //var @event = this.eventSeatService.GetEventByEventSeatId(order.EventSeatId);
+                var eventKey = eventDictionary.Keys.First(x => x.Any(z => z == order.EventSeatId));
+                var eventAreaKey = eventAreasDictionary.Keys.First(x => x.Any(z => z == order.EventSeatId));
 
-                //var orderVm = new OrderViewModel
-                //{
-                //    DatePurchase = order.Date,
-                //    TicketCost = this.eventSeatService.GetSeatCost(order.EventSeatId),
-                //    EventName = @event.Name,
-                //    EventDescription = @event.Description,
-                //};
+                var orderVm = new OrderViewModel
+                {
+                    DatePurchase = order.Date,
+                    TicketCost = eventAreasDictionary[eventAreaKey].Price,
+                    EventName = eventDictionary[eventKey].Name,
+                    EventDescription = eventDictionary[eventKey].Description,
+                };
 
-                //purchaseHistoryVM.Orders.Add(orderVm);
+                purchaseHistoryVm.Orders.Add(orderVm);
             }
 
             return purchaseHistoryVm;
