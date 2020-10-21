@@ -5,7 +5,6 @@
 // </copyright>
 // ****************************************************************************
 
-using TicketManagement.BLL.ServiceValidators.Base;
 using TicketManagement.DAL.Models;
 
 namespace TicketManagement.BLL.ServiceValidators.Interfaces

@@ -187,9 +187,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Dto\EventAreaDto.cs" />
-    <Compile Include="Dto\EventDto.cs" />
-    <Compile Include="Dto\EventSeatDto.cs" />
     <Compile Include="Exceptions\AreaExceptions\AreaWithSameDescriptionInTheLayoutExistException.cs" />
     <Compile Include="Exceptions\Base\EntityDoesNotExistException.cs" />
     <Compile Include="Exceptions\EventExceptions\BeginDateLongerThenEndDateException.cs" />
