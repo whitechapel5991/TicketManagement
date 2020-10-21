@@ -6,6 +6,7 @@
 // ****************************************************************************
 
 using System.Collections.Generic;
+using System.Linq;
 using TicketManagement.BLL.Interfaces;
 using TicketManagement.DAL.Models;
 using TicketManagement.DAL.Repositories.Base;
@@ -37,6 +38,16 @@ namespace TicketManagement.BLL.Services
         public IEnumerable<EventSeat> GetEventSeats()
         {
             return this.eventSeatRepository.GetAll();
+        }
+
+        public IEnumerable<EventSeat> GetEventSeatsByEventSeatIds(int[] idArray)
+        {
+            return this.eventSeatRepository.GetAll().Where(x => idArray.Contains(x.Id));
+        }
+
+        public IEnumerable<EventSeat> GetEventSeatsByEventAreaId(int eventAreaId)
+        {
+            return this.eventSeatRepository.GetAll().Where(x => x.EventAreaId == eventAreaId);
         }
     }
 }

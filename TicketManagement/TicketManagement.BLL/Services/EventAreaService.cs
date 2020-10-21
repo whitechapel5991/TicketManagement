@@ -7,7 +7,6 @@
 
 using System.Collections.Generic;
 using System.Linq;
-using TicketManagement.BLL.Dto;
 using TicketManagement.BLL.Interfaces;
 using TicketManagement.DAL.Models;
 using TicketManagement.DAL.Repositories.Base;
@@ -50,44 +49,18 @@ namespace TicketManagement.BLL.Services
             return this.eventAreaRepository.GetById(eventAreaId).Price;
         }
 
-        // ?
-        public EventAreaDto GetEventAreaMap(int eventAreaId)
+        public IEnumerable<EventArea> GetEventAreasByEventSeatIds(int[] eventSeatIdArray)
         {
-            var eventArea = this.eventAreaRepository.GetById(eventAreaId);
+            var eventAreaIdArray = this.eventSeatRepository.GetAll()
+                .Where(x => eventSeatIdArray.Contains(x.Id))
+                .Select(x => x.EventAreaId);
 
-            var query = (from eventSeat in this.eventSeatRepository.GetAll().Where(x => x.EventAreaId == eventAreaId)
-                         select new EventSeat
-                         {
-                             Id = eventSeat.Id,
-                             Number = eventSeat.Number,
-                             Row = eventSeat.Row,
-                             State = eventSeat.State,
-                             EventAreaId = eventAreaId,
-                         }).ToList();
+            return this.eventAreaRepository.GetAll().Where(x => eventAreaIdArray.Contains(x.Id));
+        }
 
-            var eventAreaDto = new EventAreaDto()
-            {
-                Id = eventArea.Id,
-                CoordinateX = eventArea.CoordinateX,
-                CoordinateY = eventArea.CoordinateY,
-                Description = eventArea.Description,
-                Price = eventArea.Price,
-                Event = new EventDto { Id = eventArea.EventId },
-            };
-
-            var eventSeatDtoList = query.Select(eventSeat => new EventSeatDto()
-            {
-                Id = eventSeat.Id,
-                Number = eventSeat.Number,
-                Row = eventSeat.Row,
-                State = eventSeat.State,
-                EventArea = eventAreaDto,
-            })
-                .ToList();
-
-            eventAreaDto.EventSeats = eventSeatDtoList;
-
-            return eventAreaDto;
+        public IEnumerable<EventArea> GetEventAreasByEventId(int eventId)
+        {
+            return this.eventAreaRepository.GetAll().Where(x => x.EventId == eventId);
         }
     }
 }

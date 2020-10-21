@@ -21,5 +21,7 @@ namespace TicketManagement.BLL.Interfaces
         void UpdateLayout(Layout entity);
 
         void DeleteLayout(int id);
+
+        IEnumerable<Layout> GetLayoutsByLayoutIds(int[] layoutIdArray);
     }
 }

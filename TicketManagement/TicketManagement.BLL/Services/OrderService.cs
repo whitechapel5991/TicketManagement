@@ -125,34 +125,34 @@ namespace TicketManagement.BLL.Services
             this.orderRepository.Delete(orderId);
         }
 
-        public List<Order> GetCartOrdersById(int userId)
+        public IEnumerable<Order> GetCartOrdersById(int userId)
         {
             return (from userOrderQ in this.orderRepository.GetAll().Where(x => x.UserId == userId).ToArray()
                     join eventSeatQ in this.eventSeatRepository.GetAll().Where(x => x.State == EventSeatState.InBasket) on userOrderQ.EventSeatId equals eventSeatQ.Id
-                    select new Order { Id = userOrderQ.Id, Date = userOrderQ.Date, EventSeatId = userOrderQ.EventSeatId, UserId = userOrderQ.UserId }).ToList();
+                    select new Order { Id = userOrderQ.Id, Date = userOrderQ.Date, EventSeatId = userOrderQ.EventSeatId, UserId = userOrderQ.UserId }).AsEnumerable();
         }
 
-        public List<Order> GetCartOrdersByName(string userName)
+        public IEnumerable<Order> GetCartOrdersByName(string userName)
         {
             var userId = this.userRepository.FindByNormalizedUserName(userName).Id;
             return (from userOrderQ in this.orderRepository.GetAll().Where(x => x.UserId == userId).ToArray()
                     join eventSeatQ in this.eventSeatRepository.GetAll().Where(x => x.State == EventSeatState.InBasket) on userOrderQ.EventSeatId equals eventSeatQ.Id
-                    select new Order { Id = userOrderQ.Id, Date = userOrderQ.Date, EventSeatId = userOrderQ.EventSeatId, UserId = userOrderQ.UserId }).ToList();
+                    select new Order { Id = userOrderQ.Id, Date = userOrderQ.Date, EventSeatId = userOrderQ.EventSeatId, UserId = userOrderQ.UserId }).AsEnumerable();
         }
 
-        public List<Order> GetHistoryOrdersById(int userId)
+        public IEnumerable<Order> GetHistoryOrdersById(int userId)
         {
             return (from userOrderQ in this.orderRepository.GetAll().Where(x => x.UserId == userId).ToArray()
                     join eventSeatQ in this.eventSeatRepository.GetAll().Where(x => x.State == EventSeatState.Sold) on userOrderQ.EventSeatId equals eventSeatQ.Id
-                    select new Order { Id = userOrderQ.Id, Date = userOrderQ.Date, EventSeatId = userOrderQ.EventSeatId, UserId = userOrderQ.UserId }).ToList();
+                    select new Order { Id = userOrderQ.Id, Date = userOrderQ.Date, EventSeatId = userOrderQ.EventSeatId, UserId = userOrderQ.UserId }).AsEnumerable();
         }
 
-        public List<Order> GetHistoryOrdersByName(string userName)
+        public IEnumerable<Order> GetHistoryOrdersByName(string userName)
         {
             var userId = this.userRepository.FindByNormalizedUserName(userName).Id;
             return (from userOrderQ in this.orderRepository.GetAll().Where(x => x.UserId == userId).ToArray()
                     join eventSeatQ in this.eventSeatRepository.GetAll().Where(x => x.State == EventSeatState.Sold) on userOrderQ.EventSeatId equals eventSeatQ.Id
-                    select new Order { Id = userOrderQ.Id, Date = userOrderQ.Date, EventSeatId = userOrderQ.EventSeatId, UserId = userOrderQ.UserId }).ToList();
+                    select new Order { Id = userOrderQ.Id, Date = userOrderQ.Date, EventSeatId = userOrderQ.EventSeatId, UserId = userOrderQ.UserId }).AsEnumerable();
         }
 
         private string GetEventHtml(EventSeat eventSeat)

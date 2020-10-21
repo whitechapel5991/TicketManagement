@@ -6,7 +6,6 @@
 // ****************************************************************************
 
 using System.Collections.Generic;
-using TicketManagement.BLL.Dto;
 using TicketManagement.DAL.Models;
 
 namespace TicketManagement.BLL.Interfaces
@@ -19,8 +18,10 @@ namespace TicketManagement.BLL.Interfaces
 
         void UpdateEventArea(EventArea entity);
 
-        EventAreaDto GetEventAreaMap(int eventAreaId);
-
         decimal GetEventAreaCost(int seatId);
+
+        IEnumerable<EventArea> GetEventAreasByEventSeatIds(int[] eventSeatIdArray);
+
+        IEnumerable<EventArea> GetEventAreasByEventId(int eventId);
     }
 }

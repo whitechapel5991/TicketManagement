@@ -6,7 +6,6 @@
 // ****************************************************************************
 
 using System.Collections.Generic;
-using TicketManagement.BLL.Dto;
 using TicketManagement.DAL.Models;
 
 namespace TicketManagement.BLL.Interfaces
@@ -25,12 +24,12 @@ namespace TicketManagement.BLL.Interfaces
 
         void PublishEvent(int id);
 
-        EventDto GetEventMap(int eventId);
-
         IEnumerable<Event> GetPublishEvents();
 
         int GetAvailableSeatCount(int eventId);
 
         Event GetEventByEventSeatId(int eventSeatId);
+
+        IEnumerable<Event> GetEventsByEventSeatIds(int[] eventSeatIdArray);
     }
 }

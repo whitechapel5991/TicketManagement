@@ -17,5 +17,9 @@ namespace TicketManagement.BLL.Interfaces
         EventSeat GetEventSeat(int id);
 
         void UpdateEventSeat(EventSeat entity);
+
+        IEnumerable<EventSeat> GetEventSeatsByEventSeatIds(int[] idArray);
+
+        IEnumerable<EventSeat> GetEventSeatsByEventAreaId(int eventAreaId);
     }
 }

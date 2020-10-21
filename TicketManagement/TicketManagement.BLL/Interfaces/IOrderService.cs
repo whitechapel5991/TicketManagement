@@ -18,12 +18,12 @@ namespace TicketManagement.BLL.Interfaces
 
         void DeleteFromCart(int orderId);
 
-        List<Order> GetHistoryOrdersById(int userId);
+        IEnumerable<Order> GetHistoryOrdersById(int userId);
 
-        List<Order> GetHistoryOrdersByName(string userName);
+        IEnumerable<Order> GetHistoryOrdersByName(string userName);
 
-        List<Order> GetCartOrdersById(int userId);
+        IEnumerable<Order> GetCartOrdersById(int userId);
 
-        List<Order> GetCartOrdersByName(string userName);
+        IEnumerable<Order> GetCartOrdersByName(string userName);
     }
 }

@@ -6,6 +6,7 @@
 // ****************************************************************************
 
 using System.Collections.Generic;
+using System.Linq;
 using TicketManagement.BLL.Interfaces;
 using TicketManagement.BLL.ServiceValidators.Interfaces;
 using TicketManagement.DAL.Models;
@@ -51,6 +52,11 @@ namespace TicketManagement.BLL.Services
         public IEnumerable<Layout> GetLayouts()
         {
             return this.layoutRepository.GetAll();
+        }
+
+        public IEnumerable<Layout> GetLayoutsByLayoutIds(int[] layoutIdArray)
+        {
+            return this.layoutRepository.GetAll().Where(x => layoutIdArray.Contains(x.Id));
         }
     }
 }
