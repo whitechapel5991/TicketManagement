@@ -8,12 +8,14 @@ using TicketManagement.Web.Filters;
 
 namespace TicketManagement.Web.Controllers
 {
-    [LogCustomExceptionFilter]
+    [Log]
+    [LogCustomExceptionFilter(Order = 0)]
     [AllowAnonymous]
+    [RedirectExceptionFilter]
     public class LanguageController : Controller
     {
         private const string CookieLangName = "lang";
-        // GET: Language
+
         [HttpPost]
         public void ChangeLanguage(Language language)
         {

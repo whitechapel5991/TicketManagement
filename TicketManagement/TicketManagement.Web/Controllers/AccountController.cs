@@ -1,6 +1,7 @@
-﻿using System;
+﻿//using System;
+
+using System.Threading.Tasks;
 using System.Web.Mvc;
-using Microsoft.AspNet.Identity;
 using TicketManagement.Web.Exceptions.Account;
 using TicketManagement.Web.Filters;
 using TicketManagement.Web.Interfaces;
@@ -9,7 +10,8 @@ using TicketManagement.Web.Models.Account;
 namespace TicketManagement.Web.Controllers
 {
     [Log]
-    [LogCustomExceptionFilter]
+    [LogCustomExceptionFilter(Order = 0)]
+    [RedirectExceptionFilter]
     public class AccountController : Controller
     {
         private readonly IAccountService accountService;
@@ -27,15 +29,15 @@ namespace TicketManagement.Web.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Login(LoginViewModel model)
+        public async Task<ActionResult> Login(LoginViewModel model)
         {
             if (!this.ModelState.IsValid) return this.View(model);
 
             try
             {
-                this.accountService.SignIn(model.UserName, model.Password);
+                var userId = await this.accountService.SignInAsync(model.UserName, model.Password);
 
-                return this.accountService.IsUserEventManager(this.User.Identity.GetUserId<int>()) ?
+                return await this.accountService.IsUserEventManagerAsync(userId) ?
                     this.RedirectToAction("Index", new { area = "EventManager", controller = "Event" }) :
                     this.RedirectToAction("Events", "Event");
             }
@@ -63,7 +65,7 @@ namespace TicketManagement.Web.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Register(RegisterViewModel model)
+        public async Task<ActionResult> Register(RegisterViewModel model)
         {
             if (!this.ModelState.IsValid)
             {
@@ -72,7 +74,7 @@ namespace TicketManagement.Web.Controllers
 
             try
             {
-                this.accountService.RegisterUser(this.accountService.MapIdentityUser(model));
+                await this.accountService.RegisterUserAsync(model);
 
                 return this.RedirectToAction("Login", "Account");
             }

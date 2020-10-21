@@ -9,8 +9,9 @@ using IEventService = TicketManagement.BLL.Interfaces.IEventService;
 namespace TicketManagement.Web.Areas.EventManager.Controllers
 {
     [Log]
-    [LogCustomExceptionFilter]
+    [LogCustomExceptionFilter(Order = 0)]
     [Authorize(Roles = "event manager, admin")]
+    [RedirectExceptionFilter]
     public class EventController : Controller
     {
         private readonly IEventService eventService;
@@ -31,14 +32,12 @@ namespace TicketManagement.Web.Areas.EventManager.Controllers
             this.eventServiceEventManager = eventServiceEventManager;
         }
 
-        [HandleError]
         [HttpGet]
         public ActionResult Index()
         {
             return this.View(this.eventServiceEventManager.GetIndexEventViewModels());
         }
 
-        [HandleError]
         [HttpGet]
         public ActionResult Create()
         {
@@ -47,7 +46,6 @@ namespace TicketManagement.Web.Areas.EventManager.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [HandleError]
         public ActionResult Create(EventViewModel eventViewModel)
         {
             if (!this.ModelState.IsValid)
@@ -70,7 +68,6 @@ namespace TicketManagement.Web.Areas.EventManager.Controllers
             }
         }
 
-        [HandleError]
         [HttpGet]
         public ActionResult Update(int id)
         {
@@ -142,19 +139,15 @@ namespace TicketManagement.Web.Areas.EventManager.Controllers
         }
 
         [HttpGet]
-        public ActionResult EventDetail(int id)
+        public ActionResult EventDetail(int eventId)
         {
-            var eventDto = this.eventService.GetEventMap(id);
-
-            return this.View(eventDto);
+            return this.View(this.eventServiceEventManager.GetEventDetailViewModel(eventId));
         }
 
         [HttpGet]
-        public ActionResult EventAreaDetail(int id)
+        public ActionResult EventAreaDetail(int eventAreaId)
         {
-            var eventAreaDto = this.eventAreaService.GetEventAreaMap(id);
-
-            return this.View(eventAreaDto);
+            return this.View(this.eventServiceEventManager.GetEventAreaDetailViewModel(eventAreaId));
         }
 
         [HttpGet]

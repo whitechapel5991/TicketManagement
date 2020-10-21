@@ -1,4 +1,5 @@
-﻿using System.Web.Mvc;
+﻿using System.Threading.Tasks;
+using System.Web.Mvc;
 using TicketManagement.BLL.Interfaces.Identity;
 using TicketManagement.Web.Filters;
 using TicketManagement.Web.Interfaces;
@@ -7,7 +8,9 @@ using TicketManagement.Web.Models.UserProfile;
 namespace TicketManagement.Web.Controllers
 {
     [Log]
-    [LogCustomExceptionFilter]
+    [LogCustomExceptionFilter(Order = 0)]
+    [RedirectExceptionFilter]
+    [Authorize]
     public class UserProfileController : Controller
     {
         private readonly IUserService userService;
@@ -20,56 +23,50 @@ namespace TicketManagement.Web.Controllers
             this.userProfileService = userProfileService;
         }
 
-        [Authorize]
         [HttpGet]
         public ActionResult Index()
         {
             return this.View(this.userProfileService.GetUserProfileViewModel(this.User.Identity.Name));
         }
 
-        [Authorize]
         [HttpGet]
         public ActionResult Edit()
         {
             return this.View(this.userProfileService.GetEditUserProfileViewModel(this.User.Identity.Name));
         }
 
-        [Authorize]
         [HttpPost]
-        public ActionResult Edit(EditUserProfileViewModel userProfile)
+        public async Task<ActionResult> Edit(EditUserProfileViewModel userProfile)
         {
             if (!this.ModelState.IsValid) return this.View(userProfile);
 
-            this.userProfileService.Update(this.User.Identity.Name, userProfile);
+            await this.userProfileService.UpdateAsync(this.User.Identity.Name, userProfile);
             return this.RedirectToAction("Index");
         }
 
-        [Authorize]
         [HttpGet]
         public ActionResult ChangePassword()
         {
             return this.View(new UserPasswordViewModel());
         }
 
-        [Authorize]
         [HttpPost]
-        public ActionResult ChangePassword(UserPasswordViewModel userPasswordModel)
+        public async Task<ActionResult> ChangePassword(UserPasswordViewModel userPasswordModel)
         {
             if (!this.ModelState.IsValid) return this.View(userPasswordModel);
 
-            this.userProfileService.ChangePassword(this.User.Identity.Name, userPasswordModel);
+            await this.userProfileService.ChangePasswordAsync(this.User.Identity.Name, userPasswordModel);
 
             return this.View(userPasswordModel);
         }
 
         [Authorize(Roles = "user")]
         [HttpPost]
-        public ActionResult IncreaseBalance()
+        public async Task<ActionResult> IncreaseBalance()
         {
-            return this.View(this.userProfileService.GetBalanceViewModel(this.User.Identity.Name));
+            return this.View(await this.userProfileService.GetBalanceViewModelAsync(this.User.Identity.Name));
         }
 
-        [Authorize]
         [HttpPost]
         public ActionResult IncreaseBalance(BalanceViewModel balanceModel)
         {

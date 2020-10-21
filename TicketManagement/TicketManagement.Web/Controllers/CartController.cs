@@ -4,8 +4,10 @@ using TicketManagement.Web.Interfaces;
 
 namespace TicketManagement.Web.Controllers
 {
-    [LogCustomExceptionFilter]
+    [Log]
+    [LogCustomExceptionFilter(Order = 0)]
     [Authorize(Roles = "user")]
+    [RedirectExceptionFilter]
     public class CartController : Controller
     {
         private readonly ICartService cartService;

@@ -1,27 +1,21 @@
-﻿using System.Security.Claims;
-using System.Web.Mvc;
-using TicketManagement.BLL.Interfaces;
+﻿using System.Web.Mvc;
+using Microsoft.AspNet.Identity;
 using TicketManagement.Web.Filters;
-using IEventServiceWeb = TicketManagement.Web.Interfaces.IEventService;
+using TicketManagement.Web.Interfaces;
 
 namespace TicketManagement.Web.Controllers
 {
     [Log]
-    [LogCustomExceptionFilter]
+    [LogCustomExceptionFilter(Order = 0)]
+    [RedirectExceptionFilter]
     public class EventController : Controller
     {
         private readonly IEventService eventService;
-        private readonly IEventAreaService eventAreaService;
-        private readonly IEventServiceWeb eventWebService;
 
         public EventController(
-            IEventServiceWeb eventWebService,
-            IEventService eventService,
-            IEventAreaService eventAreaService
+            IEventService eventService
         )
         {
-            this.eventWebService = eventWebService;
-            this.eventAreaService = eventAreaService;
             this.eventService = eventService;
         }
 
@@ -29,25 +23,25 @@ namespace TicketManagement.Web.Controllers
         [AllowAnonymous]
         public ActionResult Events()
         {
-            return this.View(this.eventWebService.GetPublishEvents());
+            return this.View(this.eventService.GetPublishEvents());
         }
 
         [Authorize()]
-        public ActionResult EventDetail(int id)
+        public ActionResult EventDetail(int eventId)
         {
-            var eventDto = this.eventService.GetEventMap(id);
-            if (eventDto == default)
+            var eventAreaDetailVm = this.eventService.GetEventDetailViewModel(eventId);
+            if (eventAreaDetailVm == default)
             {
                 return this.HttpNotFound();
             }
 
-            return this.View(eventDto);
+            return this.View(eventAreaDetailVm);
         }
 
         [Authorize()]
-        public ActionResult EventAreaDetail(int id)
+        public ActionResult EventAreaDetail(int eventAreaId)
         {
-            var eventAreaDto = this.eventAreaService.GetEventAreaMap(id);
+            var eventAreaDto = this.eventService.GetEventAreaDetailViewModel(eventAreaId);
             if (eventAreaDto == null)
             {
                 return this.HttpNotFound();
@@ -60,7 +54,7 @@ namespace TicketManagement.Web.Controllers
         [HttpPost]
         public void AddToCart(int seatId)
         {
-            this.eventWebService.AddToCart(seatId, (ClaimsIdentity)this.User.Identity);
+            this.eventService.AddToCart(seatId, this.User.Identity.GetUserId<int>());
         }
     }
 }
