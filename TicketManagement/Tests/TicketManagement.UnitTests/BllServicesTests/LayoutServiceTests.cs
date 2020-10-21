@@ -166,5 +166,26 @@ namespace TicketManagement.UnitTests.ServiceTests
             // Assert
             actual.Should().BeEquivalentTo(expected);
         }
+
+        [Test]
+        public void GetLayoutsByLayoutIds_WhenGetLayoutsByLayoutIds_ShouldBeReturnLayoutListContainsOnlyTheseIds()
+        {
+            // Arrange
+            this.layoutService = this.Mock.Create<LayoutService>();
+            int[] layoutIdArray = { 1, 2, 100, 101 };
+            var expected = new List<Layout>
+            {
+                new Layout() { Id = 1, Name = "first", Description = "First layout", VenueId = 1 },
+                new Layout() { Id = 2, Name = "second", Description = "Second layout", VenueId = 1 },
+                new Layout() { Id = 100, Name = "forth2", Description = "Second layout", VenueId = 2 },
+                new Layout() { Id = 101, Name = "forth1", Description = "Second layout", VenueId = 2 },
+            };
+
+            // Act
+            var actual = this.layoutService.GetLayoutsByLayoutIds(layoutIdArray);
+
+            // Assert
+            actual.Should().BeEquivalentTo(expected);
+        }
     }
 }

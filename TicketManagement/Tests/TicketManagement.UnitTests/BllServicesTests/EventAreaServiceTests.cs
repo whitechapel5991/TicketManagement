@@ -165,5 +165,43 @@ namespace TicketManagement.UnitTests.ServiceTests
             // Assert
             actualEventAreaCost.Should().Be(expectedEventAreaCost);
         }
+
+        [Test]
+        public void GetEventAreasByEventSeatIds_WhenGetEventAreasByEventSeatIds_ShouldBeReturnAllEventAreaContainsTheseIds()
+        {
+            // Arrange
+            this.eventAreaService = this.Mock.Create<EventAreaService>();
+            int[] eventSeatIdArray = { 1, 2, 3, 8 };
+            var expected = new List<EventArea>
+            {
+                new EventArea() { Id = 1, CoordinateX = 1, CoordinateY = 1, Description = "First area event", EventId = 1, Price = 100 },
+                new EventArea() { Id = 2, CoordinateX = 1, CoordinateY = 1, Description = "Second area event", EventId = 1, Price = 100 },
+            };
+
+            // Act
+            var actual = this.eventAreaService.GetEventAreasByEventSeatIds(eventSeatIdArray);
+
+            // Assert
+            actual.Should().BeEquivalentTo(expected);
+        }
+
+        [Test]
+        public void GetEventAreasByEventId_WhenGetEventAreasByEventId_ShouldBeReturnAllEventAreaWithEventId()
+        {
+            // Arrange
+            this.eventAreaService = this.Mock.Create<EventAreaService>();
+            const int eventId = 1;
+            var expected = new List<EventArea>
+            {
+                new EventArea() { Id = 1, CoordinateX = 1, CoordinateY = 1, Description = "First area event", EventId = 1, Price = 100 },
+                new EventArea() { Id = 2, CoordinateX = 1, CoordinateY = 1, Description = "Second area event", EventId = 1, Price = 100 },
+            };
+
+            // Act
+            var actual = this.eventAreaService.GetEventAreasByEventId(eventId);
+
+            // Assert
+            actual.Should().BeEquivalentTo(expected);
+        }
     }
 }

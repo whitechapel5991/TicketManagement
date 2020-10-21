@@ -152,5 +152,49 @@ namespace TicketManagement.UnitTests.ServiceTests
             // Assert
             actual.Should().BeEquivalentTo(expected);
         }
+
+        [Test]
+        public void GetEventSeatsByEventSeatIds_WhenGetEventSeatsByEventSeatIds_ShouldBeReturnAllEventSeatsContainsTheseIds()
+        {
+            // Arrange
+            this.eventSeatService = this.Mock.Create<EventSeatService>();
+            int[] eventSeatId = {1, 3, 5, 10, 19};
+            var expected = new List<EventSeat>
+            {
+                new EventSeat() { Id = 1, State = EventSeatState.Free, EventAreaId = 1, Row = 1, Number = 1 },
+                new EventSeat() { Id = 3, State = EventSeatState.Free, EventAreaId = 1, Row = 1, Number = 3 },
+                new EventSeat() { Id = 5, State = EventSeatState.Sold, EventAreaId = 1, Row = 1, Number = 5 },
+                new EventSeat() { Id = 10, State = EventSeatState.Free, EventAreaId = 2, Row = 1, Number = 5 },
+                new EventSeat() { Id = 19, State = EventSeatState.Free, EventAreaId = 4, Row = 1, Number = 4 },
+            };
+
+            // Act
+            var actual = this.eventSeatService.GetEventSeatsByEventSeatIds(eventSeatId);
+
+            // Assert
+            actual.Should().BeEquivalentTo(expected);
+        }
+
+        [Test]
+        public void GetEventSeatsByEventAreaId_WhenGetEventSeatsByEventAreaId_ShouldBeReturnAllEventSeatsInThisEventArea()
+        {
+            // Arrange
+            this.eventSeatService = this.Mock.Create<EventSeatService>();
+            const int eventAreaId = 1;
+            var expected = new List<EventSeat>
+            {
+                new EventSeat() { Id = 1, State = EventSeatState.Free, EventAreaId = 1, Row = 1, Number = 1 },
+                new EventSeat() { Id = 2, State = EventSeatState.Free, EventAreaId = 1, Row = 1, Number = 2 },
+                new EventSeat() { Id = 3, State = EventSeatState.Free, EventAreaId = 1, Row = 1, Number = 3 },
+                new EventSeat() { Id = 4, State = EventSeatState.Free, EventAreaId = 1, Row = 1, Number = 4 },
+                new EventSeat() { Id = 5, State = EventSeatState.Sold, EventAreaId = 1, Row = 1, Number = 5 },
+            };
+
+            // Act
+            var actual = this.eventSeatService.GetEventSeatsByEventAreaId(eventAreaId);
+
+            // Assert
+            actual.Should().BeEquivalentTo(expected);
+        }
     }
 }

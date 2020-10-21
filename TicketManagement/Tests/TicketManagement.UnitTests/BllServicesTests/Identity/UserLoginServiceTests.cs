@@ -16,7 +16,7 @@ using TicketManagement.DAL.Models.Identity;
 using TicketManagement.DAL.Repositories.Identity;
 using TicketManagement.UnitTests.FakeRepositories;
 
-namespace TicketManagement.UnitTests.ServiceTests.Identity
+namespace TicketManagement.UnitTests.BllServicesTests.Identity
 {
     [TestFixture]
     internal class UserLoginServiceTests

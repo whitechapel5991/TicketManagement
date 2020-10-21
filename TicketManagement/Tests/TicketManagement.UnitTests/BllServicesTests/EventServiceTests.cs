@@ -52,6 +52,12 @@ namespace TicketManagement.UnitTests.ServiceTests
                     EndDate = new DateTime(2025, 12, 12, 14, 00, 00), Description = "Second",
                     LayoutId = 2, Name = "Second event", Published = true,
                 },
+                new Event()
+                {
+                    Id = 3, BeginDate = new DateTime(2025, 12, 12, 13, 00, 00),
+                    EndDate = new DateTime(2025, 12, 12, 14, 00, 00), Description = "Third",
+                    LayoutId = 3, Name = "Third event", Published = false,
+                },
             };
             var fakeVenueRepository = new RepositoryFake<Event>(events);
 
@@ -128,6 +134,12 @@ namespace TicketManagement.UnitTests.ServiceTests
                     EndDate = new DateTime(2025, 12, 12, 14, 00, 00), Description = "Second",
                     LayoutId = 2, Name = "Second event", Published = true,
                 },
+                new Event()
+                {
+                    Id = 3, BeginDate = new DateTime(2025, 12, 12, 13, 00, 00),
+                    EndDate = new DateTime(2025, 12, 12, 14, 00, 00), Description = "Third",
+                    LayoutId = 3, Name = "Third event", Published = false,
+                },
                 dto,
             };
 
@@ -198,6 +210,12 @@ namespace TicketManagement.UnitTests.ServiceTests
                     EndDate = new DateTime(2025, 12, 12, 13, 00, 00), Description = "First",
                     LayoutId = 1, Name = "First event",
                 },
+                new Event()
+                {
+                    Id = 3, BeginDate = new DateTime(2025, 12, 12, 13, 00, 00),
+                    EndDate = new DateTime(2025, 12, 12, 14, 00, 00), Description = "Third",
+                    LayoutId = 3, Name = "Third event", Published = false,
+                },
             };
 
             // Act
@@ -248,6 +266,12 @@ namespace TicketManagement.UnitTests.ServiceTests
                     Id = 2, BeginDate = new DateTime(2025, 12, 12, 13, 00, 00),
                     EndDate = new DateTime(2025, 12, 12, 14, 00, 00), Description = "Second",
                     LayoutId = 2, Name = "Second event", Published = true,
+                },
+                new Event()
+                {
+                    Id = 3, BeginDate = new DateTime(2025, 12, 12, 13, 00, 00),
+                    EndDate = new DateTime(2025, 12, 12, 14, 00, 00), Description = "Third",
+                    LayoutId = 3, Name = "Third event", Published = false,
                 },
             };
 
@@ -313,6 +337,29 @@ namespace TicketManagement.UnitTests.ServiceTests
 
             // Act
             var actualDto = this.eventService.GetEventByEventSeatId(existingEventSeatId);
+
+            // Assert
+            actualDto.Should().BeEquivalentTo(expectedDto);
+        }
+
+        [Test]
+        public void GetEventsByEventSeatIds_WhenGetEventsByEventSeatIds_ShouldBeReturnEventsTheseEventSeats()
+        {
+            // Arrange
+            this.eventService = this.Mock.Create<EventService>();
+            int[] existingEventSeatId = { 1, 4, 7, 9 };
+            var expectedDto = new List<Event>
+            {
+                new Event()
+                {
+                    Id = 1, BeginDate = new DateTime(2025, 12, 12, 12, 00, 00),
+                    EndDate = new DateTime(2025, 12, 12, 13, 00, 00), Description = "First",
+                    LayoutId = 1, Name = "First event", Published = false,
+                },
+            };
+
+            // Act
+            var actualDto = this.eventService.GetEventsByEventSeatIds(existingEventSeatId);
 
             // Assert
             actualDto.Should().BeEquivalentTo(expectedDto);
