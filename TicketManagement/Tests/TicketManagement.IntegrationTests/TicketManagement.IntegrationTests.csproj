@@ -132,7 +132,6 @@
     <Compile Include="ServiceTests\Identity\UserClaimServiceTests.cs" />
     <Compile Include="ServiceTests\Identity\UserLoginServiceTests.cs" />
     <Compile Include="ServiceTests\LayoutServiceTests.cs" />
-    <Compile Include="ServiceTests\OrderServiceTests.cs" />
     <Compile Include="ServiceTests\SeatServiceTests.cs" />
     <Compile Include="ServiceTests\Identity\UserServiceTests.cs" />
     <Compile Include="ServiceTests\VenueServiceTests.cs" />
