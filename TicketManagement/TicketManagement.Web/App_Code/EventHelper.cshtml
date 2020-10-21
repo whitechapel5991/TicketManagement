@@ -1,0 +1,51 @@
+﻿@using TicketManagement.Web.Models.Event
+
+@helper EventMap(EventDetailViewModel eventDetailVm)
+{
+    <ul>
+        <p>
+            Event: @eventDetailVm.Name.
+            Start Date: @eventDetailVm.BeginDate.
+            End Date: @eventDetailVm.EndDate.
+            Description: @eventDetailVm.Description
+            Layout: @eventDetailVm.LayoutName
+        </p>
+        @foreach (var eventArea in eventDetailVm.EventAreas)
+        {
+            <li>
+                <p>
+                    Description: @eventArea.Description.
+                    X: @eventArea.CoordinateX, Y: @eventArea.CoordinateY.
+                    Price: @eventArea.Price
+                </p>
+
+                <a href='/Event/EventAreaDetail/@eventArea.Id'>Area Details</a>
+            </li>
+        }
+    </ul>
+}
+
+@helper EventAreaMap(EventAreaDetailViewModel eventAreaDetailVm)
+{
+<ul>
+    <p>
+        Event Area description: @eventAreaDetailVm.EventArea.Description.
+        Price: @eventAreaDetailVm.EventArea.Price.
+        X: @eventAreaDetailVm.EventArea.CoordinateX.
+        Y: @eventAreaDetailVm.EventArea.CoordinateY.
+    </p>
+    @foreach (var eventSeat in eventAreaDetailVm.EventSeats)
+    {
+        <li>
+            <p>
+                X: @eventSeat.Number, Y: @eventSeat.Row.
+                Status: @eventSeat.State
+            </p>
+
+            <a href='/Event/AddToCart/@eventSeat.Id'>Add to cart</a>
+        </li>
+    }
+
+    <a href='/Event/EventDetail/@eventAreaDetailVm.EventId'>Back to event</a>
+</ul>
+}

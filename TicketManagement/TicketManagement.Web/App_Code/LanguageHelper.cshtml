@@ -1,0 +1,9 @@
+﻿@using TicketManagement.Web.Constants
+@helper LanguagesList() {
+    <div class="dropdown-menu">
+        @foreach (var lang in Enum.GetValues(typeof(Language)))
+        {
+            <a class='dropdown-item' href='/Language/ChangeLanguage'>@lang.ToString()</a>
+        }
+    </div>
+}
