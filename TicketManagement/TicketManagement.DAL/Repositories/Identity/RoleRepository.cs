@@ -13,14 +13,14 @@ namespace TicketManagement.DAL.Repositories.Identity
 {
     internal class RoleRepository : Repository<Role>, IRoleRepository
     {
-        public RoleRepository(TicketManagementContext context)
-            : base(context)
+        public RoleRepository(IGenerateDbContext contextGenerator)
+            : base(contextGenerator)
         {
         }
 
         public Role FindByName(string roleName)
         {
-            return this.DbSet.First(x => x.Name == roleName);
+            return this.ContextGenerator.GenerateNewContext().Set<Role>().First(x => x.Name == roleName);
         }
     }
 }

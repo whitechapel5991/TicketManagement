@@ -24,9 +24,10 @@ namespace TicketManagement.DAL.Util
 
         protected override void Load(ContainerBuilder builder)
         {
-            builder.RegisterType<TicketManagementContext>()
+            builder.RegisterType<GenerateDbContext>()
+                .As<IGenerateDbContext>()
                 .WithParameter(new TypedParameter(typeof(string), this.connectionString))
-                .SingleInstance();
+                .InstancePerLifetimeScope();
 
             builder.RegisterGeneric(typeof(Repository<>))
                 .As(typeof(IRepository<>))

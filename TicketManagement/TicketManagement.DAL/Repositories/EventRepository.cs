@@ -24,8 +24,8 @@ namespace TicketManagement.DAL.Repositories
         private const string EndDateParamName = "@EndDate";
         private const string PublishParamName = "@Published";
 
-        public EventRepository(TicketManagementContext dbContext)
-            : base(dbContext)
+        public EventRepository(IGenerateDbContext contextGenerator)
+            : base(contextGenerator)
         {
         }
 
@@ -33,16 +33,15 @@ namespace TicketManagement.DAL.Repositories
         {
             const string createEventStoredProcedureName = "CreateEvent";
 
-            var resultId = this.Context.Database.SqlQuery<int>(
+            var resultId = this.ContextGenerator.GenerateNewContext().Database.SqlQuery<int>(
                 $"{createEventStoredProcedureName} {NameParamName}, {DescriptionParamName}, {LayoutIdParamName}, {BeginDateParamName}, {EndDateParamName}",
                 new SqlParameter(NameParamName, entity.Name),
                 new SqlParameter(DescriptionParamName, entity.Description),
                 new SqlParameter(LayoutIdParamName, entity.LayoutId),
-                new SqlParameter(BeginDateParamName, entity.BeginDate),
-                new SqlParameter(EndDateParamName, entity.EndDate))
+                new SqlParameter(BeginDateParamName, entity.BeginDateUtc.ToUniversalTime()),
+                new SqlParameter(EndDateParamName, entity.EndDateUtc.ToUniversalTime()))
                 .Single();
-
-            this.Context.SaveChanges();
+            this.ContextGenerator.GenerateNewContext().SaveChanges();
             return resultId;
         }
 
@@ -50,27 +49,26 @@ namespace TicketManagement.DAL.Repositories
         {
             const string updateEventStoredProcedureName = "UpdateEvent";
 
-            this.Context.Database.ExecuteSqlCommand(
+            this.ContextGenerator.GenerateNewContext().Database.ExecuteSqlCommand(
                 $"{updateEventStoredProcedureName} {IdParamName}, {NameParamName}, {DescriptionParamName}, {LayoutIdParamName}, {BeginDateParamName}, {EndDateParamName}, {PublishParamName}",
                 new SqlParameter(IdParamName, entity.Id),
                 new SqlParameter(NameParamName, entity.Name),
                 new SqlParameter(DescriptionParamName, entity.Description),
                 new SqlParameter(LayoutIdParamName, entity.LayoutId),
-                new SqlParameter(BeginDateParamName, entity.BeginDate) { SqlDbType = SqlDbType.DateTime },
-                new SqlParameter(EndDateParamName, entity.EndDate) { SqlDbType = SqlDbType.DateTime },
+                new SqlParameter(BeginDateParamName, entity.BeginDateUtc.ToUniversalTime()) { SqlDbType = SqlDbType.DateTime },
+                new SqlParameter(EndDateParamName, entity.EndDateUtc.ToUniversalTime()) { SqlDbType = SqlDbType.DateTime },
                 new SqlParameter(PublishParamName, entity.Published));
-
-            this.Context.SaveChanges();
+            this.ContextGenerator.GenerateNewContext().SaveChanges();
         }
 
         public override void Delete(int id)
         {
             const string deleteEventStoredProcedureName = "DeleteEvent";
 
-            this.Context.Database.ExecuteSqlCommand(
+            this.ContextGenerator.GenerateNewContext().Database.ExecuteSqlCommand(
                 $"{deleteEventStoredProcedureName} {IdParamName}",
                 new SqlParameter(IdParamName, id));
-            this.Context.SaveChanges();
+            this.ContextGenerator.GenerateNewContext().SaveChanges();
         }
     }
 }

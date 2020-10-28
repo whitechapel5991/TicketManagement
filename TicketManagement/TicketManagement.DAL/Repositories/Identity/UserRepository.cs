@@ -13,19 +13,19 @@ namespace TicketManagement.DAL.Repositories.Identity
 {
     internal class UserRepository : Repository<TicketManagementUser>, IUserRepository
     {
-        public UserRepository(TicketManagementContext context)
-            : base(context)
+        public UserRepository(IGenerateDbContext contextGenerator)
+            : base(contextGenerator)
         {
         }
 
         public TicketManagementUser FindByNormalizedUserName(string normalizedUserName)
         {
-            return this.DbSet.First(x => x.UserName == normalizedUserName);
+            return this.ContextGenerator.GenerateNewContext().Set<TicketManagementUser>().FirstOrDefault(x => x.UserName == normalizedUserName);
         }
 
         public TicketManagementUser FindByNormalizedEmail(string normalizedEmail)
         {
-            return this.DbSet.First(x => x.Email == normalizedEmail);
+            return this.ContextGenerator.GenerateNewContext().Set<TicketManagementUser>().First(x => x.Email == normalizedEmail);
         }
     }
 }

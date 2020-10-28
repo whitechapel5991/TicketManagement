@@ -15,42 +15,39 @@ namespace TicketManagement.DAL.Repositories.Identity
 {
     internal class UserRoleRepository : IUserRoleRepository
     {
-        public UserRoleRepository(TicketManagementContext context)
+        public UserRoleRepository(IGenerateDbContext contextGenerator)
         {
-            this.Context = context;
-            this.DbSet = this.Context.Set<UserRole>();
+            this.ContextGenerator = contextGenerator;
         }
 
-        private TicketManagementContext Context { get; }
-
-        private DbSet<UserRole> DbSet { get; }
+        private IGenerateDbContext ContextGenerator { get; }
 
         public void Add(int userId, string roleName)
         {
-            var roleId = this.Context.Roles.First(x => x.Name == roleName).Id;
-            this.DbSet.Add(new UserRole() { RoleId = roleId, UserId = userId });
-            this.Context.SaveChanges();
+            var roleId = this.ContextGenerator.GenerateNewContext().Roles.First(x => x.Name == roleName).Id;
+            this.ContextGenerator.GenerateNewContext().Set<UserRole>().Add(new UserRole() { RoleId = roleId, UserId = userId });
+            this.ContextGenerator.GenerateNewContext().SaveChanges();
         }
 
         public IEnumerable<string> GetRoleNamesByUserId(int userId)
         {
-            var roleIdList = this.DbSet.Where(x => x.UserId == userId).Select(x => x.RoleId);
-            return this.Context.Roles.Join(roleIdList, role => role.Id, id => id, (role, id) => role.Name);
+            var roleIdList = this.ContextGenerator.GenerateNewContext().Set<UserRole>().Where(x => x.UserId == userId).Select(x => x.RoleId);
+            return this.ContextGenerator.GenerateNewContext().Roles.Join(roleIdList, role => role.Id, id => id, (role, id) => role.Name);
         }
 
         public IEnumerable<TicketManagementUser> GetUsersByRoleName(string roleName)
         {
-            var roleId = this.Context.Roles.First(x => x.Name == roleName).Id;
-            var userOdList = this.DbSet.Where(x => x.RoleId == roleId).Select(x => x.UserId);
-            return this.Context.Users.Join(userOdList, user => user.Id, id => id, (user, id) => user);
+            var roleId = this.ContextGenerator.GenerateNewContext().Roles.First(x => x.Name == roleName).Id;
+            var userOdList = this.ContextGenerator.GenerateNewContext().Set<UserRole>().Where(x => x.RoleId == roleId).Select(x => x.UserId);
+            return this.ContextGenerator.GenerateNewContext().Users.Join(userOdList, user => user.Id, id => id, (user, id) => user);
         }
 
         public void Remove(int userId, string roleName)
         {
-            var roleId = this.Context.Roles.First(x => x.Name == roleName).Id;
-            var entity = this.DbSet.First(x => x.RoleId == roleId && x.UserId == userId);
-            this.DbSet.Remove(entity);
-            this.Context.SaveChanges();
+            var roleId = this.ContextGenerator.GenerateNewContext().Roles.First(x => x.Name == roleName).Id;
+            var entity = this.ContextGenerator.GenerateNewContext().Set<UserRole>().First(x => x.RoleId == roleId && x.UserId == userId);
+            this.ContextGenerator.GenerateNewContext().Set<UserRole>().Remove(entity);
+            this.ContextGenerator.GenerateNewContext().SaveChanges();
         }
     }
 }

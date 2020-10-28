@@ -15,52 +15,51 @@ namespace TicketManagement.DAL.Repositories.Identity
 {
     internal class UserLoginRepository : IUserLoginRepository
     {
-        public UserLoginRepository(TicketManagementContext context)
+        public UserLoginRepository(IGenerateDbContext contextGenerator)
         {
-            this.Context = context;
-            this.DbSet = this.Context.Set<UserLogin>();
+            this.ContextGenerator = contextGenerator;
         }
 
-        private TicketManagementContext Context { get; }
-
-        private DbSet<UserLogin> DbSet { get; }
+        private IGenerateDbContext ContextGenerator { get; }
 
         public UserLoginKey Create(UserLogin entity)
         {
-            this.DbSet.Add(entity);
-            this.Context.SaveChanges();
+            this.ContextGenerator.GenerateNewContext().Entry(entity).State = EntityState.Added;
+            this.ContextGenerator.GenerateNewContext().SaveChanges();
             return entity;
         }
 
         public void Delete(UserLoginKey id)
         {
             var entity = this.GetById(id);
-            if (entity != null)
+            if (entity == null)
             {
-                this.DbSet.Remove(entity);
-                this.Context.SaveChanges();
+                return;
             }
+
+            this.ContextGenerator.GenerateNewContext().Entry(entity).State = EntityState.Deleted;
+            this.ContextGenerator.GenerateNewContext().SaveChanges();
         }
 
         public IEnumerable<UserLogin> FindByUserId(int userId)
         {
-            return this.DbSet.Where(x => x.UserId == userId);
+            return this.ContextGenerator.GenerateNewContext().Set<UserLogin>().Where(x => x.UserId == userId);
         }
 
         public IQueryable<UserLogin> GetAll()
         {
-            return this.DbSet.AsNoTracking();
+            return this.ContextGenerator.GenerateNewContext().Set<UserLogin>().AsNoTracking();
         }
 
         public UserLogin GetById(UserLoginKey id)
         {
-            return this.DbSet.First(x => x.LoginProvider == id.LoginProvider && x.ProviderKey == id.ProviderKey);
+            return this.ContextGenerator.GenerateNewContext().Set<UserLogin>().First(x => x.LoginProvider == id.LoginProvider && x.ProviderKey == id.ProviderKey);
         }
 
         public void Update(UserLogin entity)
         {
-            this.Context.Entry(entity).State = EntityState.Modified;
-            this.Context.SaveChanges();
+            this.ContextGenerator.GenerateNewContext().Entry(entity).State = EntityState.Modified;
+            this.ContextGenerator.GenerateNewContext().SaveChanges();
         }
     }
 }

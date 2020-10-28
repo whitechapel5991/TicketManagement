@@ -16,44 +16,44 @@ namespace TicketManagement.DAL.Repositories
     public class Repository<TDalEntity> : RepositoryBase<TDalEntity>
         where TDalEntity : class, IEntity, new()
     {
-        public Repository(TicketManagementContext context)
-            : base(context)
+        public Repository(IGenerateDbContext contextGenerator)
+            : base(contextGenerator)
         {
         }
 
         public override int Create(TDalEntity entity)
         {
-            this.DbSet.Add(entity);
-            this.Context.SaveChanges();
+            this.ContextGenerator.GenerateNewContext().Entry(entity).State = EntityState.Added;
+            this.ContextGenerator.GenerateNewContext().SaveChanges();
             return entity.Id;
         }
 
         public override void Update(TDalEntity entity)
         {
-            this.Context.Entry(entity).State = EntityState.Modified;
-            this.Context.SaveChanges();
+            this.ContextGenerator.GenerateNewContext().Entry(entity).State = EntityState.Modified;
+            this.ContextGenerator.GenerateNewContext().SaveChanges();
         }
 
         public override void Delete(int id)
         {
-            var entity = this.GetById(id);
+            var entity = this.ContextGenerator.GenerateNewContext().Set<TDalEntity>().Find(id);
             if (entity == null)
             {
                 return;
             }
 
-            this.DbSet.Remove(entity);
-            this.Context.SaveChanges();
+            this.ContextGenerator.GenerateNewContext().Entry(entity).State = EntityState.Deleted;
+            this.ContextGenerator.GenerateNewContext().SaveChanges();
         }
 
         public override TDalEntity GetById(int id)
         {
-            return this.DbSet.Find(id);
+            return this.ContextGenerator.GenerateNewContext().Set<TDalEntity>().AsNoTracking().First(x => x.Id == id);
         }
 
         public override IQueryable<TDalEntity> GetAll()
         {
-            return this.DbSet.AsNoTracking();
+            return this.ContextGenerator.GenerateNewContext().Set<TDalEntity>().AsNoTracking();
         }
     }
 }

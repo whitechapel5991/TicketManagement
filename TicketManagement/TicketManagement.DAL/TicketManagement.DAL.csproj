@@ -79,6 +79,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Constants\EventSeatState.cs" />
+    <Compile Include="EFContext\GenerateDbContext.cs" />
+    <Compile Include="EFContext\IGenerateDbContext.cs" />
     <Compile Include="EFContext\TicketManagementContext.cs" />
     <Compile Include="Models\Base\Entity.cs" />
     <Compile Include="Models\Base\IEntity.cs" />
