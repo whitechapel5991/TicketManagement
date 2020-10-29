@@ -25,6 +25,7 @@ namespace TicketManagement.DAL.Models
 
         [Required]
         [Column("Date")]
-        public DateTime Date { get; set; }
+        [DataType(DataType.DateTime)]
+        public DateTime DateUtc { get; set; }
     }
 }

@@ -51,16 +51,16 @@ namespace TicketManagement.BLL.ServiceValidators
                 throw new EntityDoesNotExistException("Layout doesn't exist.");
             }
 
-            var now = (long)TimeSpan.FromTicks(DateTime.Now.Ticks).TotalMinutes;
-            var eventBeginDate = (long)TimeSpan.FromTicks(entity.BeginDate.Ticks).TotalMinutes;
+            var now = (long)TimeSpan.FromTicks(DateTime.UtcNow.Ticks).TotalMinutes;
+            var eventBeginDate = (long)TimeSpan.FromTicks(entity.BeginDateUtc.Ticks).TotalMinutes;
 
             if (now > eventBeginDate)
             {
                 throw new EventInPastException("Event can not be in the past.");
             }
 
-            eventBeginDate = (long)TimeSpan.FromTicks(entity.BeginDate.Ticks).TotalMinutes;
-            var eventEndDate = (long)TimeSpan.FromTicks(entity.EndDate.Ticks).TotalMinutes;
+            eventBeginDate = (long)TimeSpan.FromTicks(entity.BeginDateUtc.Ticks).TotalMinutes;
+            var eventEndDate = (long)TimeSpan.FromTicks(entity.EndDateUtc.Ticks).TotalMinutes;
 
             if (eventBeginDate >= eventEndDate)
             {
@@ -69,8 +69,9 @@ namespace TicketManagement.BLL.ServiceValidators
 
             if (this.EventInLayoutInTheSameTimeExist(
                 entity.LayoutId,
-                entity.BeginDate,
-                entity.EndDate))
+                entity.BeginDateUtc,
+                entity.EndDateUtc,
+                entity.Id))
             {
                 throw new EventExistInTheLayoutInThisTimeException($"Event in the layout={entity.LayoutId} exist in the same time");
             }
@@ -137,16 +138,17 @@ namespace TicketManagement.BLL.ServiceValidators
                     select new { eventSeat.State }).Any();
         }
 
-        private bool EventInLayoutInTheSameTimeExist(int layoutId, DateTime beginDate, DateTime endDate)
+        private bool EventInLayoutInTheSameTimeExist(int layoutId, DateTime beginDate, DateTime endDate, int eventId)
         {
-            var begin = Convert.ToDateTime(beginDate.ToString("dd.MM.yyyy HH:mm"), new CultureInfo("ru"));
-            var end = Convert.ToDateTime(endDate.ToString("dd.MM.yyyy HH:mm"), new CultureInfo("ru"));
+            //var begin = Convert.ToDateTime(beginDate.ToString("dd.MM.yyyy HH:mm"), new CultureInfo("ru"));
+            //var end = Convert.ToDateTime(endDate.ToString("dd.MM.yyyy HH:mm"), new CultureInfo("ru"));
 
             return (from a in this.eventRepository.GetAll().Where(x => x.LayoutId == layoutId)
-                    where (a.BeginDate <= begin && a.EndDate >= begin) ||
-                          (a.BeginDate <= end && a.EndDate >= end) ||
-                          (a.BeginDate >= begin && a.BeginDate <= end) ||
-                          (a.EndDate >= begin && a.EndDate <= end)
+                    where a.Id != eventId &&
+                        ((a.BeginDateUtc <= beginDate && a.EndDateUtc >= beginDate) ||
+                          (a.BeginDateUtc <= endDate && a.EndDateUtc >= endDate) ||
+                          (a.BeginDateUtc >= beginDate && a.BeginDateUtc <= endDate) ||
+                          (a.EndDateUtc >= beginDate && a.EndDateUtc <= endDate))
                     select new { a.Id }).Any();
         }
     }

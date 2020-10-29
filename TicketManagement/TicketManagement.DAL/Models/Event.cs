@@ -23,12 +23,12 @@ namespace TicketManagement.DAL.Models
         [Required]
         [Column("BeginDate")]
         [DataType(DataType.DateTime)]
-        public DateTime BeginDate { get; set; }
+        public DateTime BeginDateUtc { get; set; }
 
         [Required]
         [Column("EndDate")]
         [DataType(DataType.DateTime)]
-        public DateTime EndDate { get; set; }
+        public DateTime EndDateUtc { get; set; }
 
         [Required]
         [Column("Description")]

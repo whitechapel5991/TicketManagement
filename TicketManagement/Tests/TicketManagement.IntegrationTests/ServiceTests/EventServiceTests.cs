@@ -44,8 +44,8 @@ namespace TicketManagement.IntegrationTests.ServiceTests
             var newEvent = new Event
             {
                 Id = 3,
-                BeginDate = new DateTime(2025, 10, 20, 8, 30, 59),
-                EndDate = new DateTime(2025, 10, 20, 10, 30, 59),
+                BeginDateUtc = new DateTime(2025, 10, 20, 8, 30, 59, DateTimeKind.Utc),
+                EndDateUtc = new DateTime(2025, 10, 20, 10, 30, 59, DateTimeKind.Utc),
                 Description = "2",
                 LayoutId = 2,
                 Name = "2",
@@ -54,14 +54,14 @@ namespace TicketManagement.IntegrationTests.ServiceTests
             {
                 new Event()
                 {
-                    Id = 1, BeginDate = new DateTime(2025, 12, 12, 12, 00, 00),
-                    EndDate = new DateTime(2025, 12, 12, 13, 00, 00), Description = "First",
+                    Id = 1, BeginDateUtc = new DateTime(2025, 12, 12, 12, 00, 00),
+                    EndDateUtc = new DateTime(2025, 12, 12, 13, 00, 00), Description = "First",
                     LayoutId = 1, Name = "First event", Published = true,
                 },
                 new Event()
                 {
-                    Id = 2, BeginDate = new DateTime(2025, 12, 12, 12, 00, 00),
-                    EndDate = new DateTime(2025, 12, 12, 13, 00, 00), Description = "Second",
+                    Id = 2, BeginDateUtc = new DateTime(2025, 12, 12, 12, 00, 00),
+                    EndDateUtc = new DateTime(2025, 12, 12, 13, 00, 00), Description = "Second",
                     LayoutId = 2, Name = "Second event", Published = false,
                 },
                 newEvent,
@@ -128,8 +128,8 @@ namespace TicketManagement.IntegrationTests.ServiceTests
             var eventDto = new Event
             {
                 Id = 2,
-                BeginDate = new DateTime(2025, 10, 20, 8, 30, 59),
-                EndDate = new DateTime(2025, 10, 20, 10, 30, 59),
+                BeginDateUtc = new DateTime(2025, 10, 20, 8, 30, 59, DateTimeKind.Utc),
+                EndDateUtc = new DateTime(2025, 10, 20, 10, 30, 59, DateTimeKind.Utc),
                 Description = "2",
                 LayoutId = 1,
                 Name = "2",
@@ -138,8 +138,8 @@ namespace TicketManagement.IntegrationTests.ServiceTests
             {
                 new Event()
                 {
-                    Id = 1, BeginDate = new DateTime(2025, 12, 12, 12, 00, 00),
-                    EndDate = new DateTime(2025, 12, 12, 13, 00, 00), Description = "First",
+                    Id = 1, BeginDateUtc = new DateTime(2025, 12, 12, 12, 00, 00),
+                    EndDateUtc = new DateTime(2025, 12, 12, 13, 00, 00), Description = "First",
                     LayoutId = 1, Name = "First event", Published = true,
                 },
                 eventDto,
@@ -196,8 +196,8 @@ namespace TicketManagement.IntegrationTests.ServiceTests
             {
                 new Event()
                 {
-                    Id = 1, BeginDate = new DateTime(2025, 12, 12, 12, 00, 00),
-                    EndDate = new DateTime(2025, 12, 12, 13, 00, 00), Description = "First",
+                    Id = 1, BeginDateUtc = new DateTime(2025, 12, 12, 12, 00, 00),
+                    EndDateUtc = new DateTime(2025, 12, 12, 13, 00, 00), Description = "First",
                     LayoutId = 1, Name = "First event", Published = true,
                 },
             };
@@ -240,8 +240,8 @@ namespace TicketManagement.IntegrationTests.ServiceTests
             var expected = new Event()
             {
                 Id = 2,
-                BeginDate = new DateTime(2025, 12, 12, 12, 00, 00),
-                EndDate = new DateTime(2025, 12, 12, 13, 00, 00),
+                BeginDateUtc = new DateTime(2025, 12, 12, 12, 00, 00),
+                EndDateUtc = new DateTime(2025, 12, 12, 13, 00, 00),
                 Description = "Second",
                 LayoutId = 2,
                 Name = "Second event",
@@ -263,14 +263,14 @@ namespace TicketManagement.IntegrationTests.ServiceTests
             {
                 new Event()
                 {
-                    Id = 1, BeginDate = new DateTime(2025, 12, 12, 12, 00, 00),
-                    EndDate = new DateTime(2025, 12, 12, 13, 00, 00), Description = "First",
+                    Id = 1, BeginDateUtc = new DateTime(2025, 12, 12, 12, 00, 00),
+                    EndDateUtc = new DateTime(2025, 12, 12, 13, 00, 00), Description = "First",
                     LayoutId = 1, Name = "First event", Published = true,
                 },
                 new Event()
                 {
-                    Id = 2, BeginDate = new DateTime(2025, 12, 12, 12, 00, 00),
-                    EndDate = new DateTime(2025, 12, 12, 13, 00, 00), Description = "Second",
+                    Id = 2, BeginDateUtc = new DateTime(2025, 12, 12, 12, 00, 00),
+                    EndDateUtc = new DateTime(2025, 12, 12, 13, 00, 00), Description = "Second",
                     LayoutId = 2, Name = "Second event", Published = false,
                 },
             };
@@ -290,8 +290,8 @@ namespace TicketManagement.IntegrationTests.ServiceTests
             {
                 new Event()
                 {
-                    Id = 1, BeginDate = new DateTime(2025, 12, 12, 12, 00, 00),
-                    EndDate = new DateTime(2025, 12, 12, 13, 00, 00), Description = "First",
+                    Id = 1, BeginDateUtc = new DateTime(2025, 12, 12, 12, 00, 00),
+                    EndDateUtc = new DateTime(2025, 12, 12, 13, 00, 00), Description = "First",
                     LayoutId = 1, Name = "First event", Published = true,
                 },
             };
@@ -325,8 +325,8 @@ namespace TicketManagement.IntegrationTests.ServiceTests
             var expectedDto = new Event()
             {
                 Id = 1,
-                BeginDate = new DateTime(2025, 12, 12, 12, 00, 00),
-                EndDate = new DateTime(2025, 12, 12, 13, 00, 00),
+                BeginDateUtc = new DateTime(2025, 12, 12, 12, 00, 00),
+                EndDateUtc = new DateTime(2025, 12, 12, 13, 00, 00),
                 Description = "First",
                 LayoutId = 1,
                 Name = "First event",

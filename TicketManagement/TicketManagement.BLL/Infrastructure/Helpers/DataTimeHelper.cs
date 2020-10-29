@@ -9,9 +9,9 @@ namespace TicketManagement.BLL.Infrastructure.Helpers
 {
     public class DataTimeHelper : IDataTimeHelper
     {
-        public DateTime GetDateTimeNow()
+        public DateTime GetDateTimeUtcNow()
         {
-            return DateTime.Now;
+            return DateTime.UtcNow;
         }
     }
 }

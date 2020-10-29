@@ -51,14 +51,14 @@ namespace TicketManagement.UnitTests.ValidatorTests
             {
                 new Event()
                 {
-                    Id = 1, BeginDate = new DateTime(2025, 12, 12, 12, 00, 00),
-                    EndDate = new DateTime(2025, 12, 12, 13, 00, 00), Description = "First",
+                    Id = 1, BeginDateUtc = new DateTime(2025, 12, 12, 12, 00, 00),
+                    EndDateUtc = new DateTime(2025, 12, 12, 13, 00, 00), Description = "First",
                     LayoutId = 1, Name = "First event", Published = false,
                 },
                 new Event()
                 {
-                    Id = 2, BeginDate = new DateTime(2025, 12, 12, 13, 00, 00),
-                    EndDate = new DateTime(2025, 12, 12, 14, 00, 00), Description = "Second",
+                    Id = 2, BeginDateUtc = new DateTime(2025, 12, 12, 13, 00, 00),
+                    EndDateUtc = new DateTime(2025, 12, 12, 14, 00, 00), Description = "Second",
                     LayoutId = 2, Name = "Second event",  Published = true,
                 },
             };
@@ -238,7 +238,7 @@ namespace TicketManagement.UnitTests.ValidatorTests
             var beginDate = DateTime.Now.AddDays(-1);
             var dto = this.Fixture.Build<Event>()
                 .With(e => e.LayoutId, 2)
-                .With(e => e.BeginDate, beginDate)
+                .With(e => e.BeginDateUtc, beginDate)
                 .Create();
 
             // Act
@@ -257,8 +257,8 @@ namespace TicketManagement.UnitTests.ValidatorTests
             var endDate = DateTime.Now.AddDays(4);
             var dto = this.Fixture.Build<Event>()
                 .With(e => e.LayoutId, 2)
-                .With(e => e.BeginDate, beginDate)
-                .With(e => e.EndDate, endDate)
+                .With(e => e.BeginDateUtc, beginDate)
+                .With(e => e.EndDateUtc, endDate)
                 .Create();
 
             // Act
@@ -278,8 +278,8 @@ namespace TicketManagement.UnitTests.ValidatorTests
             var endDate = new DateTime(2025, 12, 12, 13, 00, 00);
             var dto = this.Fixture.Build<Event>()
                 .With(e => e.LayoutId, layoutId)
-                .With(e => e.BeginDate, beginDate)
-                .With(e => e.EndDate, endDate)
+                .With(e => e.BeginDateUtc, beginDate)
+                .With(e => e.EndDateUtc, endDate)
                 .Create();
 
             // Act
@@ -299,8 +299,8 @@ namespace TicketManagement.UnitTests.ValidatorTests
             var endDate = new DateTime(2025, 10, 20, 10, 30, 59);
             var dto = this.Fixture.Build<Event>()
                 .With(e => e.LayoutId, layoutWithoutAreasId)
-                .With(e => e.BeginDate, beginDate)
-                .With(e => e.EndDate, endDate)
+                .With(e => e.BeginDateUtc, beginDate)
+                .With(e => e.EndDateUtc, endDate)
                 .Create();
 
             // Act
@@ -320,8 +320,8 @@ namespace TicketManagement.UnitTests.ValidatorTests
             var endDate = new DateTime(2025, 10, 20, 10, 30, 59);
             var dto = this.Fixture.Build<Event>()
                 .With(e => e.LayoutId, layoutWithoutSeatsId)
-                .With(e => e.BeginDate, beginDate)
-                .With(e => e.EndDate, endDate)
+                .With(e => e.BeginDateUtc, beginDate)
+                .With(e => e.EndDateUtc, endDate)
                 .Create();
 
             // Act
@@ -341,8 +341,8 @@ namespace TicketManagement.UnitTests.ValidatorTests
             var endDate = new DateTime(2025, 10, 20, 10, 30, 59);
             var dto = this.Fixture.Build<Event>()
                 .With(e => e.LayoutId, layoutWithoutSeatsId)
-                .With(e => e.BeginDate, beginDate)
-                .With(e => e.EndDate, endDate)
+                .With(e => e.BeginDateUtc, beginDate)
+                .With(e => e.EndDateUtc, endDate)
                 .Create();
 
             // Act
@@ -362,8 +362,8 @@ namespace TicketManagement.UnitTests.ValidatorTests
             var dto = new Event()
             {
                 Id = eventId,
-                BeginDate = new DateTime(2026, 12, 12, 12, 00, 00),
-                EndDate = new DateTime(2026, 12, 12, 13, 00, 00),
+                BeginDateUtc = new DateTime(2026, 12, 12, 12, 00, 00),
+                EndDateUtc = new DateTime(2026, 12, 12, 13, 00, 00),
                 Description = "First2",
                 LayoutId = layoutId,
                 Name = "First event2",
@@ -386,8 +386,8 @@ namespace TicketManagement.UnitTests.ValidatorTests
             var dto = new Event()
             {
                 Id = eventId,
-                BeginDate = new DateTime(2026, 12, 12, 12, 00, 00),
-                EndDate = new DateTime(2026, 12, 12, 13, 00, 00),
+                BeginDateUtc = new DateTime(2026, 12, 12, 12, 00, 00),
+                EndDateUtc = new DateTime(2026, 12, 12, 13, 00, 00),
                 Description = "First2",
                 LayoutId = layoutId,
                 Name = "First event2",
@@ -409,8 +409,8 @@ namespace TicketManagement.UnitTests.ValidatorTests
             var dto = new Event()
             {
                 Id = eventId,
-                BeginDate = new DateTime(2028, 12, 12, 13, 00, 00),
-                EndDate = new DateTime(2028, 12, 12, 14, 00, 00),
+                BeginDateUtc = new DateTime(2028, 12, 12, 13, 00, 00),
+                EndDateUtc = new DateTime(2028, 12, 12, 14, 00, 00),
                 Description = "Second",
                 LayoutId = 1,
                 Name = "Second event",

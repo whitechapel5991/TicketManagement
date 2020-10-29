@@ -44,20 +44,20 @@ namespace TicketManagement.UnitTests.MvcServicesTests
             {
                 new Event()
                 {
-                    Id = 1, BeginDate = new DateTime(2025, 12, 12, 12, 00, 00),
-                    EndDate = new DateTime(2025, 12, 12, 13, 00, 00), Description = "First",
+                    Id = 1, BeginDateUtc = new DateTime(2025, 12, 12, 12, 00, 00),
+                    EndDateUtc = new DateTime(2025, 12, 12, 13, 00, 00), Description = "First",
                     LayoutId = layoutIdArray[0], Name = "First event", Published = false,
                 },
                 new Event()
                 {
-                    Id = 2, BeginDate = new DateTime(2025, 12, 12, 13, 00, 00),
-                    EndDate = new DateTime(2025, 12, 12, 14, 00, 00), Description = "Second",
+                    Id = 2, BeginDateUtc = new DateTime(2025, 12, 12, 13, 00, 00),
+                    EndDateUtc = new DateTime(2025, 12, 12, 14, 00, 00), Description = "Second",
                     LayoutId = layoutIdArray[1], Name = "Second event", Published = true,
                 },
                 new Event()
                 {
-                    Id = 3, BeginDate = new DateTime(2025, 12, 12, 13, 00, 00),
-                    EndDate = new DateTime(2025, 12, 12, 14, 00, 00), Description = "Third",
+                    Id = 3, BeginDateUtc = new DateTime(2025, 12, 12, 13, 00, 00),
+                    EndDateUtc = new DateTime(2025, 12, 12, 14, 00, 00), Description = "Third",
                     LayoutId = layoutIdArray[2], Name = "Third event", Published = false,
                 },
             });
@@ -131,8 +131,8 @@ namespace TicketManagement.UnitTests.MvcServicesTests
             var eventServiceMock = this.Mock.Mock<IEventService>();
             eventServiceMock.Setup(x => x.GetEvent(eventId)).Returns(  new Event()
             {
-                Id = eventId, BeginDate = new DateTime(2025, 12, 12, 12, 00, 00),
-                EndDate = new DateTime(2025, 12, 12, 13, 00, 00), Description = "First",
+                Id = eventId, BeginDateUtc = new DateTime(2025, 12, 12, 12, 00, 00),
+                EndDateUtc = new DateTime(2025, 12, 12, 13, 00, 00), Description = "First",
                 LayoutId = layoutId, Name = "First event", Published = false,
             });
 

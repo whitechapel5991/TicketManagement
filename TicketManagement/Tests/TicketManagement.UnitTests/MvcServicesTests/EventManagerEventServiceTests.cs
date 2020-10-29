@@ -41,8 +41,8 @@ namespace TicketManagement.UnitTests.MvcServicesTests
             const int eventId = 1;
             this.Mock.Mock<IEventService>().Setup(x => x.GetEvent(eventId)).Returns(  new Event()
             {
-                Id = eventId, BeginDate = new DateTime(2025, 12, 12, 12, 00, 00),
-                EndDate = new DateTime(2025, 12, 12, 13, 00, 00), Description = "First",
+                Id = eventId, BeginDateUtc = new DateTime(2025, 12, 12, 12, 00, 00),
+                EndDateUtc = new DateTime(2025, 12, 12, 13, 00, 00), Description = "First",
                 LayoutId = 1, Name = "First event", Published = false,
             });
             var layoutList = new List<Layout>
@@ -92,8 +92,8 @@ namespace TicketManagement.UnitTests.MvcServicesTests
 
             this.Mock.Mock<IEventService>().Setup(x => x.GetEvent(eventId)).Returns(  new Event()
             {
-                Id = eventId, BeginDate = new DateTime(2025, 12, 12, 12, 00, 00),
-                EndDate = new DateTime(2025, 12, 12, 13, 00, 00), Description = "First",
+                Id = eventId, BeginDateUtc = new DateTime(2025, 12, 12, 12, 00, 00),
+                EndDateUtc = new DateTime(2025, 12, 12, 13, 00, 00), Description = "First",
                 LayoutId = layoutId, Name = "First event", Published = false,
             });
 

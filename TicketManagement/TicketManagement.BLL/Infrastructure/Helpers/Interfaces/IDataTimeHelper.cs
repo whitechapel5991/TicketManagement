@@ -8,6 +8,6 @@ namespace TicketManagement.BLL.Infrastructure.Helpers.Interfaces
 {
     public interface IDataTimeHelper
     {
-        DateTime GetDateTimeNow();
+        DateTime GetDateTimeUtcNow();
     }
 }

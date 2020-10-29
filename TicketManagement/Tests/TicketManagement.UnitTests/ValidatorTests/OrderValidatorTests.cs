@@ -69,11 +69,11 @@ namespace TicketManagement.UnitTests.ValidatorTests
 
             var orders = new List<Order>
             {
-                new Order() { Id = 1, UserId = 1, EventSeatId = 5, Date = new DateTime(2017, 12, 12, 12, 00, 00) },
-                new Order() { Id = 2, UserId = 1, EventSeatId = 6, Date = new DateTime(2017, 12, 12, 12, 00, 00) },
-                new Order() { Id = 2, UserId = 1, EventSeatId = 9, Date = new DateTime(2017, 12, 12, 12, 00, 00) },
-                new Order() { Id = 3, UserId = 2, EventSeatId = 7, Date = new DateTime(2017, 12, 12, 12, 00, 00) },
-                new Order() { Id = 4, UserId = 2, EventSeatId = 8, Date = new DateTime(2017, 12, 12, 12, 00, 00) },
+                new Order() { Id = 1, UserId = 1, EventSeatId = 5, DateUtc = new DateTime(2017, 12, 12, 12, 00, 00) },
+                new Order() { Id = 2, UserId = 1, EventSeatId = 6, DateUtc = new DateTime(2017, 12, 12, 12, 00, 00) },
+                new Order() { Id = 2, UserId = 1, EventSeatId = 9, DateUtc = new DateTime(2017, 12, 12, 12, 00, 00) },
+                new Order() { Id = 3, UserId = 2, EventSeatId = 7, DateUtc = new DateTime(2017, 12, 12, 12, 00, 00) },
+                new Order() { Id = 4, UserId = 2, EventSeatId = 8, DateUtc = new DateTime(2017, 12, 12, 12, 00, 00) },
             };
             var fakeOrderRepository = new RepositoryFake<Order>(orders);
 

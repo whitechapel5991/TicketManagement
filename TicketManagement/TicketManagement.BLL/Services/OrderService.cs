@@ -70,7 +70,7 @@ namespace TicketManagement.BLL.Services
         {
             var newOrder = new Order()
             {
-                Date = this.dataTimeHelper.GetDateTimeNow(),
+                DateUtc = this.dataTimeHelper.GetDateTimeUtcNow(),
                 EventSeatId = eventSeatId,
                 UserId = userId,
             };
@@ -100,7 +100,7 @@ namespace TicketManagement.BLL.Services
             var eventSeat = this.eventSeatRepository.GetById(order.EventSeatId);
             this.RemoveUnlockJob(eventSeat.Id);
             eventSeat.State = EventSeatState.Sold;
-            order.Date = this.dataTimeHelper.GetDateTimeNow();
+            order.DateUtc = this.dataTimeHelper.GetDateTimeUtcNow();
             this.eventSeatRepository.Update(eventSeat);
             this.orderRepository.Update(order);
 
@@ -129,7 +129,7 @@ namespace TicketManagement.BLL.Services
         {
             return (from userOrderQ in this.orderRepository.GetAll().Where(x => x.UserId == userId).ToArray()
                     join eventSeatQ in this.eventSeatRepository.GetAll().Where(x => x.State == EventSeatState.InBasket) on userOrderQ.EventSeatId equals eventSeatQ.Id
-                    select new Order { Id = userOrderQ.Id, Date = userOrderQ.Date, EventSeatId = userOrderQ.EventSeatId, UserId = userOrderQ.UserId }).AsEnumerable();
+                    select new Order { Id = userOrderQ.Id, DateUtc = userOrderQ.DateUtc, EventSeatId = userOrderQ.EventSeatId, UserId = userOrderQ.UserId }).AsEnumerable();
         }
 
         public IEnumerable<Order> GetCartOrdersByName(string userName)
@@ -137,14 +137,14 @@ namespace TicketManagement.BLL.Services
             var userId = this.userRepository.FindByNormalizedUserName(userName).Id;
             return (from userOrderQ in this.orderRepository.GetAll().Where(x => x.UserId == userId).ToArray()
                     join eventSeatQ in this.eventSeatRepository.GetAll().Where(x => x.State == EventSeatState.InBasket) on userOrderQ.EventSeatId equals eventSeatQ.Id
-                    select new Order { Id = userOrderQ.Id, Date = userOrderQ.Date, EventSeatId = userOrderQ.EventSeatId, UserId = userOrderQ.UserId }).AsEnumerable();
+                    select new Order { Id = userOrderQ.Id, DateUtc = userOrderQ.DateUtc, EventSeatId = userOrderQ.EventSeatId, UserId = userOrderQ.UserId }).AsEnumerable();
         }
 
         public IEnumerable<Order> GetHistoryOrdersById(int userId)
         {
             return (from userOrderQ in this.orderRepository.GetAll().Where(x => x.UserId == userId).ToArray()
                     join eventSeatQ in this.eventSeatRepository.GetAll().Where(x => x.State == EventSeatState.Sold) on userOrderQ.EventSeatId equals eventSeatQ.Id
-                    select new Order { Id = userOrderQ.Id, Date = userOrderQ.Date, EventSeatId = userOrderQ.EventSeatId, UserId = userOrderQ.UserId }).AsEnumerable();
+                    select new Order { Id = userOrderQ.Id, DateUtc = userOrderQ.DateUtc, EventSeatId = userOrderQ.EventSeatId, UserId = userOrderQ.UserId }).AsEnumerable();
         }
 
         public IEnumerable<Order> GetHistoryOrdersByName(string userName)
@@ -152,7 +152,7 @@ namespace TicketManagement.BLL.Services
             var userId = this.userRepository.FindByNormalizedUserName(userName).Id;
             return (from userOrderQ in this.orderRepository.GetAll().Where(x => x.UserId == userId).ToArray()
                     join eventSeatQ in this.eventSeatRepository.GetAll().Where(x => x.State == EventSeatState.Sold) on userOrderQ.EventSeatId equals eventSeatQ.Id
-                    select new Order { Id = userOrderQ.Id, Date = userOrderQ.Date, EventSeatId = userOrderQ.EventSeatId, UserId = userOrderQ.UserId }).AsEnumerable();
+                    select new Order { Id = userOrderQ.Id, DateUtc = userOrderQ.DateUtc, EventSeatId = userOrderQ.EventSeatId, UserId = userOrderQ.UserId }).AsEnumerable();
         }
 
         private string GetEventHtml(EventSeat eventSeat)
@@ -169,7 +169,7 @@ namespace TicketManagement.BLL.Services
                                           "<td>";
 
             var content = $"<p>Dear client,</p>" +
-                          $"Congratulations on your purchase for the {@event.Name} which started {@event.BeginDate} and ended {@event.EndDate}." +
+                          $"Congratulations on your purchase for the {@event.Name} which started {@event.BeginDateUtc} UTC and ended {@event.EndDateUtc} UTC." +
                           $"Event description: {@event.Description}" +
                           $"Layout of the event is {layout.Name}. Description: {layout.Description}" +
                           $"Area of the event is {eventArea.Description} which is located by coordinates X: {eventArea.CoordinateX}, Y: {eventArea.CoordinateY}" +

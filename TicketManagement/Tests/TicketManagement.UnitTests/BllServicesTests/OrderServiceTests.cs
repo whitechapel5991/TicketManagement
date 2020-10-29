@@ -48,14 +48,14 @@ namespace TicketManagement.UnitTests.ServiceTests
             {
                 new Event()
                 {
-                    Id = 1, BeginDate = new DateTime(2025, 12, 12, 12, 00, 00),
-                    EndDate = new DateTime(2025, 12, 12, 13, 00, 00), Description = "First",
+                    Id = 1, BeginDateUtc = new DateTime(2025, 12, 12, 12, 00, 00),
+                    EndDateUtc = new DateTime(2025, 12, 12, 13, 00, 00), Description = "First",
                     LayoutId = 1, Name = "First event", Published = false,
                 },
                 new Event()
                 {
-                    Id = 2, BeginDate = new DateTime(2025, 12, 12, 13, 00, 00),
-                    EndDate = new DateTime(2025, 12, 12, 14, 00, 00), Description = "Second",
+                    Id = 2, BeginDateUtc = new DateTime(2025, 12, 12, 13, 00, 00),
+                    EndDateUtc = new DateTime(2025, 12, 12, 14, 00, 00), Description = "Second",
                     LayoutId = 2, Name = "Second event", Published = true,
                 },
             };
@@ -98,11 +98,11 @@ namespace TicketManagement.UnitTests.ServiceTests
 
             var orders = new List<Order>
             {
-                new Order() { Id = 1, UserId = 1, EventSeatId = 5, Date = new DateTime(2017, 12, 12, 12, 00, 00) },
-                new Order() { Id = 2, UserId = 1, EventSeatId = 6, Date = this.dateTimeNowMinus20Minutes },
-                new Order() { Id = 2, UserId = 1, EventSeatId = 9, Date = this.dateTimeNowMinus20Minutes },
-                new Order() { Id = 3, UserId = 2, EventSeatId = 7, Date = new DateTime(2017, 12, 12, 12, 00, 00) },
-                new Order() { Id = 4, UserId = 2, EventSeatId = 8, Date = this.dateTimeNowMinus20Minutes },
+                new Order() { Id = 1, UserId = 1, EventSeatId = 5, DateUtc = new DateTime(2017, 12, 12, 12, 00, 00) },
+                new Order() { Id = 2, UserId = 1, EventSeatId = 6, DateUtc = this.dateTimeNowMinus20Minutes },
+                new Order() { Id = 2, UserId = 1, EventSeatId = 9, DateUtc = this.dateTimeNowMinus20Minutes },
+                new Order() { Id = 3, UserId = 2, EventSeatId = 7, DateUtc = new DateTime(2017, 12, 12, 12, 00, 00) },
+                new Order() { Id = 4, UserId = 2, EventSeatId = 8, DateUtc = this.dateTimeNowMinus20Minutes },
             };
             var fakeOrderRepository = new RepositoryFake<Order>(orders);
 
@@ -141,7 +141,7 @@ namespace TicketManagement.UnitTests.ServiceTests
         {
             // Arrange
             var dateTimeNow = DateTime.Now;
-            this.Mock.Mock<IDataTimeHelper>().Setup(x => x.GetDateTimeNow()).Returns(dateTimeNow);
+            this.Mock.Mock<IDataTimeHelper>().Setup(x => x.GetDateTimeUtcNow()).Returns(dateTimeNow);
             var backGroundJob = this.Mock.Mock<IBackgroundJobClient>();
             this.orderRepository = this.Mock.Create<IRepository<Order>>();
             this.eventSeatRepository = this.Mock.Create<IRepository<EventSeat>>();
@@ -151,12 +151,12 @@ namespace TicketManagement.UnitTests.ServiceTests
 
             var expected = new List<Order>
             {
-                new Order() { Id = 1, UserId = 1, EventSeatId = 5, Date = new DateTime(2017, 12, 12, 12, 00, 00) },
-                new Order() { Id = 2, UserId = 1, EventSeatId = 6, Date = this.dateTimeNowMinus20Minutes },
-                new Order() { Id = 2, UserId = 1, EventSeatId = 9, Date = this.dateTimeNowMinus20Minutes },
-                new Order() { Id = 3, UserId = 2, EventSeatId = 7, Date = new DateTime(2017, 12, 12, 12, 00, 00) },
-                new Order() { Id = 4, UserId = 2, EventSeatId = 8, Date = this.dateTimeNowMinus20Minutes },
-                new Order() { EventSeatId = existingEventSeatId, UserId = userId, Date = dateTimeNow },
+                new Order() { Id = 1, UserId = 1, EventSeatId = 5, DateUtc = new DateTime(2017, 12, 12, 12, 00, 00) },
+                new Order() { Id = 2, UserId = 1, EventSeatId = 6, DateUtc = this.dateTimeNowMinus20Minutes },
+                new Order() { Id = 2, UserId = 1, EventSeatId = 9, DateUtc = this.dateTimeNowMinus20Minutes },
+                new Order() { Id = 3, UserId = 2, EventSeatId = 7, DateUtc = new DateTime(2017, 12, 12, 12, 00, 00) },
+                new Order() { Id = 4, UserId = 2, EventSeatId = 8, DateUtc = this.dateTimeNowMinus20Minutes },
+                new Order() { EventSeatId = existingEventSeatId, UserId = userId, DateUtc = dateTimeNow },
             };
 
             // Act
@@ -179,7 +179,7 @@ namespace TicketManagement.UnitTests.ServiceTests
         {
             // Arrange
             var dateTimeNow = DateTime.Now;
-            this.Mock.Mock<IDataTimeHelper>().Setup(x => x.GetDateTimeNow()).Returns(dateTimeNow);
+            this.Mock.Mock<IDataTimeHelper>().Setup(x => x.GetDateTimeUtcNow()).Returns(dateTimeNow);
             this.Mock.Mock<IRepository<Layout>>().Setup(x => x.GetById(It.IsAny<int>())).Returns(this.Fixture.Build<Layout>().Create());
             var emailHelper = this.Mock.Mock<IEmailHelper>();
             this.orderRepository = this.Mock.Create<IRepository<Order>>();
@@ -194,11 +194,11 @@ namespace TicketManagement.UnitTests.ServiceTests
 
             var expected = new List<Order>
             {
-                new Order() { Id = 1, UserId = 1, EventSeatId = 5, Date = new DateTime(2017, 12, 12, 12, 00, 00) },
-                new Order() { Id = 2, UserId = userId, EventSeatId = eventSeatId, Date = dateTimeNow },
-                new Order() { Id = 2, UserId = 1, EventSeatId = 9, Date = this.dateTimeNowMinus20Minutes },
-                new Order() { Id = 3, UserId = 2, EventSeatId = 7, Date = new DateTime(2017, 12, 12, 12, 00, 00) },
-                new Order() { Id = 4, UserId = 2, EventSeatId = 8, Date = this.dateTimeNowMinus20Minutes },
+                new Order() { Id = 1, UserId = 1, EventSeatId = 5, DateUtc = new DateTime(2017, 12, 12, 12, 00, 00) },
+                new Order() { Id = 2, UserId = userId, EventSeatId = eventSeatId, DateUtc = dateTimeNow },
+                new Order() { Id = 2, UserId = 1, EventSeatId = 9, DateUtc = this.dateTimeNowMinus20Minutes },
+                new Order() { Id = 3, UserId = 2, EventSeatId = 7, DateUtc = new DateTime(2017, 12, 12, 12, 00, 00) },
+                new Order() { Id = 4, UserId = 2, EventSeatId = 8, DateUtc = this.dateTimeNowMinus20Minutes },
             };
 
             // Act
@@ -227,10 +227,10 @@ namespace TicketManagement.UnitTests.ServiceTests
 
             var expected = new List<Order>
             {
-                new Order() { Id = 1, UserId = 1, EventSeatId = 5, Date = new DateTime(2017, 12, 12, 12, 00, 00) },
-                new Order() { Id = 3, UserId = 2, EventSeatId = 7, Date = new DateTime(2017, 12, 12, 12, 00, 00) },
-                new Order() { Id = 2, UserId = 1, EventSeatId = 9, Date = this.dateTimeNowMinus20Minutes },
-                new Order() { Id = 4, UserId = 2, EventSeatId = 8, Date = this.dateTimeNowMinus20Minutes },
+                new Order() { Id = 1, UserId = 1, EventSeatId = 5, DateUtc = new DateTime(2017, 12, 12, 12, 00, 00) },
+                new Order() { Id = 3, UserId = 2, EventSeatId = 7, DateUtc = new DateTime(2017, 12, 12, 12, 00, 00) },
+                new Order() { Id = 2, UserId = 1, EventSeatId = 9, DateUtc = this.dateTimeNowMinus20Minutes },
+                new Order() { Id = 4, UserId = 2, EventSeatId = 8, DateUtc = this.dateTimeNowMinus20Minutes },
             };
 
             // Act
@@ -254,8 +254,8 @@ namespace TicketManagement.UnitTests.ServiceTests
 
             var expected = new List<Order>
             {
-                new Order() { Id = 2, UserId = 1, EventSeatId = 6, Date = this.dateTimeNowMinus20Minutes },
-                new Order() { Id = 2, UserId = 1, EventSeatId = 9, Date = this.dateTimeNowMinus20Minutes },
+                new Order() { Id = 2, UserId = 1, EventSeatId = 6, DateUtc = this.dateTimeNowMinus20Minutes },
+                new Order() { Id = 2, UserId = 1, EventSeatId = 9, DateUtc = this.dateTimeNowMinus20Minutes },
             };
 
             // Act
@@ -274,8 +274,8 @@ namespace TicketManagement.UnitTests.ServiceTests
 
             var expected = new List<Order>
             {
-                new Order() { Id = 2, UserId = 1, EventSeatId = 6, Date = this.dateTimeNowMinus20Minutes },
-                new Order() { Id = 2, UserId = 1, EventSeatId = 9, Date = this.dateTimeNowMinus20Minutes },
+                new Order() { Id = 2, UserId = 1, EventSeatId = 6, DateUtc = this.dateTimeNowMinus20Minutes },
+                new Order() { Id = 2, UserId = 1, EventSeatId = 9, DateUtc = this.dateTimeNowMinus20Minutes },
             };
 
             // Act
@@ -294,7 +294,7 @@ namespace TicketManagement.UnitTests.ServiceTests
 
             var expected = new List<Order>
             {
-                new Order() { Id = 1, UserId = 1, EventSeatId = 5, Date = new DateTime(2017, 12, 12, 12, 00, 00) },
+                new Order() { Id = 1, UserId = 1, EventSeatId = 5, DateUtc = new DateTime(2017, 12, 12, 12, 00, 00) },
             };
 
             // Act
@@ -313,7 +313,7 @@ namespace TicketManagement.UnitTests.ServiceTests
 
             var expected = new List<Order>
             {
-                new Order() { Id = 1, UserId = 1, EventSeatId = 5, Date = new DateTime(2017, 12, 12, 12, 00, 00) },
+                new Order() { Id = 1, UserId = 1, EventSeatId = 5, DateUtc = new DateTime(2017, 12, 12, 12, 00, 00) },
             };
 
             // Act

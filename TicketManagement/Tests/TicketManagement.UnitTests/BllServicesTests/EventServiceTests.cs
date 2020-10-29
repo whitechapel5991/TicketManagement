@@ -42,20 +42,20 @@ namespace TicketManagement.UnitTests.ServiceTests
             {
                 new Event()
                 {
-                    Id = 1, BeginDate = new DateTime(2025, 12, 12, 12, 00, 00),
-                    EndDate = new DateTime(2025, 12, 12, 13, 00, 00), Description = "First",
+                    Id = 1, BeginDateUtc = new DateTime(2025, 12, 12, 12, 00, 00),
+                    EndDateUtc = new DateTime(2025, 12, 12, 13, 00, 00), Description = "First",
                     LayoutId = 1, Name = "First event", Published = false,
                 },
                 new Event()
                 {
-                    Id = 2, BeginDate = new DateTime(2025, 12, 12, 13, 00, 00),
-                    EndDate = new DateTime(2025, 12, 12, 14, 00, 00), Description = "Second",
+                    Id = 2, BeginDateUtc = new DateTime(2025, 12, 12, 13, 00, 00),
+                    EndDateUtc = new DateTime(2025, 12, 12, 14, 00, 00), Description = "Second",
                     LayoutId = 2, Name = "Second event", Published = true,
                 },
                 new Event()
                 {
-                    Id = 3, BeginDate = new DateTime(2025, 12, 12, 13, 00, 00),
-                    EndDate = new DateTime(2025, 12, 12, 14, 00, 00), Description = "Third",
+                    Id = 3, BeginDateUtc = new DateTime(2025, 12, 12, 13, 00, 00),
+                    EndDateUtc = new DateTime(2025, 12, 12, 14, 00, 00), Description = "Third",
                     LayoutId = 3, Name = "Third event", Published = false,
                 },
             };
@@ -124,20 +124,20 @@ namespace TicketManagement.UnitTests.ServiceTests
             {
                 new Event()
                 {
-                    Id = 1, BeginDate = new DateTime(2025, 12, 12, 12, 00, 00),
-                    EndDate = new DateTime(2025, 12, 12, 13, 00, 00), Description = "First",
+                    Id = 1, BeginDateUtc = new DateTime(2025, 12, 12, 12, 00, 00),
+                    EndDateUtc = new DateTime(2025, 12, 12, 13, 00, 00), Description = "First",
                     LayoutId = 1, Name = "First event", Published = false,
                 },
                 new Event()
                 {
-                    Id = 2, BeginDate = new DateTime(2025, 12, 12, 13, 00, 00),
-                    EndDate = new DateTime(2025, 12, 12, 14, 00, 00), Description = "Second",
+                    Id = 2, BeginDateUtc = new DateTime(2025, 12, 12, 13, 00, 00),
+                    EndDateUtc = new DateTime(2025, 12, 12, 14, 00, 00), Description = "Second",
                     LayoutId = 2, Name = "Second event", Published = true,
                 },
                 new Event()
                 {
-                    Id = 3, BeginDate = new DateTime(2025, 12, 12, 13, 00, 00),
-                    EndDate = new DateTime(2025, 12, 12, 14, 00, 00), Description = "Third",
+                    Id = 3, BeginDateUtc = new DateTime(2025, 12, 12, 13, 00, 00),
+                    EndDateUtc = new DateTime(2025, 12, 12, 14, 00, 00), Description = "Third",
                     LayoutId = 3, Name = "Third event", Published = false,
                 },
                 dto,
@@ -180,8 +180,8 @@ namespace TicketManagement.UnitTests.ServiceTests
             var expectedDto = new Event()
             {
                 Id = existingEventId,
-                BeginDate = new DateTime(2025, 12, 12, 12, 00, 00),
-                EndDate = new DateTime(2025, 12, 12, 13, 00, 00),
+                BeginDateUtc = new DateTime(2025, 12, 12, 12, 00, 00),
+                EndDateUtc = new DateTime(2025, 12, 12, 13, 00, 00),
                 Description = "First",
                 LayoutId = 1,
                 Name = "First event",
@@ -206,14 +206,14 @@ namespace TicketManagement.UnitTests.ServiceTests
             {
                 new Event()
                 {
-                    Id = 1, BeginDate = new DateTime(2025, 12, 12, 12, 00, 00),
-                    EndDate = new DateTime(2025, 12, 12, 13, 00, 00), Description = "First",
+                    Id = 1, BeginDateUtc = new DateTime(2025, 12, 12, 12, 00, 00),
+                    EndDateUtc = new DateTime(2025, 12, 12, 13, 00, 00), Description = "First",
                     LayoutId = 1, Name = "First event",
                 },
                 new Event()
                 {
-                    Id = 3, BeginDate = new DateTime(2025, 12, 12, 13, 00, 00),
-                    EndDate = new DateTime(2025, 12, 12, 14, 00, 00), Description = "Third",
+                    Id = 3, BeginDateUtc = new DateTime(2025, 12, 12, 13, 00, 00),
+                    EndDateUtc = new DateTime(2025, 12, 12, 14, 00, 00), Description = "Third",
                     LayoutId = 3, Name = "Third event", Published = false,
                 },
             };
@@ -234,8 +234,8 @@ namespace TicketManagement.UnitTests.ServiceTests
             var expectedDto = new Event()
             {
                 Id = 1,
-                BeginDate = new DateTime(2025, 12, 12, 12, 00, 00),
-                EndDate = new DateTime(2025, 12, 12, 13, 00, 00),
+                BeginDateUtc = new DateTime(2025, 12, 12, 12, 00, 00),
+                EndDateUtc = new DateTime(2025, 12, 12, 13, 00, 00),
                 Description = "First",
                 LayoutId = 1,
                 Name = "First event",
@@ -257,20 +257,20 @@ namespace TicketManagement.UnitTests.ServiceTests
             {
                 new Event()
                 {
-                    Id = 1, BeginDate = new DateTime(2025, 12, 12, 12, 00, 00),
-                    EndDate = new DateTime(2025, 12, 12, 13, 00, 00), Description = "First",
+                    Id = 1, BeginDateUtc = new DateTime(2025, 12, 12, 12, 00, 00),
+                    EndDateUtc = new DateTime(2025, 12, 12, 13, 00, 00), Description = "First",
                     LayoutId = 1, Name = "First event", Published = false,
                 },
                 new Event()
                 {
-                    Id = 2, BeginDate = new DateTime(2025, 12, 12, 13, 00, 00),
-                    EndDate = new DateTime(2025, 12, 12, 14, 00, 00), Description = "Second",
+                    Id = 2, BeginDateUtc = new DateTime(2025, 12, 12, 13, 00, 00),
+                    EndDateUtc = new DateTime(2025, 12, 12, 14, 00, 00), Description = "Second",
                     LayoutId = 2, Name = "Second event", Published = true,
                 },
                 new Event()
                 {
-                    Id = 3, BeginDate = new DateTime(2025, 12, 12, 13, 00, 00),
-                    EndDate = new DateTime(2025, 12, 12, 14, 00, 00), Description = "Third",
+                    Id = 3, BeginDateUtc = new DateTime(2025, 12, 12, 13, 00, 00),
+                    EndDateUtc = new DateTime(2025, 12, 12, 14, 00, 00), Description = "Third",
                     LayoutId = 3, Name = "Third event", Published = false,
                 },
             };
@@ -291,8 +291,8 @@ namespace TicketManagement.UnitTests.ServiceTests
             {
                 new Event()
                 {
-                    Id = 2, BeginDate = new DateTime(2025, 12, 12, 13, 00, 00),
-                    EndDate = new DateTime(2025, 12, 12, 14, 00, 00), Description = "Second",
+                    Id = 2, BeginDateUtc = new DateTime(2025, 12, 12, 13, 00, 00),
+                    EndDateUtc = new DateTime(2025, 12, 12, 14, 00, 00), Description = "Second",
                     LayoutId = 2, Name = "Second event", Published = true,
                 },
             };
@@ -328,8 +328,8 @@ namespace TicketManagement.UnitTests.ServiceTests
             var expectedDto = new Event()
             {
                 Id = 1,
-                BeginDate = new DateTime(2025, 12, 12, 12, 00, 00),
-                EndDate = new DateTime(2025, 12, 12, 13, 00, 00),
+                BeginDateUtc = new DateTime(2025, 12, 12, 12, 00, 00),
+                EndDateUtc = new DateTime(2025, 12, 12, 13, 00, 00),
                 Description = "First",
                 LayoutId = 1,
                 Name = "First event",
@@ -352,8 +352,8 @@ namespace TicketManagement.UnitTests.ServiceTests
             {
                 new Event()
                 {
-                    Id = 1, BeginDate = new DateTime(2025, 12, 12, 12, 00, 00),
-                    EndDate = new DateTime(2025, 12, 12, 13, 00, 00), Description = "First",
+                    Id = 1, BeginDateUtc = new DateTime(2025, 12, 12, 12, 00, 00),
+                    EndDateUtc = new DateTime(2025, 12, 12, 13, 00, 00), Description = "First",
                     LayoutId = 1, Name = "First event", Published = false,
                 },
             };

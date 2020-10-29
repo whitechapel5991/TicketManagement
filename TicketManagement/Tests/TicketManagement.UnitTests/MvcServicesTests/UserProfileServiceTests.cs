@@ -43,10 +43,10 @@ namespace TicketManagement.UnitTests.MvcServicesTests
 
             this.Mock.Mock<IOrderService>().Setup(x => x.GetHistoryOrdersByName("admin")).Returns(new List<Order>
             {
-                new Order() { Id = 1, UserId = 1, EventSeatId = eventSeatIdArray[0], Date = new DateTime(2017, 12, 12, 12, 00, 00) },
-                new Order() { Id = 2, UserId = 1, EventSeatId = eventSeatIdArray[1], Date = new DateTime(2017, 12, 12, 12, 00, 00) },
-                new Order() { Id = 3, UserId = 1, EventSeatId = eventSeatIdArray[2], Date = new DateTime(2017, 12, 12, 12, 00, 00) },
-                new Order() { Id = 4, UserId = 1, EventSeatId = eventSeatIdArray[3], Date = new DateTime(2017, 12, 12, 12, 00, 00) },
+                new Order() { Id = 1, UserId = 1, EventSeatId = eventSeatIdArray[0], DateUtc = new DateTime(2017, 12, 12, 12, 00, 00) },
+                new Order() { Id = 2, UserId = 1, EventSeatId = eventSeatIdArray[1], DateUtc = new DateTime(2017, 12, 12, 12, 00, 00) },
+                new Order() { Id = 3, UserId = 1, EventSeatId = eventSeatIdArray[2], DateUtc = new DateTime(2017, 12, 12, 12, 00, 00) },
+                new Order() { Id = 4, UserId = 1, EventSeatId = eventSeatIdArray[3], DateUtc = new DateTime(2017, 12, 12, 12, 00, 00) },
             });
 
             this.Mock.Mock<IEventSeatService>().Setup(x => x.GetEventSeatsByEventSeatIds(eventSeatIdArray)).Returns(new List<EventSeat>
@@ -67,14 +67,14 @@ namespace TicketManagement.UnitTests.MvcServicesTests
             {
                 new Event()
                 {
-                    Id = 1, BeginDate = new DateTime(2025, 12, 12, 12, 00, 00),
-                    EndDate = new DateTime(2025, 12, 12, 13, 00, 00), Description = "First",
+                    Id = 1, BeginDateUtc = new DateTime(2025, 12, 12, 12, 00, 00),
+                    EndDateUtc = new DateTime(2025, 12, 12, 13, 00, 00), Description = "First",
                     LayoutId = 1, Name = "First event", Published = false,
                 },
                 new Event()
                 {
-                    Id = 2, BeginDate = new DateTime(2025, 12, 12, 13, 00, 00),
-                    EndDate = new DateTime(2025, 12, 12, 14, 00, 00), Description = "Second",
+                    Id = 2, BeginDateUtc = new DateTime(2025, 12, 12, 13, 00, 00),
+                    EndDateUtc = new DateTime(2025, 12, 12, 14, 00, 00), Description = "Second",
                     LayoutId = 2, Name = "Second event", Published = true,
                 },
             });
