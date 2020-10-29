@@ -1,9 +1,23 @@
-﻿@using TicketManagement.Web.Constants
-@helper LanguagesList() {
-    <div class="dropdown-menu">
-        @foreach (var lang in Enum.GetValues(typeof(Language)))
+﻿@using System.Web.Mvc
+@using System.Web.Mvc.Routing
+@using System.Web.Mvc.Html
+@using System.Web.Mvc.Ajax
+@using System.Web.Mvc.Razor
+@using System.Web.Optimization
+@using TicketManagement.Web
+@using TicketManagement.Web.Constants
+
+@helper LanguagesList()
+{
+    var wvp = PageContext.Page as System.Web.Mvc.WebViewPage;
+
+<div class="dropdown-menu">
+    @foreach (var lang in Enum.GetValues(typeof(Language)))
+    {
+        using (wvp.Ajax.BeginForm("ChangeLanguage", "Language", new AjaxOptions { HttpMethod = WebRequestMethods.Http.Post, OnSuccess = "reloadPage" }))
         {
-            <a class='dropdown-item' href='/Language/ChangeLanguage'>@lang.ToString()</a>
+            <input type='submit' name='language' value='@lang' class='dropdown-item'>
         }
-    </div>
+    }
+</div>
 }
