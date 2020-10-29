@@ -86,8 +86,8 @@ namespace TicketManagement.IntegrationTests.ServiceTests.Identity
 
             var expected = new List<TicketManagementUser>
             {
-                new TicketManagementUser() { Id = 2, UserName = "user", Email = "user@user.com", PasswordHash = "AM1rNg7ocbR18loZOEsl4dqaX+fKjjmt5UbeKNM32rNYLeDVfi0mtAXkE7etqtZjng==", TimeZone = "Belarus Standard Time", Language = "en", FirstName = "User", Surname = "UserS", Balance = 300, EmailConfirmed = true, SecurityStamp = "SomeSecureStamp" },
-                new TicketManagementUser() { Id = 3, UserName = "event manager", Email = "manager@manager.com", PasswordHash = "AIIyby5JGrXPBYaW+uc3WDX68f5ol82JHm4FIi9UHTJSRmD5WzKrP7DfG0nRbbCMpw==", TimeZone = "Belarus Standard Time", Language = "ru", FirstName = "Manager", Surname = "ManagerS", Balance = 1000, EmailConfirmed = true },
+                new TicketManagementUser() { Id = 2, UserName = "user", Email = "user@user.com", PasswordHash = "AM1rNg7ocbR18loZOEsl4dqaX+fKjjmt5UbeKNM32rNYLeDVfi0mtAXkE7etqtZjng==", TimeZone = "Belarus Standard Time", Language = "en", FirstName = "User", Surname = "UserS", Balance = 300, EmailConfirmed = true, SecurityStamp = "UserSecureStamp" },
+                new TicketManagementUser() { Id = 3, UserName = "event manager", Email = "manager@manager.com", PasswordHash = "AIIyby5JGrXPBYaW+uc3WDX68f5ol82JHm4FIi9UHTJSRmD5WzKrP7DfG0nRbbCMpw==", TimeZone = "Belarus Standard Time", Language = "ru", FirstName = "Manager", Surname = "ManagerS", Balance = 1000, EmailConfirmed = true, SecurityStamp = "ManagerSecureStamp" },
             };
 
             // Act
@@ -130,6 +130,7 @@ namespace TicketManagement.IntegrationTests.ServiceTests.Identity
                 Surname = "AdminS",
                 Balance = 100000,
                 EmailConfirmed = true,
+                SecurityStamp = "AdminSecureStamp",
             };
 
             // Act
@@ -157,6 +158,7 @@ namespace TicketManagement.IntegrationTests.ServiceTests.Identity
                 Surname = "AdminS",
                 Balance = 100000,
                 EmailConfirmed = true,
+                SecurityStamp = "AdminSecureStamp",
             };
 
             // Act
@@ -202,7 +204,7 @@ namespace TicketManagement.IntegrationTests.ServiceTests.Identity
         {
             // Arrange
             const int userId = 2;
-            const string expected = "SomeSecureStamp";
+            const string expected = "UserSecureStamp";
 
             // Act
             var actual = this.userService.GetSecurityStamp(userId);

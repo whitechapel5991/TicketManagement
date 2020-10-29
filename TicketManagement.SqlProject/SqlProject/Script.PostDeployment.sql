@@ -283,16 +283,16 @@ GO
 SET IDENTITY_INSERT [dbo].[AspNetUsers] ON
 GO
 
-INSERT INTO [dbo].[AspNetUsers] ([Id], [UserName], [Email], [EmailConfirmed], [PasswordHash], [Language], [TimeZone], [FirstName], [Surname], [Balance], [PhoneNumberConfirmed], [TwoFactorEnabled],[LockoutEnabled],[AccessFailedCount]) 
-VALUES (1, 'admin', 'whitechapel5991@gmail.com', 1, 'AN+dimATtnynaDlFB1TFqB0XWDWbytYMwSQMwWGVT2Pdd3ASxUmvmQSHY9eNc9DU9A==', 'ru', 'Belarus Standard Time', 'Admin', 'AdminS', 100000, 0, 0, 0, 0)
+INSERT INTO [dbo].[AspNetUsers] ([Id], [UserName], [Email], [EmailConfirmed], [PasswordHash], [Language], [TimeZone], [FirstName], [Surname], [Balance], [PhoneNumberConfirmed], [TwoFactorEnabled],[LockoutEnabled],[AccessFailedCount],[SecurityStamp]) 
+VALUES (1, 'admin', 'whitechapel5991@gmail.com', 1, 'AN+dimATtnynaDlFB1TFqB0XWDWbytYMwSQMwWGVT2Pdd3ASxUmvmQSHY9eNc9DU9A==', 'ru', 'Belarus Standard Time', 'Admin', 'AdminS', 100000, 0, 0, 0, 0, 'AdminSecureStamp')
 GO
 
 INSERT INTO [dbo].[AspNetUsers] ([Id],[UserName], [Email], [EmailConfirmed],[PasswordHash], [Language], [TimeZone], [FirstName], [Surname], [Balance], [PhoneNumberConfirmed], [TwoFactorEnabled],[LockoutEnabled],[AccessFailedCount],[SecurityStamp]) 
-VALUES (2, 'user', 'user@user.com', 1,'AM1rNg7ocbR18loZOEsl4dqaX+fKjjmt5UbeKNM32rNYLeDVfi0mtAXkE7etqtZjng==', 'en','Belarus Standard Time', 'User', 'UserS', 300, 0, 0, 0, 0, 'SomeSecureStamp')
+VALUES (2, 'user', 'user@user.com', 1,'AM1rNg7ocbR18loZOEsl4dqaX+fKjjmt5UbeKNM32rNYLeDVfi0mtAXkE7etqtZjng==', 'en','Belarus Standard Time', 'User', 'UserS', 300, 0, 0, 0, 0, 'UserSecureStamp')
 GO
 
-INSERT INTO [dbo].[AspNetUsers] ([Id],[UserName], [Email], [EmailConfirmed],[PasswordHash], [Language], [TimeZone], [FirstName], [Surname], [Balance], [PhoneNumberConfirmed], [TwoFactorEnabled],[LockoutEnabled],[AccessFailedCount]) 
-VALUES (3, 'event manager', 'manager@manager.com', 1,'AIIyby5JGrXPBYaW+uc3WDX68f5ol82JHm4FIi9UHTJSRmD5WzKrP7DfG0nRbbCMpw==', 'ru','Belarus Standard Time', 'Manager', 'ManagerS', 1000, 0, 0, 0, 0)
+INSERT INTO [dbo].[AspNetUsers] ([Id],[UserName], [Email], [EmailConfirmed],[PasswordHash], [Language], [TimeZone], [FirstName], [Surname], [Balance], [PhoneNumberConfirmed], [TwoFactorEnabled],[LockoutEnabled],[AccessFailedCount],[SecurityStamp]) 
+VALUES (3, 'event manager', 'manager@manager.com', 1,'AIIyby5JGrXPBYaW+uc3WDX68f5ol82JHm4FIi9UHTJSRmD5WzKrP7DfG0nRbbCMpw==', 'ru','Belarus Standard Time', 'Manager', 'ManagerS', 1000, 0, 0, 0, 0, 'ManagerSecureStamp')
 GO
 
 SET IDENTITY_INSERT [dbo].[AspNetUsers] OFF
