@@ -1,14 +1,12 @@
-﻿using Autofac;
-using System;
+﻿using System;
 using System.Configuration;
-using System.Web;
+using Autofac;
 using Autofac.Integration.Mvc;
 using Microsoft.AspNet.Identity;
+using Microsoft.Owin;
 using Microsoft.Owin.Security;
 using TicketManagement.BLL.Util;
 using TicketManagement.DAL.Util;
-using TicketManagement.Web.Interfaces;
-using TicketManagement.Web.Services;
 using TicketManagement.Web.Services.Identity;
 
 namespace TicketManagement.Web.Util
@@ -41,26 +39,22 @@ namespace TicketManagement.Web.Util
 
             builder.RegisterType<UserStore>()
                 .As<IUserStore<IdentityUser, int>>()
+                .As<IUserSecurityStampStore<IdentityUser, int>>()
+                .As<IUserPasswordStore<IdentityUser, int>>()
+                .As<IUserRoleStore<IdentityUser, int>>()
+                .As<IUserClaimStore<IdentityUser, int>>()
+                .As<IUserLoginStore<IdentityUser, int>>()
                 .InstancePerLifetimeScope();
 
             builder.RegisterType<RoleStore>()
                 .As<IRoleStore<IdentityRole, int>>()
+                .As<IQueryableRoleStore<IdentityRole, int>>()
                 .InstancePerLifetimeScope();
 
-            builder.RegisterType<RoleStore>()
-                .As<IRoleStore<IdentityRole, int>>()
-                .InstancePerLifetimeScope();
+            builder.Register<IAuthenticationManager>((c, p) => c.Resolve<IOwinContext>()
+                .Authentication).As<IAuthenticationManager>().InstancePerLifetimeScope();
 
-            builder.RegisterType<AccountService>()
-                .As<IAccountService>()
-                .InstancePerLifetimeScope();
-
-            builder.RegisterType<UserManager<IdentityUser, int>>()
-                .AsSelf()
-                .InstancePerLifetimeScope();
-
-            builder.Register<IAuthenticationManager>(context => HttpContext.Current.GetOwinContext().Authentication)
-                .InstancePerRequest();
+            builder.RegisterType<ApplicationUserManager>().AsSelf().InstancePerLifetimeScope();
 
             builder.RegisterModule(new WebServicesModule());
             builder.RegisterModule(new EfModule(this.connectionString));

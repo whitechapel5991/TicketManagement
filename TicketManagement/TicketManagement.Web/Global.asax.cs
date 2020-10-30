@@ -1,7 +1,9 @@
 using System;
 using System.Globalization;
+using System.Security.Claims;
 using System.Threading;
 using System.Web;
+using System.Web.Helpers;
 using System.Web.Mvc;
 using System.Web.Optimization;
 using System.Web.Routing;
@@ -21,8 +23,7 @@ namespace TicketManagement.Web
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
-
-            backgroundJobServer = new BackgroundJobServer();
+            this.backgroundJobServer = new BackgroundJobServer();
         }
 
         protected void Application_BeginRequest()
@@ -45,7 +46,7 @@ namespace TicketManagement.Web
 
         protected void Application_End(object sender, EventArgs e)
         {
-            backgroundJobServer.Dispose();
+            this.backgroundJobServer.Dispose();
         }
     }
 }

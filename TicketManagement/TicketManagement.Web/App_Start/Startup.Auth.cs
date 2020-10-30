@@ -1,4 +1,6 @@
-﻿using Hangfire;
+﻿using System;
+using System.Security.Claims;
+using System.Web.Helpers;
 using Microsoft.AspNet.Identity;
 using Microsoft.Owin;
 using Microsoft.Owin.Security.Cookies;
@@ -12,14 +14,13 @@ namespace TicketManagement.Web
         {
             app.UseCookieAuthentication(new CookieAuthenticationOptions
             {
+                CookieName = DefaultAuthenticationTypes.ApplicationCookie,
                 AuthenticationType = DefaultAuthenticationTypes.ApplicationCookie,
                 LoginPath = new PathString("/Account/Login"),
+                ExpireTimeSpan = TimeSpan.FromHours(4.0),
             });
 
-            app.UseExternalSignInCookie(DefaultAuthenticationTypes.ExternalCookie);
-
-            app.UseHangfireDashboard();
-            app.UseHangfireServer();
+            AntiForgeryConfig.UniqueClaimTypeIdentifier = ClaimTypes.NameIdentifier;
         }
     }
 }
