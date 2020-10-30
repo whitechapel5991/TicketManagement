@@ -54,18 +54,18 @@ namespace TicketManagement.Web.Services
                 IndexEventViewModel = new IndexEventViewModel
                 {
                     Id = eventDto.Id,
-                    BeginDate = eventDto.BeginDate,
-                    BeginTime = eventDto.BeginDate,
+                    BeginDate = eventDto.BeginDateUtc,
+                    BeginTime = eventDto.BeginDateUtc,
                     Description = eventDto.Description,
-                    EndDate = eventDto.EndDate,
-                    EndTime = eventDto.EndDate,
+                    EndDate = eventDto.EndDateUtc,
+                    EndTime = eventDto.EndDateUtc,
                     LayoutId = eventDto.LayoutId,
                     Name = eventDto.Name,
                     Published = eventDto.Published,
                     LayoutName = layouts[eventDto.LayoutId],
                 },
                 LayoutId = eventDto.LayoutId,
-                LayoutList = new SelectList(layouts, "Id", "Name", eventDto.LayoutId),
+                LayoutList = new SelectList(layouts.OrderBy(x => x.Value), "Key", "Value", layouts[eventDto.LayoutId]),
             };
         }
 
@@ -75,8 +75,8 @@ namespace TicketManagement.Web.Services
                 new Event
                 {
                     Name = eventViewModel.IndexEventViewModel.Name,
-                    BeginDate = eventViewModel.IndexEventViewModel.GetBeginDate(),
-                    EndDate = eventViewModel.IndexEventViewModel.GetEndDate(),
+                    BeginDateUtc = eventViewModel.IndexEventViewModel.GetBeginDate(),
+                    EndDateUtc = eventViewModel.IndexEventViewModel.GetEndDate(),
                     Description = eventViewModel.IndexEventViewModel.Description,
                     LayoutId = eventViewModel.LayoutId,
                 });
@@ -87,10 +87,10 @@ namespace TicketManagement.Web.Services
             this.eventService.UpdateEvent(new Event
             {
                 Name = eventViewModel.IndexEventViewModel.Name,
-                BeginDate = eventViewModel.IndexEventViewModel.GetBeginDate(),
-                EndDate = eventViewModel.IndexEventViewModel.GetEndDate(),
+                BeginDateUtc = eventViewModel.IndexEventViewModel.GetBeginDate(),
+                EndDateUtc = eventViewModel.IndexEventViewModel.GetEndDate(),
                 Description = eventViewModel.IndexEventViewModel.Description,
-                LayoutId = eventViewModel.LayoutId,
+                LayoutId = eventViewModel.IndexEventViewModel.LayoutId,
                 Published = eventViewModel.IndexEventViewModel.Published,
                 Id = eventViewModel.IndexEventViewModel.Id,
             });
@@ -132,8 +132,8 @@ namespace TicketManagement.Web.Services
             {
                 Name = eventDetails.Name,
                 Description = eventDetails.Description,
-                BeginDate = eventDetails.BeginDate,
-                EndDate = eventDetails.EndDate,
+                BeginDate = eventDetails.BeginDateUtc,
+                EndDate = eventDetails.EndDateUtc,
                 LayoutName = layout.Name,
                 EventAreas = new List<EventAreaViewModel>(),
             };
@@ -181,11 +181,11 @@ namespace TicketManagement.Web.Services
             return eventList.Select(eventDto => new IndexEventViewModel
             {
                 Id = eventDto.Id,
-                BeginDate = eventDto.BeginDate,
-                BeginTime = eventDto.BeginDate,
+                BeginDate = eventDto.BeginDateUtc,
+                BeginTime = eventDto.BeginDateUtc,
                 Description = eventDto.Description,
-                EndDate = eventDto.EndDate,
-                EndTime = eventDto.EndDate,
+                EndDate = eventDto.EndDateUtc,
+                EndTime = eventDto.EndDateUtc,
                 LayoutId = eventDto.LayoutId,
                 Name = eventDto.Name,
                 Published = eventDto.Published,

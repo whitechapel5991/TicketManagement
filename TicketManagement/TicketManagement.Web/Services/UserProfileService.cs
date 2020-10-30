@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Microsoft.AspNet.Identity;
 using System.Threading.Tasks;
+using Microsoft.AspNet.Identity;
 using TicketManagement.BLL.Interfaces;
 using TicketManagement.DAL.Models;
 using TicketManagement.Web.Constants;
@@ -14,14 +14,14 @@ namespace TicketManagement.Web.Services
 {
     public class UserProfileService : IUserProfileService
     {
-        private readonly UserManager<IdentityUser, int> userManager;
+        private readonly ApplicationUserManager userManager;
         private readonly IOrderService orderService;
         private readonly IEventSeatService eventSeatService;
         private readonly IEventAreaService eventAreaService;
         private readonly BLL.Interfaces.IEventService eventService;
 
         public UserProfileService(
-            UserManager<IdentityUser, int> userManager,
+            ApplicationUserManager userManager,
             IOrderService orderService,
             IEventSeatService eventSeatService,
             IEventAreaService eventAreaService, 
@@ -101,7 +101,7 @@ namespace TicketManagement.Web.Services
 
                 var orderVm = new OrderViewModel
                 {
-                    DatePurchase = order.Date,
+                    DatePurchase = order.DateUtc,
                     TicketCost = eventAreasDictionary[eventAreaKey].Price,
                     EventName = eventDictionary[eventKey].Name,
                     EventDescription = eventDictionary[eventKey].Description,

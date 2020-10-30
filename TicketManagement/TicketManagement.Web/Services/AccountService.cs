@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNet.Identity;
 using Microsoft.Owin.Security;
@@ -13,11 +14,11 @@ namespace TicketManagement.Web.Services
 {
     internal class AccountService : IAccountService
     {
-        private readonly UserManager<IdentityUser, int> userManager;
+        private readonly ApplicationUserManager userManager;
+
         private readonly IAuthenticationManager authenticationManager;
 
-
-        public AccountService(UserManager<IdentityUser, int> userManager, IAuthenticationManager authenticationManager)
+        public AccountService(ApplicationUserManager userManager, IAuthenticationManager authenticationManager)
         {
             this.userManager = userManager;
             this.authenticationManager = authenticationManager;
@@ -32,11 +33,17 @@ namespace TicketManagement.Web.Services
                 throw new UserNameOrPasswordWrongException(Resources.TicketManagementResource.WrongCredentials);
             }
 
-            var claimIdentity = await userManager.CreateIdentityAsync(user,
-                DefaultAuthenticationTypes.ApplicationCookie);
+            var claimIdentity = await this.userManager.CreateIdentityAsync(user, DefaultAuthenticationTypes.ApplicationCookie);
 
-            this.authenticationManager.SignOut();
-            this.authenticationManager.SignIn(claimIdentity);
+            this.authenticationManager.SignOut(DefaultAuthenticationTypes.ApplicationCookie);
+            this.authenticationManager.SignIn(
+                new AuthenticationProperties()
+            {
+                AllowRefresh = true,
+                IsPersistent = true,
+                ExpiresUtc = DateTime.UtcNow.AddDays(7),
+            }, claimIdentity);
+
             return user.Id;
         }
 
@@ -54,7 +61,7 @@ namespace TicketManagement.Web.Services
         public async Task RegisterUserAsync(RegisterViewModel registerVm)
         {
             var user = this.MapIdentityUser(registerVm);
-            var registerResult = await this.userManager.CreateAsync(user);
+            var registerResult = await this.userManager.CreateAsync(user, registerVm.Password);
             if (!registerResult.Succeeded)
             {
                 throw new RegisterUserWrongDataException(string.Join(", ", registerResult.Errors));

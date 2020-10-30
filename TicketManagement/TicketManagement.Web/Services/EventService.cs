@@ -49,8 +49,8 @@ namespace TicketManagement.Web.Services
             {
                 Name = eventDetails.Name,
                 Description = eventDetails.Description,
-                BeginDate = eventDetails.BeginDate,
-                EndDate = eventDetails.EndDate,
+                BeginDate = eventDetails.BeginDateUtc,
+                EndDate = eventDetails.EndDateUtc,
                 LayoutName = layout.Name,
                 EventAreas = new List<EventAreaViewModel>(),
             };
@@ -102,10 +102,10 @@ namespace TicketManagement.Web.Services
                     Id = @event.Id,
                     Name = @event.Name,
                     Description = @event.Description,
-                    BeginDate = @event.BeginDate,
-                    EndDate = @event.EndDate,
-                    BeginTime = @event.BeginDate,
-                    EndTime = @event.EndDate,
+                    BeginDate = @event.BeginDateUtc,
+                    EndDate = @event.EndDateUtc,
+                    BeginTime = @event.BeginDateUtc,
+                    EndTime = @event.EndDateUtc,
                     CountFreeSeats = eventsDictionary[@event.Id],
                     LayoutName = layouts[@event.LayoutId],
                 })
