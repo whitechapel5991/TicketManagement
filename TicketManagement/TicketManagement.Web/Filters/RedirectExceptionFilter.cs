@@ -5,9 +5,9 @@ using TicketManagement.Web.Constants.Extension;
 
 namespace TicketManagement.Web.Filters
 {
-    public class RedirectExceptionFilter: HandleErrorAttribute
+    public class RedirectExceptionFilter : HandleErrorAttribute
     {
-        public override void OnException(ExceptionContext filterContext)
+        public void OnException(ExceptionContext filterContext)
         {
             if (filterContext.ExceptionHandled)
             {
@@ -19,18 +19,21 @@ namespace TicketManagement.Web.Filters
 
             var model = new HandleErrorInfo(filterContext.Exception, controllerName, actionName);
 
-            var isEventManager = filterContext.Controller.ControllerContext.HttpContext.User.IsInRole(Roles.UserManager.GetStringValue());
-            var isAdmin = filterContext.Controller.ControllerContext.HttpContext.User.IsInRole(Roles.Admin.GetStringValue());
-
-            if (isEventManager || isAdmin)
+            if (filterContext.Controller.ControllerContext.HttpContext.User.Identity.IsAuthenticated)
             {
-                filterContext.Result = new ViewResult
+                var isEventManager = filterContext.Controller.ControllerContext.HttpContext.User.IsInRole(Roles.UserManager.GetStringValue());
+                var isAdmin = filterContext.Controller.ControllerContext.HttpContext.User.IsInRole(Roles.Admin.GetStringValue());
+
+                if (isEventManager || isAdmin)
                 {
-                    ViewName = "AdminError",
-                    MasterName = this.Master,
-                    ViewData = new ViewDataDictionary<HandleErrorInfo>(model),
-                    TempData = filterContext.Controller.TempData
-                };
+                    filterContext.Result = new ViewResult
+                    {
+                        ViewName = "AdminError",
+                        MasterName = this.Master,
+                        ViewData = new ViewDataDictionary<HandleErrorInfo>(model),
+                        TempData = filterContext.Controller.TempData,
+                    };
+                }
             }
             else
             {
@@ -41,10 +44,12 @@ namespace TicketManagement.Web.Filters
             }
 
             filterContext.ExceptionHandled = true;
+
             filterContext.HttpContext.Response.Clear();
             filterContext.HttpContext.Response.StatusCode = new HttpException(null, filterContext.Exception).GetHttpCode();
 
             filterContext.HttpContext.Response.TrySkipIisCustomErrors = true;
+            //base.OnException(filterContext);
         }
     }
 }
