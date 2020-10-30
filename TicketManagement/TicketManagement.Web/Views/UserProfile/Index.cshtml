@@ -1,0 +1,51 @@
+﻿@using Resources
+@model TicketManagement.Web.Models.UserProfile.UserProfileViewModel
+
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="row">
+                <div class="col-md-2 profile-menu">
+                    <h2>@TicketManagementResource.ProfileGeneral</h2>
+                    <div class="btn-group-vertical">
+                        @Ajax.ActionLink(TicketManagementResource.EditUserProfile, "Edit", "UserProfile", new { area = "" }, new AjaxOptions { UpdateTargetId = "profile-content", HttpMethod = WebRequestMethods.Http.Get }, new { type = "button", @class = "btn btn-primary" })
+                        @Ajax.ActionLink(TicketManagementResource.ChangePassword, "ChangePassword", "UserProfile", new { area = "" }, new AjaxOptions { UpdateTargetId = "profile-content", HttpMethod = WebRequestMethods.Http.Get }, new { type = "button", @class = "btn btn-primary" })
+                        @Ajax.ActionLink(TicketManagementResource.Balance, "IncreaseBalance", "UserProfile", new { area = "" }, new AjaxOptions { UpdateTargetId = "profile-content", HttpMethod = WebRequestMethods.Http.Get }, new { type = "button", @class = "btn btn-primary" })
+                        @Ajax.ActionLink(TicketManagementResource.PurchaseHistory, "PurchaseHistory", "UserProfile", new { area = "" }, new AjaxOptions { UpdateTargetId = "profile-content", HttpMethod = WebRequestMethods.Http.Get }, new { type = "button", @class = "btn btn-primary" })
+                    </div>
+                </div>
+
+                <div id="profile-content" class="col-md-8">
+                    <div class="user-info">
+                        <h3>@TicketManagementResource.UserInfo</h3>
+                        <div class="row">
+                            <label class="col-sm-2">@Html.DisplayNameFor(model => model.Email)</label>
+                            <label class="col-sm-10">@Html.DisplayFor(model => model.Email)</label>
+                        </div>
+                        <div class="row">
+                            <label class="col-sm-2"> @Html.DisplayNameFor(model => model.UserName)</label>
+                            <label class="col-sm-10">@Html.DisplayFor(model => model.UserName)</label>
+                        </div>
+                        <div class="row">
+                            <label class="col-sm-2">@Html.DisplayNameFor(model => model.FirstName)</label>
+                            <label class="col-sm-10">@Html.DisplayFor(model => model.FirstName)</label>
+                        </div>
+                        <div class="row">
+                            <label class="col-sm-2">@Html.DisplayNameFor(model => model.Surname)</label>
+                            <label class="col-sm-10">@Html.DisplayFor(model => model.Surname)</label>
+                        </div>
+                        <div class="row">
+                            <label class="col-sm-2">@Html.DisplayNameFor(model => model.TimeZone)</label>
+                            <label class="col-sm-10">@Html.DisplayFor(model => model.TimeZone)</label>
+                        </div>
+                        <div class="row">
+                            <label class="col-sm-2">@Html.DisplayNameFor(model => model.Balance)</label>
+                            <label class="col-sm-10">@Html.DisplayFor(model => model.Balance)</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
