@@ -1,0 +1,96 @@
+﻿@using Resources
+@model IEnumerable<TicketManagement.Web.Areas.EventManager.Data.IndexEventViewModel>
+@{
+    Layout = null;
+}
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <h2>@TicketManagementResource.Events</h2>
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+            <div class="btn-group" role="group">
+                @Ajax.ActionLink(TicketManagementResource.Create, "Create", "Event", new { area = "EventManager", controller = "Event" }, new AjaxOptions { UpdateTargetId = "content", HttpMethod = WebRequestMethods.Http.Get }, new { @class = "nav-link" })
+            </div>
+            <table class="table">
+                <tr>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Name)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.BeginDate)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.BeginTime)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.EndDate)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.EndTime)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Description)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.LayoutId)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.LayoutName)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Published)
+                    </th>
+                    <th></th>
+                </tr>
+
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Name)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.BeginDate)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.BeginTime)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.EndDate)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.EndTime)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Description)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.LayoutId)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.LayoutName)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Published)
+                        </td>
+                        <td>
+                            <div class="btn-group" role="group">
+                                @Ajax.ActionLink(TicketManagementResource.Edit, "Update", "Event", new { area = "EventManager", controller = "Event",id = item.Id }, new AjaxOptions { UpdateTargetId = "content", HttpMethod = WebRequestMethods.Http.Get }, new { @class = "nav-link" })
+                                @Ajax.ActionLink(TicketManagementResource.Delete, "Delete", "Event", new { area = "EventManager", controller = "Event", id = item.Id }, new AjaxOptions { HttpMethod = WebRequestMethods.Http.Post, OnSuccess = "loadEventManagerEvents" }, new { @class = "nav-link" })
+                                @if (item.Published)
+                                {
+                                    @Ajax.ActionLink(TicketManagementResource.UnPublished, "Publish", "Event", new { area = "EventManager", controller = "Event", id = item.Id }, new AjaxOptions { HttpMethod = WebRequestMethods.Http.Post, OnSuccess = "loadEventManagerEvents" }, new { @class = "nav-link" })
+                                }
+                                else
+                                {
+                                    @Ajax.ActionLink(TicketManagementResource.Published, "Publish", "Event", new { area = "EventManager", controller = "Event", id = item.Id }, new AjaxOptions { HttpMethod = WebRequestMethods.Http.Post, OnSuccess = "loadEventManagerEvents" }, new { @class = "nav-link" })
+                                }
+                            </div>
+                        </td>
+                    </tr>
+                }
+
+            </table>
+        </div>
+    </div>
+</div>

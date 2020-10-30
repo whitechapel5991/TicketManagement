@@ -14,20 +14,14 @@ namespace TicketManagement.Web.Areas.EventManager.Controllers
     [RedirectExceptionFilter]
     public class EventController : Controller
     {
-        private readonly IEventService eventService;
         private readonly ILayoutService layoutService;
-        private readonly IEventAreaService eventAreaService;
         private readonly IEventManagerEventService eventServiceEventManager;
 
         public EventController(
-            IEventService eventService,
             ILayoutService layoutService,
-            IEventAreaService eventAreaService,
             IEventManagerEventService eventServiceEventManager
             )
         {
-            this.eventAreaService = eventAreaService;
-            this.eventService = eventService;
             this.layoutService = layoutService;
             this.eventServiceEventManager = eventServiceEventManager;
         }
@@ -35,13 +29,13 @@ namespace TicketManagement.Web.Areas.EventManager.Controllers
         [HttpGet]
         public ActionResult Index()
         {
-            return this.View(this.eventServiceEventManager.GetIndexEventViewModels());
+            return this.PartialView(this.eventServiceEventManager.GetIndexEventViewModels());
         }
 
         [HttpGet]
         public ActionResult Create()
         {
-            return this.View(this.eventServiceEventManager.GetEventViewModel());
+            return this.PartialView(this.eventServiceEventManager.GetEventViewModel());
         }
 
         [HttpPost]
@@ -51,14 +45,14 @@ namespace TicketManagement.Web.Areas.EventManager.Controllers
             if (!this.ModelState.IsValid)
             {
                 eventViewModel.LayoutList = new SelectList(this.layoutService.GetLayouts(), "Id", "Name");
-                return this.View(eventViewModel);
+                return this.PartialView(eventViewModel);
             }
 
             try
             {
                 this.eventServiceEventManager.CreateEvent(eventViewModel);
 
-                return this.RedirectToAction("GetAllEvents");
+                return this.Json(new { success = true }, JsonRequestBehavior.AllowGet);
             }
             catch (Exception ex)
             {
@@ -73,7 +67,7 @@ namespace TicketManagement.Web.Areas.EventManager.Controllers
         {
             try
             {
-                return this.View(this.eventServiceEventManager.GetEventViewModel(id));
+                return this.PartialView(this.eventServiceEventManager.GetEventViewModel(id));
             }
             catch (Exception ex)
             {
@@ -96,7 +90,7 @@ namespace TicketManagement.Web.Areas.EventManager.Controllers
             {
                 this.eventServiceEventManager.UpdateEvent(@event);
 
-                return this.RedirectToAction("Index");
+                return this.Json(new { success = true }, JsonRequestBehavior.AllowGet);
             }
             catch (Exception ex)
             {

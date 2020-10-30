@@ -59,7 +59,7 @@ namespace TicketManagement.Web.Areas.EventManager.Data
 
         public DateTime GetEndDate()
         {
-            return BeginDate.AddHours(EndTime.Hour)
+            return EndDate.AddHours(EndTime.Hour)
                 .AddMinutes(EndTime.Minute)
                 .AddSeconds(EndTime.Second);
         }
