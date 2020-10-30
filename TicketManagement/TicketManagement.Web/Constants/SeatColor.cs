@@ -10,16 +10,16 @@ namespace TicketManagement.Web.Constants
             switch (seatState)
             {
                 case EventSeatState.Free:
-                    seatColor = "blue";
+                    seatColor = "skyblue";
                     break;
                 case EventSeatState.InBasket:
-                    seatColor = "orange";
+                    seatColor = "sandybrown";
                     break;
                 case EventSeatState.Sold:
-                    seatColor = "black";
+                    seatColor = "darkgray";
                     break;
                 default:
-                    seatColor = "blue";
+                    seatColor = "skyblue";
                     break;
             }
 
