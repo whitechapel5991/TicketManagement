@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNet.Identity;
+﻿using System.Security.Claims;
+using System.Threading.Tasks;
+using Microsoft.AspNet.Identity;
 
 namespace TicketManagement.Web.Services.Identity
 {
@@ -15,15 +17,26 @@ namespace TicketManagement.Web.Services.Identity
         }
 
         public int Id { get; set; }
+
         public string UserName { get; set; }
-        public virtual string PasswordHash { get; set; }
-        public virtual string SecurityStamp { get; set; }
+
+        public string PasswordHash { get; set; }
+
+        public string SecurityStamp { get; set; }
+
         public string Email { get; set; }
+
         public string Password { get; set; }
+
         public string FirstName { get; set; }
+
         public string Surname { get; set; }
+
         public string Language { get; set; }
+
         public string TimeZone { get; set; }
+
         public decimal Balance { get; set; }
+
     }
 }

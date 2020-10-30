@@ -9,13 +9,18 @@ using TicketManagement.DAL.Models.Identity;
 
 namespace TicketManagement.Web.Services.Identity
 {
-    public class UserStore : IUserLoginStore<IdentityUser, int>, IUserClaimStore<IdentityUser, int>, IUserRoleStore<IdentityUser, int>, IUserPasswordStore<IdentityUser, int>, IUserSecurityStampStore<IdentityUser, int>, IUserStore<IdentityUser, int>, IDisposable
+    public class UserStore : IUserLoginStore<IdentityUser, int>,
+        IUserClaimStore<IdentityUser, int>,
+        IUserRoleStore<IdentityUser, int>,
+        IUserPasswordStore<IdentityUser, int>,
+        IUserSecurityStampStore<IdentityUser, int>
     {
         private readonly IUserService userService;
         private readonly IUserClaimService userClaimService;
         private readonly IUserLoginsService userLoginService;
 
-        public UserStore(IUserService userService,
+        public UserStore(
+            IUserService userService,
             IUserClaimService userClaimService,
             IUserLoginsService userLoginService)
         {
@@ -23,8 +28,6 @@ namespace TicketManagement.Web.Services.Identity
             this.userClaimService = userClaimService;
             this.userLoginService = userLoginService;
         }
-
-        #region IUserStore<IdentityUser, int> Members
 
         public Task CreateAsync(IdentityUser user)
         {
@@ -54,18 +57,10 @@ namespace TicketManagement.Web.Services.Identity
             return Task.CompletedTask;
         }
 
-        #endregion
-
-        #region IDisposable Members
-
         public void Dispose()
         {
             // Autofac manage the lifecycle
         }
-
-        #endregion
-
-        #region IUserClaimStore<IdentityUser, int> Members
 
         public Task AddClaimAsync(IdentityUser user, Claim claim)
         {
@@ -83,10 +78,6 @@ namespace TicketManagement.Web.Services.Identity
             this.userClaimService.Remove(user.Id, claim);
             return Task.CompletedTask;
         }
-
-        #endregion
-
-        #region IUserLoginStore<IdentityUser, int> Members
 
         public Task AddLoginAsync(IdentityUser user, UserLoginInfo login)
         {
@@ -111,9 +102,7 @@ namespace TicketManagement.Web.Services.Identity
             this.userLoginService.DeleteUserLogin(user.Id, this.GetUserLogin(user, login));
             return Task.CompletedTask;
         }
-        #endregion
 
-        #region IUserRoleStore<IdentityUser, int> Members
         public Task AddToRoleAsync(IdentityUser user, string roleName)
         {
             this.userService.AddRole(user.Id, roleName);
@@ -136,9 +125,6 @@ namespace TicketManagement.Web.Services.Identity
             this.userService.DeleteRole(user.Id, roleName);
             return Task.CompletedTask;
         }
-        #endregion
-
-        #region IUserPasswordStore<IdentityUser, int> Members
 
         public Task<string> GetPasswordHashAsync(IdentityUser user)
         {
@@ -152,12 +138,10 @@ namespace TicketManagement.Web.Services.Identity
 
         public Task SetPasswordHashAsync(IdentityUser user, string passwordHash)
         {
-            this.userService.SetPassword(user.Id, passwordHash);
+            user.PasswordHash = passwordHash;
+            //this.userService.SetPassword(user.Id, passwordHash);
             return Task.CompletedTask;
         }
-        #endregion
-
-        #region IUserSecurityStampStore<IdentityUser, int> Members
 
         public Task<string> GetSecurityStampAsync(IdentityUser user)
         {
@@ -166,12 +150,10 @@ namespace TicketManagement.Web.Services.Identity
 
         public Task SetSecurityStampAsync(IdentityUser user, string stamp)
         {
-            this.userService.SetSecurityStamp(user.Id, stamp);
+            user.SecurityStamp = stamp;
+            //this.userService.SetSecurityStamp(user.Id, stamp);
             return Task.CompletedTask;
         }
-        #endregion
-
-        #region Mappers
 
         private TicketManagementUser GetTicketManagementUser(IdentityUser identityUser) => new TicketManagementUser()
         {
@@ -188,20 +170,28 @@ namespace TicketManagement.Web.Services.Identity
             Balance = identityUser.Balance,
         };
 
-        private IdentityUser GetIdentityUser(TicketManagementUser ticketManagementUser) => new IdentityUser()
+        private IdentityUser GetIdentityUser(TicketManagementUser ticketManagementUser)
         {
-            Id = ticketManagementUser.Id,
-            UserName = ticketManagementUser.UserName,
-            PasswordHash = ticketManagementUser.PasswordHash,
-            SecurityStamp = ticketManagementUser.SecurityStamp,
-            Password = ticketManagementUser.Password,
-            Email = ticketManagementUser.Email,
-            FirstName = ticketManagementUser.FirstName,
-            Language = ticketManagementUser.Language,
-            Surname = ticketManagementUser.Surname,
-            TimeZone = ticketManagementUser.TimeZone,
-            Balance = ticketManagementUser.Balance,
-        };
+            if (ticketManagementUser == default)
+            {
+                return default;
+            }
+
+            return new IdentityUser()
+            {
+                Id = ticketManagementUser.Id,
+                UserName = ticketManagementUser.UserName,
+                PasswordHash = ticketManagementUser.PasswordHash,
+                SecurityStamp = ticketManagementUser.SecurityStamp,
+                Password = ticketManagementUser.Password,
+                Email = ticketManagementUser.Email,
+                FirstName = ticketManagementUser.FirstName,
+                Language = ticketManagementUser.Language,
+                Surname = ticketManagementUser.Surname,
+                TimeZone = ticketManagementUser.TimeZone,
+                Balance = ticketManagementUser.Balance,
+            };
+        }
 
         private UserLogin GetUserLogin(IdentityUser user, UserLoginInfo userLoginInfo) => new UserLogin
         {
@@ -218,7 +208,5 @@ namespace TicketManagement.Web.Services.Identity
             ProviderKey = userLoginInfo.ProviderKey,
             LoginProvider = userLoginInfo.LoginProvider,
         };
-
-        #endregion
     }
 }

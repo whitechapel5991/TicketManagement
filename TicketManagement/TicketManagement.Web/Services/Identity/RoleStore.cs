@@ -16,7 +16,8 @@ namespace TicketManagement.Web.Services.Identity
             this.roleService = roleService;
         }
 
-        #region IRoleStore<IdentityRole, int> Members
+        public IQueryable<IdentityRole> Roles => this.roleService.GetAll().Select(x => this.GetIdentityRole(x));
+
         public Task CreateAsync(IdentityRole role)
         {
             this.roleService.Add(role.Name);
@@ -38,25 +39,18 @@ namespace TicketManagement.Web.Services.Identity
         {
             return Task.FromResult(this.GetIdentityRole(this.roleService.FindByName(roleName)));
         }
+
         public Task UpdateAsync(IdentityRole role)
         {
             this.roleService.Update(this.GetRole(role));
             return Task.CompletedTask;
         }
-        #endregion
 
-        #region IDisposable Members
         public void Dispose()
         {
             // Autofac manage the lifecycle
         }
-        #endregion
 
-        #region IQueryableRoleStore<IdentityRole, int> Members
-        public IQueryable<IdentityRole> Roles => this.roleService.GetAll().Select(x => this.GetIdentityRole(x));
-        #endregion
-
-        #region Mappers
         private IdentityRole GetIdentityRole(Role role) =>
             new IdentityRole
             {
@@ -70,6 +64,5 @@ namespace TicketManagement.Web.Services.Identity
                 Id = identityRole.Id,
                 Name = identityRole.Name,
             };
-        #endregion
     }
 }
