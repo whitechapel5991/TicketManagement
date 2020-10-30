@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Globalization;
+using System.Net;
+using System.Net.Mime;
 using System.Threading;
 using System.Web;
 using System.Web.Mvc;
@@ -17,7 +19,7 @@ namespace TicketManagement.Web.Controllers
         private const string CookieLangName = "lang";
 
         [HttpPost]
-        public void ChangeLanguage(Language language)
+        public ActionResult ChangeLanguage(Language language)
         {
             var languageString = language.ToString();
             Thread.CurrentThread.CurrentCulture = CultureInfo.CreateSpecificCulture(languageString);
@@ -34,11 +36,14 @@ namespace TicketManagement.Web.Controllers
                 {
                     HttpOnly = false,
                     Value = languageString,
-                    Expires = DateTime.Now.AddYears(1)
+                    Expires = DateTime.Now.AddYears(1),
                 };
             }
 
             this.Response.Cookies.Add(languageCookie);
+            this.Response.StatusCode = (int)HttpStatusCode.OK;
+
+            return this.Json(new { success = true, redirectUrl = Url.Action("Index", "StartApp"), updateContentUrl = AjaxContentUrlAttribute.CurrentContentUrl }, JsonRequestBehavior.AllowGet);
         }
     }
 }

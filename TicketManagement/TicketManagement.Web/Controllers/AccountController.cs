@@ -1,6 +1,4 @@
-﻿//using System;
-
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using System.Web.Mvc;
 using TicketManagement.Web.Exceptions.Account;
 using TicketManagement.Web.Filters;
@@ -22,45 +20,49 @@ namespace TicketManagement.Web.Controllers
         }
 
         [AllowAnonymous]
+        [AjaxContentUrl]
         public ActionResult Login()
         {
-            return this.View(new LoginViewModel());
+            return this.PartialView(new LoginViewModel());
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Login(LoginViewModel model)
         {
-            if (!this.ModelState.IsValid) return this.View(model);
+            if (!this.ModelState.IsValid)
+            {
+                return this.PartialView(model);
+            }
 
             try
             {
-                var userId = await this.accountService.SignInAsync(model.UserName, model.Password);
+                await this.accountService.SignInAsync(model.UserName, model.Password);
 
-                return await this.accountService.IsUserEventManagerAsync(userId) ?
-                    this.RedirectToAction("Index", new { area = "EventManager", controller = "Event" }) :
-                    this.RedirectToAction("Events", "Event");
+                return this.RedirectToAction("Events", "Event");
             }
             catch (UserNameOrPasswordWrongException ex)
             {
                 this.ModelState.AddModelError("Login", ex.Message);
             }
 
-            return this.View(model);
+            return this.PartialView(model);
         }
 
         [Authorize]
+        [HttpPost]
         public ActionResult Logout()
         {
             this.accountService.SignOut();
 
-            return this.RedirectToAction("Login", "Account");
+            return this.Json(new { success = true}, JsonRequestBehavior.AllowGet);
         }
 
         [AllowAnonymous]
+        [AjaxContentUrl]
         public ActionResult Register()
         {
-            return this.View(new RegisterViewModel());
+            return this.PartialView(new RegisterViewModel());
         }
 
         [HttpPost]
@@ -69,7 +71,7 @@ namespace TicketManagement.Web.Controllers
         {
             if (!this.ModelState.IsValid)
             {
-                return this.View(model);
+                return this.PartialView(model);
             }
 
             try
@@ -83,7 +85,7 @@ namespace TicketManagement.Web.Controllers
                 this.ModelState.AddModelError("Register", ex.Message);
             }
 
-            return this.View(model);
+            return this.PartialView(model);
         }
     }
 }

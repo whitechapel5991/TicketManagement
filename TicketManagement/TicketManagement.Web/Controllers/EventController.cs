@@ -21,12 +21,15 @@ namespace TicketManagement.Web.Controllers
 
         [HttpGet]
         [AllowAnonymous]
+        [AjaxContentUrl]
         public ActionResult Events()
         {
-            return this.View(this.eventService.GetPublishEvents());
+            return this.PartialView(this.eventService.GetPublishEvents());
         }
 
+        [HttpGet]
         [Authorize()]
+        [AjaxContentUrl]
         public ActionResult EventDetail(int eventId)
         {
             var eventAreaDetailVm = this.eventService.GetEventDetailViewModel(eventId);
@@ -35,10 +38,12 @@ namespace TicketManagement.Web.Controllers
                 return this.HttpNotFound();
             }
 
-            return this.View(eventAreaDetailVm);
+            return this.PartialView(eventAreaDetailVm);
         }
 
+        [HttpGet]
         [Authorize()]
+        [AjaxContentUrl]
         public ActionResult EventAreaDetail(int eventAreaId)
         {
             var eventAreaDto = this.eventService.GetEventAreaDetailViewModel(eventAreaId);
@@ -47,14 +52,15 @@ namespace TicketManagement.Web.Controllers
                 return this.HttpNotFound();
             }
 
-            return this.View(eventAreaDto);
+            return this.PartialView(eventAreaDto);
         }
 
-        [Authorize(Roles = "user")]
+        [Authorize()]
         [HttpPost]
-        public void AddToCart(int seatId)
+        public ActionResult AddToCart(int seatId)
         {
             this.eventService.AddToCart(seatId, this.User.Identity.GetUserId<int>());
+            return this.Json(new { success = true }, JsonRequestBehavior.AllowGet);
         }
     }
 }

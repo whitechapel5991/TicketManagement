@@ -17,6 +17,8 @@ namespace TicketManagement.Web.Controllers
             this.cartService = cartService;
         }
 
+        [HttpGet]
+        [AjaxContentUrl]
         public ActionResult Index()
         {
             return this.View(this.cartService.GetCartViewModelByUserName(this.User.Identity.Name));

@@ -24,12 +24,14 @@ namespace TicketManagement.Web.Controllers
         }
 
         [HttpGet]
+        [AjaxContentUrl]
         public ActionResult Index()
         {
-            return this.View(this.userProfileService.GetUserProfileViewModel(this.User.Identity.Name));
+            return this.PartialView(this.userProfileService.GetUserProfileViewModel(this.User.Identity.Name));
         }
 
         [HttpGet]
+        [AjaxContentUrl]
         public ActionResult Edit()
         {
             return this.View(this.userProfileService.GetEditUserProfileViewModel(this.User.Identity.Name));
@@ -45,6 +47,7 @@ namespace TicketManagement.Web.Controllers
         }
 
         [HttpGet]
+        [AjaxContentUrl]
         public ActionResult ChangePassword()
         {
             return this.View(new UserPasswordViewModel());
@@ -61,7 +64,7 @@ namespace TicketManagement.Web.Controllers
         }
 
         [Authorize(Roles = "user")]
-        [HttpPost]
+        [HttpGet]
         public async Task<ActionResult> IncreaseBalance()
         {
             return this.View(await this.userProfileService.GetBalanceViewModelAsync(this.User.Identity.Name));
