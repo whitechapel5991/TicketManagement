@@ -283,7 +283,7 @@
     <value>Log in</value>
   </data>
   <data name="LoginTitle" xml:space="preserve">
-    <value>Enter data</value>
+    <value>Enter your credentials</value>
   </data>
   <data name="LogOut" xml:space="preserve">
     <value>Log out</value>
@@ -415,9 +415,27 @@
     <value>There is venue with this name</value>
   </data>
   <data name="Welcome" xml:space="preserve">
-    <value>Welcome you</value>
+    <value>Welcome!</value>
   </data>
   <data name="WrongCredentials" xml:space="preserve">
     <value>Wrong Credentials</value>
+  </data>
+  <data name="UnknownUserError" xml:space="preserve">
+    <value>Unknown Error</value>
+  </data>
+  <data name="UnknownUserErrorDescription" xml:space="preserve">
+    <value>An unknown error has occurred. We are working on it. Please try after some time.</value>
+  </data>
+  <data name="PlatformName" xml:space="preserve">
+    <value>Ticket Management Platform</value>
+  </data>
+  <data name="Register" xml:space="preserve">
+    <value>Register</value>
+  </data>
+  <data name="PlatformDescription" xml:space="preserve">
+    <value>This is platform which allows buy tickets on the different events in your country.</value>
+  </data>
+  <data name="ProfileGeneral" xml:space="preserve">
+    <value>General</value>
   </data>
 </root>

@@ -556,7 +556,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Введите данные.
+        ///   Looks up a localized string similar to Введите учетные данные.
         /// </summary>
         public static string LoginTitle {
             get {
@@ -673,6 +673,24 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Это платформа, которая позволяет покупать билеты на различные мероприятия в вашей стране..
+        /// </summary>
+        public static string PlatformDescription {
+            get {
+                return ResourceManager.GetString("PlatformDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Платформа управления билетами.
+        /// </summary>
+        public static string PlatformName {
+            get {
+                return ResourceManager.GetString("PlatformName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Цена.
         /// </summary>
         public static string Price {
@@ -687,6 +705,15 @@ namespace Resources {
         public static string Profile {
             get {
                 return ResourceManager.GetString("Profile", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Общее.
+        /// </summary>
+        public static string ProfileGeneral {
+            get {
+                return ResourceManager.GetString("ProfileGeneral", resourceCulture);
             }
         }
         
@@ -732,6 +759,15 @@ namespace Resources {
         public static string PutMoney {
             get {
                 return ResourceManager.GetString("PutMoney", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Зарегистрировать.
+        /// </summary>
+        public static string Register {
+            get {
+                return ResourceManager.GetString("Register", resourceCulture);
             }
         }
         
@@ -871,6 +907,24 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Неизвестная ошибка.
+        /// </summary>
+        public static string UnknownUserError {
+            get {
+                return ResourceManager.GetString("UnknownUserError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Произошла неизвестная ошибка. Мы работаем над этим. Пожалуйста, попробуйте еще раз через некоторое время..
+        /// </summary>
+        public static string UnknownUserErrorDescription {
+            get {
+                return ResourceManager.GetString("UnknownUserErrorDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Не опубликовывать.
         /// </summary>
         public static string UnPublished {
@@ -952,7 +1006,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Приветствуем вас.
+        ///   Looks up a localized string similar to Добро пожаловать!.
         /// </summary>
         public static string Welcome {
             get {

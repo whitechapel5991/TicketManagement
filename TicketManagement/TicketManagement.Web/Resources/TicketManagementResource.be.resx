@@ -283,7 +283,7 @@
     <value>Уваход</value>
   </data>
   <data name="LoginTitle" xml:space="preserve">
-    <value>Калі ласка, увядзіце дадзеныя</value>
+    <value>Увядзіце уліковыя дадзеныя</value>
   </data>
   <data name="LogOut" xml:space="preserve">
     <value>Выхад</value>
@@ -415,9 +415,27 @@
     <value>Ёсць месца з такім імем</value>
   </data>
   <data name="Welcome" xml:space="preserve">
-    <value>Вітаем вас</value>
+    <value>Сардэчна запрашаем!</value>
   </data>
   <data name="WrongCredentials" xml:space="preserve">
     <value>Няслушныя дадзеныя</value>
+  </data>
+  <data name="UnknownUserError" xml:space="preserve">
+    <value>Невядомая памылка</value>
+  </data>
+  <data name="UnknownUserErrorDescription" xml:space="preserve">
+    <value>Адбылася невядомая памылка. Мы працуем над гэтым. Калі ласка, паспрабуйце праз некаторы час.</value>
+  </data>
+  <data name="PlatformName" xml:space="preserve">
+    <value>Платформа кіравання білетамі</value>
+  </data>
+  <data name="Register" xml:space="preserve">
+    <value>Зарэгістраваць</value>
+  </data>
+  <data name="PlatformDescription" xml:space="preserve">
+    <value>Гэта платформа, якая дазваляе купляць білеты на розныя мерапрыемствы ў вашай краіне.</value>
+  </data>
+  <data name="ProfileGeneral" xml:space="preserve">
+    <value>Агульнае</value>
   </data>
 </root>
