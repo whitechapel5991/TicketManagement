@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Threading;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Routing;
@@ -8,6 +9,8 @@ namespace TicketManagement.Web.Filters
 {
     public class LogAttribute : ActionFilterAttribute
     {
+        static ReaderWriterLock locker = new ReaderWriterLock();
+
         public override void OnActionExecuted(ActionExecutedContext filterContext)
         {
             Log("OnActionExecuted", filterContext.RouteData);
@@ -32,9 +35,17 @@ namespace TicketManagement.Web.Filters
         {
             var controllerName = routeData.Values["controller"];
             var actionName = routeData.Values["action"];
-            var message = $"{methodName}- controller:{controllerName} action:{actionName}";
+            var message = $"{methodName}- controller:{controllerName} action:{actionName}" + Environment.NewLine;
 
-            File.AppendAllText(HttpContext.Current.Server.MapPath("~/Log/LogActions.txt"), message);
+            try
+            {
+                locker.AcquireWriterLock(int.MaxValue); 
+                File.AppendAllText(HttpContext.Current.Server.MapPath("~/Log/LogActions.txt"), message);
+            }
+            finally
+            {
+                locker.ReleaseWriterLock();
+            }
         }
     }
 }
