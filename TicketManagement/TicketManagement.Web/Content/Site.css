@@ -1,12 +1,63 @@
 ﻿body {
-    padding-top: 50px;
+    padding-top: 0px;
     padding-bottom: 20px;
+    background-color: #e1bf7f;
+    position: relative;
+    min-height: 100vh;
+    background: linear-gradient(to bottom, #e1bf7f, #f4f4d7);
+}
+
+footer {
+    padding-top: 20px;
+    padding-bottom: 5px;
+    background-color: #373a3c;
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    /* height: 2.5rem;*/
+    color: rgba(255, 255, 255, 0.5);
+}
+
+h2, h3 {
+    margin-bottom: 20px;
+}
+
+.user-info {
+    margin-top: 5px;
+}
+
+.seat-canvas {
+    border: 1px solid #9954bb;
+}
+
+table td.seat-canvas {
+    border: 1px solid #9954bb;
+}
+
+.navbar.navbar-image .navbar-toggler-icon {
+    background-image: url('https://mdbootstrap.com/img/svg/hamburger9.svg?color=FF2C00');
 }
 
 /* Set padding to keep content from hitting the edges */
 .body-content {
     padding-left: 15px;
     padding-right: 15px;
+    margin-top: 90px;
+}
+
+.body-content .btn {
+    border: 1px solid black;
+    margin-bottom: 5px;
+}
+
+.profile-menu .btn-primary {
+    background-color: #373a3c;
+}
+
+.profile-menu {
+    margin-right: 30px;
+    border-right: 1px solid black;
+    padding-right: 0px;
 }
 
 /* Set width on the form input elements since they're 100% wide by default */
@@ -16,10 +67,17 @@ textarea {
     max-width: 280px;
 }
 
+.jumbotron {
+    background-color: #f4f4d7;
+    padding: 6rem 4rem 12rem;
+    border-radius: 15px;
+}
+
 /* Styles for validation helpers
 -----------------------------------------------------------*/
 .field-validation-error {
     color: #f00;
+    border-width: 0 0 1px;
 }
 
 .field-validation-valid {
@@ -40,3 +98,149 @@ textarea {
     display: none;
 }
 
+@media (max-width: 499px) {
+    .jumbotron .row .platform-name {
+        font-size: 2.0rem;
+        text-align: center;
+    }
+    .jumbotron .row .welcome {
+        text-align: center;
+        font-size: 1.30rem;
+        padding-left: 10px;
+        padding-right: 10px;
+    }
+
+    .jumbotron .row .platform-description {
+        text-align: center;
+        font-size: 1.0rem;
+        text-align: center;
+        padding-left: 5px;
+        padding-right: 5px;
+    }
+}
+
+@media (min-width: 500px) and (max-width: 767px) {
+    .jumbotron .row .platform-name {
+        text-align: center;
+        font-size: 2.20rem;
+        padding-bottom: 15px;
+    }
+
+    .jumbotron .row .welcome {
+        text-align: center;
+        font-size: 1.30rem;
+        padding-left: 10px;
+        padding-right: 10px;
+    }
+
+    .jumbotron .row .platform-description {
+        text-align: center;
+        font-size: 2.0rem;
+        text-align: center;
+        padding-left: 5px;
+        padding-right: 5px;
+    }
+
+    .jumbotron .row .btn {
+        text-align: center;
+        display: inline-block;
+        height: 4rem;
+        margin: auto;
+        padding: 15px 20px;
+    }
+
+    .navbar-brand {
+        margin-left: 20px;
+        font-size: 1.6rem;
+    }
+
+    .navbar-toggler {
+        margin-right: 20px;
+    }
+}
+
+@media (min-width: 768px) and (max-width: 990px) {
+    .jumbotron .row .platform-name {
+        text-align: center;
+        font-size: 2.80rem;
+        padding-bottom: 25px;
+    }
+
+    .jumbotron .row .welcome {
+        text-align: center;
+        font-size: 1.30rem;
+        padding-left: 10px;
+        padding-right: 10px;
+    }
+
+    .jumbotron .row .platform-description {
+        text-align: center;
+        font-size: 2.0rem;
+        text-align: center;
+        padding-left: 5px;
+        padding-right: 5px;
+    }
+
+    .jumbotron .row .btn {
+        text-align: center;
+        display: inline-block;
+        height: 4rem;
+        margin: auto;
+        padding: 15px 20px;
+    }
+
+    .navbar-brand {
+        margin-left: 20px;
+        font-size: 1.6rem;
+    }
+
+    .navbar-toggler {
+        margin-right: 20px;
+    }
+}
+
+@media (min-width: 991px) and (max-width: 1200px) {
+
+    .jumbotron .row .platform-name {
+        font-size: 3.70rem;
+        padding-left: 10px;
+        padding-right: 10px;
+    }
+
+    .jumbotron .row .welcome {
+        font-size: 1.50rem;
+        padding-left: 13px;
+        padding-right: 13px;
+        padding-bottom: 25px;
+    }
+
+    .jumbotron .row .platform-description {
+        padding-left: 13px;
+        padding-right: 13px;
+    }
+
+    .jumbotron .row .btn {
+        margin-left: 13px;
+        margin-right: 13px;
+    }
+}
+
+@media (min-width: 1200px) {
+
+    .jumbotron .row .welcome {
+        font-size: 1.80rem;
+        padding-left: 5px;
+        padding-right: 5px;
+        padding-bottom: 25px;
+    }
+
+    .jumbotron .row .platform-description {
+        padding-left: 5px;
+        padding-right: 5px;
+    }
+
+    .jumbotron .row .btn {
+        margin-left: 5px;
+        margin-right: 5px;
+    }
+}
