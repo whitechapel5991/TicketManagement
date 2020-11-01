@@ -438,4 +438,13 @@
   <data name="ProfileGeneral" xml:space="preserve">
     <value>Общее</value>
   </data>
+  <data name="IncreaseBalance" xml:space="preserve">
+    <value>Пополнить баланс</value>
+  </data>
+  <data name="Loading" xml:space="preserve">
+    <value>Загрузка...</value>
+  </data>
+  <data name="DeletingConfirm" xml:space="preserve">
+    <value>Вы действительно хотите удалить эту запись?</value>
+  </data>
 </root>

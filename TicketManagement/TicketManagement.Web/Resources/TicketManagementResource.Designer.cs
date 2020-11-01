@@ -259,6 +259,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Вы действительно хотите удалить эту запись?.
+        /// </summary>
+        public static string DeletingConfirm {
+            get {
+                return ResourceManager.GetString("DeletingConfirm", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Описание.
         /// </summary>
         public static string Description {
@@ -502,6 +511,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Пополнить баланс.
+        /// </summary>
+        public static string IncreaseBalance {
+            get {
+                return ResourceManager.GetString("IncreaseBalance", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Язык.
         /// </summary>
         public static string Language {
@@ -543,6 +561,15 @@ namespace Resources {
         public static string LayoutNotHasAreasException {
             get {
                 return ResourceManager.GetString("LayoutNotHasAreasException", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Загрузка....
+        /// </summary>
+        public static string Loading {
+            get {
+                return ResourceManager.GetString("Loading", resourceCulture);
             }
         }
         

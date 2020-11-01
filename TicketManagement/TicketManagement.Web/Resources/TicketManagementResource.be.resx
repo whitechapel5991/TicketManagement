@@ -150,9 +150,6 @@
   <data name="BeginDateLongerEndDateException" xml:space="preserve">
     <value>Дата пачатку не можа быць больш даты заканчэння</value>
   </data>
-  <data name="BeginTime" xml:space="preserve">
-    <value>Час пачатку</value>
-  </data>
   <data name="Buy" xml:space="preserve">
     <value>Купіць</value>
   </data>
@@ -437,5 +434,14 @@
   </data>
   <data name="ProfileGeneral" xml:space="preserve">
     <value>Агульнае</value>
+  </data>
+  <data name="IncreaseBalance" xml:space="preserve">
+    <value>Папоўніце баланс</value>
+  </data>
+  <data name="Loading" xml:space="preserve">
+    <value>Загрузка...</value>
+  </data>
+  <data name="DeletingConfirm" xml:space="preserve">
+    <value>Вы сапраўды жадаеце выдаліць гэты запіс?</value>
   </data>
 </root>
