@@ -22,6 +22,12 @@ h2, h3 {
     margin-bottom: 20px;
 }
 
+.loading {
+    display: none;
+    color: #373a3c;
+    font-weight: bold;
+}
+
 .user-info {
     margin-top: 5px;
 }

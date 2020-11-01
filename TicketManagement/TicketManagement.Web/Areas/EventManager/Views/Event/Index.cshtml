@@ -75,15 +75,15 @@
                         </td>
                         <td>
                             <div class="btn-group" role="group">
-                                @Ajax.ActionLink(TicketManagementResource.Edit, "Update", "Event", new { area = "EventManager", controller = "Event",id = item.Id }, new AjaxOptions { UpdateTargetId = "content", HttpMethod = WebRequestMethods.Http.Get }, new { @class = "nav-link" })
-                                @Ajax.ActionLink(TicketManagementResource.Delete, "Delete", "Event", new { area = "EventManager", controller = "Event", id = item.Id }, new AjaxOptions { HttpMethod = WebRequestMethods.Http.Post, OnSuccess = "loadEventManagerEvents" }, new { @class = "nav-link" })
+                                @Ajax.ActionLink(TicketManagementResource.Details, "EventDetail", "Event", new { area = "EventManager", controller = "Event", eventId = item.Id }, new AjaxOptions { UpdateTargetId = "content", HttpMethod = WebRequestMethods.Http.Get }, new { @class = "nav-link" })
+                                @Ajax.ActionLink(TicketManagementResource.Delete, "Delete", "Event", new {area = "EventManager", controller = "Event", id = item.Id}, new AjaxOptions {HttpMethod = WebRequestMethods.Http.Post, OnSuccess = "loadEventManagerEvents", Confirm = TicketManagementResource.DeletingConfirm }, new {@class = "nav-link"})
                                 @if (item.Published)
                                 {
-                                    @Ajax.ActionLink(TicketManagementResource.UnPublished, "Publish", "Event", new { area = "EventManager", controller = "Event", id = item.Id }, new AjaxOptions { HttpMethod = WebRequestMethods.Http.Post, OnSuccess = "loadEventManagerEvents" }, new { @class = "nav-link" })
+                                    @Ajax.ActionLink(TicketManagementResource.UnPublished, "Publish", "Event", new {area = "EventManager", controller = "Event", id = item.Id}, new AjaxOptions {HttpMethod = WebRequestMethods.Http.Post, OnSuccess = "loadEventManagerEvents"}, new {@class = "nav-link"})
                                 }
                                 else
                                 {
-                                    @Ajax.ActionLink(TicketManagementResource.Published, "Publish", "Event", new { area = "EventManager", controller = "Event", id = item.Id }, new AjaxOptions { HttpMethod = WebRequestMethods.Http.Post, OnSuccess = "loadEventManagerEvents" }, new { @class = "nav-link" })
+                                    @Ajax.ActionLink(TicketManagementResource.Published, "Publish", "Event", new {area = "EventManager", controller = "Event", id = item.Id}, new AjaxOptions {HttpMethod = WebRequestMethods.Http.Post, OnSuccess = "loadEventManagerEvents"}, new {@class = "nav-link"})
                                 }
                             </div>
                         </td>

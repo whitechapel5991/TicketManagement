@@ -1,21 +1,49 @@
-﻿using System.Web;
+﻿using System.Collections.Generic;
+using System.Net;
+using System.Net.Mime;
+using System.Resources;
+using System.Web;
 using System.Web.Mvc;
 using TicketManagement.Web.Constants;
 using TicketManagement.Web.Constants.Extension;
+using TicketManagement.Web.Exceptions.Account;
 
 namespace TicketManagement.Web.Filters
 {
     public class RedirectExceptionFilter : HandleErrorAttribute
     {
-        public void OnException(ExceptionContext filterContext)
+        public override void OnException(ExceptionContext filterContext)
         {
             if (filterContext.ExceptionHandled)
             {
                 return;
             }
 
+            var resman = new ResourceManager("Ticketmanagement.Web.Resources.TicketManagementResource", typeof(Resources.TicketManagementResource).Assembly);
             var controllerName = filterContext.RouteData.Values["controller"].ToString();
             var actionName = filterContext.RouteData.Values["action"].ToString();
+
+            if (filterContext.Exception.GetType() == typeof(UserNameOrPasswordWrongException))
+            {
+                var errorMessage = resman.GetString("WrongCredentials");
+
+                filterContext.ExceptionHandled = true;
+                filterContext.Result = new JsonResult()
+                {
+                    Data = new { ErrorMessage = errorMessage },
+                    JsonRequestBehavior = JsonRequestBehavior.AllowGet,
+                    //MaxJsonLength = int.MaxValue,
+                    //ContentType = MediaTypeNames.Text.Plain,
+                    //ContentEncoding = System.Text.Encoding.UTF8,
+                    
+                };
+
+                UpdateFilterContext(filterContext);
+                base.OnException(filterContext);
+                return;
+            }
+
+           
 
             var model = new HandleErrorInfo(filterContext.Exception, controllerName, actionName);
 
@@ -45,11 +73,15 @@ namespace TicketManagement.Web.Filters
 
             filterContext.ExceptionHandled = true;
 
-            filterContext.HttpContext.Response.Clear();
-            filterContext.HttpContext.Response.StatusCode = new HttpException(null, filterContext.Exception).GetHttpCode();
+            UpdateFilterContext(filterContext, (int)HttpStatusCode.OK);
+        }
 
+        private static void UpdateFilterContext(ExceptionContext filterContext, int statusCode = (int)HttpStatusCode.InternalServerError)
+        {
+            filterContext.ExceptionHandled = true;
+            filterContext.HttpContext.Response.Clear();
+            filterContext.HttpContext.Response.StatusCode = statusCode;
             filterContext.HttpContext.Response.TrySkipIisCustomErrors = true;
-            //base.OnException(filterContext);
         }
     }
 }

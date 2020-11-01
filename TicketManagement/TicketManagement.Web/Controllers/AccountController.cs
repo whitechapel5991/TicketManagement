@@ -9,7 +9,7 @@ namespace TicketManagement.Web.Controllers
 {
     [Log]
     [LogCustomExceptionFilter(Order = 0)]
-    [RedirectExceptionFilter]
+    [RedirectExceptionFilter(Order = 1)]
     public class AccountController : Controller
     {
         private readonly IAccountService accountService;
@@ -21,32 +21,33 @@ namespace TicketManagement.Web.Controllers
 
         [AllowAnonymous]
         [AjaxContentUrl]
-        public ActionResult Login()
+        public PartialViewResult Login()
         {
             return this.PartialView(new LoginViewModel());
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Login(LoginViewModel model)
+        public async Task<JsonResult> Login(LoginViewModel model)
         {
-            if (!this.ModelState.IsValid)
+            bool isSuccess = false;
+            if (this.ModelState.IsValid)
             {
-                return this.PartialView(model);
+                isSuccess = true;
             }
 
             try
             {
                 await this.accountService.SignInAsync(model.UserName, model.Password);
-
-                return this.RedirectToAction("Events", "Event");
             }
             catch (UserNameOrPasswordWrongException ex)
             {
+                isSuccess = false;
                 this.ModelState.AddModelError("Login", ex.Message);
+                throw ex;
             }
 
-            return this.PartialView(model);
+            return this.Json(new {success = isSuccess, model = model}, JsonRequestBehavior.AllowGet);
         }
 
         [Authorize]

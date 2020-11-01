@@ -1,0 +1,23 @@
+﻿@using Resources
+@model TicketManagement.Web.Models.Cart.CartViewModel
+
+<h3>@TicketManagementResource.Basket</h3>
+<div class="list-group">
+    @foreach (var order in Model.Orders)
+    {
+        <a aria-label="Close" class="close" data-ajax="true" data-ajax-method="POST" data-ajax-success="loadCart" href="/TicketManagement.Web/Cart/DeleteFromCart?orderId=@order.OrderId" type="button">
+            <span aria-hidden="true">&times;</span>
+        </a>
+        <a href="#" class="list-group-item list-group-item-action">
+            @Html.HiddenFor(model => order.OrderId)
+            <label class="col-md-2">@TicketManagementResource.PurchaseName:</label>
+            <label class="col-md-8">@order.EventName</label>
+            <label class="col-md-2">@TicketManagementResource.Description:</label>
+            <label class="col-md-8">@order.EventDescription</label>
+            <label class="col-md-2">@TicketManagementResource.Cost:</label>
+            <label class="col-md-8">@order.TicketCost</label>
+        </a>
+
+        @Ajax.ActionLink(TicketManagementResource.Buy, "Buy", "Cart", new { orderId = order.OrderId }, new AjaxOptions { HttpMethod = WebRequestMethods.Http.Post, OnSuccess = "loadCart" }, new {@class = "nav-link"})
+    }
+</div>

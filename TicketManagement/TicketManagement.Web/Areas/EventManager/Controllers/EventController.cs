@@ -72,7 +72,7 @@ namespace TicketManagement.Web.Areas.EventManager.Controllers
             catch (Exception ex)
             {
                 this.ModelState.AddModelError("Update", ex.Message);
-                return this.View("Index");
+                return this.PartialView("Index");
             }
         }
 
@@ -83,7 +83,7 @@ namespace TicketManagement.Web.Areas.EventManager.Controllers
             if (!this.ModelState.IsValid)
             {
                 @event.LayoutList = new SelectList(this.layoutService.GetLayouts(), "Id", "Name", @event.LayoutId);
-                return this.View(@event);
+                return this.PartialView(@event);
             }
 
             try
@@ -96,7 +96,7 @@ namespace TicketManagement.Web.Areas.EventManager.Controllers
             {
                 this.ModelState.AddModelError("Update", ex.Message);
                 @event.LayoutList = new SelectList(this.layoutService.GetLayouts(), "Id", "Name", @event.LayoutId);
-                return this.View(@event);
+                return this.PartialView(@event);
             }
         }
 
@@ -108,12 +108,12 @@ namespace TicketManagement.Web.Areas.EventManager.Controllers
             try
             {
                 this.eventServiceEventManager.DeleteEvent(id);
-                return this.RedirectToAction("Index");
+                return this.PartialView("Index");
             }
             catch (Exception ex)
             {
                 this.ModelState.AddModelError("Delete", ex.Message);
-                return this.View("Index");
+                return this.PartialView("Index");
             }
         }
 
@@ -123,37 +123,38 @@ namespace TicketManagement.Web.Areas.EventManager.Controllers
             try
             {
                 this.eventServiceEventManager.PublishEvent(id);
-                return this.View("Index");
+                return this.PartialView("Index");
             }
             catch (Exception ex)
             {
                 this.ModelState.AddModelError("Publish", ex.Message);
-                return this.View("Index");
+                return this.PartialView("Index");
             }
         }
 
         [HttpGet]
         public ActionResult EventDetail(int eventId)
         {
-            return this.View(this.eventServiceEventManager.GetEventDetailViewModel(eventId));
+            return this.PartialView(this.eventServiceEventManager.GetEventDetailViewModel(eventId));
         }
 
         [HttpGet]
         public ActionResult EventAreaDetail(int eventAreaId)
         {
-            return this.View(this.eventServiceEventManager.GetEventAreaDetailViewModel(eventAreaId));
+            return this.PartialView(this.eventServiceEventManager.GetEventAreaDetailViewModel(eventAreaId));
         }
 
         [HttpGet]
-        public ActionResult ChangeCost(int areaId)
+        public ActionResult ChangeCost(int eventAreaId)
         {
-            return this.View(this.eventServiceEventManager.GetAreaViewModel(areaId));
+            return this.PartialView(this.eventServiceEventManager.GetAreaPriceViewModel(eventAreaId));
         }
 
         [HttpPost]
-        public void ChangeCost(AreaViewModel areaVm)
+        public ActionResult ChangeCost(AreaPriceViewModel areaPriceVm)
         {
-            this.eventServiceEventManager.ChangeCost(areaVm);
+            this.eventServiceEventManager.ChangeCost(areaPriceVm);
+            return this.Json(new { success = true, newPrice = areaPriceVm.Price }, JsonRequestBehavior.AllowGet);
         }
     }
 }

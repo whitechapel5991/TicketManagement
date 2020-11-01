@@ -47,6 +47,7 @@ namespace TicketManagement.Web.Services
 
             var eventDetailVm = new EventDetailViewModel
             {
+                EventId = eventId,
                 Name = eventDetails.Name,
                 Description = eventDetails.Description,
                 BeginDate = eventDetails.BeginDateUtc,

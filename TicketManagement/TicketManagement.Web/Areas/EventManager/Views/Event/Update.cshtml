@@ -1,7 +1,7 @@
 ﻿@using Resources
 @model TicketManagement.Web.Areas.EventManager.Data.EventViewModel
 
-@using (Ajax.BeginForm("Update", "Event", new { area = "EventManager", controller = "Event" }, new AjaxOptions { HttpMethod = WebRequestMethods.Http.Post, OnSuccess = "loadEventManagerEvents" }))
+@using (Ajax.BeginForm("Update", "Event", new { area = "EventManager", controller = "Event" }, new AjaxOptions { HttpMethod = WebRequestMethods.Http.Post, OnSuccess = "loadUserProfile" }))
 {
     @Html.AntiForgeryToken()
 
@@ -75,5 +75,5 @@
 }
 
 <div>
-    @Ajax.ActionLink(TicketManagementResource.Back, "Index", "Event", new { area = "EventManager", controller = "Event" }, new AjaxOptions { UpdateTargetId = "content", HttpMethod = WebRequestMethods.Http.Get }, new { @class = "nav-link" })
+    @Ajax.ActionLink(TicketManagementResource.Back, "EventDetail", "Event", new { eventId = Model.IndexEventViewModel.Id }, new AjaxOptions { UpdateTargetId = "content", HttpMethod = WebRequestMethods.Http.Get }, new { @class = "nav-link" })
 </div>

@@ -7,6 +7,9 @@ namespace TicketManagement.Web.Models.Event
     public class EventDetailViewModel
     {
         [Required]
+        public int EventId { get; set; }
+
+        [Required]
         public string Name { get; set; }
 
         [Required]

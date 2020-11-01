@@ -14,8 +14,8 @@ namespace TicketManagement.Web.Interfaces
         void UpdateEvent(EventViewModel eventViewModel);
         void DeleteEvent(int id);
         void PublishEvent(int id);
-        AreaViewModel GetAreaViewModel(int areaId);
-        void ChangeCost(AreaViewModel areaVm);
+        AreaPriceViewModel GetAreaPriceViewModel(int areaId);
+        void ChangeCost(AreaPriceViewModel areaPriceVm);
         EventDetailViewModel GetEventDetailViewModel(int eventId);
         EventAreaDetailViewModel GetEventAreaDetailViewModel(int eventAreaId);
     }

@@ -21,7 +21,7 @@ namespace TicketManagement.Web.Controllers
         [AjaxContentUrl]
         public ActionResult Index()
         {
-            return this.View(this.cartService.GetCartViewModelByUserName(this.User.Identity.Name));
+            return this.PartialView(this.cartService.GetCartViewModelByUserName(this.User.Identity.Name));
         }
 
         [HttpPost]
@@ -29,7 +29,7 @@ namespace TicketManagement.Web.Controllers
         {
             this.cartService.Buy(orderId);
 
-            return this.View("Index");
+            return this.Json(new { success = true }, JsonRequestBehavior.AllowGet);
         }
 
         [HttpPost]
@@ -37,7 +37,7 @@ namespace TicketManagement.Web.Controllers
         {
             this.cartService.Delete(orderId);
 
-            return this.View("Index");
+            return this.Json(new { success = true }, JsonRequestBehavior.AllowGet);
         }
     }
 }

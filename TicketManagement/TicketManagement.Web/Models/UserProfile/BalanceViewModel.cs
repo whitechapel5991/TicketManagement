@@ -8,7 +8,7 @@ namespace TicketManagement.Web.Models.UserProfile
         [DataType(
             DataType.Currency)]
         [DisplayFormat(DataFormatString = "{0:C2}", ApplyFormatInEditMode = true)]
-        [Display(Name = "Balance", ResourceType = typeof(Resources.TicketManagementResource))]
+        [Display(Name = "IncreaseBalance", ResourceType = typeof(Resources.TicketManagementResource))]
         public decimal Balance { get; set; }
     }
 }

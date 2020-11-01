@@ -106,19 +106,19 @@ namespace TicketManagement.Web.Services
             this.eventService.PublishEvent(id);
         }
 
-        public AreaViewModel GetAreaViewModel(int areaId)
+        public AreaPriceViewModel GetAreaPriceViewModel(int areaId)
         {
-            return new AreaViewModel
+            return new AreaPriceViewModel
             {
                 EventAreaId = areaId,
                 Price = this.eventAreaService.GetEventArea(areaId).Price,
             };
         }
 
-        public void ChangeCost(AreaViewModel areaVm)
+        public void ChangeCost(AreaPriceViewModel areaPriceVm)
         {
-            var area = this.eventAreaService.GetEventArea(areaVm.EventAreaId);
-            area.Price = areaVm.Price;
+            var area = this.eventAreaService.GetEventArea(areaPriceVm.EventAreaId);
+            area.Price = areaPriceVm.Price;
             this.eventAreaService.UpdateEventArea(area);
         }
 
@@ -130,6 +130,7 @@ namespace TicketManagement.Web.Services
 
             var eventDetailVm = new EventDetailViewModel
             {
+                EventId = eventId,
                 Name = eventDetails.Name,
                 Description = eventDetails.Description,
                 BeginDate = eventDetails.BeginDateUtc,

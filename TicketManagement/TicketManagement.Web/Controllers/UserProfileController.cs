@@ -34,13 +34,16 @@ namespace TicketManagement.Web.Controllers
         [AjaxContentUrl]
         public ActionResult Edit()
         {
-            return this.View(this.userProfileService.GetEditUserProfileViewModel(this.User.Identity.Name));
+            return this.PartialView(this.userProfileService.GetEditUserProfileViewModel(this.User.Identity.Name));
         }
 
         [HttpPost]
         public async Task<ActionResult> Edit(EditUserProfileViewModel userProfile)
         {
-            if (!this.ModelState.IsValid) return this.View(userProfile);
+            if (!this.ModelState.IsValid)
+            {
+                return this.PartialView(userProfile);
+            }
 
             await this.userProfileService.UpdateAsync(this.User.Identity.Name, userProfile);
             return this.RedirectToAction("Index");
@@ -50,40 +53,46 @@ namespace TicketManagement.Web.Controllers
         [AjaxContentUrl]
         public ActionResult ChangePassword()
         {
-            return this.View(new UserPasswordViewModel());
+            return this.PartialView(new UserPasswordViewModel());
         }
 
         [HttpPost]
         public async Task<ActionResult> ChangePassword(UserPasswordViewModel userPasswordModel)
         {
-            if (!this.ModelState.IsValid) return this.View(userPasswordModel);
+            if (!this.ModelState.IsValid)
+            {
+                return this.PartialView(userPasswordModel);
+            }
 
             await this.userProfileService.ChangePasswordAsync(this.User.Identity.Name, userPasswordModel);
 
-            return this.View(userPasswordModel);
+            return this.PartialView(userPasswordModel);
         }
 
         [Authorize(Roles = "user")]
         [HttpGet]
         public async Task<ActionResult> IncreaseBalance()
         {
-            return this.View(await this.userProfileService.GetBalanceViewModelAsync(this.User.Identity.Name));
+            return this.PartialView(new BalanceViewModel());
         }
 
         [HttpPost]
         public ActionResult IncreaseBalance(BalanceViewModel balanceModel)
         {
-            if (!this.ModelState.IsValid) return this.View(balanceModel);
+            if (!this.ModelState.IsValid)
+            {
+                return this.PartialView(balanceModel);
+            }
 
             this.userService.IncreaseBalance(balanceModel.Balance, this.User.Identity.Name);
-            return this.RedirectToAction("Index");
+            return this.PartialView("Index");
         }
 
         [Authorize(Roles = "user")]
         [HttpGet]
         public ActionResult PurchaseHistory()
         {
-            return this.View(this.userProfileService.GetPurchaseHistoryViewModel(this.User.Identity.Name));
+            return this.PartialView(this.userProfileService.GetPurchaseHistoryViewModel(this.User.Identity.Name));
         }
     }
 }

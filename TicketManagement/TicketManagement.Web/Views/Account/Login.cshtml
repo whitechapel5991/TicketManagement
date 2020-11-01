@@ -8,33 +8,49 @@
 <div class="container">
     <div class="row">
         <div class="col-md-12">
-            @using (Ajax.BeginForm("Login", "Account", new AjaxOptions { HttpMethod = WebRequestMethods.Http.Post, OnSuccess = "loadEvents" }))
+            @using (Ajax.BeginForm("Login", "Account", new AjaxOptions
             {
-                <h2>@TicketManagementResource.LoginTitle</h2>
+                HttpMethod = WebRequestMethods.Http.Post,
+                OnSuccess = "redirectToEventPage",
+                OnFailure = "error(data)",
+                LoadingElementId = "loading",
+                LoadingElementDuration = 1000
+            },
+                new { id = "postForm" }))
+            {
+                @*<form id="postForm" method="post">*@
+                    <h2>@TicketManagementResource.LoginTitle</h2>
+
+            <div class="form-horizontal">
+                @Html.ValidationSummary("", new { @class = "text-danger" })
                 @Html.AntiForgeryToken()
-                <div class="form-horizontal">
-                    @Html.ValidationSummary("", new { @class = "text-danger" })
-
-                    <div class="row">
-                        <div class="form-group col-md-10">
-                            @Html.TextBoxFor(m => m.UserName, new { @class = "form-control", placeholder = TicketManagementResource.UserName })
-                            @Html.ValidationMessageFor(model => model.UserName, "", new { @class = "invalid-feedback" })
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="form-group col-md-10">
-                            @Html.PasswordFor(m => m.Password, new { @class = "form-control", placeholder = TicketManagementResource.Password })
-                            @Html.ValidationMessageFor(model => model.Password, "", new { @class = "invalid-feedback" })
-                        </div>
-                    </div>
-
-                    <div class="row">
-                        <div class="form-group col-md-10">
-                            <button type="submit" class="btn btn-primary" id="login-btn">@TicketManagementResource.Login</button>
-                        </div>
+                <div class="row">
+                    <div class="form-group col-md-10">
+                        @Html.TextBoxFor(m => m.UserName, new { @class = "form-control", placeholder = TicketManagementResource.UserName })
+                        @Html.ValidationMessageFor(model => model.UserName, "", new { @class = "invalid-feedback" })
                     </div>
                 </div>
-            }
-        </div>
+                <div class="row">
+                    <div class="form-group col-md-10">
+                        @Html.PasswordFor(m => m.Password, new { @class = "form-control", placeholder = TicketManagementResource.Password })
+                        @Html.ValidationMessageFor(model => model.Password, "", new { @class = "invalid-feedback" })
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="form-group col-md-10">
+                        <button type="submit" class="btn btn-primary submit-btn" id="login-btn">@TicketManagementResource.Login</button>
+                    </div>
+                </div>
+            </div>
+                @*</form>*@
+                    }
+
+                    @DownloadHelper.Download()
+            </div>
     </div>
 </div>
+
+<script>
+    postRequest("@Url.Action("Login", "Account", new { area = ""})", "@Url.Action("Index", "Event", new { area = ""})");
+</script>

@@ -223,6 +223,10 @@
     <Content Include="Areas\EventManager\Views\Event\Index.cshtml" />
     <Content Include="Areas\EventManager\Views\Event\Create.cshtml" />
     <Content Include="Areas\EventManager\Views\Event\Update.cshtml" />
+    <Content Include="Areas\EventManager\Views\Event\EventDetail.cshtml" />
+    <Content Include="Areas\EventManager\Views\Event\EventAreaDetail.cshtml" />
+    <Content Include="Areas\EventManager\Views\Event\ChangeCost.cshtml" />
+    <Content Include="App_Code\DownloadHelper.cshtml" />
     <None Include="Scripts\jquery-3.5.1.intellisense.js" />
     <Content Include="Scripts\jquery-3.5.1.js" />
     <Content Include="Scripts\jquery-3.5.1.min.js" />
@@ -319,7 +323,7 @@
     <Compile Include="Areas\EventManager\Controllers\EventController.cs" />
     <Compile Include="Areas\EventManager\Data\EventViewModel.cs" />
     <Compile Include="Areas\EventManager\Data\IndexEventViewModel.cs" />
-    <Compile Include="Areas\EventManager\Data\AreaViewModel.cs" />
+    <Compile Include="Areas\EventManager\Data\AreaPriceViewModel.cs" />
     <Compile Include="Areas\EventManager\EventManagerAreaRegistration.cs" />
     <Compile Include="Constants\Extension\EnumRoleAttribute.cs" />
     <Compile Include="Constants\Extension\RoleExtension.cs" />
@@ -422,6 +426,11 @@
     <Content Include="Views\UserProfile\Index.cshtml" />
     <Content Include="Views\Event\EventDetail.cshtml" />
     <Content Include="Views\Event\EventAreaDetail.cshtml" />
+    <Content Include="Views\UserProfile\Edit.cshtml" />
+    <Content Include="Views\UserProfile\ChangePassword.cshtml" />
+    <Content Include="Views\UserProfile\IncreaseBalance.cshtml" />
+    <Content Include="Views\UserProfile\PurchaseHistory.cshtml" />
+    <Content Include="Views\Cart\Index.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -432,7 +441,6 @@
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Areas\EventManager\Views\Shared\" />
-    <Folder Include="Views\Cart\" />
     <Folder Include="Views\Language\" />
   </ItemGroup>
   <ItemGroup>

@@ -31,6 +31,8 @@ namespace TicketManagement.Web.Filters
             {
                 locker.ReleaseWriterLock();
             }
+
+            filterContext.ExceptionHandled = false;
         }
     }
 }
