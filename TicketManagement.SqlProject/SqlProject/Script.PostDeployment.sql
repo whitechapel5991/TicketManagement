@@ -220,10 +220,10 @@ GO
 INSERT INTO [dbo].[EventSeats] ([Id], [State], [EventAreaId], [Row], [Number]) VALUES (1, 1, 1, 1, 1)
 GO
 
-INSERT INTO [dbo].[EventSeats] ([Id], [State], [EventAreaId], [Row], [Number]) VALUES (2, 0, 1, 1, 2)
+INSERT INTO [dbo].[EventSeats] ([Id], [State], [EventAreaId], [Row], [Number]) VALUES (2, 2, 1, 1, 2)
 GO
 
-INSERT INTO [dbo].[EventSeats] ([Id], [State], [EventAreaId], [Row], [Number]) VALUES (3, 0, 1, 1, 3)
+INSERT INTO [dbo].[EventSeats] ([Id], [State], [EventAreaId], [Row], [Number]) VALUES (3, 2, 1, 1, 3)
 GO
 
 INSERT INTO [dbo].[EventSeats] ([Id], [State], [EventAreaId], [Row], [Number]) VALUES (4, 0, 1, 1, 4)
@@ -358,7 +358,13 @@ GO
 SET IDENTITY_INSERT [dbo].[Orders] ON
 GO
 
-INSERT INTO [dbo].[Orders] ([Id], [UserId], [EventSeatId], [Date]) VALUES (1, 1, 1, N'2020-09-09 12:00:00')
+INSERT INTO [dbo].[Orders] ([Id], [UserId], [EventSeatId], [Date]) VALUES (1, 2, 1, N'2020-09-09 12:00:00')
+GO
+
+INSERT INTO [dbo].[Orders] ([Id], [UserId], [EventSeatId], [Date]) VALUES (2, 2, 2, N'2020-09-09 12:00:00')
+GO
+
+INSERT INTO [dbo].[Orders] ([Id], [UserId], [EventSeatId], [Date]) VALUES (3, 2, 3, N'2020-09-09 12:00:00')
 GO
 
 SET IDENTITY_INSERT [dbo].[Orders] OFF
