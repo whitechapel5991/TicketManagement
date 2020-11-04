@@ -29,12 +29,12 @@
                     {
                         <li class="nav-item">@Ajax.ActionLink(TicketManagementResource.Profile, "Index", "UserProfile", new { area = "" }, new AjaxOptions { UpdateTargetId = "content", HttpMethod = WebRequestMethods.Http.Get }, new { @class = "nav-link" })</li>
                         <li class="nav-item">@Ajax.ActionLink(TicketManagementResource.Basket, "Index", "Cart", new { area = "" }, new AjaxOptions { UpdateTargetId = "content", HttpMethod = WebRequestMethods.Http.Get }, new { @class = "nav-link" })</li>
-                        <li class="nav-item active">@Ajax.ActionLink(TicketManagementResource.LogOut, "Logout", "Account", new { area = "" }, new AjaxOptions { HttpMethod = WebRequestMethods.Http.Post, OnSuccess = "redirectToMainPage" }, new { @class = "nav-link" })</li>
+                        <li class="nav-item active">@Ajax.ActionLink(TicketManagementResource.LogOut, "Logout", "Account", new { area = "" }, new AjaxOptions { HttpMethod = WebRequestMethods.Http.Post }, new { @class = "nav-link" })</li>
                     }
                     else
                     {
                         <li class="nav-item mr-sm-2">@Ajax.ActionLink(TicketManagementResource.Registration, "Register", "Account", new { area = "" }, new AjaxOptions { UpdateTargetId = "content", HttpMethod = WebRequestMethods.Http.Get }, new { @class = "nav-link" })</li>
-                        <li class="nav-item my-2 my-sm-0">@Ajax.ActionLink(TicketManagementResource.Login, "Login", "Account", new { area = "" }, new AjaxOptions { UpdateTargetId = "content", HttpMethod = WebRequestMethods.Http.Get, OnSuccess = "OnSuccess" }, new { @class = "nav-link" })</li>
+                        <li class="nav-item my-2 my-sm-0">@Ajax.ActionLink(TicketManagementResource.Login, "Login", "Account", new { area = "" }, new AjaxOptions { UpdateTargetId = "content", HttpMethod = WebRequestMethods.Http.Get }, new { @class = "nav-link" })</li>
                     }
                 </ul>
             </div>

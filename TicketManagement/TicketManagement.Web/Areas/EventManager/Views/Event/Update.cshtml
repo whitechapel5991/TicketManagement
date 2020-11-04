@@ -3,9 +3,7 @@
 
 @using (Ajax.BeginForm("Update", "Event", new { area = "EventManager", controller = "Event" }, new AjaxOptions { HttpMethod = WebRequestMethods.Http.Post, OnSuccess = "loadUserProfile" }))
 {
-    @Html.AntiForgeryToken()
-
-<div class="form-horizontal">
+    <div class="form-horizontal">
     <h4>@TicketManagementResource.EventInfo</h4>
     <hr />
     @Html.ValidationSummary(true, "", new { @class = "text-danger" })

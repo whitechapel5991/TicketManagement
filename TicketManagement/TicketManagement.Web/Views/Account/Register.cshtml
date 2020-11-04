@@ -7,23 +7,21 @@
 <div class="container">
     <div class="row">
         <div class="col-md-12">
-            @using (Ajax.BeginForm("Register", "Account", new AjaxOptions { HttpMethod = WebRequestMethods.Http.Post, OnSuccess = "loadEvents" }))
-            {
+            <form action="@Url.Action("Register", "Account", new { area = ""})" data-ajax="true" data-ajax-loading="#loading" data-ajax-loading-duration="1000" data-ajax-method="POST" id="postForm" method="post">
                 <h2>@TicketManagementResource.Registration</h2>
-                @Html.AntiForgeryToken()
                 <div class="form-horizontal">
-                    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                    @Html.ValidationSummary(false, "", new { @class = "text-danger" })
 
                     <div class="row">
                         <div class="form-group col-md-10">
-                            @Html.TextBoxFor(model => model.Email, new { @class = "form-control", placeholder = TicketManagementResource.Email } )
+                            @Html.TextBoxFor(model => model.Email, new { @class = "form-control", placeholder = TicketManagementResource.Email })
                             @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
                         </div>
                     </div>
 
                     <div class="row">
                         <div class="form-group col-md-10">
-                            @Html.PasswordFor(model => model.Password, new { @class = "form-control", placeholder = TicketManagementResource.Password } )
+                            @Html.PasswordFor(model => model.Password, new { @class = "form-control", placeholder = TicketManagementResource.Password })
                             @Html.ValidationMessageFor(model => model.Password, "", new { @class = "text-danger" })
                         </div>
                     </div>
@@ -31,23 +29,23 @@
                     <div class="row">
                         <div class="form-group col-md-10">
 
-                                @Html.PasswordFor(model => model.PasswordConfirm, new { @class = "form-control", placeholder = TicketManagementResource.PasswordConfirm } )
-                                @Html.ValidationMessageFor(model => model.PasswordConfirm, "", new { @class = "text-danger" })
+                            @Html.PasswordFor(model => model.PasswordConfirm, new { @class = "form-control", placeholder = TicketManagementResource.PasswordConfirm })
+                            @Html.ValidationMessageFor(model => model.PasswordConfirm, "", new { @class = "text-danger" })
                         </div>
                     </div>
 
 
                     <div class="row">
                         <div class="form-group col-md-10">
-                            @Html.TextBoxFor(model => model.UserName, new { @class = "form-control", placeholder = TicketManagementResource.UserName } )
-                                @Html.ValidationMessageFor(model => model.UserName, "", new { @class = "text-danger" })
+                            @Html.TextBoxFor(model => model.UserName, new { @class = "form-control", placeholder = TicketManagementResource.UserName })
+                            @Html.ValidationMessageFor(model => model.UserName, "", new { @class = "text-danger" })
                         </div>
                     </div>
 
 
                     <div class="row">
                         <div class="form-group col-md-10">
-                            @Html.TextBoxFor(model => model.FirstName, new { @class = "form-control", placeholder = TicketManagementResource.FirstName } )
+                            @Html.TextBoxFor(model => model.FirstName, new { @class = "form-control", placeholder = TicketManagementResource.FirstName })
                             @Html.ValidationMessageFor(model => model.FirstName, "", new { @class = "text-danger" })
                         </div>
                     </div>
@@ -55,7 +53,7 @@
 
                     <div class="row">
                         <div class="form-group col-md-10">
-                            @Html.TextBoxFor(model => model.Surname, new { @class = "form-control", placeholder = TicketManagementResource.Surname } )
+                            @Html.TextBoxFor(model => model.Surname, new { @class = "form-control", placeholder = TicketManagementResource.Surname })
                             @Html.ValidationMessageFor(model => model.Surname, "", new { @class = "text-danger" })
                         </div>
                     </div>
@@ -63,7 +61,7 @@
 
                     <div class="row">
                         <div class="form-group col-md-10">
-                            @Html.TextBoxFor(model => model.TimeZone, new { @class = "form-control", placeholder = TicketManagementResource.TimeZone } )
+                            @Html.TextBoxFor(model => model.TimeZone, new { @class = "form-control", placeholder = TicketManagementResource.TimeZone })
                             @Html.ValidationMessageFor(model => model.TimeZone, "", new { @class = "text-danger" })
                         </div>
                     </div>
@@ -71,11 +69,19 @@
 
                     <div class="row">
                         <div class="form-group col-md-10">
-                            <button type="submit" class="btn btn-primary">@TicketManagementResource.Registration</button>
+                            <button type="submit" class="btn btn-primary submit-btn">@TicketManagementResource.Registration</button>
                         </div>
                     </div>
                 </div>
-            }
+            </form>
+            
+            @DownloadHelper.Download()
         </div>
     </div>
 </div>
+
+<script>
+    $(document).ready(function() {
+        postRequest();
+    });
+</script>

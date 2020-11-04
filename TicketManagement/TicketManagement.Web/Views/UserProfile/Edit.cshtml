@@ -3,8 +3,6 @@
 
 @using (Ajax.BeginForm("Edit", "UserProfile", new AjaxOptions { HttpMethod = WebRequestMethods.Http.Post, OnSuccess = "loadUserProfile" }))
 {
-    @Html.AntiForgeryToken()
-    
     <div class="form-horizontal">
         <h4>@TicketManagementResource.EditUserProfile</h4>
         <hr />

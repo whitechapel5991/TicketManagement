@@ -11,7 +11,7 @@
     @RenderSection("styles", required: false)
 </head>
 <body>
-
+    @Html.AntiForgeryToken()
     @{ Html.RenderPartial("_MenuBar"); }
 
 <div class="container body-content">
@@ -22,7 +22,7 @@
     
 @{ Html.RenderPartial("_Footer"); }
 
-@Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/bootstrap")
     @Scripts.Render("~/bundles/jqueryval")
     @Scripts.Render("~/bundles/customScripts")
