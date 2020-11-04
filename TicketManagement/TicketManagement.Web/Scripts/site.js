@@ -1,67 +1,81 @@
-﻿function postRequest(postUrl, successRedirect) {
-    $('#postForm .submit-btn').on('click',
-        function() {
-            var $form = $('#postForm');
-            $.validator.unobtrusive.parse($form);
-            $form.submit(function () {
-                if ($form.valid()) {
-                    $.ajax({
-                        url: postUrl,
-                        async: true,
-                        type: 'POST',
-                        data: $(this).serialize(),
-                        beforeSend: function (xhr, opts) {
-                            //alert(this.url);
-                        },
-                        contentType: 'application/json; charset=utf-8',
-                        complete: function () {
-                        },
-                        success: function (data) {
-                            //alert("success");
-                            console.log(data);
-                            window.location.href = successRedirect;
-                        },
-                        error: function(qXHR, status, thrownError) {
-                           
-                            var msg = "";  
-                            try  
-                            {  
-                                var responseText = jqXHR.responseJson;
-                                msg =JSON.parse(qXHR.responseText);  
-                            }  
-                            catch(ers)  
-                            {  
-                                msg =qXHR.responseText;  
-                            }
-                            console.error('Error submitting form', msg);
-                            alert(msg);
-                        },
-                    });
-                }
-                return false;
-            });
-        });
-}
-
-
-$(function () {
+﻿$(function () {
     //setup ajax error handling
     $.ajaxSetup({
-        error: function (x, status, error) {
-            var msg = "";  
+        error: function(qXHR, status, thrownError, data) {
+                           
+            var msg = undefined;  
             try  
-            {  
-                msg =JSON.parse(error);  
+            {
+                msg =JSON.parse(qXHR.responseText);  
             }  
             catch(ers)  
             {  
-                msg =error;  
+                document.open(); 
+                document.write(qXHR.responseText);
+                document.close();
             }
-            console.log(msg);
-        }
+            if (msg !== undefined) {
+                $('#validationSummary').empty();
+                $('#validationSummary').removeClass("validation-summary-valid");
+                $('#validationSummary').addClass("validation-summary-errors");
+                var validationSummary = $('#validationSummary ul');
+                if (validationSummary.length === 0) {
+                    $('#validationSummary').append('<ul></ul>');
+                    validationSummary = $('#validationSummary ul');
+                }
+                validationSummary.append('<li>' + msg + '</li>');
+            }
+        },
+    });
+
+    // set verification token in the header
+    $.ajaxPrefilter(function (options, originalOptions, jqXHR) {
+        if (originalOptions.type === "POST")
+            jqXHR.setRequestHeader('__RequestVerificationToken', $('body input[name=__RequestVerificationToken]').val());
     });
 });
 
+let AddAntiForgeryToken = function(form) {
+    let data = $(form).serialize();
+    let token = $('body input[name=__RequestVerificationToken]').val();
+    $.extend(data, { '__RequestVerificationToken': token });
+    return data;
+};
+
+function postRequest() {
+    let $form = $('#postForm');
+    let postUrl = $form.attr( 'action' );
+
+    function postAjax() {
+        $('#postForm .submit-btn').one('click',
+            function() {
+                $.validator.unobtrusive.parse($form);
+                $form.submit(function (e) {
+                    e.preventDefault();
+                    if ($form.valid()) {
+                        $.ajax({
+                            url: postUrl,
+                            type: 'POST',
+                            async: true,
+                            data: AddAntiForgeryToken(this),
+                            success: function (data) {
+                                $('#validationSummary').removeClass("validation-summary-errors");
+                                $('#validationSummary').addClass("validation-summary-valid");
+                                reloadContentWithUpdatingMenu(data.returnContentUrl);
+                            },
+                        });
+                    }
+                    return false;
+                });
+            });
+    }
+
+    postAjax();
+};
+
+function loginSuccess(successRedirect) {
+    window.location.href = successRedirect;
+}
 
 function reloadPage(response) {
     if (response.success) {
@@ -110,6 +124,11 @@ function reloadContentWithMenu(contentUrl) {
         $('#menu').load('/TicketManagement.Web/StartApp/ReloadMenu');
         reloadContent(contentUrl);
     }
+}
+
+function reloadContentWithUpdatingMenu(contentUrl) {
+    $('#menu').load('/TicketManagement.Web/StartApp/ReloadMenu');
+    reloadContent(contentUrl);
 }
 
 function reloadContent(contentUrl) {
