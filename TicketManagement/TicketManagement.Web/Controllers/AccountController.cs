@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 using System.Web.Mvc;
 using TicketManagement.Web.Exceptions.Account;
 using TicketManagement.Web.Filters;
@@ -8,8 +9,7 @@ using TicketManagement.Web.Models.Account;
 namespace TicketManagement.Web.Controllers
 {
     [Log]
-    [LogCustomExceptionFilter(Order = 0)]
-    [RedirectExceptionFilter(Order = 1)]
+    [AccountExceptionFilter(Order = 0)]
     public class AccountController : Controller
     {
         private readonly IAccountService accountService;
@@ -27,27 +27,11 @@ namespace TicketManagement.Web.Controllers
         }
 
         [HttpPost]
-        [ValidateAntiForgeryToken]
+        [ValidateHeaderAntiForgeryToken]
         public async Task<JsonResult> Login(LoginViewModel model)
         {
-            bool isSuccess = false;
-            if (this.ModelState.IsValid)
-            {
-                isSuccess = true;
-            }
-
-            try
-            {
-                await this.accountService.SignInAsync(model.UserName, model.Password);
-            }
-            catch (UserNameOrPasswordWrongException ex)
-            {
-                isSuccess = false;
-                this.ModelState.AddModelError("Login", ex.Message);
-                throw ex;
-            }
-
-            return this.Json(new {success = isSuccess, model = model}, JsonRequestBehavior.AllowGet);
+            await this.accountService.SignInAsync(model.UserName, model.Password);
+            return this.Json(new { success = true, returnContentUrl = this.Url.Action("Events", "Event", new { area = string.Empty }) }, JsonRequestBehavior.AllowGet);
         }
 
         [Authorize]
@@ -55,8 +39,7 @@ namespace TicketManagement.Web.Controllers
         public ActionResult Logout()
         {
             this.accountService.SignOut();
-
-            return this.Json(new { success = true}, JsonRequestBehavior.AllowGet);
+            return this.Json(new { success = true, returnContentUrl = this.Url.Action("Login", "Account", new { area = string.Empty }) }, JsonRequestBehavior.AllowGet);
         }
 
         [AllowAnonymous]
@@ -67,26 +50,11 @@ namespace TicketManagement.Web.Controllers
         }
 
         [HttpPost]
-        [ValidateAntiForgeryToken]
+        [ValidateHeaderAntiForgeryToken]
         public async Task<ActionResult> Register(RegisterViewModel model)
         {
-            if (!this.ModelState.IsValid)
-            {
-                return this.PartialView(model);
-            }
-
-            try
-            {
-                await this.accountService.RegisterUserAsync(model);
-
-                return this.RedirectToAction("Login", "Account");
-            }
-            catch (RegisterUserWrongDataException ex)
-            {
-                this.ModelState.AddModelError("Register", ex.Message);
-            }
-
-            return this.PartialView(model);
+            await this.accountService.RegisterUserAsync(model);
+            return this.Json(new { success = true, returnContentUrl = this.Url.Action("Login", "Account", new { area = string.Empty }) }, JsonRequestBehavior.AllowGet);
         }
     }
 }
