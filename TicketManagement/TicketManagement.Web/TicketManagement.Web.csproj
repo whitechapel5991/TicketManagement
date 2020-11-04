@@ -338,10 +338,13 @@
     <Compile Include="Controllers\UserProfileController.cs" />
     <Compile Include="Exceptions\Account\RegisterUserWrongDataException.cs" />
     <Compile Include="Exceptions\Account\UserNameOrPasswordWrongException.cs" />
+    <Compile Include="Filters\AccountExceptionFilter.cs" />
     <Compile Include="Filters\AjaxContentUrlAttribute.cs" />
+    <Compile Include="Filters\Base\ExceptionFilterBase.cs" />
     <Compile Include="Filters\LogAttribute.cs" />
     <Compile Include="Filters\LogCustomExceptionFilter.cs" />
     <Compile Include="Filters\RedirectExceptionFilter.cs" />
+    <Compile Include="Filters\ValidateHeaderAntiForgeryTokenAttribute.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>

@@ -12,6 +12,11 @@ namespace TicketManagement.Web.Filters
 
         public override void OnException(ExceptionContext filterContext)
         {
+            if (filterContext.ExceptionHandled)
+            {
+                return;
+            }
+
             var exceptionMessage = filterContext.Exception.Message;
             var stackTrace = filterContext.Exception.StackTrace;
             var controllerName = filterContext.RouteData.Values["controller"].ToString();
