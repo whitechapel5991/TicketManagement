@@ -7,8 +7,8 @@ namespace TicketManagement.Web
     {
         public static void RegisterGlobalFilters(GlobalFilterCollection filters)
         {
-            filters.Add(new LogCustomExceptionFilter());
-            filters.Add(new RedirectExceptionFilter());
+            filters.Add(new LogCustomExceptionFilter(), order: int.MaxValue);
+            filters.Add(new RedirectExceptionFilter(), order: int.MinValue);
         }
     }
 }
