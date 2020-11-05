@@ -79,8 +79,8 @@ namespace TicketManagement.IntegrationTests.ServiceTests
             var expected = new List<EventSeat>
             {
                 new EventSeat() { Id = 1, State = EventSeatState.InBasket, EventAreaId = 1, Row = 1, Number = 1 },
-                new EventSeat() { Id = 2, State = EventSeatState.Free, EventAreaId = 1, Row = 1, Number = 2 },
-                new EventSeat() { Id = 3, State = EventSeatState.Free, EventAreaId = 1, Row = 1, Number = 3 },
+                new EventSeat() { Id = 2, State = EventSeatState.Sold, EventAreaId = 1, Row = 1, Number = 2 },
+                new EventSeat() { Id = 3, State = EventSeatState.Sold, EventAreaId = 1, Row = 1, Number = 3 },
                 new EventSeat() { Id = 4, State = EventSeatState.Free, EventAreaId = 1, Row = 1, Number = 4 },
                 new EventSeat() { Id = 5, State = EventSeatState.Free, EventAreaId = 1, Row = 1, Number = 5 },
                 new EventSeat() { Id = 6, State = EventSeatState.Free, EventAreaId = 2, Row = 1, Number = 1 },

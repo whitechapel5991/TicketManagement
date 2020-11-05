@@ -49,6 +49,7 @@ namespace TicketManagement.IntegrationTests.ServiceTests
                 Description = "2",
                 LayoutId = 2,
                 Name = "2",
+                ImageUrl = string.Empty,
             };
             var expectedEvents = new List<Event>
             {
@@ -78,8 +79,8 @@ namespace TicketManagement.IntegrationTests.ServiceTests
             var expectedEventSeats = new List<EventSeat>
             {
                 new EventSeat() { Id = 1, State = EventSeatState.InBasket, EventAreaId = 1, Row = 1, Number = 1 },
-                new EventSeat() { Id = 2, State = EventSeatState.Free, EventAreaId = 1, Row = 1, Number = 2 },
-                new EventSeat() { Id = 3, State = EventSeatState.Free, EventAreaId = 1, Row = 1, Number = 3 },
+                new EventSeat() { Id = 2, State = EventSeatState.Sold, EventAreaId = 1, Row = 1, Number = 2 },
+                new EventSeat() { Id = 3, State = EventSeatState.Sold, EventAreaId = 1, Row = 1, Number = 3 },
                 new EventSeat() { Id = 4, State = EventSeatState.Free, EventAreaId = 1, Row = 1, Number = 4 },
                 new EventSeat() { Id = 5, State = EventSeatState.Free, EventAreaId = 1, Row = 1, Number = 5 },
                 new EventSeat() { Id = 6, State = EventSeatState.Free, EventAreaId = 2, Row = 1, Number = 1 },
@@ -140,7 +141,7 @@ namespace TicketManagement.IntegrationTests.ServiceTests
                 {
                     Id = 1, BeginDateUtc = new DateTime(2025, 12, 12, 12, 00, 00),
                     EndDateUtc = new DateTime(2025, 12, 12, 13, 00, 00), Description = "First",
-                    LayoutId = 1, Name = "First event", Published = true,
+                    LayoutId = 1, Name = "First event", Published = true, ImageUrl = string.Empty,
                 },
                 eventDto,
             };
@@ -209,8 +210,8 @@ namespace TicketManagement.IntegrationTests.ServiceTests
             var expectedEventSeats = new List<EventSeat>
             {
                 new EventSeat() { Id = 1, State = EventSeatState.InBasket, EventAreaId = 1, Row = 1, Number = 1 },
-                new EventSeat() { Id = 2, State = EventSeatState.Free, EventAreaId = 1, Row = 1, Number = 2 },
-                new EventSeat() { Id = 3, State = EventSeatState.Free, EventAreaId = 1, Row = 1, Number = 3 },
+                new EventSeat() { Id = 2, State = EventSeatState.Sold, EventAreaId = 1, Row = 1, Number = 2 },
+                new EventSeat() { Id = 3, State = EventSeatState.Sold, EventAreaId = 1, Row = 1, Number = 3 },
                 new EventSeat() { Id = 4, State = EventSeatState.Free, EventAreaId = 1, Row = 1, Number = 4 },
                 new EventSeat() { Id = 5, State = EventSeatState.Free, EventAreaId = 1, Row = 1, Number = 5 },
                 new EventSeat() { Id = 6, State = EventSeatState.Free, EventAreaId = 2, Row = 1, Number = 1 },
@@ -308,7 +309,7 @@ namespace TicketManagement.IntegrationTests.ServiceTests
         {
             // Arrange
             const int existingEventId = 1;
-            const int expectedCount = 9;
+            const int expectedCount = 7;
 
             // Act
             var actualCount = this.eventService.GetAvailableSeatCount(existingEventId);

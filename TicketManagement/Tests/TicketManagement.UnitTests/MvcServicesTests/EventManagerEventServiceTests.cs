@@ -118,6 +118,7 @@ namespace TicketManagement.UnitTests.MvcServicesTests
                 BeginDate = new DateTime(2025, 12, 12, 12, 00, 00),
                 EndDate = new DateTime(2025, 12, 12, 13, 00, 00),
                 LayoutName = "first",
+                EventId = 1,
                 EventAreas = new List<EventAreaViewModel>
                 {
                     new EventAreaViewModel
