@@ -39,7 +39,7 @@ namespace TicketManagement.Web.Areas.EventManager.Controllers
         }
 
         [HttpPost]
-        [ValidateAntiForgeryToken]
+        [ValidateHeaderAntiForgeryToken]
         public ActionResult Create(EventViewModel eventViewModel)
         {
             if (!this.ModelState.IsValid)
@@ -77,7 +77,7 @@ namespace TicketManagement.Web.Areas.EventManager.Controllers
         }
 
         [HttpPost]
-        [ValidateAntiForgeryToken]
+        [ValidateHeaderAntiForgeryToken]
         public ActionResult Update(EventViewModel @event)
         {
             if (!this.ModelState.IsValid)
