@@ -7,70 +7,65 @@
     <div class="row">
         <div class="col-md-12">
             <h2>@TicketManagementResource.Events</h2>
-            <table class="table">
-                <tr>
-                    <th>
-                        @Html.DisplayNameFor(model => model.Name)
-                    </th>
-                    <th>
-                        @Html.DisplayNameFor(model => model.BeginDate)
-                    </th>
-                    <th>
-                        @Html.DisplayNameFor(model => model.BeginTime)
-                    </th>
-                    <th>
-                        @Html.DisplayNameFor(model => model.EndDate)
-                    </th>
-                    <th>
-                        @Html.DisplayNameFor(model => model.EndTime)
-                    </th>
-                    <th>
-                        @Html.DisplayNameFor(model => model.Description)
-                    </th>
-                    <th>
-                        @Html.DisplayNameFor(model => model.CountFreeSeats)
-                    </th>
-                    <th>
-                        @Html.DisplayNameFor(model => model.LayoutName)
-                    </th>
-                    <th></th>
-                </tr>
-
-                @foreach (var item in Model)
-                {
-                    <tr>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Name)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.BeginDate)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.BeginTime)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.EndDate)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.EndTime)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Description)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.CountFreeSeats)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.LayoutName)
-                        </td>
-                        @if (HttpContext.Current.User.Identity.IsAuthenticated)
+            
+            <table class="table table-hover">
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        string imgPath = string.Empty;
+                        if (!string.IsNullOrEmpty(item.ImagePath))
                         {
-                            <td>
-                                @Ajax.ActionLink(TicketManagementResource.Details, "EventDetail", "Event", new { eventId = item.Id }, new AjaxOptions { UpdateTargetId = "content", HttpMethod = WebRequestMethods.Http.Get }, new { @class = "nav-link" })
-                            </td>
+                            imgPath = @Url.Content("~/Content/EventImages/" + @Path.GetFileName(item.ImagePath));
                         }
-                    </tr>
+                        else
+                        {
+                            imgPath = @Url.Content("~/Content/EventImages/no-image-available.jpeg");
+                        }
+
+                        <tr class="table-primary">
+                            <th scope="row">
+                                <img class="event-image" style="width: 380px; height: 300px;" src=@imgPath alt="" />
+                            </th>
+
+                            <td class="col-md-5">
+                                <div class="row">
+                                    <div class="col-md-3">@Html.DisplayNameFor(model => model.Name):</div>
+                                    <div class="col-md-9">@Html.DisplayFor(modelItem => item.Name)</div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-3">@Html.DisplayNameFor(model => model.BeginDate):</div>
+                                    <div class="col-md-7">@Html.DisplayFor(modelItem => item.BeginDate) @Html.DisplayFor(modelItem => item.BeginTime)</div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-3">@Html.DisplayNameFor(model => model.EndDate):</div>
+                                    <div class="col-md-7">@Html.DisplayFor(modelItem => item.EndDate) @Html.DisplayFor(modelItem => item.EndTime)</div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-3">@Html.DisplayNameFor(model => model.Description):</div>
+                                    <div class="col-md-7">@Html.DisplayFor(modelItem => item.Description)</div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-3">@Html.DisplayNameFor(model => model.LayoutName):</div>
+                                    <div class="col-md-7">@Html.DisplayFor(modelItem => item.LayoutName)</div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-3">@Html.DisplayNameFor(model => model.CountFreeSeats):</div>
+                                    <div class="col-md-7">@Html.DisplayFor(modelItem => item.CountFreeSeats)</div>
+                                </div>
+                            </td>
+
+                @if (HttpContext.Current.User.Identity.IsAuthenticated)
+                {
+                    <td class="col-md-2">
+                        <div class="btn-group-vertical">
+
+                            @Ajax.ActionLink(TicketManagementResource.Details, "EventDetail", "Event", new {eventId = item.Id}, new AjaxOptions {UpdateTargetId = "content", HttpMethod = WebRequestMethods.Http.Get}, new {@class = "btn btn-primary", type = "button"})
+
+                        </div>
+                    </td>
                 }
+                        </tr>
+                    }
 
             </table>
         </div>

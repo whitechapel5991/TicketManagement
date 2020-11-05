@@ -41,5 +41,8 @@ namespace TicketManagement.DAL.Models
         [Required]
         [Column("LayoutId")]
         public int LayoutId { get; set; }
+
+        [Column("ImageUrl")]
+        public string ImageUrl { get; set; }
     }
 }

@@ -17,17 +17,20 @@ namespace TicketManagement.Web.Services
         private readonly ILayoutService layoutService;
         private readonly IEventAreaService eventAreaService;
         private readonly IEventSeatService eventSeatService;
+        private readonly IImageService imageService;
 
         public EventManagerEventService(
             IEventService eventService,
             ILayoutService layoutService,
             IEventAreaService eventAreaService,
-            IEventSeatService eventSeatService)
+            IEventSeatService eventSeatService,
+            IImageService imageService)
         {
             this.eventService = eventService;
             this.layoutService = layoutService;
             this.eventAreaService = eventAreaService;
             this.eventSeatService = eventSeatService;
+            this.imageService = imageService;
         }
 
         public List<IndexEventViewModel> GetIndexEventViewModels()
@@ -63,6 +66,7 @@ namespace TicketManagement.Web.Services
                     Name = eventDto.Name,
                     Published = eventDto.Published,
                     LayoutName = layouts[eventDto.LayoutId],
+                    ImagePath = eventDto.ImageUrl,
                 },
                 LayoutId = eventDto.LayoutId,
                 LayoutList = new SelectList(layouts.OrderBy(x => x.Value), "Key", "Value", layouts[eventDto.LayoutId]),
@@ -71,6 +75,10 @@ namespace TicketManagement.Web.Services
 
         public void CreateEvent(EventViewModel eventViewModel)
         {
+            byte[] uploadedFile = new byte[eventViewModel.IndexEventViewModel.Image.InputStream.Length];
+            eventViewModel.IndexEventViewModel.Image.InputStream.Read(uploadedFile, 0, uploadedFile.Length);
+            this.imageService.SaveImage(eventViewModel.IndexEventViewModel.Image.FileName, uploadedFile);
+
             this.eventService.AddEvent(
                 new Event
                 {
@@ -79,11 +87,16 @@ namespace TicketManagement.Web.Services
                     EndDateUtc = eventViewModel.IndexEventViewModel.GetEndDate(),
                     Description = eventViewModel.IndexEventViewModel.Description,
                     LayoutId = eventViewModel.LayoutId,
+                    ImageUrl = this.imageService.GetImageUri(eventViewModel.IndexEventViewModel.Image.FileName),
                 });
         }
 
         public void UpdateEvent(EventViewModel eventViewModel)
         {
+            byte[] uploadedFile = new byte[eventViewModel.IndexEventViewModel.Image.InputStream.Length];
+            eventViewModel.IndexEventViewModel.Image.InputStream.Read(uploadedFile, 0, uploadedFile.Length);
+            this.imageService.SaveImage(eventViewModel.IndexEventViewModel.Image.FileName, uploadedFile);
+
             this.eventService.UpdateEvent(new Event
             {
                 Name = eventViewModel.IndexEventViewModel.Name,
@@ -93,6 +106,7 @@ namespace TicketManagement.Web.Services
                 LayoutId = eventViewModel.IndexEventViewModel.LayoutId,
                 Published = eventViewModel.IndexEventViewModel.Published,
                 Id = eventViewModel.IndexEventViewModel.Id,
+                ImageUrl = this.imageService.GetImageUri(eventViewModel.IndexEventViewModel.Image.FileName),
             });
         }
 
@@ -191,6 +205,7 @@ namespace TicketManagement.Web.Services
                 Name = eventDto.Name,
                 Published = eventDto.Published,
                 LayoutName = layouts[eventDto.LayoutId],
+                ImagePath = eventDto.ImageUrl,
             }).ToList();
         }
 

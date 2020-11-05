@@ -6,5 +6,6 @@
     [Description] [nvarchar](max) NOT NULL,
     [Published] [bit] NOT NULL,
     [LayoutId] [int] NOT NULL,
+    [ImageUrl] NVARCHAR (MAX) NULL,
     CONSTRAINT [PK_dbo.Events] PRIMARY KEY ([Id])
 )

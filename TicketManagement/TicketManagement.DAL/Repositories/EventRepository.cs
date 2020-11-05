@@ -23,6 +23,7 @@ namespace TicketManagement.DAL.Repositories
         private const string BeginDateParamName = "@BeginDate";
         private const string EndDateParamName = "@EndDate";
         private const string PublishParamName = "@Published";
+        private const string ImageUrlParamName = "@ImageUrl";
 
         public EventRepository(IGenerateDbContext contextGenerator)
             : base(contextGenerator)
@@ -34,13 +35,14 @@ namespace TicketManagement.DAL.Repositories
             const string createEventStoredProcedureName = "CreateEvent";
 
             var resultId = this.ContextGenerator.GenerateNewContext().Database.SqlQuery<int>(
-                $"{createEventStoredProcedureName} {NameParamName}, {DescriptionParamName}, {LayoutIdParamName}, {BeginDateParamName}, {EndDateParamName}",
+                $"{createEventStoredProcedureName} {NameParamName}, {DescriptionParamName}, {LayoutIdParamName}, {BeginDateParamName}, {EndDateParamName}, {ImageUrlParamName}",
                 new SqlParameter(NameParamName, entity.Name),
                 new SqlParameter(DescriptionParamName, entity.Description),
                 new SqlParameter(LayoutIdParamName, entity.LayoutId),
                 new SqlParameter(BeginDateParamName, entity.BeginDateUtc.ToUniversalTime()),
-                new SqlParameter(EndDateParamName, entity.EndDateUtc.ToUniversalTime()))
-                .Single();
+                new SqlParameter(EndDateParamName, entity.EndDateUtc.ToUniversalTime()),
+                new SqlParameter(ImageUrlParamName, entity.ImageUrl)
+                    ).Single();
             this.ContextGenerator.GenerateNewContext().SaveChanges();
             return resultId;
         }
@@ -50,14 +52,16 @@ namespace TicketManagement.DAL.Repositories
             const string updateEventStoredProcedureName = "UpdateEvent";
 
             this.ContextGenerator.GenerateNewContext().Database.ExecuteSqlCommand(
-                $"{updateEventStoredProcedureName} {IdParamName}, {NameParamName}, {DescriptionParamName}, {LayoutIdParamName}, {BeginDateParamName}, {EndDateParamName}, {PublishParamName}",
+                $"{updateEventStoredProcedureName} {IdParamName}, {NameParamName}, {DescriptionParamName}, {LayoutIdParamName}, {BeginDateParamName}, {EndDateParamName}, {PublishParamName}, {ImageUrlParamName}",
                 new SqlParameter(IdParamName, entity.Id),
                 new SqlParameter(NameParamName, entity.Name),
                 new SqlParameter(DescriptionParamName, entity.Description),
                 new SqlParameter(LayoutIdParamName, entity.LayoutId),
                 new SqlParameter(BeginDateParamName, entity.BeginDateUtc.ToUniversalTime()) { SqlDbType = SqlDbType.DateTime },
                 new SqlParameter(EndDateParamName, entity.EndDateUtc.ToUniversalTime()) { SqlDbType = SqlDbType.DateTime },
-                new SqlParameter(PublishParamName, entity.Published));
+                new SqlParameter(PublishParamName, entity.Published),
+                new SqlParameter(ImageUrlParamName, entity.ImageUrl)
+                    );
             this.ContextGenerator.GenerateNewContext().SaveChanges();
         }
 

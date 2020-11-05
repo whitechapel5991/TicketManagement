@@ -109,6 +109,7 @@ namespace TicketManagement.Web.Services
                     EndTime = @event.EndDateUtc,
                     CountFreeSeats = eventsDictionary[@event.Id],
                     LayoutName = layouts[@event.LayoutId],
+                    ImagePath = @event.ImageUrl,
                 })
                 .ToList();
         }

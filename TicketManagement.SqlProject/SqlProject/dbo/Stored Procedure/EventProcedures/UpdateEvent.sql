@@ -5,7 +5,8 @@
     @LayoutId int,
 	@BeginDate datetime,
     @EndDate datetime,
-    @Published bit = 0
+    @Published bit = 0,
+    @ImageUrl  nvarchar(max)
 AS
  declare @AreaTemp table (
     Id int, 
@@ -36,7 +37,7 @@ AS
 
     if (@LayoutId = @oldLayoutId)
         Begin
-            UPDATE Events set Name=@Name, Description=@Description, LayoutId=@LayoutId, BeginDate=@BeginDate, EndDate=@EndDate, Published=@Published
+            UPDATE Events set Name=@Name, Description=@Description, LayoutId=@LayoutId, BeginDate=@BeginDate, EndDate=@EndDate, Published=@Published, ImageUrl=@ImageUrl
 	        where Id = @Id
 	        select @@ROWCOUNT;
         End

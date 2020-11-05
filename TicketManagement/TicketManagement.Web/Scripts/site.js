@@ -36,10 +36,10 @@
 });
 
 let AddAntiForgeryToken = function(form) {
-    let data = $(form).serialize();
+    var formData = new FormData($('#postForm').get(0));
     let token = $('body input[name=__RequestVerificationToken]').val();
-    $.extend(data, { '__RequestVerificationToken': token });
-    return data;
+    formData.append('__RequestVerificationToken', token);
+    return formData;
 };
 
 function postRequest() {
@@ -56,6 +56,8 @@ function postRequest() {
                         $.ajax({
                             url: postUrl,
                             type: 'POST',
+                            contentType: false, // Not to set any content header  
+                            processData: false, // Not to process data  
                             async: true,
                             data: AddAntiForgeryToken(this),
                             success: function (data) {

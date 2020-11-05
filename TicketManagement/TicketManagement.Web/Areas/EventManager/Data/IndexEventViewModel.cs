@@ -1,5 +1,6 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
+using System.Web;
 
 namespace TicketManagement.Web.Areas.EventManager.Data
 {
@@ -49,6 +50,14 @@ namespace TicketManagement.Web.Areas.EventManager.Data
 
         [Display(Name = "Published", ResourceType = typeof(Resources.TicketManagementResource))]
         public bool Published { get; set; }
+
+        [Display(Name = "Image", ResourceType = typeof(Resources.TicketManagementResource))]
+        [DataType(DataType.Upload)]
+        public HttpPostedFileBase Image { get; set; }
+
+        [Display(Name = "Image", ResourceType = typeof(Resources.TicketManagementResource))]
+        [DataType(DataType.ImageUrl)]
+        public string ImagePath { get; set; }
 
         public DateTime GetBeginDate()
         {

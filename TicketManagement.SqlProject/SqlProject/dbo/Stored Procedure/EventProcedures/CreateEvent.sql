@@ -3,7 +3,8 @@
     @Description nvarchar(50),
     @LayoutId int,
     @BeginDate datetime,
-    @EndDate datetime
+    @EndDate datetime,
+    @ImageUrl nvarchar(max)
 AS
     declare  @Published bit = 0
     declare @AreaTemp table (
@@ -42,8 +43,8 @@ AS
         set @SeatRows=@@ROWCOUNT;
 
         declare @eventId int;
-        INSERT INTO Events (Name, Description, LayoutId, BeginDate, EndDate, Published)
-        VALUES (@Name, @Description, @LayoutId, @BeginDate, @EndDate, @Published)
+        INSERT INTO Events (Name, Description, LayoutId, BeginDate, EndDate, Published, ImageUrl)
+        VALUES (@Name, @Description, @LayoutId, @BeginDate, @EndDate, @Published, @ImageUrl)
         set @eventId = SCOPE_IDENTITY();
 
         set @AreaCurrentRow=0

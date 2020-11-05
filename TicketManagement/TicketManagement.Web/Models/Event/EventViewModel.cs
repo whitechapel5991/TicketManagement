@@ -1,5 +1,6 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
+using System.Web;
 
 namespace TicketManagement.Web.Models.Event
 {
@@ -51,5 +52,13 @@ namespace TicketManagement.Web.Models.Event
 
         [Display(Name = "Layout", ResourceType = typeof(Resources.TicketManagementResource))]
         public string LayoutName { get; set; }
+
+        [Display(Name = "Image", ResourceType = typeof(Resources.TicketManagementResource))]
+        [DataType(DataType.Upload)]
+        public HttpPostedFileBase Image { get; set; }
+
+        [Display(Name = "Image", ResourceType = typeof(Resources.TicketManagementResource))]
+        [DataType(DataType.ImageUrl)]
+        public string ImagePath { get; set; }
     }
 }

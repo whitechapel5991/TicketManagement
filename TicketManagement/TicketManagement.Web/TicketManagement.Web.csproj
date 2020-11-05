@@ -352,6 +352,7 @@
     <Compile Include="Interfaces\ICartService.cs" />
     <Compile Include="Interfaces\IEventManagerEventService.cs" />
     <Compile Include="Interfaces\IEventService.cs" />
+    <Compile Include="Interfaces\IImageService.cs" />
     <Compile Include="Interfaces\IUserProfileService.cs" />
     <Compile Include="Models\Account\LoginViewModel.cs" />
     <Compile Include="Models\Account\RegisterViewModel.cs" />
@@ -392,6 +393,7 @@
     <Compile Include="Services\Identity\IdentityUser.cs" />
     <Compile Include="Services\Identity\RoleStore.cs" />
     <Compile Include="Services\Identity\UserStore.cs" />
+    <Compile Include="Services\EventImageService.cs" />
     <Compile Include="Services\UserProfileService.cs" />
     <Compile Include="Startup.cs" />
     <Compile Include="Util\WebIocModule.cs" />
@@ -444,6 +446,7 @@
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Areas\EventManager\Views\Shared\" />
+    <Folder Include="Content\EventImages\" />
     <Folder Include="Views\Language\" />
   </ItemGroup>
   <ItemGroup>
