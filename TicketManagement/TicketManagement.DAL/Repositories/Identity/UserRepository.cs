@@ -20,12 +20,12 @@ namespace TicketManagement.DAL.Repositories.Identity
 
         public TicketManagementUser FindByNormalizedUserName(string normalizedUserName)
         {
-            return this.ContextGenerator.GenerateNewContext().Set<TicketManagementUser>().FirstOrDefault(x => x.UserName == normalizedUserName);
+            return this.ContextGenerator.GenerateNewContext().Set<TicketManagementUser>().AsNoTracking().FirstOrDefault(x => x.UserName == normalizedUserName);
         }
 
         public TicketManagementUser FindByNormalizedEmail(string normalizedEmail)
         {
-            return this.ContextGenerator.GenerateNewContext().Set<TicketManagementUser>().First(x => x.Email == normalizedEmail);
+            return this.ContextGenerator.GenerateNewContext().Set<TicketManagementUser>().AsNoTracking().First(x => x.Email == normalizedEmail);
         }
     }
 }
