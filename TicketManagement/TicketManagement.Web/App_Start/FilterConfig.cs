@@ -1,5 +1,7 @@
 ﻿using System.Web.Mvc;
 using TicketManagement.Web.Filters;
+using TicketManagement.Web.Filters.AcionFilters;
+using TicketManagement.Web.Filters.ExceptionFilters;
 
 namespace TicketManagement.Web
 {
@@ -7,8 +9,8 @@ namespace TicketManagement.Web
     {
         public static void RegisterGlobalFilters(GlobalFilterCollection filters)
         {
-            filters.Add(new LogCustomExceptionFilter(), order: int.MaxValue);
-            filters.Add(new RedirectExceptionFilter(), order: int.MinValue);
+            filters.Add(new UnknownExceptionFilter(), order: int.MinValue);
+            filters.Add(new LogAttribute());
         }
     }
 }
