@@ -1,23 +1,35 @@
 ﻿@using Resources
 
 <div id="menu">
+    @Html.AntiForgeryToken()
     <nav class="navbar fixed-top navbar-dark bg-dark navbar-expand-lg navbar-image">
         <div class="container">
-            @Html.ActionLink("Ticket Management", "Index", "StartApp", new { area = "" }, new { @class = "navbar-brand" })
+            @Html.ActionLink("Ticket Management", "Index",
+                new {controller = "StartApp"},
+                new {@class = "navbar-brand"})
             <button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#navbarColor01" aria-controls="navbarColor01" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
-
 
             <div class="navbar-collapse collapse" id="navbarColor01">
                 <ul class="navbar-nav mr-auto">
                     @if (User.Identity.IsAuthenticated && (User.IsInRole("event manager") || User.IsInRole("admin")))
                     {
-                        <li class="nav-item">@Ajax.ActionLink(TicketManagementResource.ManagerEvents, "Index", "Event", new { area = "EventManager", controller = "Event" }, new AjaxOptions { UpdateTargetId = "content", HttpMethod = WebRequestMethods.Http.Get }, new { @class = "nav-link" })</li>
+                        <li class="nav-item">
+                            @Ajax.ActionLink(TicketManagementResource.ManagerEvents, "Index",
+                                new {controller = "Event", area = "EventManager"},
+                                new AjaxOptions {UpdateTargetId = "content", HttpMethod = WebRequestMethods.Http.Get},
+                                new {@class = "nav-link"})
+                        </li>
                     }
 
 
-                    <li class="nav-item">@Ajax.ActionLink(TicketManagementResource.Events, "Events", "Event", new { area = "" }, new AjaxOptions { UpdateTargetId = "content", HttpMethod = WebRequestMethods.Http.Get }, new { @class = "nav-link" })</li>
+                    <li class="nav-item">
+                        @Ajax.ActionLink(TicketManagementResource.Events, "Events",
+                            new {controller = "Event"},
+                            new AjaxOptions {UpdateTargetId = "content", HttpMethod = WebRequestMethods.Http.Get},
+                            new {@class = "nav-link"})
+                    </li>
 
                 </ul>
                 <ul class="navbar-nav ml-auto">
@@ -27,17 +39,49 @@
                     </li>
                     @if (HttpContext.Current.User.Identity.IsAuthenticated)
                     {
-                        <li class="nav-item">@Ajax.ActionLink(TicketManagementResource.Profile, "Index", "UserProfile", new { area = "" }, new AjaxOptions { UpdateTargetId = "content", HttpMethod = WebRequestMethods.Http.Get }, new { @class = "nav-link" })</li>
-                        <li class="nav-item">@Ajax.ActionLink(TicketManagementResource.Basket, "Index", "Cart", new { area = "" }, new AjaxOptions { UpdateTargetId = "content", HttpMethod = WebRequestMethods.Http.Get }, new { @class = "nav-link" })</li>
-                        <li class="nav-item active">@Ajax.ActionLink(TicketManagementResource.LogOut, "Logout", "Account", new { area = "" }, new AjaxOptions { HttpMethod = WebRequestMethods.Http.Post }, new { @class = "nav-link" })</li>
+                        <li class="nav-item">
+                            @Ajax.ActionLink(TicketManagementResource.Profile, "Index",
+                                new {controller = "UserProfile"},
+                                new AjaxOptions {UpdateTargetId = "content", HttpMethod = WebRequestMethods.Http.Get},
+                                new {@class = "nav-link"})
+                        </li>
+                        <li class="nav-item">
+                            @Ajax.ActionLink(TicketManagementResource.Basket, "Index",
+                                new {controller = "Cart"},
+                                new AjaxOptions {UpdateTargetId = "content", HttpMethod = WebRequestMethods.Http.Get},
+                                new {@class = "nav-link"})
+                        </li>
+                        <li class="nav-item">
+                            @Ajax.ActionLink(TicketManagementResource.LogOut, "Logout",
+                                new {controller = "Account"},
+                                new AjaxOptions {HttpMethod = WebRequestMethods.Http.Post, OnSuccess = "OnSuccessLogout"},
+                                new {@class = "nav-link"})
+                        </li>
                     }
                     else
                     {
-                        <li class="nav-item mr-sm-2">@Ajax.ActionLink(TicketManagementResource.Registration, "Register", "Account", new { area = "" }, new AjaxOptions { UpdateTargetId = "content", HttpMethod = WebRequestMethods.Http.Get }, new { @class = "nav-link" })</li>
-                        <li class="nav-item my-2 my-sm-0">@Ajax.ActionLink(TicketManagementResource.Login, "Login", "Account", new { area = "" }, new AjaxOptions { UpdateTargetId = "content", HttpMethod = WebRequestMethods.Http.Get }, new { @class = "nav-link" })</li>
+                        <li class="nav-item mr-sm-2">
+                            @Ajax.ActionLink(TicketManagementResource.Registration, "Register",
+                                new {controller = "Account"},
+                                new AjaxOptions {UpdateTargetId = "content", HttpMethod = WebRequestMethods.Http.Get},
+                                new {@class = "nav-link"})
+                        </li>
+                        <li class="nav-item my-2 my-sm-0">
+                            @Ajax.ActionLink(TicketManagementResource.Login, "Login",
+                                new {controller = "Account"},
+                                new AjaxOptions {UpdateTargetId = "content", HttpMethod = WebRequestMethods.Http.Get},
+                                new {@class = "nav-link"})
+                        </li>
                     }
                 </ul>
             </div>
+
         </div>
     </nav>
 </div>
+
+<script>
+    function OnSuccessLogout(data) {
+        updateContentWithMenu(data.returnContentUrl);
+        }
+</script>

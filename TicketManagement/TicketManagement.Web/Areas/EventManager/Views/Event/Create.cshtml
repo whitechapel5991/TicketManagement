@@ -1,86 +1,89 @@
 ﻿@using Resources
 @model TicketManagement.Web.Areas.EventManager.Data.EventViewModel
 
-<form action="@Url.Action("Create", "Event", new { area = "EventManager"})" data-ajax="true" data-ajax-loading="#loading" data-ajax-loading-duration="1000" data-ajax-method="POST" id="postForm" method="post" enctype="multipart/form-data">
+<form action="@Url.Action("Create", "Event", new { area = "EventManager"})" data-ajax="true" data-ajax-method="POST" id="postForm" method="post" enctype="multipart/form-data" data-form="postForm">
     <div class="form-horizontal">
-            <h4>@TicketManagementResource.EventInfo</h4>
-            <hr />
-            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-            <div class="form-group">
-                @Html.LabelFor(model => model.IndexEventViewModel.Name, htmlAttributes: new { @class = "control-label col-md-2" })
-                <div class="col-md-10">
-                    @Html.EditorFor(model => model.IndexEventViewModel.Name, new { htmlAttributes = new { @class = "form-control" } })
-                    @Html.ValidationMessageFor(model => model.IndexEventViewModel.Name, "", new { @class = "text-danger" })
-                </div>
-            </div>
-
-            <div class="form-group">
-                @Html.LabelFor(model => model.IndexEventViewModel.Description, htmlAttributes: new { @class = "control-label col-md-2" })
-                <div class="col-md-10">
-                    @Html.EditorFor(model => model.IndexEventViewModel.Description, new { htmlAttributes = new { @class = "form-control" } })
-                    @Html.ValidationMessageFor(model => model.IndexEventViewModel.Description, "", new { @class = "text-danger" })
-                </div>
-            </div>
-
-            <div class="form-group">
-                @Html.LabelFor(model => model.IndexEventViewModel.BeginDate, htmlAttributes: new { @class = "control-label col-md-2" })
-                <div class="col-md-10">
-                    @Html.EditorFor(model => model.IndexEventViewModel.BeginDate, new { htmlAttributes = new { @class = "form-control" } })
-                    @Html.ValidationMessageFor(model => model.IndexEventViewModel.BeginDate, "", new { @class = "text-danger" })
-                </div>
-            </div>
-
-            <div class="form-group">
-                @Html.LabelFor(model => model.IndexEventViewModel.BeginTime, htmlAttributes: new { @class = "control-label col-md-2" })
-                <div class="col-md-10">
-                    @Html.EditorFor(model => model.IndexEventViewModel.BeginTime, new { htmlAttributes = new { @class = "form-control" } })
-                    @Html.ValidationMessageFor(model => model.IndexEventViewModel.BeginTime, "", new { @class = "text-danger" })
-                </div>
-            </div>
-
-            <div class="form-group">
-                @Html.LabelFor(model => model.IndexEventViewModel.EndDate, htmlAttributes: new { @class = "control-label col-md-2" })
-                <div class="col-md-10">
-                    @Html.EditorFor(model => model.IndexEventViewModel.EndDate, new { htmlAttributes = new { @class = "form-control" } })
-                    @Html.ValidationMessageFor(model => model.IndexEventViewModel.EndDate, "", new { @class = "text-danger" })
-                </div>
-            </div>
-
-            <div class="form-group">
-                @Html.LabelFor(model => model.IndexEventViewModel.EndTime, htmlAttributes: new { @class = "control-label col-md-2" })
-                <div class="col-md-10">
-                    @Html.EditorFor(model => model.IndexEventViewModel.EndTime, new { htmlAttributes = new { @class = "form-control" } })
-                    @Html.ValidationMessageFor(model => model.IndexEventViewModel.EndTime, "", new { @class = "text-danger" })
-                </div>
-            </div>
-
-            <div class="form-group">
-                @Html.LabelFor(model => model.LayoutId, htmlAttributes: new { @class = "control-label col-md-2" })
-                <div class="col-md-10">
-                    @Html.DropDownListFor(model => model.LayoutId, Model.LayoutList, htmlAttributes: new { @class = "form-control" })
-                    @Html.ValidationMessageFor(model => model.LayoutId, "", new { @class = "text-danger" })
-                </div>
-            </div>
-
-            <div class="form-group">
-                <span class="btn btn-default btn-file">
-                    Browse…
-                    @Html.TextBoxFor(m => m.IndexEventViewModel.Image, new { type = "file", placeholder = Html.DisplayNameFor(m => m.IndexEventViewModel.Image), @class = "form-control", id = "FileUpload1" })
-                </span>
-            </div>
-
-            <div class="form-group">
-                <div class="col-md-offset-2 col-md-10">
-                    <input type="submit" value="Create" class="btn btn-default submit-btn" />
-                </div>
+        <h4>@TicketManagementResource.EventInfo</h4>
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger", data_validation_summary = "validationSummary" })
+        <div class="form-group">
+            @Html.LabelFor(model => model.IndexEventViewModel.Name, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.IndexEventViewModel.Name, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.IndexEventViewModel.Name, "", new { @class = "text-danger" })
             </div>
         </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.IndexEventViewModel.Description, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.IndexEventViewModel.Description, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.IndexEventViewModel.Description, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.IndexEventViewModel.BeginDate, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.IndexEventViewModel.BeginDate, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.IndexEventViewModel.BeginDate, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.IndexEventViewModel.BeginTime, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.IndexEventViewModel.BeginTime, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.IndexEventViewModel.BeginTime, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.IndexEventViewModel.EndDate, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.IndexEventViewModel.EndDate, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.IndexEventViewModel.EndDate, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.IndexEventViewModel.EndTime, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.IndexEventViewModel.EndTime, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.IndexEventViewModel.EndTime, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.LayoutId, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.DropDownListFor(model => model.LayoutId, Model.LayoutList, htmlAttributes: new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.LayoutId, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            <span class="btn btn-default btn-file">
+                Browse…
+                @Html.TextBoxFor(m => m.IndexEventViewModel.Image, new { type = "file", placeholder = Html.DisplayNameFor(m => m.IndexEventViewModel.Image), @class = "form-control", id = "FileUpload1" })
+            </span>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <button type="submit" class="btn btn-primary">@TicketManagementResource.Create</button>
+            </div>
+        </div>
+    </div>
+
+    @LoadingHelper.Loading()
 </form>
 
-@DownloadHelper.Download()
-
 <div>
-    @Ajax.ActionLink(TicketManagementResource.Back, "Index", "Event", new { area = "EventManager", controller = "Event" }, new AjaxOptions { UpdateTargetId = "content", HttpMethod = WebRequestMethods.Http.Get }, new { @class = "nav-link" })
+    @Ajax.ActionLink(TicketManagementResource.Back, "Index", 
+        new { area = "EventManager", controller = "Event" }, 
+        new AjaxOptions { UpdateTargetId = "content", HttpMethod = WebRequestMethods.Http.Get }, 
+        new { @class = "nav-link" })
 </div>
 
 <script>

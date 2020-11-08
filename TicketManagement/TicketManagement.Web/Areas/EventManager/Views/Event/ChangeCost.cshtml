@@ -12,7 +12,9 @@
         </button>
     </div>
             
-    @using (Ajax.BeginForm("ChangeCost", "Event", new { area = "EventManager", controller = "Event" }, new AjaxOptions { HttpMethod = WebRequestMethods.Http.Post }, new { id = "form-changeCost" }))
+    @using (Ajax.BeginForm("ChangeCost", new { area = "EventManager", controller = "Event" }, 
+        new AjaxOptions { HttpMethod = WebRequestMethods.Http.Post }, 
+        new { id = "form-changeCost" }))
     {
         <div class="modal-body">
             <h4>@TicketManagementResource.SetAreasCosts</h4>
@@ -28,8 +30,8 @@
             </div>
         </div>
         <div class="modal-footer">
-            <button type="submit" class="btn btn-primary">Save changes</button>
-            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            <button type="submit" class="btn btn-primary">@TicketManagementResource.Save</button>
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">@TicketManagementResource.Back</button>
         </div>
     }
 </div>

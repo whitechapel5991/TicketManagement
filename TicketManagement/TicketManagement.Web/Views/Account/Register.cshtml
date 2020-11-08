@@ -7,10 +7,10 @@
 <div class="container">
     <div class="row">
         <div class="col-md-12">
-            <form action="@Url.Action("Register", "Account", new { area = ""})" data-ajax="true" data-ajax-loading="#loading" data-ajax-loading-duration="1000" data-ajax-method="POST" id="postForm" method="post">
+            <form action="@Url.Action("Register", new { controller = "Account"})" data-ajax="true" data-ajax-method="POST" method="post" data-form="postForm">
                 <h2>@TicketManagementResource.Registration</h2>
                 <div class="form-horizontal">
-                    @Html.ValidationSummary(false, "", new { @class = "text-danger" })
+                    @Html.ValidationSummary(false, "", new { @class = "text-danger", data_validation_summary = "validationSummary" })
 
                     <div class="row">
                         <div class="form-group col-md-10">
@@ -69,13 +69,14 @@
 
                     <div class="row">
                         <div class="form-group col-md-10">
-                            <button type="submit" class="btn btn-primary submit-btn">@TicketManagementResource.Registration</button>
+                            <button type="submit" class="btn btn-primary">@TicketManagementResource.Registration</button>
                         </div>
                     </div>
                 </div>
+                
+                @LoadingHelper.Loading()
             </form>
-            
-            @DownloadHelper.Download()
+
         </div>
     </div>
 </div>

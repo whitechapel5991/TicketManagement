@@ -8,11 +8,11 @@
 <div class="container">
     <div class="row">
         <div class="col-md-12">
-            <form action="@Url.Action("Login", "Account", new { area = ""})" data-ajax="true" data-ajax-loading="#loading" data-ajax-loading-duration="1000" data-ajax-method="POST" id="postForm" method="post">
+            <form action="@Url.Action("Login", "Account")" data-ajax="true" data-ajax-method="POST" method="post" data-form="postForm">
                 <h2>@TicketManagementResource.LoginTitle</h2>
 
                 <div class="form-horizontal">
-                    @Html.ValidationSummary(false,"", new { @class = "text-danger", id = "validationSummary" })
+                    @Html.ValidationSummary(false, "", new { @class = "text-danger", data_validation_summary = "validationSummary" })
                     <div class="row">
                         <div class="form-group col-md-10">
                             @Html.TextBoxFor(m => m.UserName, new { @class = "form-control", placeholder = TicketManagementResource.UserName })
@@ -28,13 +28,13 @@
 
                     <div class="row">
                         <div class="form-group col-md-10">
-                            <button type="submit" class="btn btn-primary submit-btn" id="login-btn">@TicketManagementResource.Login</button>
+                            <button type="submit" class="btn btn-primary">@TicketManagementResource.Login</button>
                         </div>
                     </div>
                 </div>
-            </form>
 
-            @DownloadHelper.Download()
+                @LoadingHelper.Loading()
+            </form>
         </div>
     </div>
 </div>

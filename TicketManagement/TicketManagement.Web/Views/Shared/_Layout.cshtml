@@ -8,24 +8,28 @@
     <title>@ViewBag.Title</title>
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
+    @Scripts.Render("~/bundles/autoNumeric")
     @RenderSection("styles", required: false)
 </head>
 <body>
-    @Html.AntiForgeryToken()
-    @{ Html.RenderPartial("_MenuBar"); }
+@{ Html.RenderPartial("_MenuBar"); }
 
-<div class="container body-content">
-    <div id="content">
-        @RenderBody()
+    <div class="container body-content">
+        <div id="content">
+            @RenderBody()
+        </div>
     </div>
-</div>
-    
-@{ Html.RenderPartial("_Footer"); }
+
+    @{ Html.RenderPartial("_Footer"); }
 
     @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/bootstrap")
     @Scripts.Render("~/bundles/jqueryval")
     @Scripts.Render("~/bundles/customScripts")
+<script>
+    UrlConstants.MenuUrl = '@Url.Action("ReloadMenu", "StartApp")';
+</script>
     @RenderSection("scripts", required: false)
+
 </body>
 </html>

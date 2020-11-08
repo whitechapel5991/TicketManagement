@@ -8,7 +8,10 @@
         <div class="col-md-12">
             <h2>@TicketManagementResource.Events</h2>
             <div class="btn-group" role="group">
-                @Ajax.ActionLink(TicketManagementResource.Create, "Create", "Event", new { area = "EventManager", controller = "Event" }, new AjaxOptions { UpdateTargetId = "content", HttpMethod = WebRequestMethods.Http.Get }, new { @class = "btn btn-primary", type = "button" })
+                @Ajax.ActionLink(TicketManagementResource.Create, "Create", 
+                    new { area = "EventManager", controller = "Event" }, 
+                    new AjaxOptions { UpdateTargetId = "content", HttpMethod = WebRequestMethods.Http.Get }, 
+                    new { @class = "btn btn-primary", type = "button" })
             </div>
 
             <table class="table table-hover">
@@ -24,6 +27,8 @@
                         {
                             imgPath = @Url.Content("~/Content/EventImages/no-image-available.jpeg");
                         }
+
+                        string buttonLinkText = item.Published ? TicketManagementResource.UnPublished : TicketManagementResource.Published;
 
                         <tr class="table-primary">
                             <th scope="row">
@@ -60,18 +65,21 @@
 
                             <td class="col-md-2">
                                 <div class="btn-group-vertical">
-                                    @Ajax.ActionLink(TicketManagementResource.Details, "EventDetail", "Event", new { area = "EventManager", controller = "Event", eventId = item.Id }, new AjaxOptions { UpdateTargetId = "content", HttpMethod = WebRequestMethods.Http.Get }, new { @class = "btn btn-primary", type = "button" })
+                                        @Ajax.ActionLink(TicketManagementResource.Details, "EventDetail",
+                                        new { area = "EventManager", controller = "Event", eventId = item.Id }, 
+                                        new AjaxOptions { UpdateTargetId = "content", HttpMethod = WebRequestMethods.Http.Get }, 
+                                        new { @class = "btn btn-primary", type = "button" })
 
-                                        @Ajax.ActionLink(TicketManagementResource.Delete, "Delete", "Event", new { area = "EventManager", controller = "Event", id = item.Id }, new AjaxOptions { HttpMethod = WebRequestMethods.Http.Post, OnSuccess = "loadEventManagerEvents", Confirm = TicketManagementResource.DeletingConfirm }, new { @class = "btn btn-primary", type = "button" })
+                                        @Ajax.ActionLink(TicketManagementResource.Delete, "Delete", 
+                                            new { area = "EventManager", controller = "Event", id = item.Id }, 
+                                            new AjaxOptions { HttpMethod = WebRequestMethods.Http.Post, OnSuccess = "OnSuccessDelete", Confirm = TicketManagementResource.DeletingConfirm }, 
+                                            new { @class = "btn btn-primary", type = "button" })
 
-                                        @if (item.Published)
-                                        {
-                                            @Ajax.ActionLink(TicketManagementResource.UnPublished, "Publish", "Event", new { area = "EventManager", controller = "Event", id = item.Id }, new AjaxOptions { HttpMethod = WebRequestMethods.Http.Post, OnSuccess = "loadEventManagerEvents" }, new { @class = "btn btn-primary", type = "button" })
-                                        }
-                                        else
-                                        {
-                                            @Ajax.ActionLink(TicketManagementResource.Published, "Publish", "Event", new { area = "EventManager", controller = "Event", id = item.Id }, new AjaxOptions { HttpMethod = WebRequestMethods.Http.Post, OnSuccess = "loadEventManagerEvents" }, new { @class = "btn btn-primary", type = "button" })
-                                        }
+                                        @Ajax.ActionLink(buttonLinkText, "Publish", 
+                                            new { area = "EventManager", controller = "Event", id = item.Id }, 
+                                            new AjaxOptions { HttpMethod = WebRequestMethods.Http.Post, OnSuccess = "OnSuccessPublish" }, 
+                                            new { @class = "btn btn-primary", type = "button" })
+  
                                 </div>
                             </td>
                         </tr>
@@ -81,3 +89,12 @@
         </div>
     </div>
 </div>
+
+<script>
+    function OnSuccessDelete(data) {
+        updateContent(data.returnContentUrl);
+    }
+    function OnSuccessPublish(data) {
+        updateContent(data.returnContentUrl);
+    }
+</script>

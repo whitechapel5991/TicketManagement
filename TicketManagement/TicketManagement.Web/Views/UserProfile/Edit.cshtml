@@ -1,12 +1,11 @@
 ﻿@using Resources
 @model TicketManagement.Web.Models.UserProfile.EditUserProfileViewModel
 
-@using (Ajax.BeginForm("Edit", "UserProfile", new AjaxOptions { HttpMethod = WebRequestMethods.Http.Post, OnSuccess = "loadUserProfile" }))
-{
+<form action="@Url.Action("Edit", new { controller = "UserProfile"})" data-ajax="true" data-ajax-method="POST" method="post" data-form="postForm">
     <div class="form-horizontal">
         <h4>@TicketManagementResource.EditUserProfile</h4>
         <hr />
-        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        @Html.ValidationSummary(false, "", new { @class = "text-danger", data_validation_summary = "validationSummary" })
         <div class="form-group">
             @Html.LabelFor(model => model.FirstName, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
@@ -41,12 +40,23 @@
 
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value=@TicketManagementResource.Save class="btn btn-default" />
+                <button type="submit" class="btn btn-primary">@TicketManagementResource.Save</button>
             </div>
         </div>
     </div>
-}
+
+    @LoadingHelper.Loading()
+</form>
 
 <div>
-    @Ajax.ActionLink(TicketManagementResource.BackToProfile, "Index", "UserProfile", new AjaxOptions { UpdateTargetId = "content", HttpMethod = WebRequestMethods.Http.Get }, new { @class = "nav-link" })
+    @Ajax.ActionLink(TicketManagementResource.BackToProfile, "Index",
+        new { controller = "UserProfile" },
+        new AjaxOptions { UpdateTargetId = "content", HttpMethod = WebRequestMethods.Http.Get },
+        new { @class = "nav-link" })
 </div>
+
+<script>
+    $(document).ready(function () {
+        postRequest();
+    });
+</script>
