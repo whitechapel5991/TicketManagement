@@ -1,8 +1,14 @@
-﻿$(function () {
+﻿"use strict";
+
+let selectorConstants = SelectorConstants;
+let urlConstants = UrlConstants;
+let requestConstants = RequestConstants;
+
+$(function () {
     //setup ajax error handling
     $.ajaxSetup({
         error: function(qXHR, status, thrownError, data) {
-                           
+            $(selectorConstants.Loader).hide();        
             var msg = undefined;  
             try  
             {
@@ -15,13 +21,13 @@
                 document.close();
             }
             if (msg !== undefined) {
-                $('#validationSummary').empty();
-                $('#validationSummary').removeClass("validation-summary-valid");
-                $('#validationSummary').addClass("validation-summary-errors");
-                var validationSummary = $('#validationSummary ul');
+                $(selectorConstants.ValidationSummary).empty();
+                $(selectorConstants.ValidationSummary).removeClass("validation-summary-valid");
+                $(selectorConstants.ValidationSummary).addClass("validation-summary-errors");
+                var validationSummary = $(selectorConstants.ValidationSummary + ' ul');
                 if (validationSummary.length === 0) {
-                    $('#validationSummary').append('<ul></ul>');
-                    validationSummary = $('#validationSummary ul');
+                    $(selectorConstants.ValidationSummary).append('<ul></ul>');
+                    validationSummary = $(selectorConstants.ValidationSummary + ' ul');
                 }
                 validationSummary.append('<li>' + msg + '</li>');
             }
@@ -31,27 +37,47 @@
     // set verification token in the header
     $.ajaxPrefilter(function (options, originalOptions, jqXHR) {
         if (originalOptions.type === "POST")
-            jqXHR.setRequestHeader('__RequestVerificationToken', $('body input[name=__RequestVerificationToken]').val());
+            jqXHR.setRequestHeader(requestConstants.RequestVerificationToken, $(selectorConstants.RequestVerificationToken).val());
     });
+
+
 });
 
 let AddAntiForgeryToken = function(form) {
-    var formData = new FormData($('#postForm').get(0));
-    let token = $('body input[name=__RequestVerificationToken]').val();
-    formData.append('__RequestVerificationToken', token);
+    var formData = new FormData($(selectorConstants.PostForm).get(0));
+    let token = $(selectorConstants.RequestVerificationToken).val();
+    formData.append(requestConstants.RequestVerificationToken, token);
     return formData;
 };
 
-function postRequest() {
-    let $form = $('#postForm');
+let updateContentWithMenu = function(contentUrl) {
+    updateContent(contentUrl);
+    $(selectorConstants.Menu).load(urlConstants.MenuUrl);
+}
+
+let updateContent =function(contentUrl) {
+    $(selectorConstants.MainContent).load(contentUrl);
+}
+
+let reloadContentWithUpdatingMenu = function(contentUrl) {
+    $('#menu').load('/TicketManagement.Web/StartApp/ReloadMenu');
+    updateContent(contentUrl);
+}
+
+let postRequest = function() {
+    let $form = $(selectorConstants.PostForm);
     let postUrl = $form.attr( 'action' );
 
     function postAjax() {
-        $('#postForm .submit-btn').one('click',
+        $(selectorConstants.PostForm + ' button[type=submit]').one('click',
             function() {
                 $.validator.unobtrusive.parse($form);
                 $form.submit(function (e) {
                     e.preventDefault();
+                    $(selectorConstants.ValidationSummary).empty();
+                    $(selectorConstants.ValidationSummary).removeClass("validation-summary-valid");
+                    $(selectorConstants.ValidationSummary).addClass("validation-summary-errors");
+                    $(selectorConstants.PostForm + ' ' + selectorConstants.Loader).show(); 
                     if ($form.valid()) {
                         $.ajax({
                             url: postUrl,
@@ -60,13 +86,17 @@ function postRequest() {
                             processData: false, // Not to process data  
                             async: true,
                             data: AddAntiForgeryToken(this),
-                            success: function (data) {
-                                $('#validationSummary').removeClass("validation-summary-errors");
-                                $('#validationSummary').addClass("validation-summary-valid");
+                            success: function(data) {
+                                $(selectorConstants.PostForm + ' ' + selectorConstants.Loader).hide();
+                                $(selectorConstants.PostForm + ' ' + selectorConstants.ValidationSummary).removeClass("validation-summary-errors");
+                                $(selectorConstants.PostForm + ' ' + selectorConstants.ValidationSummary).addClass("validation-summary-valid");
                                 reloadContentWithUpdatingMenu(data.returnContentUrl);
                             },
                         });
+                    } else {
+                        $(selectorConstants.Loader).hide();
                     }
+
                     return false;
                 });
             });
@@ -74,6 +104,8 @@ function postRequest() {
 
     postAjax();
 };
+
+
 
 function loginSuccess(successRedirect) {
     window.location.href = successRedirect;
@@ -124,18 +156,13 @@ function reloadContentWithMenu(contentUrl) {
         document.location.reload();
     } else {
         $('#menu').load('/TicketManagement.Web/StartApp/ReloadMenu');
-        reloadContent(contentUrl);
+        updateContent(contentUrl);
     }
 }
 
-function reloadContentWithUpdatingMenu(contentUrl) {
-    $('#menu').load('/TicketManagement.Web/StartApp/ReloadMenu');
-    reloadContent(contentUrl);
-}
 
-function reloadContent(contentUrl) {
-    $('#content').load(contentUrl);
-}
+
+
 
 function showPopupInit(modalDialogSelector, dialogContentSelector, invokerSelector) {
     $.ajaxSetup({ cache: false });
