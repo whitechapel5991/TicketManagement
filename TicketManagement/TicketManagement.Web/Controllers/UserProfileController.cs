@@ -1,22 +1,22 @@
 ﻿using System.Threading.Tasks;
 using System.Web.Mvc;
 using TicketManagement.BLL.Interfaces.Identity;
-using TicketManagement.Web.Filters;
+using TicketManagement.Web.Filters.AcionFilters;
+using TicketManagement.Web.Filters.ExceptionFilters;
 using TicketManagement.Web.Interfaces;
 using TicketManagement.Web.Models.UserProfile;
 
 namespace TicketManagement.Web.Controllers
 {
-    [Log]
-    [LogCustomExceptionFilter(Order = 0)]
-    [RedirectExceptionFilter]
     [Authorize]
+    [UserProfileExceptionFilter]
     public class UserProfileController : Controller
     {
         private readonly IUserService userService;
         private readonly IUserProfileService userProfileService;
 
-        public UserProfileController(IUserService userService,
+        public UserProfileController(
+            IUserService userService,
             IUserProfileService userProfileService)
         {
             this.userService = userService;
@@ -25,72 +25,54 @@ namespace TicketManagement.Web.Controllers
 
         [HttpGet]
         [AjaxContentUrl]
-        public ActionResult Index()
+        public PartialViewResult Index()
         {
             return this.PartialView(this.userProfileService.GetUserProfileViewModel(this.User.Identity.Name));
         }
 
         [HttpGet]
         [AjaxContentUrl]
-        public ActionResult Edit()
+        public PartialViewResult Edit()
         {
             return this.PartialView(this.userProfileService.GetEditUserProfileViewModel(this.User.Identity.Name));
         }
 
         [HttpPost]
-        public async Task<ActionResult> Edit(EditUserProfileViewModel userProfile)
+        public async Task<JsonResult> Edit(EditUserProfileViewModel userProfile)
         {
-            if (!this.ModelState.IsValid)
-            {
-                return this.PartialView(userProfile);
-            }
-
             await this.userProfileService.UpdateAsync(this.User.Identity.Name, userProfile);
-            return this.RedirectToAction("Index");
+            return this.Json(new { returnContentUrl = this.Url.Action("Index", "UserProfile") });
         }
 
         [HttpGet]
         [AjaxContentUrl]
-        public ActionResult ChangePassword()
+        public PartialViewResult ChangePassword()
         {
             return this.PartialView(new UserPasswordViewModel());
         }
 
         [HttpPost]
-        public async Task<ActionResult> ChangePassword(UserPasswordViewModel userPasswordModel)
+        public async Task<JsonResult> ChangePassword(UserPasswordViewModel userPasswordModel)
         {
-            if (!this.ModelState.IsValid)
-            {
-                return this.PartialView(userPasswordModel);
-            }
-
             await this.userProfileService.ChangePasswordAsync(this.User.Identity.Name, userPasswordModel);
-
-            return this.PartialView(userPasswordModel);
+            return this.Json(new { returnContentUrl = this.Url.Action("Index", "UserProfile") });
         }
 
-        [Authorize(Roles = "user")]
         [HttpGet]
-        public async Task<ActionResult> IncreaseBalance()
+        public PartialViewResult IncreaseBalance()
         {
             return this.PartialView(new BalanceViewModel());
         }
 
         [HttpPost]
-        public ActionResult IncreaseBalance(BalanceViewModel balanceModel)
+        public JsonResult IncreaseBalance(BalanceViewModel balanceModel)
         {
-            if (!this.ModelState.IsValid)
-            {
-                return this.PartialView(balanceModel);
-            }
-
             this.userService.IncreaseBalance(balanceModel.Balance, this.User.Identity.Name);
-            return this.PartialView("Index");
+            return this.Json(new { returnContentUrl = this.Url.Action("Index", "UserProfile") });
         }
 
-        [Authorize(Roles = "user")]
         [HttpGet]
-        public ActionResult PurchaseHistory()
+        public PartialViewResult PurchaseHistory()
         {
             return this.PartialView(this.userProfileService.GetPurchaseHistoryViewModel(this.User.Identity.Name));
         }

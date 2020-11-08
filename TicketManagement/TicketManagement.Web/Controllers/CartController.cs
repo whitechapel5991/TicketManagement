@@ -1,13 +1,12 @@
 ﻿using System.Web.Mvc;
-using TicketManagement.Web.Filters;
+using TicketManagement.Web.Filters.AcionFilters;
+using TicketManagement.Web.Filters.ExceptionFilters;
 using TicketManagement.Web.Interfaces;
 
 namespace TicketManagement.Web.Controllers
 {
-    [Log]
-    [LogCustomExceptionFilter(Order = 0)]
-    [Authorize(Roles = "user")]
-    [RedirectExceptionFilter]
+    [Authorize]
+    [UnknownExceptionFilter]
     public class CartController : Controller
     {
         private readonly ICartService cartService;
@@ -19,7 +18,7 @@ namespace TicketManagement.Web.Controllers
 
         [HttpGet]
         [AjaxContentUrl]
-        public ActionResult Index()
+        public PartialViewResult Index()
         {
             return this.PartialView(this.cartService.GetCartViewModelByUserName(this.User.Identity.Name));
         }
@@ -28,16 +27,14 @@ namespace TicketManagement.Web.Controllers
         public ActionResult Buy(int orderId)
         {
             this.cartService.Buy(orderId);
-
-            return this.Json(new { success = true }, JsonRequestBehavior.AllowGet);
+            return this.Json(new { returnContentUrl = this.Url.Action("Index", "Cart") });
         }
 
         [HttpPost]
         public ActionResult DeleteFromCart(int orderId)
         {
             this.cartService.Delete(orderId);
-
-            return this.Json(new { success = true }, JsonRequestBehavior.AllowGet);
+            return this.Json(new { returnContentUrl = this.Url.Action("Index", "Cart") });
         }
     }
 }

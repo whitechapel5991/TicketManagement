@@ -1,15 +1,18 @@
 ﻿using System;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Web.Mvc;
 using TicketManagement.Web.Exceptions.Account;
 using TicketManagement.Web.Filters;
+using TicketManagement.Web.Filters.AcionFilters;
+using TicketManagement.Web.Filters.AuthorizationFilters;
+using TicketManagement.Web.Filters.ExceptionFilters;
 using TicketManagement.Web.Interfaces;
 using TicketManagement.Web.Models.Account;
 
 namespace TicketManagement.Web.Controllers
 {
-    [Log]
-    [AccountExceptionFilter(Order = 0)]
+    [AccountExceptionFilter]
     public class AccountController : Controller
     {
         private readonly IAccountService accountService;
@@ -19,6 +22,7 @@ namespace TicketManagement.Web.Controllers
             this.accountService = accountService;
         }
 
+        [HttpGet]
         [AllowAnonymous]
         [AjaxContentUrl]
         public PartialViewResult Login()
@@ -31,30 +35,31 @@ namespace TicketManagement.Web.Controllers
         public async Task<JsonResult> Login(LoginViewModel model)
         {
             await this.accountService.SignInAsync(model.UserName, model.Password);
-            return this.Json(new { success = true, returnContentUrl = this.Url.Action("Events", "Event", new { area = string.Empty }) }, JsonRequestBehavior.AllowGet);
+            return this.Json(new { returnContentUrl = this.Url.Action("Events", "Event") });
         }
 
         [Authorize]
         [HttpPost]
-        public ActionResult Logout()
+        public JsonResult Logout()
         {
             this.accountService.SignOut();
-            return this.Json(new { success = true, returnContentUrl = this.Url.Action("Login", "Account", new { area = string.Empty }) }, JsonRequestBehavior.AllowGet);
+            return this.Json(new { returnContentUrl = this.Url.Action("Login", "Account") });
         }
 
+        [HttpGet]
         [AllowAnonymous]
         [AjaxContentUrl]
-        public ActionResult Register()
+        public PartialViewResult Register()
         {
             return this.PartialView(new RegisterViewModel());
         }
 
         [HttpPost]
         [ValidateHeaderAntiForgeryToken]
-        public async Task<ActionResult> Register(RegisterViewModel model)
+        public async Task<JsonResult> Register(RegisterViewModel model)
         {
             await this.accountService.RegisterUserAsync(model);
-            return this.Json(new { success = true, returnContentUrl = this.Url.Action("Login", "Account", new { area = string.Empty }) }, JsonRequestBehavior.AllowGet);
+            return this.Json(new { returnContentUrl = this.Url.Action("Login", "Account") });
         }
     }
 }

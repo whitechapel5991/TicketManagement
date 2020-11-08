@@ -7,13 +7,13 @@ using System.Web;
 using System.Web.Mvc;
 using TicketManagement.Web.Constants;
 using TicketManagement.Web.Filters;
+using TicketManagement.Web.Filters.AcionFilters;
+using TicketManagement.Web.Filters.ExceptionFilters;
 
 namespace TicketManagement.Web.Controllers
 {
-    [Log]
-    [LogCustomExceptionFilter(Order = 0)]
     [AllowAnonymous]
-    [RedirectExceptionFilter]
+    [UnknownExceptionFilter]
     public class LanguageController : Controller
     {
         private const string CookieLangName = "lang";
@@ -43,7 +43,7 @@ namespace TicketManagement.Web.Controllers
             this.Response.Cookies.Add(languageCookie);
             this.Response.StatusCode = (int)HttpStatusCode.OK;
 
-            return this.Json(new { success = true, redirectUrl = Url.Action("Index", "StartApp"), updateContentUrl = AjaxContentUrlAttribute.CurrentContentUrl }, JsonRequestBehavior.AllowGet);
+            return this.Json(new { success = true, redirectUrl = this.Url.Action("Index", "StartApp"), updateContentUrl = AjaxContentUrlAttribute.CurrentContentUrl }, JsonRequestBehavior.AllowGet);
         }
     }
 }
