@@ -7,7 +7,7 @@ namespace TicketManagement.Web.Interfaces
     {
         IEnumerable<EventViewModel> GetPublishEvents();
 
-        void AddToCart(int seatId, int userId);
+        int AddToCart(int seatId, int userId);
 
         EventDetailViewModel GetEventDetailViewModel(int eventId);
 

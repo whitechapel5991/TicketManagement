@@ -6,6 +6,7 @@ using Microsoft.AspNet.Identity;
 using TicketManagement.BLL.Interfaces;
 using TicketManagement.DAL.Models;
 using TicketManagement.Web.Constants;
+using TicketManagement.Web.Exceptions.UserProfile;
 using TicketManagement.Web.Interfaces;
 using TicketManagement.Web.Models.UserProfile;
 using TicketManagement.Web.Services.Identity;
@@ -48,13 +49,21 @@ namespace TicketManagement.Web.Services
         {
             var user = await this.userManager.FindByNameAsync(userName);
 
-            await this.userManager.UpdateAsync(this.UpdateIdentityUserModel(user, userProfile));
+            var result = await this.userManager.UpdateAsync(this.UpdateIdentityUserModel(user, userProfile));
+            if (!result.Succeeded)
+            {
+                throw new UpdateUserProfileException(string.Join(", ", result.Errors));
+            }
         }
 
         public async Task ChangePasswordAsync(string userName, UserPasswordViewModel userPasswordModel)
         {
             var user = await this.userManager.FindByNameAsync(userName);
-            await this.userManager.ChangePasswordAsync(user.Id, userPasswordModel.OldPassword, userPasswordModel.Password);
+            var result = await this.userManager.ChangePasswordAsync(user.Id, userPasswordModel.OldPassword, userPasswordModel.Password);
+            if (!result.Succeeded)
+            {
+                throw new ChangePasswordException(string.Join(", ", result.Errors));
+            }
         }
 
         public async Task<BalanceViewModel> GetBalanceViewModelAsync(string userName)
@@ -84,15 +93,14 @@ namespace TicketManagement.Web.Services
             var eventSeats = this.eventSeatService.GetEventSeatsByEventSeatIds(eventSeatIdArray).Distinct().ToList();
 
             var eventAreas = this.eventAreaService.GetEventAreasByEventSeatIds(eventSeatIdArray).Distinct().ToList();
-                
+
             // Event Area dictionary, Key is event seats array in cart which belong to the event area.
             var eventAreasDictionary = eventAreas.ToDictionary(x => eventSeats.Where(y => y.EventAreaId == x.Id).Select(z => z.Id), x => x);
 
             var events = this.eventService.GetEventsByEventSeatIds(eventSeatIdArray).Distinct().ToList();
-            
+
             // Event dictionary, Key is event seats array in cart which belong to the event.
             var eventDictionary = events.ToDictionary(x => eventSeats.Where(y => eventAreas.Any(z => z.EventId == x.Id && y.EventAreaId == z.Id)).Select(z => z.Id), x=> x);
-
 
             foreach (var order in orderList)
             {

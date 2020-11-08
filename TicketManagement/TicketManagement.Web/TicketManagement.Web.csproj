@@ -226,7 +226,7 @@
     <Content Include="Areas\EventManager\Views\Event\EventDetail.cshtml" />
     <Content Include="Areas\EventManager\Views\Event\EventAreaDetail.cshtml" />
     <Content Include="Areas\EventManager\Views\Event\ChangeCost.cshtml" />
-    <Content Include="App_Code\DownloadHelper.cshtml" />
+    <Content Include="App_Code\LoadingHelper.cshtml" />
     <None Include="Scripts\jquery-3.5.1.intellisense.js" />
     <Content Include="Scripts\jquery-3.5.1.js" />
     <Content Include="Scripts\jquery-3.5.1.min.js" />
@@ -244,7 +244,8 @@
     <Content Include="Scripts\popper-utils.min.js" />
     <Content Include="Scripts\popper.js" />
     <Content Include="Scripts\popper.min.js" />
-    <Content Include="Scripts\site.js" />
+    <Content Include="Scripts\TicketManagement\constants.js" />
+    <Content Include="Scripts\TicketManagement\site.js" />
     <Content Include="Scripts\src\index.js" />
     <Content Include="Scripts\src\methods\defaults.js" />
     <Content Include="Scripts\src\methods\destroy.js" />
@@ -338,13 +339,15 @@
     <Compile Include="Controllers\UserProfileController.cs" />
     <Compile Include="Exceptions\Account\RegisterUserWrongDataException.cs" />
     <Compile Include="Exceptions\Account\UserNameOrPasswordWrongException.cs" />
-    <Compile Include="Filters\AccountExceptionFilter.cs" />
-    <Compile Include="Filters\AjaxContentUrlAttribute.cs" />
+    <Compile Include="Exceptions\UserProfile\ChangePasswordException.cs" />
+    <Compile Include="Exceptions\UserProfile\UpdateUserProfileException.cs" />
+    <Compile Include="Filters\ExceptionFilters\AccountExceptionFilter.cs" />
+    <Compile Include="Filters\AcionFilters\AjaxContentUrlAttribute.cs" />
     <Compile Include="Filters\Base\ExceptionFilterBase.cs" />
-    <Compile Include="Filters\LogAttribute.cs" />
-    <Compile Include="Filters\LogCustomExceptionFilter.cs" />
-    <Compile Include="Filters\RedirectExceptionFilter.cs" />
-    <Compile Include="Filters\ValidateHeaderAntiForgeryTokenAttribute.cs" />
+    <Compile Include="Filters\AcionFilters\LogAttribute.cs" />
+    <Compile Include="Filters\ExceptionFilters\UnknownExceptionFilter.cs" />
+    <Compile Include="Filters\AuthorizationFilters\ValidateHeaderAntiForgeryTokenAttribute.cs" />
+    <Compile Include="Filters\ExceptionFilters\UserProfileExceptionFilter.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>

@@ -19,6 +19,13 @@ namespace TicketManagement.Web.Models.Event
         public DateTime EndDate { get; set; }
 
         [Required]
+        [Display(Name = "Description", ResourceType = typeof(Resources.TicketManagementResource))]
+        [StringLength(
+            300,
+            MinimumLength = 5,
+            ErrorMessageResourceType = typeof(Resources.TicketManagementResource),
+            ErrorMessageResourceName = "StringLenghtMessageFrom5symb")]
+        [DataType(DataType.MultilineText)]
         public string Description { get; set; }
 
         [Required]

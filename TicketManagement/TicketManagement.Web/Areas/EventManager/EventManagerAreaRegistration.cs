@@ -11,7 +11,7 @@ namespace TicketManagement.Web.Areas.EventManager
             context.MapRoute(
                 "EventManager_default",
                 "EventManager/{controller}/{action}/{id}",
-                new { action = "Index", id = UrlParameter.Optional }
+                new { area =string.Empty, action = "Index", id = UrlParameter.Optional }
             );
         }
     }

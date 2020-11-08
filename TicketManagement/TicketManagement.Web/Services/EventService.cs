@@ -34,9 +34,10 @@ namespace TicketManagement.Web.Services
             return this.MapToEventViewModel(this.eventService.GetPublishEvents());
         }
 
-        public void AddToCart(int seatId, int userId)
+        public int AddToCart(int seatId, int userId)
         {
             this.orderService.AddToCart(seatId, userId);
+            return this.eventSeatService.GetEventSeat(seatId).EventAreaId;
         }
 
         public EventDetailViewModel GetEventDetailViewModel(int eventId)
