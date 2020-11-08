@@ -444,4 +444,13 @@
   <data name="DeletingConfirm" xml:space="preserve">
     <value>Вы сапраўды жадаеце выдаліць гэты запіс?</value>
   </data>
+  <data name="EmptyPurchaseHistory" xml:space="preserve">
+    <value>Не было здзейснена пакупак на гэтым запісе.</value>
+  </data>
+  <data name="EmptyEventList" xml:space="preserve">
+    <value>Спіс падзей пусты.</value>
+  </data>
+  <data name="EmptyCart" xml:space="preserve">
+    <value>Кошык пустая.</value>
+  </data>
 </root>

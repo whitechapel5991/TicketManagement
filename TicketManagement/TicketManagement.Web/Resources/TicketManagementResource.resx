@@ -447,4 +447,13 @@
   <data name="DeletingConfirm" xml:space="preserve">
     <value>Вы действительно хотите удалить эту запись?</value>
   </data>
+  <data name="EmptyPurchaseHistory" xml:space="preserve">
+    <value>Не было совершено покупок на этом аккаунте.</value>
+  </data>
+  <data name="EmptyEventList" xml:space="preserve">
+    <value>Список событий пуст.</value>
+  </data>
+  <data name="EmptyCart" xml:space="preserve">
+    <value>Корзина пуста.</value>
+  </data>
 </root>

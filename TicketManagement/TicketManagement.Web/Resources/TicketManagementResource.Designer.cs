@@ -331,6 +331,33 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Корзина пуста..
+        /// </summary>
+        public static string EmptyCart {
+            get {
+                return ResourceManager.GetString("EmptyCart", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Список событий пуст..
+        /// </summary>
+        public static string EmptyEventList {
+            get {
+                return ResourceManager.GetString("EmptyEventList", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Не было совершено покупок на этом аккаунте..
+        /// </summary>
+        public static string EmptyPurchaseHistory {
+            get {
+                return ResourceManager.GetString("EmptyPurchaseHistory", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Дата окончания.
         /// </summary>
         public static string EndDate {

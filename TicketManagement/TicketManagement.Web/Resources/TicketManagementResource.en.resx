@@ -447,4 +447,13 @@
   <data name="DeletingConfirm" xml:space="preserve">
     <value>Are you sure you want to delete this entry?</value>
   </data>
+  <data name="EmptyPurchaseHistory" xml:space="preserve">
+    <value>No purchases have been made on this account.</value>
+  </data>
+  <data name="EmptyEventList" xml:space="preserve">
+    <value>The event list is empty.</value>
+  </data>
+  <data name="EmptyCart" xml:space="preserve">
+    <value>Cart is empty.</value>
+  </data>
 </root>
