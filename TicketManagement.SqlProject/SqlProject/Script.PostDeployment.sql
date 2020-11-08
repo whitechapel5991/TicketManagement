@@ -76,6 +76,36 @@ GO
 INSERT INTO [dbo].[Seats] ([Id], [AreaId], [Row], [Number]) VALUES (5, 1, 1, 5)
 GO
 
+INSERT INTO [dbo].[Seats] ([Id], [AreaId], [Row], [Number]) VALUES (30, 1, 2, 6)
+GO
+
+INSERT INTO [dbo].[Seats] ([Id], [AreaId], [Row], [Number]) VALUES (31, 1, 2, 7)
+GO
+
+INSERT INTO [dbo].[Seats] ([Id], [AreaId], [Row], [Number]) VALUES (32, 1, 2, 8)
+GO
+
+INSERT INTO [dbo].[Seats] ([Id], [AreaId], [Row], [Number]) VALUES (33, 1, 2, 9)
+GO
+
+INSERT INTO [dbo].[Seats] ([Id], [AreaId], [Row], [Number]) VALUES (34, 1, 2, 10)
+GO
+
+INSERT INTO [dbo].[Seats] ([Id], [AreaId], [Row], [Number]) VALUES (35, 1, 3, 11)
+GO
+
+INSERT INTO [dbo].[Seats] ([Id], [AreaId], [Row], [Number]) VALUES (36, 1, 3, 12)
+GO
+
+INSERT INTO [dbo].[Seats] ([Id], [AreaId], [Row], [Number]) VALUES (37, 1, 3, 13)
+GO
+
+INSERT INTO [dbo].[Seats] ([Id], [AreaId], [Row], [Number]) VALUES (38, 1, 3, 14)
+GO
+
+INSERT INTO [dbo].[Seats] ([Id], [AreaId], [Row], [Number]) VALUES (39, 1, 3, 15)
+GO
+
 INSERT INTO [dbo].[Seats] ([Id], [AreaId], [Row], [Number]) VALUES (6, 2, 1, 1)
 GO
 
@@ -230,6 +260,36 @@ INSERT INTO [dbo].[EventSeats] ([Id], [State], [EventAreaId], [Row], [Number]) V
 GO
 
 INSERT INTO [dbo].[EventSeats] ([Id], [State], [EventAreaId], [Row], [Number]) VALUES (5, 0, 1, 1, 5)
+GO
+
+INSERT INTO [dbo].[EventSeats] ([Id], [State], [EventAreaId], [Row], [Number]) VALUES (21, 1, 1, 2, 6)
+GO
+
+INSERT INTO [dbo].[EventSeats] ([Id], [State], [EventAreaId], [Row], [Number]) VALUES (22, 2, 1, 2, 7)
+GO
+
+INSERT INTO [dbo].[EventSeats] ([Id], [State], [EventAreaId], [Row], [Number]) VALUES (23, 2, 1, 2, 8)
+GO
+
+INSERT INTO [dbo].[EventSeats] ([Id], [State], [EventAreaId], [Row], [Number]) VALUES (24, 1, 1, 2, 9)
+GO
+
+INSERT INTO [dbo].[EventSeats] ([Id], [State], [EventAreaId], [Row], [Number]) VALUES (25, 2, 1, 2, 10)
+GO
+
+INSERT INTO [dbo].[EventSeats] ([Id], [State], [EventAreaId], [Row], [Number]) VALUES (26, 0, 1, 3, 11)
+GO
+
+INSERT INTO [dbo].[EventSeats] ([Id], [State], [EventAreaId], [Row], [Number]) VALUES (27, 0, 1, 3, 12)
+GO
+
+INSERT INTO [dbo].[EventSeats] ([Id], [State], [EventAreaId], [Row], [Number]) VALUES (28, 0, 1, 3, 13)
+GO
+
+INSERT INTO [dbo].[EventSeats] ([Id], [State], [EventAreaId], [Row], [Number]) VALUES (29, 1, 1, 3, 14)
+GO
+
+INSERT INTO [dbo].[EventSeats] ([Id], [State], [EventAreaId], [Row], [Number]) VALUES (30, 2, 1, 3, 15)
 GO
 
 INSERT INTO [dbo].[EventSeats] ([Id], [State], [EventAreaId], [Row], [Number]) VALUES (6, 0, 2, 1, 1)
