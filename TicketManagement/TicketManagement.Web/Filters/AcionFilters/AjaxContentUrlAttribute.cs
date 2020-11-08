@@ -1,11 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Security.Policy;
-using System.Web;
-using System.Web.Mvc;
+﻿using System.Web.Mvc;
 
-namespace TicketManagement.Web.Filters
+namespace TicketManagement.Web.Filters.AcionFilters
 {
     public class AjaxContentUrlAttribute : FilterAttribute, IActionFilter
     {

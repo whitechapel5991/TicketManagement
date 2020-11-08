@@ -1,17 +1,11 @@
-﻿using System.Collections.Generic;
-using System.Net;
-using System.Net.Mime;
-using System.Resources;
-using System.Web;
-using System.Web.Mvc;
+﻿using System.Web.Mvc;
 using TicketManagement.Web.Constants;
 using TicketManagement.Web.Constants.Extension;
-using TicketManagement.Web.Exceptions.Account;
 using TicketManagement.Web.Filters.Base;
 
-namespace TicketManagement.Web.Filters
+namespace TicketManagement.Web.Filters.ExceptionFilters
 {
-    public class RedirectExceptionFilter : ExceptionFilterBase
+    public class UnknownExceptionFilter : ExceptionFilterBase
     {
         public override void OnException(ExceptionContext filterContext)
         {
@@ -19,6 +13,8 @@ namespace TicketManagement.Web.Filters
             {
                 return;
             }
+
+            this.LogUnknownException(filterContext);
 
             var controllerName = filterContext.RouteData.Values["controller"].ToString();
             var actionName = filterContext.RouteData.Values["action"].ToString();
@@ -48,7 +44,7 @@ namespace TicketManagement.Web.Filters
                 };
             }
 
-            UpdateFilterContext(filterContext);
+            this.UpdateFilterContext(filterContext);
         }
     }
 }

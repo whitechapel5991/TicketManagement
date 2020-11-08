@@ -5,7 +5,7 @@ using System.Web;
 using System.Web.Mvc;
 using System.Web.Routing;
 
-namespace TicketManagement.Web.Filters
+namespace TicketManagement.Web.Filters.AcionFilters
 {
     public class LogAttribute : ActionFilterAttribute
     {

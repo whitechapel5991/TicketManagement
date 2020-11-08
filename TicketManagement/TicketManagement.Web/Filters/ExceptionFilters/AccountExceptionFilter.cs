@@ -4,7 +4,7 @@ using System.Web.Mvc;
 using TicketManagement.Web.Exceptions.Account;
 using TicketManagement.Web.Filters.Base;
 
-namespace TicketManagement.Web.Filters
+namespace TicketManagement.Web.Filters.ExceptionFilters
 {
     public class AccountExceptionFilter : ExceptionFilterBase
     {
@@ -24,7 +24,6 @@ namespace TicketManagement.Web.Filters
                 filterContext.Result = new JsonResult
                 {
                     Data = errorMessage,
-                    JsonRequestBehavior = JsonRequestBehavior.AllowGet,
                 };
                 UpdateFilterContext(filterContext, (int) HttpStatusCode.NotFound);
                 return;
@@ -32,12 +31,11 @@ namespace TicketManagement.Web.Filters
 
             if (filterContext.Exception.GetType() == typeof(RegisterUserWrongDataException))
             {
-                var errorMessage = resourceManager.GetString("Register");
+                var errorMessage = resourceManager.GetString("UserExistException");
 
                 filterContext.Result = new JsonResult
                 {
                     Data = errorMessage,
-                    JsonRequestBehavior = JsonRequestBehavior.AllowGet,
                 };
                 UpdateFilterContext(filterContext, (int) HttpStatusCode.NotFound);
                 return;
