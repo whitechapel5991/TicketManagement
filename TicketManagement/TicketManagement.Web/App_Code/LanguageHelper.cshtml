@@ -14,10 +14,13 @@
 <div class="dropdown-menu">
     @foreach (var lang in Enum.GetValues(typeof(Language)))
     {
-        using (wvp.Ajax.BeginForm("ChangeLanguage", "Language", new AjaxOptions { HttpMethod = WebRequestMethods.Http.Post, OnSuccess = "reloadPage" }))
-        {
-            <input type='submit' name='language' value='@lang' class='dropdown-item'>
-        }
+        using (wvp.Ajax.BeginForm("ChangeLanguage",
+                new { controller = "Language" },
+                new AjaxOptions { HttpMethod = WebRequestMethods.Http.Post, OnSuccess = "reloadPage" },
+                new { id = @lang }))
+            {
+                <input type='submit' name='language' value='@lang' class='dropdown-item'>
+            }
     }
 </div>
 }

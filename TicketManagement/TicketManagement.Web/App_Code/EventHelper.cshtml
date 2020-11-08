@@ -18,88 +18,152 @@
     string beginDate = $"{localBeginDate.ToLongDateString()} {localBeginDate.ToLongTimeString()}";
     string endDate = $"{localEndDate.ToLongDateString()} {localEndDate.ToLongTimeString()}";
 
-<div class="container">
-    <div class="row">
-        <div class="card mb-3">
-            <h3 class="card-header">Event Detail</h3>
-            <div class="card-body">
-                <dl class="card-text">
-                    <dt>Event:</dt>
-                    <dd>@wvp.Html.Label(eventDetailVm.Name, eventDetailVm.Name).</dd>
+    string area = "";
+    if (User.Identity.IsAuthenticated && (User.IsInRole("event manager") || User.IsInRole("admin")))
+    {
+        area = "EventManager";
+    }
 
-                    <dt>Start Date:</dt>
-                    <dd>@beginDate</dd>
+    <div class="container">
+        <div class="row">
+            <div class="card mb-3" style="width: 140px;">
+                <div class="card-body" style="padding: 0px;">
+                    <span class="d-inline-block" tabindex="0" data-toggle="popover" data-placement="bottom" title="" style="width: 100%">
+                        <button type="button"
+                                style="pointer-events: none; width: 100%;"
+                                id="Event_@eventDetailVm.EventId" disabled>
+                            <p class="card-text">
+                                @wvp.Html.Label(eventDetailVm.Name, eventDetailVm.Name)
+                            </p>
+                            <div class="popover-content" style="display: none;">
+                                Description: @eventDetailVm.Description<br />
+                                Start Date: @beginDate<br />
+                                End Date: @endDate<br />
+                                Layout: @eventDetailVm.LayoutName<br />
+                            </div>
+                        </button>
+                    </span>
+                    @if (User.Identity.IsAuthenticated && (User.IsInRole("event manager") || User.IsInRole("admin")))
+                    {
+                        @wvp.Ajax.ActionLink(TicketManagementResource.Edit, "Update",
+                            new { area = "EventManager", controller = "Event", id = eventDetailVm.EventId },
+                            new AjaxOptions { UpdateTargetId = "content", HttpMethod = WebRequestMethods.Http.Get },
+                            new { @class = "nav-link" })
+                    }
+                </div>
 
-                    <dt>End Date:</dt>
-                    <dd>@endDate</dd>
-
-                    <dt>Description:</dt>
-                    <dd>@wvp.Html.Label(eventDetailVm.Description).</dd>
-
-                    <dt>Layout:</dt>
-                    <dd>@wvp.Html.Label(eventDetailVm.LayoutName).</dd>
-                </dl>
-                @if (User.Identity.IsAuthenticated && (User.IsInRole("event manager") || User.IsInRole("admin")))
-                {
-                    @wvp.Ajax.ActionLink(TicketManagementResource.Edit, "Update", "Event", new {area = "EventManager", controller = "Event", id = eventDetailVm.EventId}, new AjaxOptions {UpdateTargetId = "content", HttpMethod = WebRequestMethods.Http.Get}, new {@class = "nav-link"})
-                }
             </div>
         </div>
-    </div>
 
-    <h2>@TicketManagementResource.Areas</h2>
+        <h2>@TicketManagementResource.Areas</h2>
 
-    <div class="row">
-        @foreach (var eventArea in eventDetailVm.EventAreas)
-        {
-            <div class="card border-primary mb-3 mr-3" style="max-width: 20rem;">
-                <div class="card-header">Description: @eventArea.Description</div>
-                <div class="card-body">
-                    <h4 class="card-title">Details</h4>
-                    <p class="card-text">
-                        X: @eventArea.CoordinateX <br />
-                        Y: @eventArea.CoordinateY <br />
-                        Price: @eventArea.Price <br />
-                        @wvp.Ajax.ActionLink(TicketManagementResource.Details, "EventAreaDetail", "Event", new { eventAreaId = eventArea.Id }, new AjaxOptions { UpdateTargetId = "content", HttpMethod = WebRequestMethods.Http.Get }, new { @class = "nav-link" })
-                    </p>
+        <div class="row">
+            @foreach (var eventArea in eventDetailVm.EventAreas)
+            {
+                <div class="card border-primary mb-3 mr-3" style="max-width: 20rem; width: 140px;">
+                    <div class="card-body" style="padding: 0px;">
+                        <span class="d-inline-block" tabindex="0" data-toggle="popover" data-placement="bottom" title="" style="width: 100%">
+                            <button type="button"
+                                    id="EventArea_@eventArea.Id"
+                                    style="pointer-events: none; width: 100%;"
+                                    disabled>
+
+                                <p class="card-text">
+                                    @eventArea.Description
+                                </p>
+                                <div class="popover-content" style="display: none;">
+                                    X: @eventArea.CoordinateX <br />
+                                    Y: @eventArea.CoordinateY<br />
+                                    Price: @eventArea.Price<br />
+                                </div>
+                            </button>
+                        </span>
+                        @wvp.Ajax.ActionLink(TicketManagementResource.Details, "EventAreaDetail",
+                            new { area, controller = "Event", eventAreaId = eventArea.Id },
+                            new AjaxOptions { UpdateTargetId = "content", HttpMethod = WebRequestMethods.Http.Get },
+                            new { @class = "nav-link" })
+                    </div>
                 </div>
-            </div>
 
-        }
+            }
+        </div>
+        @wvp.Ajax.ActionLink(TicketManagementResource.Back, "Index",
+            new { controller = "Event", area },
+            new AjaxOptions { UpdateTargetId = "content", HttpMethod = WebRequestMethods.Http.Get },
+            new { @class = "nav-link" })
     </div>
-    @wvp.Ajax.ActionLink(TicketManagementResource.Back, "Index", "Event", new { area = "EventManager" }, new AjaxOptions { UpdateTargetId = "content", HttpMethod = WebRequestMethods.Http.Get }, new { @class = "nav-link" })
-</div>
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $("[data-toggle=popover]").popover({
+                html: true,
+                container: 'body',
+                trigger: 'hover',
+                delay: {
+                    show: 50,
+                    hide: 200
+                },
+                content: function () {
+                    return $(this).find('.popover-content').html();
+                }
+            });
+        });
+    </script>
 }
 
 @helper EventAreaMap(EventAreaDetailViewModel eventAreaDetailVm)
 {
     var wvp = PageContext.Page as System.Web.Mvc.WebViewPage;
+    string area = "";
+    if (User.Identity.IsAuthenticated && (User.IsInRole("event manager") || User.IsInRole("admin")))
+    {
+        area = "EventManager";
+    }
 
     <div class="container">
         <div class="row">
-            <div class="card mb-3">
-                <h3 class="card-header">Event Detail</h3>
-                <div class="card-body">
-                <dl class="card-text">
-                            <dt>Event Area description:</dt>
-                            <dd>@wvp.Html.Label(eventAreaDetailVm.EventArea.Description, eventAreaDetailVm.EventArea.Description). </dd>
- 
-                            <dt>Price:</dt>
-                            <dd>@wvp.Html.Label(eventAreaDetailVm.EventArea.Price.ToString(), eventAreaDetailVm.EventArea.Price.ToString(), new { id = "areaPrice"}).</dd>
- 
-                            <dt>X:</dt>
-                            <dd>@wvp.Html.Label(eventAreaDetailVm.EventArea.CoordinateX.ToString(), eventAreaDetailVm.EventArea.CoordinateX.ToString()).</dd>
-                        
-                            <dt>Y:</dt>
-                            <dd>@wvp.Html.Label(eventAreaDetailVm.EventArea.CoordinateY.ToString(), eventAreaDetailVm.EventArea.CoordinateY.ToString()).</dd>
-                        </dl>
+            <div class="card mb-3" style="width: 140px;">
+                <div class="card-body" style="padding: 0px;">
+                    <span class="d-inline-block" tabindex="0" data-toggle="popover" data-placement="bottom" title="" style="width: 100%">
+                        <button type="button"
+                                style="pointer-events: none; width: 100%;"
+                                id="Event_@eventAreaDetailVm.EventId" disabled>
+                            <p class="card-text">
+                                @wvp.Html.Label(eventAreaDetailVm.EventArea.Description, eventAreaDetailVm.EventArea.Description)
+                            </p>
+                            <div class="popover-content" style="display: none;">
+                                Price: <p id="areaPrice">@eventAreaDetailVm.EventArea.Price</p><br />
+                                X: @eventAreaDetailVm.EventArea.CoordinateX<br />
+                                Y: @eventAreaDetailVm.EventArea.CoordinateY<br />
+                            </div>
+                        </button>
+                    </span>
                     @if (User.Identity.IsAuthenticated && (User.IsInRole("event manager") || User.IsInRole("admin")))
-                {
-                    @wvp.Ajax.ActionLink(TicketManagementResource.SetAreasCosts, "ChangeCost", "Event", new {area = "EventManager", controller = "Event", eventAreaId = eventAreaDetailVm.EventArea.Id}, new AjaxOptions { HttpMethod = WebRequestMethods.Http.Get }, new {@class = "card-link area-cost" })
-                    <div id="changeAreaCostModDialog" class="modal fade">
-                        <div id="dialogContent" class="modal-dialog" role="document"></div>
+                    {
+                        @wvp.Ajax.ActionLink(TicketManagementResource.SetAreasCosts, "ChangeCost",
+                            new { area = "EventManager", controller = "Event", eventAreaId = eventAreaDetailVm.EventArea.Id },
+                            new AjaxOptions { HttpMethod = WebRequestMethods.Http.Get },
+                            new { @class = "card-link area-cost" })
+                        <div id="changeAreaCostModDialog" class="modal fade">
+                            <div id="dialogContent" class="modal-dialog" role="document"></div>
+                        </div>
+                    }
+                </div>
+            </div>
+            <div class="card offset-md-8" style="width: 180px;background-color: #e1bf7f; border: 0;">
+                <div class="card-body" style="padding: 0px;">
+                    <div class="row">
+                        <div class="seat-canvas d-inline-block" style="background-color: @SeatColor.GetSeatColor(EventSeatState.Free); width: 50px; height: 50px;" tabindex="0">
+                        </div> - Seat is free
                     </div>
-                }
+                    <div class="row">
+                        <div class="seat-canvas d-inline-block" style="background-color: @SeatColor.GetSeatColor(EventSeatState.Sold); width: 50px; height: 50px;" tabindex="0">
+                        </div> - Seat is sold
+                    </div>
+                    <div class="row">
+                        <div class="seat-canvas d-inline-block" style="background-color: @SeatColor.GetSeatColor(EventSeatState.InBasket); width: 50px; height: 50px;" tabindex="0">
+                        </div> - Seat is hold
+                    </div>
                 </div>
             </div>
         </div>
@@ -109,32 +173,73 @@
         <div class="row">
             <table class="table table-hover">
                 <tbody>
-                    <tr>
-                        @foreach (var eventSeat in eventAreaDetailVm.EventSeats)
+                    @for (int i = 1; i <= 100; i++)
+                    {
+                    <tr row="@i">
+                        @for (int j = 1; j <= 22; j++)
                         {
-                            
-                            <td class="seat-canvas" style="background-color: @SeatColor.GetSeatColor(eventSeat.State)">
-                                <p>
-                                    X: @eventSeat.Number <br />
-                                    Y: @eventSeat.Row <br />
-                                    @eventSeat.State <br />
-                                </p>
-                                
-                                @if(eventSeat.State == EventSeatState.Free)
-                                {
-                                    int eventAreaId = eventAreaDetailVm.EventArea.Id;
-                                    @wvp.Ajax.ActionLink(TicketManagementResource.AddInBasket, "AddToCart", "Event", new { seatId = eventSeat.Id }, new AjaxOptions { HttpMethod = WebRequestMethods.Http.Post, OnSuccess = "loadEventAreaDetails('"+eventAreaId+"')" }, new { @class = "nav-link" })
-                                }
-                            </td>
+                            var eventSeat = eventAreaDetailVm.EventSeats.FirstOrDefault(x => x.Row == i && x.Number == j);
+                            if (eventSeat != default)
+                            {
+                                <td number="@j" class="seat-canvas d-inline-block" style="background-color: @SeatColor.GetSeatColor(eventSeat.State); width: 50px; height: 50px;" tabindex="0" data-toggle="popover" data-placement="bottom" title="">
+
+                                    <div class="popover-content" style="display: none;">
+                                        X: @eventSeat.Number <br />
+                                        Y: @eventSeat.Row <br />
+                                        @eventSeat.State <br />
+
+                                    </div>
+                                    @if (eventSeat.State == EventSeatState.Free)
+                                    {
+                                        <a class="nav-link" style="padding: 0; display: flex; align-items: center; justify-content: center" data-ajax="true" data-ajax-method="POST"
+                                           data-ajax-success="OnSuccessAddToCart"
+                                           href="@wvp.Url.Action("AddToCart", new {area = "", controller = "Event", seatId = eventSeat.Id})">
+                                            <svg style="line-height: 100%;" width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-cart" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                                                <path fill-rule="evenodd" d="M0 1.5A.5.5 0 0 1 .5 1H2a.5.5 0 0 1 .485.379L2.89 3H14.5a.5.5 0 0 1 .491.592l-1.5 8A.5.5 0 0 1 13 12H4a.5.5 0 0 1-.491-.408L2.01 3.607 1.61 2H.5a.5.5 0 0 1-.5-.5zM3.102 4l1.313 7h8.17l1.313-7H3.102zM5 12a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm7 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm-7 1a1 1 0 1 0 0 2 1 1 0 0 0 0-2zm7 0a1 1 0 1 0 0 2 1 1 0 0 0 0-2z" />
+                                            </svg>
+                                        </a>
+                                    }
+
+                                </td>
+                            }
+                            else
+                            {
+                                <td  number="@j" class="seat-canvas d-inline-block" style="opacity: 1; width: 50px; height: 50px;">
+
+                                </td>
+                            }
+
                         }
                     </tr>
+                    }
+
                 </tbody>
             </table>
-            @wvp.Ajax.ActionLink(TicketManagementResource.Back, "EventDetail", "Event", new { eventId = eventAreaDetailVm.EventId }, new AjaxOptions { UpdateTargetId = "content", HttpMethod = WebRequestMethods.Http.Get }, new { @class = "nav-link" })
+            @wvp.Ajax.ActionLink(TicketManagementResource.Back, "EventDetail",
+                new { area, controller = "Event", eventId = eventAreaDetailVm.EventId },
+                new AjaxOptions { UpdateTargetId = "content", HttpMethod = WebRequestMethods.Http.Get },
+                new { @class = "nav-link" })
         </div>
     </div>
 
     <script type="text/javascript">
         showPopupInit('#changeAreaCostModDialog', '#dialogContent', '.area-cost');
+        function OnSuccessAddToCart(data) {
+            updateContent(data.returnContentUrl);
+        }
+        $(document).ready(function () {
+            $("[data-toggle=popover]").popover({
+                html: true,
+                container: 'body',
+                trigger: 'hover',
+                delay: {
+                    show: 50,
+                    hide: 200
+                },
+                content: function () {
+                    return $(this).find('.popover-content').html();
+                }
+            });
+        });
     </script>
 }
