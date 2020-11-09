@@ -1,9 +1,12 @@
-﻿using System;
-using System.Threading;
+﻿// ****************************************************************************
+// <copyright file="AccountController.cs" company="EPAM Systems">
+// Copyright (c) EPAM Systems. All rights reserved.
+// Author Dzianis Shcharbakou.
+// </copyright>
+// ****************************************************************************
+
 using System.Threading.Tasks;
 using System.Web.Mvc;
-using TicketManagement.Web.Exceptions.Account;
-using TicketManagement.Web.Filters;
 using TicketManagement.Web.Filters.AcionFilters;
 using TicketManagement.Web.Filters.AuthorizationFilters;
 using TicketManagement.Web.Filters.ExceptionFilters;

@@ -1,5 +1,5 @@
 ﻿// ****************************************************************************
-// <copyright file="AccountExceptionFilter.cs" company="EPAM Systems">
+// <copyright file="EventExceptionFilter.cs" company="EPAM Systems">
 // Copyright (c) EPAM Systems. All rights reserved.
 // Author Dzianis Shcharbakou.
 // </copyright>
@@ -7,12 +7,12 @@
 
 using System.Net;
 using System.Web.Mvc;
-using TicketManagement.Web.Exceptions.Account;
+using TicketManagement.BLL.Exceptions.OrderExceptions;
 using TicketManagement.Web.Filters.Base;
 
 namespace TicketManagement.Web.Filters.ExceptionFilters
 {
-    public class AccountExceptionFilter : ExceptionFilterBase
+    public class EventExceptionFilter : ExceptionFilterBase
     {
         public override void OnException(ExceptionContext filterContext)
         {
@@ -21,21 +21,9 @@ namespace TicketManagement.Web.Filters.ExceptionFilters
                 return;
             }
 
-            if (filterContext.Exception.GetType() == typeof(UserNameOrPasswordWrongException))
+            if (filterContext.Exception.GetType() == typeof(SeatCurrentlySoldOrBlockedException))
             {
-                var errorMessage = Resources.TicketManagementResource.WrongCredentials;
-
-                filterContext.Result = new JsonResult
-                {
-                    Data = errorMessage,
-                };
-                this.UpdateFilterContext(filterContext, (int)HttpStatusCode.NotFound);
-                return;
-            }
-
-            if (filterContext.Exception.GetType() == typeof(RegisterUserWrongDataException))
-            {
-                var errorMessage = Resources.TicketManagementResource.UserExistException;
+                var errorMessage = Resources.TicketManagementResource.SeatIsNotFree;
 
                 filterContext.Result = new JsonResult
                 {

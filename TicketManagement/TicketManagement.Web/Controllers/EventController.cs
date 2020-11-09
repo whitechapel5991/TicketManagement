@@ -1,4 +1,11 @@
-﻿using System.Web.Mvc;
+﻿// ****************************************************************************
+// <copyright file="EventController.cs" company="EPAM Systems">
+// Copyright (c) EPAM Systems. All rights reserved.
+// Author Dzianis Shcharbakou.
+// </copyright>
+// ****************************************************************************
+
+using System.Web.Mvc;
 using Microsoft.AspNet.Identity;
 using TicketManagement.Web.Filters.AcionFilters;
 using TicketManagement.Web.Filters.ExceptionFilters;
@@ -6,14 +13,13 @@ using TicketManagement.Web.Interfaces;
 
 namespace TicketManagement.Web.Controllers
 {
-    [UnknownExceptionFilter]
+    [EventExceptionFilter]
     public class EventController : Controller
     {
         private readonly IEventService eventService;
 
         public EventController(
-            IEventService eventService
-        )
+            IEventService eventService)
         {
             this.eventService = eventService;
         }
@@ -32,25 +38,15 @@ namespace TicketManagement.Web.Controllers
         public PartialViewResult EventDetail(int eventId)
         {
             var eventAreaDetailVm = this.eventService.GetEventDetailViewModel(eventId);
-            //if (eventAreaDetailVm == default)
-            //{
-            //    return this.HttpNotFound();
-            //}
-
             return this.PartialView(eventAreaDetailVm);
         }
 
         [HttpGet]
-        [Authorize()]
+        [Authorize]
         [AjaxContentUrl]
         public PartialViewResult EventAreaDetail(int eventAreaId)
         {
             var eventAreaDto = this.eventService.GetEventAreaDetailViewModel(eventAreaId);
-            //if (eventAreaDto == null)
-            //{
-            //    return this.HttpNotFound();
-            //}
-
             return this.PartialView(eventAreaDto);
         }
 
@@ -59,7 +55,7 @@ namespace TicketManagement.Web.Controllers
         public JsonResult AddToCart(int seatId)
         {
             var eventAreaId = this.eventService.AddToCart(seatId, this.User.Identity.GetUserId<int>());
-            return this.Json(new { returnContentUrl = this.Url.Action("EventAreaDetail", new { controller = "Event", eventAreaId } ) });
+            return this.Json(new { returnContentUrl = this.Url.Action("EventAreaDetail", new { controller = "Event", eventAreaId }) });
         }
     }
 }

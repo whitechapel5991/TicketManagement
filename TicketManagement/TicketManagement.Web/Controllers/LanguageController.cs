@@ -1,12 +1,17 @@
-﻿using System;
+﻿// ****************************************************************************
+// <copyright file="LanguageController.cs" company="EPAM Systems">
+// Copyright (c) EPAM Systems. All rights reserved.
+// Author Dzianis Shcharbakou.
+// </copyright>
+// ****************************************************************************
+
+using System;
 using System.Globalization;
 using System.Net;
-using System.Net.Mime;
 using System.Threading;
 using System.Web;
 using System.Web.Mvc;
 using TicketManagement.Web.Constants;
-using TicketManagement.Web.Filters;
 using TicketManagement.Web.Filters.AcionFilters;
 using TicketManagement.Web.Filters.ExceptionFilters;
 

@@ -1,4 +1,11 @@
-﻿using System.Threading.Tasks;
+﻿// ****************************************************************************
+// <copyright file="UserProfileController.cs" company="EPAM Systems">
+// Copyright (c) EPAM Systems. All rights reserved.
+// Author Dzianis Shcharbakou.
+// </copyright>
+// ****************************************************************************
+
+using System.Threading.Tasks;
 using System.Web.Mvc;
 using TicketManagement.BLL.Interfaces.Identity;
 using TicketManagement.Web.Filters.AcionFilters;

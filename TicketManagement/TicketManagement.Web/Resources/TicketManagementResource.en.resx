@@ -174,8 +174,8 @@
   <data name="Create" xml:space="preserve">
     <value>Add</value>
   </data>
-  <data name="CreateEventInSameTimeException" xml:space="preserve">
-    <value>Event can not be created in same time with other eventViewModel</value>
+  <data name="CreateEventInLayoutInTheSameTimeException" xml:space="preserve">
+    <value>An event cannot be created at the same time as another event in the same location</value>
   </data>
   <data name="CreateInPastException" xml:space="preserve">
     <value>Can not create an eventViewModel in the past</value>
@@ -455,5 +455,17 @@
   </data>
   <data name="EmptyCart" xml:space="preserve">
     <value>Cart is empty.</value>
+  </data>
+  <data name="SeatIsNotFree" xml:space="preserve">
+    <value>The seat is currently taken</value>
+  </data>
+  <data name="EventInPastException" xml:space="preserve">
+    <value>An event cannot be created in the past</value>
+  </data>
+  <data name="LayoutHasNotSeatException" xml:space="preserve">
+    <value>The location has no seats</value>
+  </data>
+  <data name="EventAlreadyPublishedException" xml:space="preserve">
+    <value>The event has already been published</value>
   </data>
 </root>

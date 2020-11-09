@@ -1,9 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
+﻿// ****************************************************************************
+// <copyright file="StartAppController.cs" company="EPAM Systems">
+// Copyright (c) EPAM Systems. All rights reserved.
+// Author Dzianis Shcharbakou.
+// </copyright>
+// ****************************************************************************
+
 using System.Web.Mvc;
-using TicketManagement.Web.Filters;
 using TicketManagement.Web.Filters.AcionFilters;
 
 namespace TicketManagement.Web.Controllers
@@ -14,13 +16,13 @@ namespace TicketManagement.Web.Controllers
         [AjaxContentUrl]
         public ActionResult Index()
         {
-            return View();
+            return this.View();
         }
 
         [HttpGet]
         public ActionResult ReloadMenu()
         {
-            return PartialView("_MenuBar");
+            return this.PartialView("_MenuBar");
         }
     }
 }

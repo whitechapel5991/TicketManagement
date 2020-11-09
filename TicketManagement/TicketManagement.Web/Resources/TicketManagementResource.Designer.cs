@@ -8,10 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Resources {
-    using System;
-    
-    
+namespace TicketManagement.Web.Resources {
     /// <summary>
     ///   A strongly-typed resource class, for looking up localized strings, etc.
     /// </summary>
@@ -232,11 +229,11 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Событие не может быть создано в одно и то же время с другим событием.
+        ///   Looks up a localized string similar to Событие не может быть создано в одно и то же время с другим событием в одном месте.
         /// </summary>
-        public static string CreateEventInSameTimeException {
+        public static string CreateEventInLayoutInTheSameTimeException {
             get {
-                return ResourceManager.GetString("CreateEventInSameTimeException", resourceCulture);
+                return ResourceManager.GetString("CreateEventInLayoutInTheSameTimeException", resourceCulture);
             }
         }
         
@@ -385,6 +382,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Событие уже опубликовано.
+        /// </summary>
+        public static string EventAlreadyPublishedException {
+            get {
+                return ResourceManager.GetString("EventAlreadyPublishedException", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Область события не найдена.
         /// </summary>
         public static string EventAreaNotFound {
@@ -399,6 +405,15 @@ namespace Resources {
         public static string EventInfo {
             get {
                 return ResourceManager.GetString("EventInfo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Событие не может быть создано в прошлом.
+        /// </summary>
+        public static string EventInPastException {
+            get {
+                return ResourceManager.GetString("EventInPastException", resourceCulture);
             }
         }
         
@@ -561,6 +576,15 @@ namespace Resources {
         public static string Layout {
             get {
                 return ResourceManager.GetString("Layout", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Расположение не имеет мест.
+        /// </summary>
+        public static string LayoutHasNotSeatException {
+            get {
+                return ResourceManager.GetString("LayoutHasNotSeatException", resourceCulture);
             }
         }
         
@@ -840,6 +864,15 @@ namespace Resources {
         public static string Save {
             get {
                 return ResourceManager.GetString("Save", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Место на данный момент занято.
+        /// </summary>
+        public static string SeatIsNotFree {
+            get {
+                return ResourceManager.GetString("SeatIsNotFree", resourceCulture);
             }
         }
         

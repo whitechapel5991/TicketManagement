@@ -174,8 +174,8 @@
   <data name="Create" xml:space="preserve">
     <value>Создать</value>
   </data>
-  <data name="CreateEventInSameTimeException" xml:space="preserve">
-    <value>Событие не может быть создано в одно и то же время с другим событием</value>
+  <data name="CreateEventInLayoutInTheSameTimeException" xml:space="preserve">
+    <value>Событие не может быть создано в одно и то же время с другим событием в одном месте</value>
   </data>
   <data name="CreateInPastException" xml:space="preserve">
     <value>Невозможно создать событие в прошлом</value>
@@ -455,5 +455,17 @@
   </data>
   <data name="EmptyCart" xml:space="preserve">
     <value>Корзина пуста.</value>
+  </data>
+  <data name="SeatIsNotFree" xml:space="preserve">
+    <value>Место на данный момент занято</value>
+  </data>
+  <data name="EventInPastException" xml:space="preserve">
+    <value>Событие не может быть создано в прошлом</value>
+  </data>
+  <data name="LayoutHasNotSeatException" xml:space="preserve">
+    <value>Расположение не имеет мест</value>
+  </data>
+  <data name="EventAlreadyPublishedException" xml:space="preserve">
+    <value>Событие уже опубликовано</value>
   </data>
 </root>

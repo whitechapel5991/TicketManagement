@@ -1,4 +1,11 @@
-﻿using System.Web.Mvc;
+﻿// ****************************************************************************
+// <copyright file="CartController.cs" company="EPAM Systems">
+// Copyright (c) EPAM Systems. All rights reserved.
+// Author Dzianis Shcharbakou.
+// </copyright>
+// ****************************************************************************
+
+using System.Web.Mvc;
 using TicketManagement.Web.Filters.AcionFilters;
 using TicketManagement.Web.Filters.ExceptionFilters;
 using TicketManagement.Web.Interfaces;
@@ -6,7 +13,7 @@ using TicketManagement.Web.Interfaces;
 namespace TicketManagement.Web.Controllers
 {
     [Authorize]
-    [UnknownExceptionFilter]
+    [CartExceptionFilter]
     public class CartController : Controller
     {
         private readonly ICartService cartService;

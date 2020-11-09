@@ -1,4 +1,11 @@
-﻿using System.Web.Mvc;
+﻿// ****************************************************************************
+// <copyright file="UnknownExceptionFilter.cs" company="EPAM Systems">
+// Copyright (c) EPAM Systems. All rights reserved.
+// Author Dzianis Shcharbakou.
+// </copyright>
+// ****************************************************************************
+
+using System.Web.Mvc;
 using TicketManagement.Web.Constants;
 using TicketManagement.Web.Constants.Extension;
 using TicketManagement.Web.Filters.Base;
