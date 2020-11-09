@@ -7,7 +7,7 @@
 
 using System.Web.Mvc;
 using Microsoft.AspNet.Identity;
-using TicketManagement.Web.Filters.AcionFilters;
+using TicketManagement.Web.Filters.ActionFilters;
 using TicketManagement.Web.Filters.ExceptionFilters;
 using TicketManagement.Web.Interfaces;
 

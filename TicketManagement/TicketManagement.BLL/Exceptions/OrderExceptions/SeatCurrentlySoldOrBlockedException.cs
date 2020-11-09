@@ -1,5 +1,5 @@
 ﻿// ****************************************************************************
-// <copyright file="SeatCurrentlySoldOrBlocked.cs" company="EPAM Systems">
+// <copyright file="SeatCurrentlySoldOrBlockedException.cs" company="EPAM Systems">
 // Copyright (c) EPAM Systems. All rights reserved.
 // Author Dzianis Shcharbakou.
 // </copyright>

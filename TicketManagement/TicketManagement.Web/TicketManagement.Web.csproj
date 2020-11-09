@@ -342,9 +342,9 @@
     <Compile Include="Exceptions\UserProfile\ChangePasswordException.cs" />
     <Compile Include="Exceptions\UserProfile\UpdateUserProfileException.cs" />
     <Compile Include="Filters\ExceptionFilters\AccountExceptionFilter.cs" />
-    <Compile Include="Filters\AcionFilters\AjaxContentUrlAttribute.cs" />
+    <Compile Include="Filters\ActionFilters\AjaxContentUrlAttribute.cs" />
     <Compile Include="Filters\Base\ExceptionFilterBase.cs" />
-    <Compile Include="Filters\AcionFilters\LogAttribute.cs" />
+    <Compile Include="Filters\ActionFilters\LogAttribute.cs" />
     <Compile Include="Filters\ExceptionFilters\CartExceptionFilter.cs" />
     <Compile Include="Filters\ExceptionFilters\EventEventManagerExceptionFilter.cs" />
     <Compile Include="Filters\ExceptionFilters\EventExceptionFilter.cs" />
@@ -364,6 +364,7 @@
     <Compile Include="Models\Account\RegisterViewModel.cs" />
     <Compile Include="Models\Account\UserPasswordViewModel.cs" />
     <Compile Include="Models\Cart\CartViewModel.cs" />
+    <Compile Include="Models\Cart\OrderViewModel.cs" />
     <Compile Include="Models\Event\EventAreaDetailViewModel.cs" />
     <Compile Include="Models\Event\EventAreaViewModel.cs" />
     <Compile Include="Models\Event\EventDetailViewModel.cs" />
@@ -371,6 +372,7 @@
     <Compile Include="Models\Event\EventViewModel.cs" />
     <Compile Include="Models\UserProfile\BalanceViewModel.cs" />
     <Compile Include="Models\UserProfile\EditUserProfileViewModel.cs" />
+    <Compile Include="Models\UserProfile\OrderViewModel.cs" />
     <Compile Include="Models\UserProfile\PurchaseHistoryViewModel.cs" />
     <Compile Include="Models\UserProfile\UserPasswordViewModel.cs" />
     <Compile Include="Models\UserProfile\UserProfileViewModel.cs" />

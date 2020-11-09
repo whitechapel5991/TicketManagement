@@ -11,6 +11,6 @@ namespace TicketManagement.Web.Constants
     {
         Ru,
         En,
-        Be
+        Be,
     }
 }

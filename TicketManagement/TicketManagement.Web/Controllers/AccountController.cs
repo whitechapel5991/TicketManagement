@@ -7,7 +7,7 @@
 
 using System.Threading.Tasks;
 using System.Web.Mvc;
-using TicketManagement.Web.Filters.AcionFilters;
+using TicketManagement.Web.Filters.ActionFilters;
 using TicketManagement.Web.Filters.AuthorizationFilters;
 using TicketManagement.Web.Filters.ExceptionFilters;
 using TicketManagement.Web.Interfaces;

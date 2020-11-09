@@ -7,7 +7,7 @@
 
 using System.Web.Mvc;
 
-namespace TicketManagement.Web.Filters.AcionFilters
+namespace TicketManagement.Web.Filters.ActionFilters
 {
     public class AjaxContentUrlAttribute : FilterAttribute, IActionFilter
     {

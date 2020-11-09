@@ -15,15 +15,25 @@ namespace TicketManagement.Web.Interfaces
     public interface IEventManagerEventService
     {
         List<IndexEventViewModel> GetIndexEventViewModels();
+
         EventViewModel GetEventViewModel();
+
         void CreateEvent(EventViewModel eventViewModel);
+
         EventViewModel GetEventViewModel(int eventId);
+
         void UpdateEvent(EventViewModel eventViewModel);
+
         void DeleteEvent(int id);
+
         void PublishEvent(int id);
+
         AreaPriceViewModel GetAreaPriceViewModel(int areaId);
+
         void ChangeCost(AreaPriceViewModel areaPriceVm);
+
         EventDetailViewModel GetEventDetailViewModel(int eventId);
+
         EventAreaDetailViewModel GetEventAreaDetailViewModel(int eventAreaId);
     }
 }

@@ -465,4 +465,7 @@
   <data name="EventAlreadyPublishedException" xml:space="preserve">
     <value>Падзея ўжо апублікавана</value>
   </data>
+  <data name="BeginTime" xml:space="preserve">
+    <value>Час пачатку</value>
+  </data>
 </root>

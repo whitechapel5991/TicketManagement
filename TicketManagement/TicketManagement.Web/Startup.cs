@@ -10,6 +10,7 @@ using Microsoft.Owin;
 using Owin;
 
 [assembly: OwinStartup(typeof(TicketManagement.Web.Startup))]
+
 namespace TicketManagement.Web
 {
     public partial class Startup

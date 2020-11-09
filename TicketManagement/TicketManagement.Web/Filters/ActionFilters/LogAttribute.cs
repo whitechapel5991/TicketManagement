@@ -12,11 +12,11 @@ using System.Web;
 using System.Web.Mvc;
 using System.Web.Routing;
 
-namespace TicketManagement.Web.Filters.AcionFilters
+namespace TicketManagement.Web.Filters.ActionFilters
 {
     public class LogAttribute : ActionFilterAttribute
     {
-        static ReaderWriterLock locker = new ReaderWriterLock();
+        private static readonly ReaderWriterLock Locker = new ReaderWriterLock();
 
         public override void OnActionExecuted(ActionExecutedContext filterContext)
         {
@@ -46,12 +46,12 @@ namespace TicketManagement.Web.Filters.AcionFilters
 
             try
             {
-                locker.AcquireWriterLock(int.MaxValue);
+                Locker.AcquireWriterLock(int.MaxValue);
                 File.AppendAllText(HttpContext.Current.Server.MapPath("~/Log/LogActions.txt"), message);
             }
             finally
             {
-                locker.ReleaseWriterLock();
+                Locker.ReleaseWriterLock();
             }
         }
     }
