@@ -19,7 +19,7 @@ using TicketManagement.DAL.Models;
 using TicketManagement.DAL.Repositories.Base;
 using TicketManagement.UnitTests.FakeRepositories;
 
-namespace TicketManagement.UnitTests.ServiceTests
+namespace TicketManagement.UnitTests.BllServicesTests
 {
     [TestFixture]
     internal class EventSeatServiceTests
@@ -158,7 +158,7 @@ namespace TicketManagement.UnitTests.ServiceTests
         {
             // Arrange
             this.eventSeatService = this.Mock.Create<EventSeatService>();
-            int[] eventSeatId = {1, 3, 5, 10, 19};
+            int[] eventSeatId = { 1, 3, 5, 10, 19 };
             var expected = new List<EventSeat>
             {
                 new EventSeat() { Id = 1, State = EventSeatState.Free, EventAreaId = 1, Row = 1, Number = 1 },

@@ -1,4 +1,11 @@
-﻿using Hangfire;
+﻿// ****************************************************************************
+// <copyright file="Startup.cs" company="EPAM Systems">
+// Copyright (c) EPAM Systems. All rights reserved.
+// Author Dzianis Shcharbakou.
+// </copyright>
+// ****************************************************************************
+
+using Hangfire;
 using Microsoft.Owin;
 using Owin;
 

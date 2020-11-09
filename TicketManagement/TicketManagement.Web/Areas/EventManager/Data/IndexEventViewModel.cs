@@ -1,4 +1,11 @@
-﻿using System;
+﻿// ****************************************************************************
+// <copyright file="IndexEventViewModel.cs" company="EPAM Systems">
+// Copyright (c) EPAM Systems. All rights reserved.
+// Author Dzianis Shcharbakou.
+// </copyright>
+// ****************************************************************************
+
+using System;
 using System.ComponentModel.DataAnnotations;
 using System.Web;
 
@@ -61,16 +68,16 @@ namespace TicketManagement.Web.Areas.EventManager.Data
 
         public DateTime GetBeginDate()
         {
-            return BeginDate.AddHours(BeginTime.Hour)
-                .AddMinutes(BeginTime.Minute)
-                .AddSeconds(BeginTime.Second);
+            return this.BeginDate.AddHours(this.BeginTime.Hour)
+                .AddMinutes(this.BeginTime.Minute)
+                .AddSeconds(this.BeginTime.Second);
         }
 
         public DateTime GetEndDate()
         {
-            return EndDate.AddHours(EndTime.Hour)
-                .AddMinutes(EndTime.Minute)
-                .AddSeconds(EndTime.Second);
+            return this.EndDate.AddHours(this.EndTime.Hour)
+                .AddMinutes(this.EndTime.Minute)
+                .AddSeconds(this.EndTime.Second);
         }
     }
 }

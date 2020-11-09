@@ -1,4 +1,11 @@
-﻿using System;
+﻿// ****************************************************************************
+// <copyright file="AccountService.cs" company="EPAM Systems">
+// Copyright (c) EPAM Systems. All rights reserved.
+// Author Dzianis Shcharbakou.
+// </copyright>
+// ****************************************************************************
+
+using System;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNet.Identity;
@@ -38,11 +45,11 @@ namespace TicketManagement.Web.Services
             this.authenticationManager.SignOut(DefaultAuthenticationTypes.ApplicationCookie);
             this.authenticationManager.SignIn(
                 new AuthenticationProperties()
-            {
-                AllowRefresh = true,
-                IsPersistent = true,
-                ExpiresUtc = DateTime.UtcNow.AddDays(7),
-            }, claimIdentity);
+                {
+                    AllowRefresh = true,
+                    IsPersistent = true,
+                    ExpiresUtc = DateTime.UtcNow.AddDays(7),
+                }, claimIdentity);
 
             return user.Id;
         }

@@ -1,4 +1,11 @@
-﻿using System;
+﻿// ****************************************************************************
+// <copyright file="Startup.Auth.cs" company="EPAM Systems">
+// Copyright (c) EPAM Systems. All rights reserved.
+// Author Dzianis Shcharbakou.
+// </copyright>
+// ****************************************************************************
+
+using System;
 using System.Security.Claims;
 using System.Web.Helpers;
 using Microsoft.AspNet.Identity;

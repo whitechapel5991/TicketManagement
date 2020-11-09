@@ -1,9 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
+﻿// ****************************************************************************
+// <copyright file="EventImageService.cs" company="EPAM Systems">
+// Copyright (c) EPAM Systems. All rights reserved.
+// Author Dzianis Shcharbakou.
+// </copyright>
+// ****************************************************************************
+
+using System;
 using System.IO;
-using System.Linq;
-using System.Web;
 using TicketManagement.Web.Interfaces;
 
 namespace TicketManagement.Web.Services

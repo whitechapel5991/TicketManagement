@@ -1,4 +1,11 @@
-﻿using System.Reflection;
+﻿// ****************************************************************************
+// <copyright file="RoleExtension.cs" company="EPAM Systems">
+// Copyright (c) EPAM Systems. All rights reserved.
+// Author Dzianis Shcharbakou.
+// </copyright>
+// ****************************************************************************
+
+using System.Reflection;
 
 namespace TicketManagement.Web.Constants.Extension
 {

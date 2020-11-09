@@ -1,9 +1,14 @@
+// ****************************************************************************
+// <copyright file="Global.asax.cs" company="EPAM Systems">
+// Copyright (c) EPAM Systems. All rights reserved.
+// Author Dzianis Shcharbakou.
+// </copyright>
+// ****************************************************************************
+
 using System;
 using System.Globalization;
-using System.Security.Claims;
 using System.Threading;
 using System.Web;
-using System.Web.Helpers;
 using System.Web.Mvc;
 using System.Web.Optimization;
 using System.Web.Routing;
@@ -33,8 +38,7 @@ namespace TicketManagement.Web
             var cultureCookie = HttpContext.Current.Request.Cookies[cookieLangName];
             var cultureName = cultureCookie != null ? cultureCookie.Value : Language.En.ToString();
 
-            Language langEnum;
-            if (!Enum.TryParse(cultureName, out langEnum))
+            if (!Enum.TryParse(cultureName, out Language _))
             {
                 cultureName = Language.En.ToString();
             }

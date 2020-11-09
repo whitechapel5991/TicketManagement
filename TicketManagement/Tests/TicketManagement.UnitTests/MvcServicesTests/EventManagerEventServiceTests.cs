@@ -1,4 +1,11 @@
-﻿using System;
+﻿// ****************************************************************************
+// <copyright file="EventManagerEventServiceTests.cs" company="EPAM Systems">
+// Copyright (c) EPAM Systems. All rights reserved.
+// Author Dzianis Shcharbakou.
+// </copyright>
+// ****************************************************************************
+
+using System;
 using System.Collections.Generic;
 using Autofac.Extras.Moq;
 using FluentAssertions;
@@ -39,20 +46,24 @@ namespace TicketManagement.UnitTests.MvcServicesTests
         {
             // Arrange
             const int eventId = 1;
-            this.Mock.Mock<IEventService>().Setup(x => x.GetEvent(eventId)).Returns(  new Event()
+            this.Mock.Mock<IEventService>().Setup(x => x.GetEvent(eventId)).Returns(new Event()
             {
-                Id = eventId, BeginDateUtc = new DateTime(2025, 12, 12, 12, 00, 00),
-                EndDateUtc = new DateTime(2025, 12, 12, 13, 00, 00), Description = "First",
-                LayoutId = 1, Name = "First event", Published = false,
+                Id = eventId,
+                BeginDateUtc = new DateTime(2025, 12, 12, 12, 00, 00),
+                EndDateUtc = new DateTime(2025, 12, 12, 13, 00, 00),
+                Description = "First",
+                LayoutId = 1,
+                Name = "First event",
+                Published = false,
             });
             var layoutList = new List<Layout>
             {
-                new Layout() {Id = 1, Name = "first", Description = "First layout", VenueId = 1},
-                new Layout() {Id = 2, Name = "second", Description = "Second layout", VenueId = 1},
-                new Layout() {Id = 3, Name = "third", Description = "First layout", VenueId = 2},
-                new Layout() {Id = 4, Name = "forth", Description = "Second layout", VenueId = 2},
-                new Layout() {Id = 100, Name = "forth2", Description = "Second layout", VenueId = 2},
-                new Layout() {Id = 101, Name = "forth1", Description = "Second layout", VenueId = 2},
+                new Layout() { Id = 1, Name = "first", Description = "First layout", VenueId = 1 },
+                new Layout() { Id = 2, Name = "second", Description = "Second layout", VenueId = 1 },
+                new Layout() { Id = 3, Name = "third", Description = "First layout", VenueId = 2 },
+                new Layout() { Id = 4, Name = "forth", Description = "Second layout", VenueId = 2 },
+                new Layout() { Id = 100, Name = "forth2", Description = "Second layout", VenueId = 2 },
+                new Layout() { Id = 101, Name = "forth1", Description = "Second layout", VenueId = 2 },
             };
             this.Mock.Mock<ILayoutService>().Setup(x => x.GetLayouts()).Returns(layoutList);
 
@@ -90,18 +101,25 @@ namespace TicketManagement.UnitTests.MvcServicesTests
             const int eventId = 1;
             const int layoutId = 1;
 
-            this.Mock.Mock<IEventService>().Setup(x => x.GetEvent(eventId)).Returns(  new Event()
+            this.Mock.Mock<IEventService>().Setup(x => x.GetEvent(eventId)).Returns(new Event()
             {
-                Id = eventId, BeginDateUtc = new DateTime(2025, 12, 12, 12, 00, 00),
-                EndDateUtc = new DateTime(2025, 12, 12, 13, 00, 00), Description = "First",
-                LayoutId = layoutId, Name = "First event", Published = false,
+                Id = eventId,
+                BeginDateUtc = new DateTime(2025, 12, 12, 12, 00, 00),
+                EndDateUtc = new DateTime(2025, 12, 12, 13, 00, 00),
+                Description = "First",
+                LayoutId = layoutId,
+                Name = "First event",
+                Published = false,
             });
 
             this.Mock.Mock<ILayoutService>().Setup(x => x.GetLayout(layoutId))
                 .Returns(new Layout()
-            {
-                Id = layoutId, Name = "first", Description = "First layout", VenueId = 1,
-            });
+                {
+                    Id = layoutId,
+                    Name = "first",
+                    Description = "First layout",
+                    VenueId = 1,
+                });
 
             this.Mock.Mock<IEventAreaService>().Setup(x => x.GetEventAreasByEventId(eventId)).Returns(new List<EventArea>
             {
@@ -154,7 +172,7 @@ namespace TicketManagement.UnitTests.MvcServicesTests
             const int eventAreaId = 1;
 
             this.Mock.Mock<IEventAreaService>().Setup(x => x.GetEventArea(eventAreaId)).Returns(new EventArea()
-                { Id = eventAreaId, CoordinateX = 1, CoordinateY = 1, Description = "First area event", EventId = 1, Price = 100 });
+            { Id = eventAreaId, CoordinateX = 1, CoordinateY = 1, Description = "First area event", EventId = 1, Price = 100 });
 
             this.Mock.Mock<IEventSeatService>().Setup(x => x.GetEventSeatsByEventAreaId(eventAreaId)).Returns(new List<EventSeat>
             {

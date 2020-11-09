@@ -1,4 +1,11 @@
-﻿using System;
+﻿// ****************************************************************************
+// <copyright file="WebIocModule.cs" company="EPAM Systems">
+// Copyright (c) EPAM Systems. All rights reserved.
+// Author Dzianis Shcharbakou.
+// </copyright>
+// ****************************************************************************
+
+using System;
 using System.Configuration;
 using Autofac;
 using Autofac.Integration.Mvc;
@@ -51,7 +58,7 @@ namespace TicketManagement.Web.Util
                 .As<IQueryableRoleStore<IdentityRole, int>>()
                 .InstancePerLifetimeScope();
 
-            builder.Register<IAuthenticationManager>((c, p) => c.Resolve<IOwinContext>()
+            builder.Register((c, p) => c.Resolve<IOwinContext>()
                 .Authentication).As<IAuthenticationManager>().InstancePerLifetimeScope();
 
             builder.RegisterType<ApplicationUserManager>().AsSelf().InstancePerLifetimeScope();

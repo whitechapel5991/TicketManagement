@@ -1,24 +1,19 @@
 ﻿@using TicketManagement.Web.Models.Event
-@using System.Web.Mvc
-@using System.Web.Mvc.Routing
 @using System.Web.Mvc.Html
 @using System.Web.Mvc.Ajax
-@using System.Web.Mvc.Razor
-@using System.Web.Optimization
-@using Resources
 @using TicketManagement.DAL.Constants
-@using TicketManagement.Web
 @using TicketManagement.Web.Constants
+@using TicketManagement.Web.Resources
 
 @helper EventMap(EventDetailViewModel eventDetailVm)
 {
-    var wvp = PageContext.Page as System.Web.Mvc.WebViewPage;
-    DateTime localBeginDate = eventDetailVm.BeginDate.ToLocalTime();
-    DateTime localEndDate = eventDetailVm.EndDate.ToLocalTime();
-    string beginDate = $"{localBeginDate.ToLongDateString()} {localBeginDate.ToLongTimeString()}";
-    string endDate = $"{localEndDate.ToLongDateString()} {localEndDate.ToLongTimeString()}";
+    var wvp = PageContext.Page as System.Web.Mvc.WebViewPage ?? throw new Exception("Unknown error");
+    var localBeginDate = eventDetailVm.BeginDate.ToLocalTime();
+    var localEndDate = eventDetailVm.EndDate.ToLocalTime();
+    var beginDate = $"{localBeginDate.ToLongDateString()} {localBeginDate.ToLongTimeString()}";
+    var endDate = $"{localEndDate.ToLongDateString()} {localEndDate.ToLongTimeString()}";
 
-    string area = "";
+    var area = "";
     if (User.Identity.IsAuthenticated && (User.IsInRole("event manager") || User.IsInRole("admin")))
     {
         area = "EventManager";
@@ -27,7 +22,7 @@
     <div class="container">
         <div class="row">
             <div class="card mb-3" style="width: 140px;">
-                <div class="card-body" style="padding: 0px;">
+                <div class="card-body" style="padding: 0;">
                     <span class="d-inline-block" tabindex="0" data-toggle="popover" data-placement="bottom" title="" style="width: 100%">
                         <button type="button"
                                 style="pointer-events: none; width: 100%;"
@@ -46,9 +41,9 @@
                     @if (User.Identity.IsAuthenticated && (User.IsInRole("event manager") || User.IsInRole("admin")))
                     {
                         @wvp.Ajax.ActionLink(TicketManagementResource.Edit, "Update",
-                            new { area = "EventManager", controller = "Event", id = eventDetailVm.EventId },
-                            new AjaxOptions { UpdateTargetId = "content", HttpMethod = WebRequestMethods.Http.Get },
-                            new { @class = "nav-link" })
+                            new {area = "EventManager", controller = "Event", id = eventDetailVm.EventId},
+                            new AjaxOptions {UpdateTargetId = "content", HttpMethod = WebRequestMethods.Http.Get},
+                            new {@class = "nav-link"})
                     }
                 </div>
 
@@ -61,7 +56,7 @@
             @foreach (var eventArea in eventDetailVm.EventAreas)
             {
                 <div class="card border-primary mb-3 mr-3" style="max-width: 20rem; width: 140px;">
-                    <div class="card-body" style="padding: 0px;">
+                    <div class="card-body" style="padding: 0;">
                         <span class="d-inline-block" tabindex="0" data-toggle="popover" data-placement="bottom" title="" style="width: 100%">
                             <button type="button"
                                     id="EventArea_@eventArea.Id"
@@ -113,17 +108,17 @@
 
 @helper EventAreaMap(EventAreaDetailViewModel eventAreaDetailVm)
 {
-    var wvp = PageContext.Page as System.Web.Mvc.WebViewPage;
-    string area = "";
-    if (User.Identity.IsAuthenticated && (User.IsInRole("event manager") || User.IsInRole("admin")))
-    {
-        area = "EventManager";
-    }
+var wvp = PageContext.Page as System.Web.Mvc.WebViewPage ?? throw new Exception("Unknown error");
+var area = "";
+if (User.Identity.IsAuthenticated && (User.IsInRole("event manager") || User.IsInRole("admin")))
+{
+    area = "EventManager";
+}
 
     <div class="container">
         <div class="row">
             <div class="card mb-3" style="width: 140px;">
-                <div class="card-body" style="padding: 0px;">
+                <div class="card-body" style="padding: 0;">
                     <span class="d-inline-block" tabindex="0" data-toggle="popover" data-placement="bottom" title="" style="width: 100%">
                         <button type="button"
                                 style="pointer-events: none; width: 100%;"
@@ -141,9 +136,9 @@
                     @if (User.Identity.IsAuthenticated && (User.IsInRole("event manager") || User.IsInRole("admin")))
                     {
                         @wvp.Ajax.ActionLink(TicketManagementResource.SetAreasCosts, "ChangeCost",
-                            new { area = "EventManager", controller = "Event", eventAreaId = eventAreaDetailVm.EventArea.Id },
-                            new AjaxOptions { HttpMethod = WebRequestMethods.Http.Get },
-                            new { @class = "card-link area-cost" })
+                            new {area = "EventManager", controller = "Event", eventAreaId = eventAreaDetailVm.EventArea.Id},
+                            new AjaxOptions {HttpMethod = WebRequestMethods.Http.Get},
+                            new {@class = "card-link area-cost"})
                         <div id="changeAreaCostModDialog" class="modal fade">
                             <div id="dialogContent" class="modal-dialog" role="document"></div>
                         </div>
@@ -151,7 +146,7 @@
                 </div>
             </div>
             <div class="card offset-md-8" style="width: 180px;background-color: #e1bf7f; border: 0;">
-                <div class="card-body" style="padding: 0px;">
+                <div class="card-body" style="padding: 0;">
                     <div class="row">
                         <div class="seat-canvas d-inline-block" style="background-color: @SeatColor.GetSeatColor(EventSeatState.Free); width: 50px; height: 50px;" tabindex="0">
                         </div> - Seat is free
@@ -173,12 +168,14 @@
         <div class="row">
             <table class="table table-hover">
                 <tbody>
-                    @for (int i = 1; i <= 100; i++)
+                    @for (var i = 1; i <= 100; i++)
                     {
                     <tr row="@i">
-                        @for (int j = 1; j <= 22; j++)
+                        @for (var j = 1; j <= 22; j++)
                         {
-                            var eventSeat = eventAreaDetailVm.EventSeats.FirstOrDefault(x => x.Row == i && x.Number == j);
+                            var i1 = i;
+                            var j1 = j;
+                            var eventSeat = eventAreaDetailVm.EventSeats.FirstOrDefault(x => x.Row == i1 && x.Number == j1);
                             if (eventSeat != default)
                             {
                                 <td number="@j" class="seat-canvas d-inline-block" style="background-color: @SeatColor.GetSeatColor(eventSeat.State); width: 50px; height: 50px;" tabindex="0" data-toggle="popover" data-placement="bottom" title="">

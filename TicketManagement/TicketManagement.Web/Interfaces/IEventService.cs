@@ -1,4 +1,11 @@
-﻿using System.Collections.Generic;
+﻿// ****************************************************************************
+// <copyright file="IEventService.cs" company="EPAM Systems">
+// Copyright (c) EPAM Systems. All rights reserved.
+// Author Dzianis Shcharbakou.
+// </copyright>
+// ****************************************************************************
+
+using System.Collections.Generic;
 using TicketManagement.Web.Models.Event;
 
 namespace TicketManagement.Web.Interfaces

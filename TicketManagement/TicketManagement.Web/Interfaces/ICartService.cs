@@ -1,4 +1,11 @@
-﻿using TicketManagement.Web.Models.Cart;
+﻿// ****************************************************************************
+// <copyright file="ICartService.cs" company="EPAM Systems">
+// Copyright (c) EPAM Systems. All rights reserved.
+// Author Dzianis Shcharbakou.
+// </copyright>
+// ****************************************************************************
+
+using TicketManagement.Web.Models.Cart;
 
 namespace TicketManagement.Web.Interfaces
 {

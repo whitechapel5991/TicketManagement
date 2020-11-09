@@ -1,15 +1,18 @@
-﻿using System;
+﻿// ****************************************************************************
+// <copyright file="UserProfileServiceTests.cs" company="EPAM Systems">
+// Copyright (c) EPAM Systems. All rights reserved.
+// Author Dzianis Shcharbakou.
+// </copyright>
+// ****************************************************************************
+
+using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Autofac.Extras.Moq;
 using FluentAssertions;
 using NUnit.Framework;
 using TicketManagement.BLL.Interfaces;
 using TicketManagement.DAL.Constants;
 using TicketManagement.DAL.Models;
-using TicketManagement.Web.Areas.EventManager.Data;
 using TicketManagement.Web.Interfaces;
 using TicketManagement.Web.Models.UserProfile;
 using TicketManagement.Web.Services;

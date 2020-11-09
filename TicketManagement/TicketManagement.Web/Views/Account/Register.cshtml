@@ -1,4 +1,4 @@
-﻿@using Resources
+﻿@using TicketManagement.Web.Resources
 @model TicketManagement.Web.Models.Account.RegisterViewModel
 @{
     Layout = null;
@@ -9,7 +9,7 @@
         <div class="col-md-12">
             <form action="@Url.Action("Register", new { controller = "Account"})" data-ajax="true" data-ajax-method="POST" method="post" data-form="postForm">
                 <h2>@TicketManagementResource.Registration</h2>
-                <div class="form-horizontal">
+                <div>
                     @Html.ValidationSummary(false, "", new { @class = "text-danger", data_validation_summary = "validationSummary" })
 
                     <div class="row">

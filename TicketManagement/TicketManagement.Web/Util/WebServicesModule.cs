@@ -1,4 +1,11 @@
-﻿using System.Web.Hosting;
+﻿// ****************************************************************************
+// <copyright file="WebServicesModule.cs" company="EPAM Systems">
+// Copyright (c) EPAM Systems. All rights reserved.
+// Author Dzianis Shcharbakou.
+// </copyright>
+// ****************************************************************************
+
+using System.Web.Hosting;
 using Autofac;
 using TicketManagement.Web.Interfaces;
 using TicketManagement.Web.Services;

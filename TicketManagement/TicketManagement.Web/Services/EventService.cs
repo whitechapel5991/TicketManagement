@@ -1,4 +1,11 @@
-﻿using System.Collections.Generic;
+﻿// ****************************************************************************
+// <copyright file="EventService.cs" company="EPAM Systems">
+// Copyright (c) EPAM Systems. All rights reserved.
+// Author Dzianis Shcharbakou.
+// </copyright>
+// ****************************************************************************
+
+using System.Collections.Generic;
 using System.Linq;
 using TicketManagement.BLL.Interfaces;
 using TicketManagement.DAL.Models;
@@ -100,18 +107,18 @@ namespace TicketManagement.Web.Services
             var eventsDictionary = eventList.ToDictionary(x => x.Id, x => this.eventService.GetAvailableSeatCount(x.Id));
 
             return eventList.Select(@event => new EventViewModel
-                {
-                    Id = @event.Id,
-                    Name = @event.Name,
-                    Description = @event.Description,
-                    BeginDate = @event.BeginDateUtc,
-                    EndDate = @event.EndDateUtc,
-                    BeginTime = @event.BeginDateUtc,
-                    EndTime = @event.EndDateUtc,
-                    CountFreeSeats = eventsDictionary[@event.Id],
-                    LayoutName = layouts[@event.LayoutId],
-                    ImagePath = @event.ImageUrl,
-                })
+            {
+                Id = @event.Id,
+                Name = @event.Name,
+                Description = @event.Description,
+                BeginDate = @event.BeginDateUtc,
+                EndDate = @event.EndDateUtc,
+                BeginTime = @event.BeginDateUtc,
+                EndTime = @event.EndDateUtc,
+                CountFreeSeats = eventsDictionary[@event.Id],
+                LayoutName = layouts[@event.LayoutId],
+                ImagePath = @event.ImageUrl,
+            })
                 .ToList();
         }
 

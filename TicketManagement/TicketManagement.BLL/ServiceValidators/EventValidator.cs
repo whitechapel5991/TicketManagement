@@ -6,7 +6,6 @@
 // ****************************************************************************
 
 using System;
-using System.Globalization;
 using System.Linq;
 using TicketManagement.BLL.Exceptions.Base;
 using TicketManagement.BLL.Exceptions.EventExceptions;
@@ -78,7 +77,7 @@ namespace TicketManagement.BLL.ServiceValidators
 
             if (!this.areaRepository.GetAll().Any(x => x.LayoutId == entity.LayoutId))
             {
-                throw new LayoutHasNotAreaException($"Layout with id={entity.LayoutId} has not area.");
+                throw new LayoutHasNotAreaException($"Layout with name={entity.Name} has not area.");
             }
 
             var isSeatInLayout = (from areasQ in this.areaRepository.GetAll().Where(x => x.LayoutId == entity.LayoutId).AsEnumerable()
@@ -87,7 +86,7 @@ namespace TicketManagement.BLL.ServiceValidators
 
             if (!isSeatInLayout)
             {
-                throw new LayoutHasNotSeatException($"Layout with id={entity.LayoutId} has not seat.");
+                throw new LayoutHasNotSeatException($"Layout with name={entity.Name} has not seats.");
             }
         }
 
@@ -140,9 +139,8 @@ namespace TicketManagement.BLL.ServiceValidators
 
         private bool EventInLayoutInTheSameTimeExist(int layoutId, DateTime beginDate, DateTime endDate, int eventId)
         {
-            //var begin = Convert.ToDateTime(beginDate.ToString("dd.MM.yyyy HH:mm"), new CultureInfo("ru"));
-            //var end = Convert.ToDateTime(endDate.ToString("dd.MM.yyyy HH:mm"), new CultureInfo("ru"));
-
+            // var begin = Convert.ToDateTime(beginDate.ToString("dd.MM.yyyy HH:mm"), new CultureInfo("ru"));
+            // var end = Convert.ToDateTime(endDate.ToString("dd.MM.yyyy HH:mm"), new CultureInfo("ru"));
             return (from a in this.eventRepository.GetAll().Where(x => x.LayoutId == layoutId)
                     where a.Id != eventId &&
                         ((a.BeginDateUtc <= beginDate && a.EndDateUtc >= beginDate) ||

@@ -1,4 +1,11 @@
-﻿using System.Threading.Tasks;
+﻿// ****************************************************************************
+// <copyright file="IAccountService.cs" company="EPAM Systems">
+// Copyright (c) EPAM Systems. All rights reserved.
+// Author Dzianis Shcharbakou.
+// </copyright>
+// ****************************************************************************
+
+using System.Threading.Tasks;
 using TicketManagement.Web.Models.Account;
 
 namespace TicketManagement.Web.Interfaces

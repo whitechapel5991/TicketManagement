@@ -1,4 +1,11 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿// ****************************************************************************
+// <copyright file="EventSeatViewModel.cs" company="EPAM Systems">
+// Copyright (c) EPAM Systems. All rights reserved.
+// Author Dzianis Shcharbakou.
+// </copyright>
+// ****************************************************************************
+
+using System.ComponentModel.DataAnnotations;
 using TicketManagement.DAL.Constants;
 
 namespace TicketManagement.Web.Models.Event

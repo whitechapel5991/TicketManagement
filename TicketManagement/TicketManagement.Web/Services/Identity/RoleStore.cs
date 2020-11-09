@@ -1,4 +1,10 @@
-﻿using System;
+﻿// ****************************************************************************
+// <copyright file="RoleStore.cs" company="EPAM Systems">
+// Copyright (c) EPAM Systems. All rights reserved.
+// Author Dzianis Shcharbakou.
+// </copyright>
+// ****************************************************************************
+
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNet.Identity;
@@ -7,7 +13,7 @@ using TicketManagement.DAL.Models.Identity;
 
 namespace TicketManagement.Web.Services.Identity
 {
-    public class RoleStore : IRoleStore<IdentityRole, int>, IQueryableRoleStore<IdentityRole, int>, IDisposable
+    public class RoleStore : IQueryableRoleStore<IdentityRole, int>
     {
         private readonly IRoleService roleService;
 

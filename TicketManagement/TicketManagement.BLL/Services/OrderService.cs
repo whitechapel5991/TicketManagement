@@ -93,7 +93,7 @@ namespace TicketManagement.BLL.Services
 
         public void Buy(int orderId)
         {
-            const string buyTicket = "Buy Ticket";
+            // const string buyTicket = "Buy Ticket";
             this.orderValidator.BuyValidation(orderId);
 
             var order = this.orderRepository.GetById(orderId);
@@ -110,7 +110,7 @@ namespace TicketManagement.BLL.Services
             this.userRepository.Update(user);
 
             // Send letter
-            //this.emailHelper.SendEmail(this.userRepository.GetById(order.UserId).Email, buyTicket, this.GetEventHtml(eventSeat));
+            // this.emailHelper.SendEmail(this.userRepository.GetById(order.UserId).Email, buyTicket, this.GetEventHtml(eventSeat));
         }
 
         public void DeleteFromCart(int orderId)

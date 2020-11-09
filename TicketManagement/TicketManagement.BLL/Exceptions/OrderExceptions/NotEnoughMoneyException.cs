@@ -1,12 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿// ****************************************************************************
+// <copyright file="NotEnoughMoneyException.cs" company="EPAM Systems">
+// Copyright (c) EPAM Systems. All rights reserved.
+// Author Dzianis Shcharbakou.
+// </copyright>
+// ****************************************************************************
+
+using System;
 
 namespace TicketManagement.BLL.Exceptions.OrderExceptions
 {
-    public class NotEnoughMoneyException: Exception
+    public class NotEnoughMoneyException : Exception
     {
         public NotEnoughMoneyException(string message)
             : base(message)

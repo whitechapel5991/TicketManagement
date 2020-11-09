@@ -1,10 +1,4 @@
-﻿@using System.Web.Mvc
-@using System.Web.Mvc.Routing
-@using System.Web.Mvc.Html
-@using System.Web.Mvc.Ajax
-@using System.Web.Mvc.Razor
-@using System.Web.Optimization
-@using TicketManagement.Web
+﻿@using System.Web.Mvc.Ajax
 @using TicketManagement.Web.Constants
 
 @helper LanguagesList()
@@ -14,7 +8,7 @@
 <div class="dropdown-menu">
     @foreach (var lang in Enum.GetValues(typeof(Language)))
     {
-        using (wvp.Ajax.BeginForm("ChangeLanguage",
+        using (wvp?.Ajax.BeginForm("ChangeLanguage",
                 new { controller = "Language" },
                 new AjaxOptions { HttpMethod = WebRequestMethods.Http.Post, OnSuccess = "reloadPage" },
                 new { id = @lang }))

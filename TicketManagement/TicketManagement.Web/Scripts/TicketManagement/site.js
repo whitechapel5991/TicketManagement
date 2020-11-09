@@ -7,17 +7,17 @@ let requestConstants = RequestConstants;
 $(function () {
     //setup ajax error handling
     $.ajaxSetup({
-        error: function(qXHR, status, thrownError, data) {
+        error: function(qXhr) {
             $(selectorConstants.Loader).hide();        
             var msg = undefined;  
             try  
             {
-                msg =JSON.parse(qXHR.responseText);  
+                msg =JSON.parse(qXhr.responseText);  
             }  
             catch(ers)  
             {  
                 document.open(); 
-                document.write(qXHR.responseText);
+                document.write(qXhr.responseText);
                 document.close();
             }
             if (msg !== undefined) {
@@ -31,19 +31,19 @@ $(function () {
                 }
                 validationSummary.append('<li>' + msg + '</li>');
             }
-        },
+        }
     });
 
     // set verification token in the header
-    $.ajaxPrefilter(function (options, originalOptions, jqXHR) {
+    $.ajaxPrefilter(function (options, originalOptions, jqXhr) {
         if (originalOptions.type === "POST")
-            jqXHR.setRequestHeader(requestConstants.RequestVerificationToken, $(selectorConstants.RequestVerificationToken).val());
+            jqXhr.setRequestHeader(requestConstants.RequestVerificationToken, $(selectorConstants.RequestVerificationToken).val());
     });
 
 
 });
 
-let AddAntiForgeryToken = function(form) {
+let AddAntiForgeryToken = function() {
     var formData = new FormData($(selectorConstants.PostForm).get(0));
     let token = $(selectorConstants.RequestVerificationToken).val();
     formData.append(requestConstants.RequestVerificationToken, token);
@@ -91,7 +91,7 @@ let postRequest = function() {
                                 $(selectorConstants.PostForm + ' ' + selectorConstants.ValidationSummary).removeClass("validation-summary-errors");
                                 $(selectorConstants.PostForm + ' ' + selectorConstants.ValidationSummary).addClass("validation-summary-valid");
                                 reloadContentWithUpdatingMenu(data.returnContentUrl);
-                            },
+                            }
                         });
                     } else {
                         $(selectorConstants.Loader).hide();
@@ -118,7 +118,7 @@ function reloadPage(response) {
                 contentType: 'application/html; charset=utf-8',
                 type: 'GET',
                 dataType: 'html',
-                success: function(result) {
+                success: function() {
                     reloadContentWithMenu(response.updateContentUrl);
                 }
             });

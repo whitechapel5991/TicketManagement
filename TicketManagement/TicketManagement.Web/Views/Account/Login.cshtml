@@ -1,4 +1,4 @@
-﻿@using Resources
+﻿@using TicketManagement.Web.Resources
 @model TicketManagement.Web.Models.Account.LoginViewModel
 
 @{
@@ -11,7 +11,7 @@
             <form action="@Url.Action("Login", "Account")" data-ajax="true" data-ajax-method="POST" method="post" data-form="postForm">
                 <h2>@TicketManagementResource.LoginTitle</h2>
 
-                <div class="form-horizontal">
+                <div>
                     @Html.ValidationSummary(false, "", new { @class = "text-danger", data_validation_summary = "validationSummary" })
                     <div class="row">
                         <div class="form-group col-md-10">

@@ -345,6 +345,9 @@
     <Compile Include="Filters\AcionFilters\AjaxContentUrlAttribute.cs" />
     <Compile Include="Filters\Base\ExceptionFilterBase.cs" />
     <Compile Include="Filters\AcionFilters\LogAttribute.cs" />
+    <Compile Include="Filters\ExceptionFilters\CartExceptionFilter.cs" />
+    <Compile Include="Filters\ExceptionFilters\EventEventManagerExceptionFilter.cs" />
+    <Compile Include="Filters\ExceptionFilters\EventExceptionFilter.cs" />
     <Compile Include="Filters\ExceptionFilters\UnknownExceptionFilter.cs" />
     <Compile Include="Filters\AuthorizationFilters\ValidateHeaderAntiForgeryTokenAttribute.cs" />
     <Compile Include="Filters\ExceptionFilters\UserProfileExceptionFilter.cs" />

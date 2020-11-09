@@ -1,4 +1,11 @@
-﻿using System;
+﻿// ****************************************************************************
+// <copyright file="LogAttribute.cs" company="EPAM Systems">
+// Copyright (c) EPAM Systems. All rights reserved.
+// Author Dzianis Shcharbakou.
+// </copyright>
+// ****************************************************************************
+
+using System;
 using System.IO;
 using System.Threading;
 using System.Web;
@@ -13,22 +20,22 @@ namespace TicketManagement.Web.Filters.AcionFilters
 
         public override void OnActionExecuted(ActionExecutedContext filterContext)
         {
-            Log("OnActionExecuted", filterContext.RouteData);
+            this.Log("OnActionExecuted", filterContext.RouteData);
         }
 
         public override void OnActionExecuting(ActionExecutingContext filterContext)
         {
-            Log("OnActionExecuting", filterContext.RouteData);
+            this.Log("OnActionExecuting", filterContext.RouteData);
         }
 
         public override void OnResultExecuted(ResultExecutedContext filterContext)
         {
-            Log("OnResultExecuted", filterContext.RouteData);
+            this.Log("OnResultExecuted", filterContext.RouteData);
         }
 
         public override void OnResultExecuting(ResultExecutingContext filterContext)
         {
-            Log("OnResultExecuting ", filterContext.RouteData);
+            this.Log("OnResultExecuting ", filterContext.RouteData);
         }
 
         private void Log(string methodName, RouteData routeData)
@@ -39,7 +46,7 @@ namespace TicketManagement.Web.Filters.AcionFilters
 
             try
             {
-                locker.AcquireWriterLock(int.MaxValue); 
+                locker.AcquireWriterLock(int.MaxValue);
                 File.AppendAllText(HttpContext.Current.Server.MapPath("~/Log/LogActions.txt"), message);
             }
             finally

@@ -1,4 +1,11 @@
-﻿using System;
+﻿// ****************************************************************************
+// <copyright file="OrderServiceTests.cs" company="EPAM Systems">
+// Copyright (c) EPAM Systems. All rights reserved.
+// Author Dzianis Shcharbakou.
+// </copyright>
+// ****************************************************************************
+
+using System;
 using System.Collections.Generic;
 using Autofac;
 using Autofac.Extras.Moq;
@@ -20,7 +27,7 @@ using TicketManagement.DAL.Repositories.Base;
 using TicketManagement.DAL.Repositories.Identity;
 using TicketManagement.UnitTests.FakeRepositories;
 
-namespace TicketManagement.UnitTests.ServiceTests
+namespace TicketManagement.UnitTests.BllServicesTests
 {
     [TestFixture]
     internal class OrderServiceTests

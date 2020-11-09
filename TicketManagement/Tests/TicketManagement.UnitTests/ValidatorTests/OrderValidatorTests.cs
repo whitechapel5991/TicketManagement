@@ -1,8 +1,14 @@
-﻿using System;
+﻿// ****************************************************************************
+// <copyright file="OrderValidatorTests.cs" company="EPAM Systems">
+// Copyright (c) EPAM Systems. All rights reserved.
+// Author Dzianis Shcharbakou.
+// </copyright>
+// ****************************************************************************
+
+using System;
 using System.Collections.Generic;
 using Autofac;
 using Autofac.Extras.Moq;
-using AutoFixture;
 using FluentAssertions;
 using NUnit.Framework;
 using TicketManagement.BLL.Exceptions.Base;
@@ -25,13 +31,9 @@ namespace TicketManagement.UnitTests.ValidatorTests
 
         private AutoMock Mock { get; set; }
 
-        private Fixture Fixture { get; set; }
-
         [SetUp]
         public void Init()
         {
-            this.Fixture = new Fixture();
-
             var eventAreas = new List<EventArea>
             {
                 new EventArea() { Id = 1, CoordinateX = 1, CoordinateY = 1, Description = "First area event", EventId = 1, Price = 100 },

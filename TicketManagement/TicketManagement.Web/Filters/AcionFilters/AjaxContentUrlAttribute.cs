@@ -1,4 +1,11 @@
-﻿using System.Web.Mvc;
+﻿// ****************************************************************************
+// <copyright file="AjaxContentUrlAttribute.cs" company="EPAM Systems">
+// Copyright (c) EPAM Systems. All rights reserved.
+// Author Dzianis Shcharbakou.
+// </copyright>
+// ****************************************************************************
+
+using System.Web.Mvc;
 
 namespace TicketManagement.Web.Filters.AcionFilters
 {
@@ -8,8 +15,8 @@ namespace TicketManagement.Web.Filters.AcionFilters
 
         public void OnActionExecuted(ActionExecutedContext filterContext)
         {
-            string action = filterContext.ActionDescriptor.ActionName;
-            string controller = filterContext.Controller.GetType().Name.Replace("Controller", string.Empty);
+            var action = filterContext.ActionDescriptor.ActionName;
+            var controller = filterContext.Controller.GetType().Name.Replace("Controller", string.Empty);
             CurrentContentUrl = $"/TicketManagement.Web/{controller}/{action}";
         }
 

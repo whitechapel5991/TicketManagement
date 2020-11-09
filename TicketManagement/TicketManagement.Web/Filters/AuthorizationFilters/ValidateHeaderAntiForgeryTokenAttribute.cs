@@ -1,4 +1,11 @@
-﻿using System;
+﻿// ****************************************************************************
+// <copyright file="ValidateHeaderAntiForgeryTokenAttribute.cs" company="EPAM Systems">
+// Copyright (c) EPAM Systems. All rights reserved.
+// Author Dzianis Shcharbakou.
+// </copyright>
+// ****************************************************************************
+
+using System;
 using System.Web.Helpers;
 using System.Web.Mvc;
 
@@ -11,7 +18,7 @@ namespace TicketManagement.Web.Filters.AuthorizationFilters
         {
             if (filterContext == null)
             {
-                throw new ArgumentNullException("Filter context");
+                throw new ArgumentNullException(nameof(filterContext));
             }
 
             if (filterContext.HttpContext.Request.HttpMethod.ToUpper() == "POST")

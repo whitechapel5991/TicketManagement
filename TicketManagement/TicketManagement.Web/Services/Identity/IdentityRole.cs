@@ -1,4 +1,11 @@
-﻿using Microsoft.AspNet.Identity;
+﻿// ****************************************************************************
+// <copyright file="IdentityRole.cs" company="EPAM Systems">
+// Copyright (c) EPAM Systems. All rights reserved.
+// Author Dzianis Shcharbakou.
+// </copyright>
+// ****************************************************************************
+
+using Microsoft.AspNet.Identity;
 
 namespace TicketManagement.Web.Services.Identity
 {

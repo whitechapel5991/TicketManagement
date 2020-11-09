@@ -1,4 +1,11 @@
-﻿using System.Web.Mvc;
+﻿// ****************************************************************************
+// <copyright file="EventManagerAreaRegistration.cs" company="EPAM Systems">
+// Copyright (c) EPAM Systems. All rights reserved.
+// Author Dzianis Shcharbakou.
+// </copyright>
+// ****************************************************************************
+
+using System.Web.Mvc;
 
 namespace TicketManagement.Web.Areas.EventManager
 {
@@ -11,8 +18,7 @@ namespace TicketManagement.Web.Areas.EventManager
             context.MapRoute(
                 "EventManager_default",
                 "EventManager/{controller}/{action}/{id}",
-                new { area =string.Empty, action = "Index", id = UrlParameter.Optional }
-            );
+                new { area = string.Empty, action = "Index", id = UrlParameter.Optional });
         }
     }
 }

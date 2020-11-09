@@ -1,5 +1,11 @@
-﻿using System.ComponentModel.DataAnnotations;
-using Resources;
+﻿// ****************************************************************************
+// <copyright file="LoginViewModel.cs" company="EPAM Systems">
+// Copyright (c) EPAM Systems. All rights reserved.
+// Author Dzianis Shcharbakou.
+// </copyright>
+// ****************************************************************************
+
+using System.ComponentModel.DataAnnotations;
 
 namespace TicketManagement.Web.Models.Account
 {

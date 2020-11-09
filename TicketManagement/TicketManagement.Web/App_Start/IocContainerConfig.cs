@@ -1,4 +1,11 @@
-﻿using System.Configuration;
+﻿// ****************************************************************************
+// <copyright file="IocContainerConfig.cs" company="EPAM Systems">
+// Copyright (c) EPAM Systems. All rights reserved.
+// Author Dzianis Shcharbakou.
+// </copyright>
+// ****************************************************************************
+
+using System.Configuration;
 using System.Web.Mvc;
 using Autofac;
 using Autofac.Integration.Mvc;

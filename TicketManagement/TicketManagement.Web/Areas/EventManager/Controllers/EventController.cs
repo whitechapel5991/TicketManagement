@@ -1,28 +1,27 @@
-﻿using System;
+﻿// ****************************************************************************
+// <copyright file="EventController.cs" company="EPAM Systems">
+// Copyright (c) EPAM Systems. All rights reserved.
+// Author Dzianis Shcharbakou.
+// </copyright>
+// ****************************************************************************
+
 using System.Web.Mvc;
-using TicketManagement.BLL.Interfaces;
 using TicketManagement.Web.Areas.EventManager.Data;
-using TicketManagement.Web.Filters;
-using TicketManagement.Web.Filters.AcionFilters;
 using TicketManagement.Web.Filters.AuthorizationFilters;
 using TicketManagement.Web.Filters.ExceptionFilters;
 using TicketManagement.Web.Interfaces;
-using IEventService = TicketManagement.BLL.Interfaces.IEventService;
 
 namespace TicketManagement.Web.Areas.EventManager.Controllers
 {
     [Authorize(Roles = "event manager, admin")]
+    [EventEventManagerExceptionFilter]
     public class EventController : Controller
     {
-        private readonly ILayoutService layoutService;
         private readonly IEventManagerEventService eventServiceEventManager;
 
         public EventController(
-            ILayoutService layoutService,
-            IEventManagerEventService eventServiceEventManager
-            )
+            IEventManagerEventService eventServiceEventManager)
         {
-            this.layoutService = layoutService;
             this.eventServiceEventManager = eventServiceEventManager;
         }
 
@@ -43,7 +42,7 @@ namespace TicketManagement.Web.Areas.EventManager.Controllers
         public JsonResult Create(EventViewModel eventViewModel)
         {
             this.eventServiceEventManager.CreateEvent(eventViewModel);
-            return this.Json(new { returnContentUrl = this.Url.Action("Index", new { area ="EventManager", controller = "Event" } ) });
+            return this.Json(new { returnContentUrl = this.Url.Action("Index", new { area = "EventManager", controller = "Event" }) });
         }
 
         [HttpGet]
@@ -57,21 +56,21 @@ namespace TicketManagement.Web.Areas.EventManager.Controllers
         public JsonResult Update(EventViewModel @event)
         {
             this.eventServiceEventManager.UpdateEvent(@event);
-            return this.Json(new { returnContentUrl = this.Url.Action("EventDetail", new { area ="EventManager", controller = "Event", eventId = @event.IndexEventViewModel.Id } ) });
+            return this.Json(new { returnContentUrl = this.Url.Action("EventDetail", new { area = "EventManager", controller = "Event", eventId = @event.IndexEventViewModel.Id }) });
         }
 
         [HttpPost]
         public JsonResult Delete(int id)
         {
             this.eventServiceEventManager.DeleteEvent(id);
-            return this.Json(new { returnContentUrl = this.Url.Action("Index", new { area ="EventManager", controller = "Event" } ) });
+            return this.Json(new { returnContentUrl = this.Url.Action("Index", new { area = "EventManager", controller = "Event" }) });
         }
 
         [HttpPost]
         public JsonResult Publish(int id)
         {
             this.eventServiceEventManager.PublishEvent(id);
-            return this.Json(new { returnContentUrl = this.Url.Action("Index", new { area ="EventManager", controller = "Event" } ) });
+            return this.Json(new { returnContentUrl = this.Url.Action("Index", new { area = "EventManager", controller = "Event" }) });
         }
 
         [HttpGet]

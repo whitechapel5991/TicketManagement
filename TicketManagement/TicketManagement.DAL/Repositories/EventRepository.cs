@@ -41,8 +41,8 @@ namespace TicketManagement.DAL.Repositories
                 new SqlParameter(LayoutIdParamName, entity.LayoutId),
                 new SqlParameter(BeginDateParamName, entity.BeginDateUtc.ToUniversalTime()),
                 new SqlParameter(EndDateParamName, entity.EndDateUtc.ToUniversalTime()),
-                new SqlParameter(ImageUrlParamName, entity.ImageUrl)
-                    ).Single();
+                new SqlParameter(ImageUrlParamName, entity.ImageUrl))
+                    .Single();
             this.ContextGenerator.GenerateNewContext().SaveChanges();
             return resultId;
         }
@@ -60,8 +60,7 @@ namespace TicketManagement.DAL.Repositories
                 new SqlParameter(BeginDateParamName, entity.BeginDateUtc.ToUniversalTime()) { SqlDbType = SqlDbType.DateTime },
                 new SqlParameter(EndDateParamName, entity.EndDateUtc.ToUniversalTime()) { SqlDbType = SqlDbType.DateTime },
                 new SqlParameter(PublishParamName, entity.Published),
-                new SqlParameter(ImageUrlParamName, entity.ImageUrl)
-                    );
+                new SqlParameter(ImageUrlParamName, entity.ImageUrl));
             this.ContextGenerator.GenerateNewContext().SaveChanges();
         }
 

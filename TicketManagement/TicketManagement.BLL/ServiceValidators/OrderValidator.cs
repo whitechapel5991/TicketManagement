@@ -5,8 +5,6 @@
 // </copyright>
 // ****************************************************************************
 
-using System;
-using System.Linq;
 using TicketManagement.BLL.Exceptions.Base;
 using TicketManagement.BLL.Exceptions.OrderExceptions;
 using TicketManagement.BLL.ServiceValidators.Interfaces;

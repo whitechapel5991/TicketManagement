@@ -1,4 +1,11 @@
-﻿using TicketManagement.DAL.Constants;
+﻿// ****************************************************************************
+// <copyright file="SeatColor.cs" company="EPAM Systems">
+// Copyright (c) EPAM Systems. All rights reserved.
+// Author Dzianis Shcharbakou.
+// </copyright>
+// ****************************************************************************
+
+using TicketManagement.DAL.Constants;
 
 namespace TicketManagement.Web.Constants
 {
@@ -6,7 +13,7 @@ namespace TicketManagement.Web.Constants
     {
         public static string GetSeatColor(EventSeatState seatState)
         {
-            var seatColor = "blue";
+            string seatColor;
             switch (seatState)
             {
                 case EventSeatState.Free:

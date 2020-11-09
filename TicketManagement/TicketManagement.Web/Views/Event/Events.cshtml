@@ -1,4 +1,4 @@
-﻿@using Resources
+﻿@using TicketManagement.Web.Resources
 @model IEnumerable<TicketManagement.Web.Models.Event.EventViewModel>
 @{
     Layout = null;
@@ -14,14 +14,14 @@
                     <tbody>
                         @foreach (var item in Model)
                         {
-                            string imgPath = string.Empty;
+                            string imgPath;
                             if (!string.IsNullOrEmpty(item.ImagePath))
                             {
                                 imgPath = @Url.Content("~/Content/EventImages/" + @Path.GetFileName(item.ImagePath));
                             }
                             else
                             {
-                                imgPath = @Url.Content("~/Content/EventImages/no-image-available.jpeg");
+                                imgPath = @Url.Content($"~/Content/EventImages/no-image-available.jpeg");
                             }
 
                             <tr class="table-primary">

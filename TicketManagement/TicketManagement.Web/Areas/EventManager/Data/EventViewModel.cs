@@ -1,4 +1,11 @@
-﻿using System.Collections.Generic;
+﻿// ****************************************************************************
+// <copyright file="EventViewModel.cs" company="EPAM Systems">
+// Copyright (c) EPAM Systems. All rights reserved.
+// Author Dzianis Shcharbakou.
+// </copyright>
+// ****************************************************************************
+
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Web.Mvc;
 
@@ -12,6 +19,5 @@ namespace TicketManagement.Web.Areas.EventManager.Data
         public int LayoutId { get; set; }
 
         public IEnumerable<SelectListItem> LayoutList { get; set; }
-
     }
 }

@@ -1,4 +1,11 @@
-﻿using System.Reflection;
+﻿// ****************************************************************************
+// <copyright file="AssemblyInfo.cs" company="EPAM Systems">
+// Copyright (c) EPAM Systems. All rights reserved.
+// Author Dzianis Shcharbakou.
+// </copyright>
+// ****************************************************************************
+
+using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 

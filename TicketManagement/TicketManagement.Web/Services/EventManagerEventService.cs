@@ -1,4 +1,11 @@
-﻿using System.Collections.Generic;
+﻿// ****************************************************************************
+// <copyright file="EventManagerEventService.cs" company="EPAM Systems">
+// Copyright (c) EPAM Systems. All rights reserved.
+// Author Dzianis Shcharbakou.
+// </copyright>
+// ****************************************************************************
+
+using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
 using TicketManagement.BLL.Interfaces;
@@ -75,7 +82,7 @@ namespace TicketManagement.Web.Services
 
         public void CreateEvent(EventViewModel eventViewModel)
         {
-            byte[] uploadedFile = new byte[eventViewModel.IndexEventViewModel.Image.InputStream.Length];
+            var uploadedFile = new byte[eventViewModel.IndexEventViewModel.Image.InputStream.Length];
             eventViewModel.IndexEventViewModel.Image.InputStream.Read(uploadedFile, 0, uploadedFile.Length);
             this.imageService.SaveImage(eventViewModel.IndexEventViewModel.Image.FileName, uploadedFile);
 
@@ -93,7 +100,7 @@ namespace TicketManagement.Web.Services
 
         public void UpdateEvent(EventViewModel eventViewModel)
         {
-            byte[] uploadedFile = new byte[eventViewModel.IndexEventViewModel.Image.InputStream.Length];
+            var uploadedFile = new byte[eventViewModel.IndexEventViewModel.Image.InputStream.Length];
             eventViewModel.IndexEventViewModel.Image.InputStream.Read(uploadedFile, 0, uploadedFile.Length);
             this.imageService.SaveImage(eventViewModel.IndexEventViewModel.Image.FileName, uploadedFile);
 

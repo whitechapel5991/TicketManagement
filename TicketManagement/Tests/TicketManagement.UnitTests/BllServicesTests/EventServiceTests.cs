@@ -20,7 +20,7 @@ using TicketManagement.DAL.Models;
 using TicketManagement.DAL.Repositories.Base;
 using TicketManagement.UnitTests.FakeRepositories;
 
-namespace TicketManagement.UnitTests.ServiceTests
+namespace TicketManagement.UnitTests.BllServicesTests
 {
     [TestFixture]
     internal class EventServiceTests

@@ -1,4 +1,10 @@
-﻿using System;
+﻿// ****************************************************************************
+// <copyright file="UserStore.cs" company="EPAM Systems">
+// Copyright (c) EPAM Systems. All rights reserved.
+// Author Dzianis Shcharbakou.
+// </copyright>
+// ****************************************************************************
+
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
@@ -94,7 +100,6 @@ namespace TicketManagement.Web.Services.Identity
         public Task<IList<UserLoginInfo>> GetLoginsAsync(IdentityUser user)
         {
             return Task.FromResult((IList<UserLoginInfo>)this.userLoginService.GetLoginsByUserId(user.Id).Select(this.GetUserLoginInfo));
-
         }
 
         public Task RemoveLoginAsync(IdentityUser user, UserLoginInfo login)
@@ -107,7 +112,6 @@ namespace TicketManagement.Web.Services.Identity
         {
             this.userService.AddRole(user.Id, roleName);
             return Task.CompletedTask;
-
         }
 
         public Task<IList<string>> GetRolesAsync(IdentityUser user)
@@ -139,7 +143,6 @@ namespace TicketManagement.Web.Services.Identity
         public Task SetPasswordHashAsync(IdentityUser user, string passwordHash)
         {
             user.PasswordHash = passwordHash;
-            //this.userService.SetPassword(user.Id, passwordHash);
             return Task.CompletedTask;
         }
 
@@ -151,7 +154,6 @@ namespace TicketManagement.Web.Services.Identity
         public Task SetSecurityStampAsync(IdentityUser user, string stamp)
         {
             user.SecurityStamp = stamp;
-            //this.userService.SetSecurityStamp(user.Id, stamp);
             return Task.CompletedTask;
         }
 

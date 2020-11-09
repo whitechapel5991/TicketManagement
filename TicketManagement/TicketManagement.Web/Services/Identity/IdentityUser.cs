@@ -1,5 +1,10 @@
-﻿using System.Security.Claims;
-using System.Threading.Tasks;
+﻿// ****************************************************************************
+// <copyright file="IdentityUser.cs" company="EPAM Systems">
+// Copyright (c) EPAM Systems. All rights reserved.
+// Author Dzianis Shcharbakou.
+// </copyright>
+// ****************************************************************************
+
 using Microsoft.AspNet.Identity;
 
 namespace TicketManagement.Web.Services.Identity
@@ -37,6 +42,5 @@ namespace TicketManagement.Web.Services.Identity
         public string TimeZone { get; set; }
 
         public decimal Balance { get; set; }
-
     }
 }

@@ -1,7 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
+﻿// ****************************************************************************
+// <copyright file="ExceptionFilterBase.cs" company="EPAM Systems">
+// Copyright (c) EPAM Systems. All rights reserved.
+// Author Dzianis Shcharbakou.
+// </copyright>
+// ****************************************************************************
+
+using System;
 using System.IO;
-using System.Linq;
 using System.Net;
 using System.Threading;
 using System.Web;
@@ -11,7 +16,7 @@ namespace TicketManagement.Web.Filters.Base
 {
     public class ExceptionFilterBase : HandleErrorAttribute
     {
-        static ReaderWriterLock locker = new ReaderWriterLock();
+        private static readonly ReaderWriterLock Locker = new ReaderWriterLock();
 
         protected void UpdateFilterContext(ExceptionContext filterContext, int statusCode = (int)HttpStatusCode.InternalServerError)
         {
@@ -40,12 +45,12 @@ namespace TicketManagement.Web.Filters.Base
 
             try
             {
-                locker.AcquireWriterLock(int.MaxValue); 
+                Locker.AcquireWriterLock(int.MaxValue);
                 File.AppendAllText(HttpContext.Current.Server.MapPath("~/Log/LogExceptions.txt"), message);
             }
             finally
             {
-                locker.ReleaseWriterLock();
+                Locker.ReleaseWriterLock();
             }
         }
     }

@@ -1,4 +1,11 @@
-﻿using System;
+﻿// ****************************************************************************
+// <copyright file="UserProfileService.cs" company="EPAM Systems">
+// Copyright (c) EPAM Systems. All rights reserved.
+// Author Dzianis Shcharbakou.
+// </copyright>
+// ****************************************************************************
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -25,7 +32,7 @@ namespace TicketManagement.Web.Services
             ApplicationUserManager userManager,
             IOrderService orderService,
             IEventSeatService eventSeatService,
-            IEventAreaService eventAreaService, 
+            IEventAreaService eventAreaService,
             BLL.Interfaces.IEventService eventService)
         {
             this.userManager = userManager;
@@ -100,19 +107,20 @@ namespace TicketManagement.Web.Services
             var events = this.eventService.GetEventsByEventSeatIds(eventSeatIdArray).Distinct().ToList();
 
             // Event dictionary, Key is event seats array in cart which belong to the event.
-            var eventDictionary = events.ToDictionary(x => eventSeats.Where(y => eventAreas.Any(z => z.EventId == x.Id && y.EventAreaId == z.Id)).Select(z => z.Id), x=> x);
+            var eventDictionary = events.ToDictionary(x => eventSeats.Where(y => eventAreas.Any(z => z.EventId == x.Id && y.EventAreaId == z.Id)).Select(z => z.Id), x => x);
 
             foreach (var order in orderList)
             {
                 var eventKey = eventDictionary.Keys.First(x => x.Any(z => z == order.EventSeatId));
                 var eventAreaKey = eventAreasDictionary.Keys.First(x => x.Any(z => z == order.EventSeatId));
 
+                var key = eventKey as int[] ?? eventKey.ToArray();
                 var orderVm = new OrderViewModel
                 {
                     DatePurchase = order.DateUtc,
                     TicketCost = eventAreasDictionary[eventAreaKey].Price,
-                    EventName = eventDictionary[eventKey].Name,
-                    EventDescription = eventDictionary[eventKey].Description,
+                    EventName = eventDictionary[key].Name,
+                    EventDescription = eventDictionary[key].Description,
                 };
 
                 purchaseHistoryVm.Orders.Add(orderVm);

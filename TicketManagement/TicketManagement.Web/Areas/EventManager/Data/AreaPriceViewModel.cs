@@ -1,4 +1,11 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿// ****************************************************************************
+// <copyright file="AreaPriceViewModel.cs" company="EPAM Systems">
+// Copyright (c) EPAM Systems. All rights reserved.
+// Author Dzianis Shcharbakou.
+// </copyright>
+// ****************************************************************************
+
+using System.ComponentModel.DataAnnotations;
 
 namespace TicketManagement.Web.Areas.EventManager.Data
 {
