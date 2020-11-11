@@ -27,8 +27,11 @@ namespace TicketManagement.Web.Controllers
         public ActionResult ChangeLanguage(Language language)
         {
             var languageString = language.ToString();
-            Thread.CurrentThread.CurrentCulture = CultureInfo.CreateSpecificCulture(languageString);
-            Thread.CurrentThread.CurrentUICulture = CultureInfo.CreateSpecificCulture(languageString);
+            var culture = CultureInfo.CreateSpecificCulture(languageString);
+
+            Thread.CurrentThread.CurrentCulture = culture;
+            Thread.CurrentThread.CurrentUICulture = culture;
+            Thread.CurrentThread.CurrentCulture.NumberFormat.CurrencySymbol = "$";
 
             var languageCookie = this.Request.Cookies[CookieLangName];
             if (languageCookie != null)

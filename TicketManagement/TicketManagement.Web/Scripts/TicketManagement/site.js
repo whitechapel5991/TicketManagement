@@ -55,13 +55,38 @@ let updateContentWithMenu = function(contentUrl) {
     $(selectorConstants.Menu).load(urlConstants.MenuUrl);
 }
 
-let updateContent =function(contentUrl) {
+let updateContent = function(contentUrl) {
     $(selectorConstants.MainContent).load(contentUrl);
 }
 
 let reloadContentWithUpdatingMenu = function(contentUrl) {
     $('#menu').load('/TicketManagement.Web/StartApp/ReloadMenu');
     updateContent(contentUrl);
+}
+
+let failureRequestHandlerFunc = function(data) {
+    let msg = undefined;  
+    try  
+    {
+        msg = JSON.parse(data.responseText);  
+    }  
+    catch(ers)  
+    {  
+        document.open(); 
+        document.write(data.responseText);
+        document.close();
+    }
+    if (msg !== undefined) {
+        $(selectorConstants.ValidationSummary).empty();
+        $(selectorConstants.ValidationSummary).removeClass("validation-summary-valid");
+        $(selectorConstants.ValidationSummary).addClass("validation-summary-errors");
+        let validationSummary = $(selectorConstants.ValidationSummary + ' ul');
+        if (validationSummary.length === 0) {
+            $(selectorConstants.ValidationSummary).append('<ul></ul>');
+            validationSummary = $(selectorConstants.ValidationSummary + ' ul');
+        }
+        validationSummary.append('<li>' + msg + '</li>');
+    }
 }
 
 let postRequest = function() {
@@ -105,12 +130,6 @@ let postRequest = function() {
     postAjax();
 };
 
-
-
-function loginSuccess(successRedirect) {
-    window.location.href = successRedirect;
-}
-
 function reloadPage(response) {
     if (response.success) {
         $.ajax({
@@ -125,32 +144,6 @@ function reloadPage(response) {
     }
 }
 
-function redirectToMainPage(response) {
-    if (response.success) {
-        window.location = '/TicketManagement.Web/';
-    }
-}
-
-function loadCart() {
-    reloadContentWithMenu('/TicketManagement.Web/Cart/Index');
-}
-
-function loadEvents() {
-    reloadContentWithMenu('/TicketManagement.Web/Event/Events');
-}
-
-function loadEventAreaDetails(eventAreaId) {
-    reloadContentWithMenu('/TicketManagement.Web/Event/EventAreaDetail?eventAreaId=' + eventAreaId);
-}
-
-function loadEventManagerEvents() {
-    reloadContentWithMenu('/TicketManagement.Web/EventManager/Event');
-}
-
-function loadUserProfile() {
-    reloadContentWithMenu('/TicketManagement.Web/UserProfile/Index');
-}
-
 function reloadContentWithMenu(contentUrl) {
     if (contentUrl === '/TicketManagement.Web/StartApp/Index') {
         document.location.reload();
@@ -163,7 +156,7 @@ function reloadContentWithMenu(contentUrl) {
 
 
 
-
+// change cost popup
 function showPopupInit(modalDialogSelector, dialogContentSelector, invokerSelector) {
     $.ajaxSetup({ cache: false });
     $(invokerSelector).click(function (e) {

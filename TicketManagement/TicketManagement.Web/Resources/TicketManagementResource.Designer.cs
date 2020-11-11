@@ -178,6 +178,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Изменить цены в районе.
+        /// </summary>
+        public static string ChangeAreaPriceDisplay {
+            get {
+                return ResourceManager.GetString("ChangeAreaPriceDisplay", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Изменить пароль.
         /// </summary>
         public static string ChangePassword {
@@ -201,6 +210,24 @@ namespace Resources {
         public static string ClearBasket {
             get {
                 return ResourceManager.GetString("ClearBasket", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to X.
+        /// </summary>
+        public static string CoordinateX {
+            get {
+                return ResourceManager.GetString("CoordinateX", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Y.
+        /// </summary>
+        public static string CoordinateY {
+            get {
+                return ResourceManager.GetString("CoordinateY", resourceCulture);
             }
         }
         
@@ -516,6 +543,24 @@ namespace Resources {
         public static string FirstNameRequired {
             get {
                 return ResourceManager.GetString("FirstNameRequired", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Свободное место.
+        /// </summary>
+        public static string FreeSeatStatusDisplay {
+            get {
+                return ResourceManager.GetString("FreeSeatStatusDisplay", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Сиденье удерживается.
+        /// </summary>
+        public static string HoldSeatStatusDisplay {
+            get {
+                return ResourceManager.GetString("HoldSeatStatusDisplay", resourceCulture);
             }
         }
         
@@ -912,6 +957,15 @@ namespace Resources {
         public static string SetCostsEventException {
             get {
                 return ResourceManager.GetString("SetCostsEventException", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Проданное место.
+        /// </summary>
+        public static string SoldSeatStatusDisplay {
+            get {
+                return ResourceManager.GetString("SoldSeatStatusDisplay", resourceCulture);
             }
         }
         

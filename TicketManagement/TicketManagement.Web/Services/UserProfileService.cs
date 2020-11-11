@@ -107,7 +107,7 @@ namespace TicketManagement.Web.Services
             var events = this.eventService.GetEventsByEventSeatIds(eventSeatIdArray).Distinct().ToList();
 
             // Event dictionary, Key is event seats array in cart which belong to the event.
-            var eventDictionary = events.ToDictionary(x => eventSeats.Where(y => eventAreas.Any(z => z.EventId == x.Id && y.EventAreaId == z.Id)).Select(z => z.Id), x => x);
+            var eventDictionary = events.ToDictionary(x => eventSeats.Where(y => eventAreas.Any(z => z.EventId == x.Id && y.EventAreaId == z.Id)).Select(z => z.Id).ToArray(), x => x);
 
             foreach (var order in orderList)
             {

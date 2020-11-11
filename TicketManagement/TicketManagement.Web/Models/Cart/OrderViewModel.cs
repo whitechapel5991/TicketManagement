@@ -14,6 +14,7 @@ namespace TicketManagement.Web.Models.Cart
         public int OrderId { get; set; }
 
         [StringLength(30, MinimumLength = 3, ErrorMessageResourceType = typeof(Resources.TicketManagementResource), ErrorMessageResourceName = "StringLenghtMessageFrom3to30symb")]
+        [Display(Name = "EventName", ResourceType = typeof(Resources.TicketManagementResource))]
         public string EventName { get; set; }
 
         [StringLength(
@@ -21,9 +22,11 @@ namespace TicketManagement.Web.Models.Cart
             MinimumLength = 5,
             ErrorMessageResourceType = typeof(Resources.TicketManagementResource),
             ErrorMessageResourceName = "StringLenghtMessageFrom5symb")]
+        [Display(Name = "Description", ResourceType = typeof(Resources.TicketManagementResource))]
         public string EventDescription { get; set; }
 
         [Range(typeof(decimal), "0.00", "1000000.00")]
+        [Display(Name = "Cost", ResourceType = typeof(Resources.TicketManagementResource))]
         public decimal TicketCost { get; set; }
     }
 }

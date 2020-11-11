@@ -468,4 +468,22 @@
   <data name="EventAlreadyPublishedException" xml:space="preserve">
     <value>Событие уже опубликовано</value>
   </data>
+  <data name="CoordinateX" xml:space="preserve">
+    <value>X</value>
+  </data>
+  <data name="CoordinateY" xml:space="preserve">
+    <value>Y</value>
+  </data>
+  <data name="FreeSeatStatusDisplay" xml:space="preserve">
+    <value>Свободное место</value>
+  </data>
+  <data name="SoldSeatStatusDisplay" xml:space="preserve">
+    <value>Проданное место</value>
+  </data>
+  <data name="HoldSeatStatusDisplay" xml:space="preserve">
+    <value>Сиденье удерживается</value>
+  </data>
+  <data name="ChangeAreaPriceDisplay" xml:space="preserve">
+    <value>Изменить цены в районе</value>
+  </data>
 </root>

@@ -468,4 +468,22 @@
   <data name="EventAlreadyPublishedException" xml:space="preserve">
     <value>The event has already been published</value>
   </data>
+  <data name="CoordinateX" xml:space="preserve">
+    <value>X</value>
+  </data>
+  <data name="CoordinateY" xml:space="preserve">
+    <value>Y</value>
+  </data>
+  <data name="FreeSeatStatusDisplay" xml:space="preserve">
+    <value>Free seat</value>
+  </data>
+  <data name="SoldSeatStatusDisplay" xml:space="preserve">
+    <value>Sold seat</value>
+  </data>
+  <data name="HoldSeatStatusDisplay" xml:space="preserve">
+    <value>Seat is hold</value>
+  </data>
+  <data name="ChangeAreaPriceDisplay" xml:space="preserve">
+    <value>Change area prices</value>
+  </data>
 </root>

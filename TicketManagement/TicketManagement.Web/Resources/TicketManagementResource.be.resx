@@ -468,4 +468,22 @@
   <data name="BeginTime" xml:space="preserve">
     <value>Час пачатку</value>
   </data>
+  <data name="CoordinateX" xml:space="preserve">
+    <value>X</value>
+  </data>
+  <data name="CoordinateY" xml:space="preserve">
+    <value>Y</value>
+  </data>
+  <data name="FreeSeatStatusDisplay" xml:space="preserve">
+    <value>Вольнае месца</value>
+  </data>
+  <data name="SoldSeatStatusDisplay" xml:space="preserve">
+    <value>Прададзенае сядзенне</value>
+  </data>
+  <data name="HoldSeatStatusDisplay" xml:space="preserve">
+    <value>Сядзенне трымаецца</value>
+  </data>
+  <data name="ChangeAreaPriceDisplay" xml:space="preserve">
+    <value>Зменіце цану раёна</value>
+  </data>
 </root>

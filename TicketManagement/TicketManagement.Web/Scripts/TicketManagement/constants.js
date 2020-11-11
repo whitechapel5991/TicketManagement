@@ -6,7 +6,8 @@ let SelectorConstants = {
     ValidationSummary: 'div[data-validation-summary=validationSummary]',
     RequestVerificationToken: 'body input[name=__RequestVerificationToken]',
     Loader: 'div[data-loader=Loader]',
-    PostForm: 'form[data-form=postForm]'
+    PostForm: 'form[data-form=postForm]',
+    PostAjaxLink: 'a[data-link=ajaxPostLink]',
 };
 
 let UrlConstants = {

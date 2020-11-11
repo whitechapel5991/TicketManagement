@@ -17,12 +17,15 @@ namespace TicketManagement.Web.Models.Event
         public int EventId { get; set; }
 
         [Required]
+        [Display(Name = "EventName", ResourceType = typeof(Resources.TicketManagementResource))]
         public string Name { get; set; }
 
         [Required]
+        [Display(Name = "BeginDate", ResourceType = typeof(Resources.TicketManagementResource))]
         public DateTime BeginDate { get; set; }
 
         [Required]
+        [Display(Name = "EndDate", ResourceType = typeof(Resources.TicketManagementResource))]
         public DateTime EndDate { get; set; }
 
         [Required]
@@ -36,6 +39,7 @@ namespace TicketManagement.Web.Models.Event
         public string Description { get; set; }
 
         [Required]
+        [Display(Name = "Layout", ResourceType = typeof(Resources.TicketManagementResource))]
         public string LayoutName { get; set; }
 
         public List<EventAreaViewModel> EventAreas { get; set; }

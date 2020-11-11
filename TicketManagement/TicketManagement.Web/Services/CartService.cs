@@ -70,7 +70,7 @@ namespace TicketManagement.Web.Services
             var eventDictionary = events.ToDictionary(
                 x =>
                         eventSeats.Where(y => eventAreas.Any(z => z.EventId == x.Id && y.EventAreaId == z.Id))
-                        .Select(z => z.Id), x => x);
+                        .Select(z => z.Id).ToArray(), x => x);
 
             foreach (var order in userCartOrders)
             {

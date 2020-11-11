@@ -1,5 +1,4 @@
-﻿@using Resources
-@model IEnumerable<TicketManagement.Web.Areas.EventManager.Data.IndexEventViewModel>
+﻿@model IEnumerable<TicketManagement.Web.Areas.EventManager.Data.IndexEventViewModel>
 @{
     Layout = null;
 }
@@ -16,81 +15,91 @@
 
             <table class="table table-hover">
                 <tbody>
+                    <tr>@Html.ValidationSummary(false, "", new { @class = "text-danger", data_validation_summary = "validationSummary" })</tr>
                 @foreach (var item in Model)
+                {
+                    string imgPath;
+                    if (!string.IsNullOrEmpty(item.ImagePath))
                     {
-                        string imgPath;
-                        if (!string.IsNullOrEmpty(item.ImagePath))
-                        {
-                            imgPath = @Url.Content("~/Content/EventImages/" + @Path.GetFileName(item.ImagePath));
-                        }
-                        else
-                        {
-                            imgPath = @Url.Content($"~/Content/EventImages/no-image-available.jpeg");
-                        }
-
-                        var buttonLinkText = item.Published ? TicketManagementResource.UnPublished : TicketManagementResource.Published;
-
-                        <tr class="table-primary">
-                            <th scope="row">
-                                <img class="event-image" style="width: 380px; height: 300px;" src=@imgPath alt="" />
-                            </th>
-
-                            <td class="col-md-5">
-                                <div class="row">
-                                    <div class="col-md-3">@Html.DisplayNameFor(model => model.Name):</div>
-                                    <div class="col-md-9">@Html.DisplayFor(modelItem => item.Name)</div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-md-3">@Html.DisplayNameFor(model => model.BeginDate):</div>
-                                    <div class="col-md-7">@Html.DisplayFor(modelItem => item.BeginDate) @Html.DisplayFor(modelItem => item.BeginTime)</div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-md-3">@Html.DisplayNameFor(model => model.EndDate):</div>
-                                    <div class="col-md-7">@Html.DisplayFor(modelItem => item.EndDate) @Html.DisplayFor(modelItem => item.EndTime)</div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-md-3">@Html.DisplayNameFor(model => model.Description):</div>
-                                    <div class="col-md-7">@Html.DisplayFor(modelItem => item.Description)</div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-md-3">@Html.DisplayNameFor(model => model.LayoutName):</div>
-                                    <div class="col-md-7">@Html.DisplayFor(modelItem => item.LayoutName)</div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-md-3">@Html.DisplayNameFor(model => model.Published):</div>
-                                    <div class="col-md-7">@Html.DisplayFor(modelItem => item.Published)</div>
-                                </div>
-                            </td>
-
-
-                            <td class="col-md-2">
-                                <div class="btn-group-vertical">
-                                        @Ajax.ActionLink(TicketManagementResource.Details, "EventDetail",
-                                        new { area = "EventManager", controller = "Event", eventId = item.Id }, 
-                                        new AjaxOptions { UpdateTargetId = "content", HttpMethod = WebRequestMethods.Http.Get }, 
-                                        new { @class = "btn btn-primary", type = "button" })
-
-                                        @Ajax.ActionLink(TicketManagementResource.Delete, "Delete", 
-                                            new { area = "EventManager", controller = "Event", id = item.Id }, 
-                                            new AjaxOptions { HttpMethod = WebRequestMethods.Http.Post, OnSuccess = "OnSuccessDelete", Confirm = TicketManagementResource.DeletingConfirm }, 
-                                            new { @class = "btn btn-primary", type = "button" })
-
-                                        @Ajax.ActionLink(buttonLinkText, "Publish", 
-                                            new { area = "EventManager", controller = "Event", id = item.Id }, 
-                                            new AjaxOptions { HttpMethod = WebRequestMethods.Http.Post, OnSuccess = "OnSuccessPublish" }, 
-                                            new { @class = "btn btn-primary", type = "button" })
-  
-                                </div>
-                            </td>
-                        </tr>
+                        imgPath = @Url.Content("~/Content/EventImages/" + @Path.GetFileName(item.ImagePath));
+                    }
+                    else
+                    {
+                        imgPath = @Url.Content($"~/Content/EventImages/no-image-available.jpeg");
                     }
 
+                    var buttonLinkText = item.Published ? TicketManagementResource.UnPublished : TicketManagementResource.Published;
+
+                    <tr class="table-primary">
+                        <th scope="row">
+                            <img class="event-image" style="width: 380px; height: 300px;" src=@imgPath alt=""/>
+                        </th>
+
+                        <td class="col-md-5">
+                            <div class="row">
+                                <div class="col-md-3">@Html.DisplayNameFor(model => model.Name):</div>
+                                <div class="col-md-9">@Html.DisplayFor(modelItem => item.Name)</div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-3">@Html.DisplayNameFor(model => model.BeginDate):</div>
+                                <div class="col-md-7">@Html.DisplayFor(modelItem => item.BeginDate) @Html.DisplayFor(modelItem => item.BeginTime)</div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-3">@Html.DisplayNameFor(model => model.EndDate):</div>
+                                <div class="col-md-7">@Html.DisplayFor(modelItem => item.EndDate) @Html.DisplayFor(modelItem => item.EndTime)</div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-3">@Html.DisplayNameFor(model => model.Description):</div>
+                                <div class="col-md-7">@Html.DisplayFor(modelItem => item.Description)</div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-3">@Html.DisplayNameFor(model => model.LayoutName):</div>
+                                <div class="col-md-7">@Html.DisplayFor(modelItem => item.LayoutName)</div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-3">@Html.DisplayNameFor(model => model.Published):</div>
+                                <div class="col-md-7">@Html.DisplayFor(modelItem => item.Published)</div>
+                            </div>
+                        </td>
+
+
+                        <td class="col-md-2">
+                            <div class="btn-group-vertical">
+                                @Ajax.ActionLink(TicketManagementResource.Details, "EventDetail",
+                                    new {area = "EventManager", controller = "Event", eventId = item.Id},
+                                    new AjaxOptions {UpdateTargetId = "content", HttpMethod = WebRequestMethods.Http.Get},
+                                    new {@class = "btn btn-primary", type = "button"})
+
+                                @Ajax.ActionLink(TicketManagementResource.Delete, "Delete",
+                                    new {area = "EventManager", controller = "Event", id = item.Id},
+                                    new AjaxOptions {HttpMethod = WebRequestMethods.Http.Post, OnSuccess = "OnSuccessDelete", OnFailure = "OnFailureDelete", 
+                                        Confirm = TicketManagementResource.DeletingConfirm},
+                                    new {@class = "btn btn-primary", type = "button"})
+                                
+                                @if (!item.Published)
+                                {
+                                    @Ajax.ActionLink(TicketManagementResource.Published, "Publish",
+                                        new {area = "EventManager", controller = "Event", id = item.Id},
+                                        new AjaxOptions {HttpMethod = WebRequestMethods.Http.Post, OnSuccess = "OnSuccessPublish", OnFailure = "OnFailurePublish",},
+                                        new {@class = "btn btn-primary", type = "button"})
+                                }
+                            </div>
+                        </td>
+                    </tr>
+                }
+                </tbody>
             </table>
         </div>
     </div>
 </div>
 
 <script>
+    function OnFailureDelete(error) {
+        failureRequestHandlerFunc(error);
+    }
+    function OnFailurePublish(error){
+        failureRequestHandlerFunc(error);
+    }
     function OnSuccessDelete(data) {
         updateContent(data.returnContentUrl);
     }

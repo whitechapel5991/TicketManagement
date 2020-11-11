@@ -1,5 +1,4 @@
-﻿@using Resources
-@model TicketManagement.Web.Models.UserProfile.PurchaseHistoryViewModel
+﻿@model TicketManagement.Web.Models.UserProfile.PurchaseHistoryViewModel
 
 <h3>@TicketManagementResource.PurchaseHistory</h3>
 
@@ -10,13 +9,13 @@
         {
             <a href="#" class="list-group-item list-group-item-action">
                 <label class="col-md-2">@TicketManagementResource.PurchaseDate:</label>
-                <label class="col-md-8">@order.DatePurchase</label>
+                <label class="col-md-8">@Html.DisplayFor(m => order.DatePurchase)</label>
                 <label class="col-md-2">@TicketManagementResource.PurchaseName:</label>
-                <label class="col-md-8">@order.EventName</label>
+                <label class="col-md-8">@Html.DisplayFor(m => order.EventName)</label>
                 <label class="col-md-2">@TicketManagementResource.Description:</label>
-                <label class="col-md-8">@order.EventDescription</label>
+                <label class="col-md-8">@Html.DisplayFor(m => order.EventDescription)</label>
                 <label class="col-md-2">@TicketManagementResource.Cost:</label>
-                <label class="col-md-8">@order.TicketCost</label>
+                <label class="col-md-8">@Html.DisplayFor(m => order.TicketCost)</label>
             </a>
         }
     </div>
@@ -28,5 +27,8 @@ else
 
 
 <div>
-    @Ajax.ActionLink(TicketManagementResource.BackToProfile, "Index", "UserProfile", new AjaxOptions { UpdateTargetId = "content", HttpMethod = WebRequestMethods.Http.Get }, new { @class = "nav-link" })
+    @Ajax.ActionLink(TicketManagementResource.BackToProfile, "Index", 
+        "UserProfile", 
+        new AjaxOptions { UpdateTargetId = "content", HttpMethod = WebRequestMethods.Http.Get }, 
+        new { @class = "nav-link" })
 </div>

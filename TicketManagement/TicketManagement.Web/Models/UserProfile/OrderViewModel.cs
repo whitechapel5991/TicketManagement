@@ -13,6 +13,7 @@ namespace TicketManagement.Web.Models.UserProfile
     public class OrderViewModel
     {
         [StringLength(30, MinimumLength = 3, ErrorMessageResourceType = typeof(Resources.TicketManagementResource), ErrorMessageResourceName = "StringLenghtMessageFrom3to30symb")]
+        [Display(Name = "EventName", ResourceType = typeof(Resources.TicketManagementResource))]
         public string EventName { get; set; }
 
         [StringLength(
@@ -20,12 +21,17 @@ namespace TicketManagement.Web.Models.UserProfile
             MinimumLength = 5,
             ErrorMessageResourceType = typeof(Resources.TicketManagementResource),
             ErrorMessageResourceName = "StringLenghtMessageFrom5symb")]
+        [Display(Name = "Description", ResourceType = typeof(Resources.TicketManagementResource))]
         public string EventDescription { get; set; }
 
-        [Range(typeof(decimal), "0.00", "1000000.00")]
+        [DataType(DataType.Currency)]
+        [Range(0.00, 1000000.00)]
+        [DisplayFormat(DataFormatString = "{0:C2}")]
+        [Display(Name = "Cost", ResourceType = typeof(Resources.TicketManagementResource))]
         public decimal TicketCost { get; set; }
 
         [DataType(DataType.Date)]
+        [Display(Name = "PurchaseDate", ResourceType = typeof(Resources.TicketManagementResource))]
         public DateTime DatePurchase { get; set; }
     }
 }
