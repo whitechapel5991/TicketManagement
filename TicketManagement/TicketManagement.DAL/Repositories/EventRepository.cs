@@ -5,6 +5,7 @@
 // </copyright>
 // ****************************************************************************
 
+using System;
 using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
@@ -41,7 +42,7 @@ namespace TicketManagement.DAL.Repositories
                 new SqlParameter(LayoutIdParamName, entity.LayoutId),
                 new SqlParameter(BeginDateParamName, entity.BeginDateUtc.ToUniversalTime()),
                 new SqlParameter(EndDateParamName, entity.EndDateUtc.ToUniversalTime()),
-                new SqlParameter(ImageUrlParamName, entity.ImageUrl))
+                new SqlParameter(ImageUrlParamName, (object)entity.ImageUrl ?? DBNull.Value))
                     .Single();
             this.ContextGenerator.GenerateNewContext().SaveChanges();
             return resultId;
@@ -60,7 +61,7 @@ namespace TicketManagement.DAL.Repositories
                 new SqlParameter(BeginDateParamName, entity.BeginDateUtc.ToUniversalTime()) { SqlDbType = SqlDbType.DateTime },
                 new SqlParameter(EndDateParamName, entity.EndDateUtc.ToUniversalTime()) { SqlDbType = SqlDbType.DateTime },
                 new SqlParameter(PublishParamName, entity.Published),
-                new SqlParameter(ImageUrlParamName, entity.ImageUrl));
+                new SqlParameter(ImageUrlParamName, (object)entity.ImageUrl ?? DBNull.Value));
             this.ContextGenerator.GenerateNewContext().SaveChanges();
         }
 
