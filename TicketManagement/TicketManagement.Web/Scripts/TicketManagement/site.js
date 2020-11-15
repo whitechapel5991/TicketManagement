@@ -1,8 +1,8 @@
 ﻿"use strict";
 
-let selectorConstants = SelectorConstants;
-let urlConstants = UrlConstants;
-let requestConstants = RequestConstants;
+var selectorConstants = SelectorConstants;
+var urlConstants = UrlConstants;
+var requestConstants = RequestConstants;
 
 $(function () {
     //setup ajax error handling
@@ -43,28 +43,201 @@ $(function () {
 
 });
 
-let AddAntiForgeryToken = function() {
+var AddAntiForgeryToken = function() {
     var formData = new FormData($(selectorConstants.PostForm).get(0));
     let token = $(selectorConstants.RequestVerificationToken).val();
     formData.append(requestConstants.RequestVerificationToken, token);
     return formData;
 };
 
-let updateContentWithMenu = function(contentUrl) {
+var updateContentWithMenu = function(contentUrl) {
     updateContent(contentUrl);
     $(selectorConstants.Menu).load(urlConstants.MenuUrl);
 }
 
-let updateContent = function(contentUrl) {
+var OnSuccessChangeLanguage = function(data) {
+    //Globalize('en');
+    //console.log(Globalize.culture().name);
+    reloadPage(data);
+    loadcldr();
+}
+
+var getCookie = function(name) {
+    let matches = document.cookie.match(new RegExp(
+        "(?:^|; )" + name.replace(/([\.$?*|{}\(\)\[\]\\\/\+^])/g, '\\$1') + "=([^;]*)"
+    ));
+    return matches ? decodeURIComponent(matches[1]) : undefined;
+}
+
+var loadcldr = function() {
+    var currentCultureCode = getCookie('lang');
+    if (currentCultureCode === undefined || currentCultureCode === null) {
+        currentCultureCode = 'en';
+    } else {
+        currentCultureCode = currentCultureCode.toLowerCase();
+    }
+
+    var publicCdnGlobalizeCompleteUrl = "/TicketManagement.Web/Scripts/cldr/";
+
+    $.when(
+        $.get(publicCdnGlobalizeCompleteUrl + "supplemental/likelySubtags.json"),
+        $.get(publicCdnGlobalizeCompleteUrl + "main/" + currentCultureCode + "/numbers.json"),
+        $.get(publicCdnGlobalizeCompleteUrl + "supplemental/numberingSystems.json"),
+        $.get(publicCdnGlobalizeCompleteUrl + "main/" + currentCultureCode + "/ca-gregorian.json"),
+        $.get(publicCdnGlobalizeCompleteUrl + "main/" + currentCultureCode + "/timeZoneNames.json"),
+        $.get(publicCdnGlobalizeCompleteUrl + "supplemental/timeData.json"),
+        $.get(publicCdnGlobalizeCompleteUrl + "supplemental/weekData.json"),
+        $.get(publicCdnGlobalizeCompleteUrl + "main/" + currentCultureCode + "/currencies.json")
+    ).then(function () {
+
+        // Normalize $.get results, we only need the JSON, not the request statuses.
+        return [].slice.apply(arguments, [0]).map(function (result) {
+            return result[0];
+        });
+
+    }).then(Globalize.load).then(function () {
+        //if (currentCultureCode === 'be') {
+        //    currentCultureCode = 'ru-BY';
+        //}
+        Globalize.locale(currentCultureCode);
+        //customNumberParser = Globalize.numberParser();
+
+        $(document).trigger("globalizeHasBeenLoadedEvent");
+    });
+}
+
+var loadTimePicker = function() {
+    var currentCultureCode = getCookie('lang');
+    if (currentCultureCode === undefined || currentCultureCode === null) {
+        currentCultureCode = 'en';
+    } else {
+        currentCultureCode = currentCultureCode.toLowerCase();
+    }
+
+    $.datepicker.setDefaults($.datepicker.regional[currentCultureCode]);
+    $("input[time='jQueryUI']").timepicker();
+}
+
+var loadDataTimePicker = function() {
+    var currentCultureCode = getCookie('lang');
+    if (currentCultureCode === undefined || currentCultureCode === null) {
+        currentCultureCode = 'en';
+    } else {
+        currentCultureCode = currentCultureCode.toLowerCase();
+    }
+
+    $.datepicker.setDefaults($.datepicker.regional[currentCultureCode]);
+
+    if (currentCultureCode === 'be') {
+
+        $("input[calendar='jQueryUI']").datepicker({ dateFormat: 'dd.mm.y' });
+        
+        $.validator.addMethod('date',
+            function (value, element) {
+                var ok = true;
+                try {
+                    $.datepicker.parseDate('dd.mm.y', value);
+                }
+                catch (err) {
+                    ok = false;
+                }
+                return ok;
+            });
+    } else {
+        $("input[calendar='jQueryUI']").datepicker();
+    }
+}
+
+var loadCurrencyInput = function() {
+    var currentCultureCode = getCookie('lang');
+    if (currentCultureCode === undefined || currentCultureCode === null) {
+        currentCultureCode = 'en';
+    } else {
+        currentCultureCode = currentCultureCode.toLowerCase();
+    }
+
+    $.widget( "ui.sspinner", $.ui.spinner, {
+        _parse: function( val ) {
+            if ( typeof val === "string" && val !== "" ) {
+                val = window.Globalize && this.options.numberFormat ?
+                    Globalize.numberParser({ maximumFractionDigits : 10 })(val) : +val;
+            }
+            return val === "" || isNaN( val ) ? null : val;
+        },
+
+        _format: function( value ) {
+            if ( value === "" ) {
+                return "";
+            }
+
+            if( window.Globalize && this.options.numberFormat ){
+
+                this.options.currency || ( this.options.currency = 'COP' );
+
+                switch( this.options.numberFormat ) {
+                case 'C': return Globalize(this.options.culture).formatCurrency( value, this.options.currency ); break;
+                default: return Globalize(this.options.culture).formatNumber( value ); break;
+                }
+            }
+        }
+    });
+
+    //$.validator.methods.number = function (value, element) {
+    //    return this.optional(element) || !isNaN(Globalize.parseFloat(value));
+    //} 
+
+    //$.validator.methods.range = function (value, element, param) {
+    //    return this.optional(element) || (Globalize.parseFloat(value) >= param[0] && Globalize.parseFloat(value) <= param[1]);
+    //}
+
+    var config = {
+        'input[currency="jQueryUI"]': {
+            min: 0,
+            max: 9999999,
+            step: 1,
+            start: 1000,
+            culture: currentCultureCode,
+            numberFormat: "C2"
+        }
+    }
+
+    for (var selector in config) {
+        if (Object.prototype.hasOwnProperty.call(config, selector)) {
+            $(selector).each(function(index, el) {
+                var $el = $(el);
+                var spinner = {};
+
+                if (!$el.sspinner("instance")) {
+                    spinner = $el.sspinner(config[selector]);
+
+                    if ($el.val() === '')
+                        spinner.sspinner("value", 0);
+                }
+            });
+        }
+    }
+
+    //$("input[currency='jQueryUI']").spinner({
+    //    min: 0,
+    //    max: 9999999,
+    //    step: 1,
+    //    start: 1000,
+    //    culture: currentCultureCode,
+    //    numberFormat: "C2",
+    //    currency: 'COP'
+    //});
+}
+
+var updateContent = function(contentUrl) {
     $(selectorConstants.MainContent).load(contentUrl);
 }
 
-let reloadContentWithUpdatingMenu = function(contentUrl) {
+var reloadContentWithUpdatingMenu = function(contentUrl) {
     $('#menu').load('/TicketManagement.Web/StartApp/ReloadMenu');
     updateContent(contentUrl);
 }
 
-let failureRequestHandlerFunc = function(data) {
+var failureRequestHandlerFunc = function(data) {
     let msg = undefined;  
     try  
     {
@@ -89,7 +262,7 @@ let failureRequestHandlerFunc = function(data) {
     }
 }
 
-let postRequest = function() {
+var postRequest = function() {
     let $form = $(selectorConstants.PostForm);
     let postUrl = $form.attr( 'action' );
 
@@ -132,8 +305,11 @@ let postRequest = function() {
 
 function reloadPage(response) {
     if (response.success) {
-        $.ajax({
-                url: '/TicketManagement.Web/',
+        if (response.updateContentUrl === urlConstants.StartAppUrl) {
+            document.location.reload();
+        } else {
+            $.ajax({
+                url: response.redirectUrl,
                 contentType: 'application/html; charset=utf-8',
                 type: 'GET',
                 dataType: 'html',
@@ -141,6 +317,7 @@ function reloadPage(response) {
                     reloadContentWithMenu(response.updateContentUrl);
                 }
             });
+        }
     }
 }
 
@@ -182,16 +359,20 @@ function changeCostPopupPost(modalDialogSelector, invokerSelector) {
 function postPopupInit(modalDialogSelector, successFunc, invokerSelector) {
     $(modalDialogSelector).on("submit", invokerSelector, function (e) {
         e.preventDefault();
-
         var form = $(this);
-        $.ajax({
-            url: form.attr("action"),
-            method: form.attr("method"),
-            data: form.serialize(),
-            success: successFunc,
-            error:function (error) {
-                $(modalDialogSelector).find("#errorMsg").html(error).show();
-            }
-        });
+        $.validator.unobtrusive.parse(form);
+        
+        if (form.valid()) {
+            $.ajax({
+                url: form.attr("action"),
+                method: form.attr("method"),
+                data: form.serialize(),
+                success: successFunc,
+                error:function (error) {
+                    $(modalDialogSelector).find("#errorMsg").html(error).show();
+                }
+            });
+        }
+        return false;
     });
 }

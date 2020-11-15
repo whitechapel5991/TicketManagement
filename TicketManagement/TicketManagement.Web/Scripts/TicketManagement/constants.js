@@ -1,19 +1,18 @@
 ﻿"use strict";
 
-let SelectorConstants = {
+var SelectorConstants = {
     MainContent: '#content',
     Menu: '#menu',
     ValidationSummary: 'div[data-validation-summary=validationSummary]',
     RequestVerificationToken: 'body input[name=__RequestVerificationToken]',
     Loader: 'div[data-loader=Loader]',
     PostForm: 'form[data-form=postForm]',
-    PostAjaxLink: 'a[data-link=ajaxPostLink]',
+    PostAjaxLink: 'a[data-link=ajaxPostLink]'
 };
-
-let UrlConstants = {
-    MenuUrl: undefined
+var UrlConstants = {
+    MenuUrl: undefined,
+    StartAppUrl: undefined
 };
-
-let RequestConstants = {
+var RequestConstants = {
     RequestVerificationToken: '__RequestVerificationToken'
 };
