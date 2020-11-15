@@ -11,7 +11,7 @@
     @RenderSection("styles", required: false)
 </head>
 <body>
-@{ Html.RenderPartial("_MenuBar"); }
+    @{ Html.RenderPartial("_MenuBar"); }
 
     <div class="container body-content">
         <div id="content">
@@ -24,10 +24,13 @@
     @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/bootstrap")
     @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render("~/bundles/jqueryui")
     @Scripts.Render("~/bundles/customScripts")
 <script>
-    UrlConstants.MenuUrl = '@Url.Action("ReloadMenu", "StartApp")';
-</script>
+        UrlConstants.MenuUrl = '@Url.Action("ReloadMenu", "StartApp")';
+        UrlConstants.StartAppUrl = '@Url.Action("Index", "StartApp")';
+        loadcldr();
+    </script>
     @RenderSection("scripts", required: false)
 
 </body>

@@ -13,7 +13,7 @@ namespace TicketManagement.Web.Models.UserProfile
     {
         [Required(
             ErrorMessageResourceType = typeof(Resources.TicketManagementResource),
-            ErrorMessageResourceName = "PasswordRequired")]
+            ErrorMessageResourceName = nameof(Resources.TicketManagementResource.PasswordRequired))]
         [DataType(DataType.Password)]
         [StringLength(20, MinimumLength = 8, ErrorMessageResourceType = typeof(Resources.TicketManagementResource), ErrorMessageResourceName = "PasswordMustBeFrom8To20symb")]
         [Display(Name = "OldPassword", ResourceType = typeof(Resources.TicketManagementResource))]

@@ -25,7 +25,9 @@ namespace TicketManagement.Web.Models.Cart
         [Display(Name = "Description", ResourceType = typeof(Resources.TicketManagementResource))]
         public string EventDescription { get; set; }
 
-        [Range(typeof(decimal), "0.00", "1000000.00")]
+        [DataType(DataType.Currency)]
+        [Range(0.00, 1000000.00)]
+        [DisplayFormat(DataFormatString = "{0:C2}")]
         [Display(Name = "Cost", ResourceType = typeof(Resources.TicketManagementResource))]
         public decimal TicketCost { get; set; }
     }

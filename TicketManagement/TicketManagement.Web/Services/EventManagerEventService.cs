@@ -82,9 +82,14 @@ namespace TicketManagement.Web.Services
 
         public void CreateEvent(EventViewModel eventViewModel)
         {
-            var uploadedFile = new byte[eventViewModel.IndexEventViewModel.Image.InputStream.Length];
-            eventViewModel.IndexEventViewModel.Image.InputStream.Read(uploadedFile, 0, uploadedFile.Length);
-            this.imageService.SaveImage(eventViewModel.IndexEventViewModel.Image.FileName, uploadedFile);
+            var imageUrl = string.Empty;
+            if (eventViewModel.IndexEventViewModel.Image != null)
+            {
+                var uploadedFile = new byte[eventViewModel.IndexEventViewModel.Image.InputStream.Length];
+                eventViewModel.IndexEventViewModel.Image.InputStream.Read(uploadedFile, 0, uploadedFile.Length);
+                this.imageService.SaveImage(eventViewModel.IndexEventViewModel.Image.FileName, uploadedFile);
+                imageUrl = this.imageService.GetImageUri(eventViewModel.IndexEventViewModel.Image.FileName);
+            }
 
             this.eventService.AddEvent(
                 new Event
@@ -94,15 +99,20 @@ namespace TicketManagement.Web.Services
                     EndDateUtc = eventViewModel.IndexEventViewModel.GetEndDate(),
                     Description = eventViewModel.IndexEventViewModel.Description,
                     LayoutId = eventViewModel.LayoutId,
-                    ImageUrl = this.imageService.GetImageUri(eventViewModel.IndexEventViewModel.Image.FileName),
+                    ImageUrl = imageUrl,
                 });
         }
 
         public void UpdateEvent(EventViewModel eventViewModel)
         {
-            var uploadedFile = new byte[eventViewModel.IndexEventViewModel.Image.InputStream.Length];
-            eventViewModel.IndexEventViewModel.Image.InputStream.Read(uploadedFile, 0, uploadedFile.Length);
-            this.imageService.SaveImage(eventViewModel.IndexEventViewModel.Image.FileName, uploadedFile);
+            var imageUrl = string.Empty;
+            if (eventViewModel.IndexEventViewModel.Image != null)
+            {
+                var uploadedFile = new byte[eventViewModel.IndexEventViewModel.Image.InputStream.Length];
+                eventViewModel.IndexEventViewModel.Image.InputStream.Read(uploadedFile, 0, uploadedFile.Length);
+                this.imageService.SaveImage(eventViewModel.IndexEventViewModel.Image.FileName, uploadedFile);
+                imageUrl = this.imageService.GetImageUri(eventViewModel.IndexEventViewModel.Image.FileName);
+            }
 
             this.eventService.UpdateEvent(new Event
             {
@@ -113,7 +123,7 @@ namespace TicketManagement.Web.Services
                 LayoutId = eventViewModel.IndexEventViewModel.LayoutId,
                 Published = eventViewModel.IndexEventViewModel.Published,
                 Id = eventViewModel.IndexEventViewModel.Id,
-                ImageUrl = this.imageService.GetImageUri(eventViewModel.IndexEventViewModel.Image.FileName),
+                ImageUrl = imageUrl,
             });
         }
 

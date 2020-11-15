@@ -34,7 +34,6 @@ namespace TicketManagement.Web.Controllers
 
         [HttpGet]
         [Authorize]
-        [AjaxContentUrl]
         public PartialViewResult EventDetail(int eventId)
         {
             var eventAreaDetailVm = this.eventService.GetEventDetailViewModel(eventId);
@@ -43,7 +42,6 @@ namespace TicketManagement.Web.Controllers
 
         [HttpGet]
         [Authorize]
-        [AjaxContentUrl]
         public PartialViewResult EventAreaDetail(int eventAreaId)
         {
             var eventAreaDto = this.eventService.GetEventAreaDetailViewModel(eventAreaId);

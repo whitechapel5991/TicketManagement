@@ -32,7 +32,7 @@
         <div class="form-group">
             @Html.LabelFor(model => model.IndexEventViewModel.BeginTime, htmlAttributes: new { @class = "col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.IndexEventViewModel.BeginTime, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.EditorFor(model => model.IndexEventViewModel.BeginTime, new { htmlAttributes = new { @class = "form-control",  time = "jQueryUI" } })
                 @Html.ValidationMessageFor(model => model.IndexEventViewModel.BeginTime, "", new { @class = "text-danger" })
             </div>
         </div>
@@ -48,7 +48,7 @@
         <div class="form-group">
             @Html.LabelFor(model => model.IndexEventViewModel.EndTime, htmlAttributes: new { @class = "col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.IndexEventViewModel.EndTime, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.EditorFor(model => model.IndexEventViewModel.EndTime, new { htmlAttributes = new { @class = "form-control", time = "jQueryUI" } })
                 @Html.ValidationMessageFor(model => model.IndexEventViewModel.EndTime, "", new { @class = "text-danger" })
             </div>
         </div>
@@ -88,5 +88,7 @@
 <script>
     $(document).ready(function() {
         postRequest();
+        loadDataTimePicker();
+        loadTimePicker();
     });
 </script>

@@ -8,6 +8,7 @@
 using System.Net;
 using System.Web.Mvc;
 using TicketManagement.Web.Exceptions.Account;
+using TicketManagement.Web.Exceptions.UserProfile;
 using TicketManagement.Web.Filters.Base;
 
 namespace TicketManagement.Web.Filters.ExceptionFilters
@@ -36,6 +37,17 @@ namespace TicketManagement.Web.Filters.ExceptionFilters
             if (filterContext.Exception.GetType() == typeof(RegisterUserWrongDataException))
             {
                 var errorMessage = Resources.TicketManagementResource.UserExistException;
+
+                filterContext.Result = new JsonResult
+                {
+                    Data = errorMessage,
+                };
+                this.UpdateFilterContext(filterContext, (int)HttpStatusCode.NotFound);
+            }
+
+            if (filterContext.Exception.GetType() == typeof(ChangePasswordException))
+            {
+                var errorMessage = Resources.TicketManagementResource.WrongPassword;
 
                 filterContext.Result = new JsonResult
                 {

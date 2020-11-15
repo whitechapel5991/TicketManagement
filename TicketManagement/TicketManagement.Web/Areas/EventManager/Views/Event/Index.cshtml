@@ -28,8 +28,6 @@
                         imgPath = @Url.Content($"~/Content/EventImages/no-image-available.jpeg");
                     }
 
-                    var buttonLinkText = item.Published ? TicketManagementResource.UnPublished : TicketManagementResource.Published;
-
                     <tr class="table-primary">
                         <th scope="row">
                             <img class="event-image" style="width: 380px; height: 300px;" src=@imgPath alt=""/>
@@ -37,28 +35,28 @@
 
                         <td class="col-md-5">
                             <div class="row">
-                                <div class="col-md-3">@Html.DisplayNameFor(model => model.Name):</div>
-                                <div class="col-md-9">@Html.DisplayFor(modelItem => item.Name)</div>
+                                <div class="col-md-4">@Html.DisplayNameFor(model => model.Name):</div>
+                                <div class="col-md-8">@Html.DisplayFor(modelItem => item.Name)</div>
                             </div>
                             <div class="row">
-                                <div class="col-md-3">@Html.DisplayNameFor(model => model.BeginDate):</div>
-                                <div class="col-md-7">@Html.DisplayFor(modelItem => item.BeginDate) @Html.DisplayFor(modelItem => item.BeginTime)</div>
+                                <div class="col-md-4">@Html.DisplayNameFor(model => model.BeginDate):</div>
+                                <div class="col-md-8">@Html.DisplayFor(modelItem => item.BeginDate) @Html.DisplayFor(modelItem => item.BeginTime)</div>
                             </div>
                             <div class="row">
-                                <div class="col-md-3">@Html.DisplayNameFor(model => model.EndDate):</div>
-                                <div class="col-md-7">@Html.DisplayFor(modelItem => item.EndDate) @Html.DisplayFor(modelItem => item.EndTime)</div>
+                                <div class="col-md-4">@Html.DisplayNameFor(model => model.EndDate):</div>
+                                <div class="col-md-8">@Html.DisplayFor(modelItem => item.EndDate) @Html.DisplayFor(modelItem => item.EndTime)</div>
                             </div>
                             <div class="row">
-                                <div class="col-md-3">@Html.DisplayNameFor(model => model.Description):</div>
-                                <div class="col-md-7">@Html.DisplayFor(modelItem => item.Description)</div>
+                                <div class="col-md-4">@Html.DisplayNameFor(model => model.Description):</div>
+                                <div class="col-md-8">@Html.DisplayFor(modelItem => item.Description)</div>
                             </div>
                             <div class="row">
-                                <div class="col-md-3">@Html.DisplayNameFor(model => model.LayoutName):</div>
-                                <div class="col-md-7">@Html.DisplayFor(modelItem => item.LayoutName)</div>
+                                <div class="col-md-4">@Html.DisplayNameFor(model => model.LayoutName):</div>
+                                <div class="col-md-8">@Html.DisplayFor(modelItem => item.LayoutName)</div>
                             </div>
                             <div class="row">
-                                <div class="col-md-3">@Html.DisplayNameFor(model => model.Published):</div>
-                                <div class="col-md-7">@Html.DisplayFor(modelItem => item.Published)</div>
+                                <div class="col-md-4">@Html.DisplayNameFor(model => model.Published):</div>
+                                <div class="col-md-8">@Html.DisplayFor(modelItem => item.Published)</div>
                             </div>
                         </td>
 

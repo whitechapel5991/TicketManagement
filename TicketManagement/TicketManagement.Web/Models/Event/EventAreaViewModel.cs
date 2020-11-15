@@ -26,6 +26,8 @@ namespace TicketManagement.Web.Models.Event
         [Display(Name = "CoordinateY", ResourceType = typeof(Resources.TicketManagementResource))]
         public int CoordinateY { get; set; }
 
+        [DataType(DataType.Currency)]
+        [DisplayFormat(DataFormatString = "{0:C2}")]
         [Display(Name = "Price", ResourceType = typeof(Resources.TicketManagementResource))]
         public decimal Price { get; set; }
     }

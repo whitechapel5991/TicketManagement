@@ -1,0 +1,8 @@
+﻿@model DateTime?
+@{
+    var value = "";
+    if (Model.HasValue) {
+        value = $"{Model.Value.ToShortDateString():d}";
+    }
+}
+@Html.TextBox("", value, new { @class = "form-control", calendar = "jQueryUI", type = "text"})

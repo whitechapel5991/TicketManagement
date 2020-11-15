@@ -7,6 +7,7 @@
 
 using System.Web.Mvc;
 using TicketManagement.Web.Areas.EventManager.Data;
+using TicketManagement.Web.Filters.ActionFilters;
 using TicketManagement.Web.Filters.AuthorizationFilters;
 using TicketManagement.Web.Filters.ExceptionFilters;
 using TicketManagement.Web.Interfaces;
@@ -26,6 +27,7 @@ namespace TicketManagement.Web.Areas.EventManager.Controllers
         }
 
         [HttpGet]
+        [AjaxContentUrl]
         public PartialViewResult Index()
         {
             return this.PartialView(this.eventServiceEventManager.GetIndexEventViewModels());

@@ -486,4 +486,16 @@
   <data name="ChangeAreaPriceDisplay" xml:space="preserve">
     <value>Зменіце цану раёна</value>
   </data>
+  <data name="FieldIsRequired" xml:space="preserve">
+    <value>Поле з'яўляецца абавязковым.</value>
+  </data>
+  <data name="BalanceRangeError" xml:space="preserve">
+    <value>Поле павінна быць ад 0 да 99.999.999.</value>
+  </data>
+  <data name="WrongPassword" xml:space="preserve">
+    <value>Няправільны пароль</value>
+  </data>
+  <data name="FieldMustBeADecimalNumber" xml:space="preserve">
+    <value>Поле павінна быць лікам</value>
+  </data>
 </root>

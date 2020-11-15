@@ -5,6 +5,7 @@
 // </copyright>
 // ****************************************************************************
 
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using TicketManagement.BLL.Interfaces;
@@ -77,7 +78,7 @@ namespace TicketManagement.Web.Services
                 var eventKey = eventDictionary.Keys.First(x => x.Any(z => z == order.EventSeatId));
                 var eventAreaKey = eventAreasDictionary.Keys.First(x => x.Any(z => z == order.EventSeatId));
 
-                var key = eventKey as int[] ?? eventKey.ToArray();
+                var key = eventKey ?? Array.Empty<int>().ToArray();
                 var orderVm = new OrderViewModel
                 {
                     OrderId = order.Id,

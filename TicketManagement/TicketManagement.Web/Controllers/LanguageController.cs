@@ -51,7 +51,16 @@ namespace TicketManagement.Web.Controllers
             this.Response.Cookies.Add(languageCookie);
             this.Response.StatusCode = (int)HttpStatusCode.OK;
 
-            return this.Json(new { success = true, redirectUrl = this.Url.Action("Index", "StartApp"), updateContentUrl = AjaxContentUrlAttribute.CurrentContentUrl }, JsonRequestBehavior.AllowGet);
+            return this.Json(new { success = true, 
+                redirectUrl = this.Url.Action("Index", "StartApp"),
+                updateContentUrl = Url.Action(
+                    AjaxContentUrlAttribute.ActionContentUrl,
+                    controllerName: AjaxContentUrlAttribute.ControllerContentUrl,
+                    new
+                    {
+                        area = AjaxContentUrlAttribute.AreaContentUrl,
+                    }),
+            }, JsonRequestBehavior.AllowGet);
         }
     }
 }

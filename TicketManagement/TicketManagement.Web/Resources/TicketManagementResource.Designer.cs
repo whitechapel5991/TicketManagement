@@ -124,6 +124,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Поле должно быть от 0 до 99999999..
+        /// </summary>
+        public static string BalanceRangeError {
+            get {
+                return ResourceManager.GetString("BalanceRangeError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Корзина.
         /// </summary>
         public static string Basket {
@@ -525,6 +534,24 @@ namespace Resources {
         public static string ExistAreaWithDescription {
             get {
                 return ResourceManager.GetString("ExistAreaWithDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Поле является обязательным..
+        /// </summary>
+        public static string FieldIsRequired {
+            get {
+                return ResourceManager.GetString("FieldIsRequired", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Поле должно быть числом.
+        /// </summary>
+        public static string FieldMustBeADecimalNumber {
+            get {
+                return ResourceManager.GetString("FieldMustBeADecimalNumber", resourceCulture);
             }
         }
         
@@ -1164,6 +1191,15 @@ namespace Resources {
         public static string WrongCredentials {
             get {
                 return ResourceManager.GetString("WrongCredentials", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Неверный пароль.
+        /// </summary>
+        public static string WrongPassword {
+            get {
+                return ResourceManager.GetString("WrongPassword", resourceCulture);
             }
         }
     }
