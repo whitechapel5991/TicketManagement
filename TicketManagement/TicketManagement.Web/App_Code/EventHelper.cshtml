@@ -156,19 +156,22 @@ if (User.Identity.IsAuthenticated && (User.IsInRole("event manager") || User.IsI
                 }
             </div>
         </div>
-        <div class="card offset-md-7" style="width: 180px;background-color: #e1bf7f; border: 0;">
+        <div class="card offset-md-4" style="width: 250px;background-color: #e1bf7f; border: 0;">
             <div class="card-body" style="padding: 0;">
                 <div class="row">
                     <div class="seat-canvas d-inline-block" style="background-color: @SeatColor.GetSeatColor(EventSeatState.Free); width: 50px; height: 50px;" tabindex="0">
-                    </div> - @TicketManagementResource.FreeSeatStatusDisplay
+                    </div> 
+                    <p> - @TicketManagementResource.FreeSeatStatusDisplay</p>
                 </div>
                 <div class="row">
                     <div class="seat-canvas d-inline-block" style="background-color: @SeatColor.GetSeatColor(EventSeatState.Sold); width: 50px; height: 50px;" tabindex="0">
-                    </div> - @TicketManagementResource.SoldSeatStatusDisplay
+                    </div> 
+                    <p> - @TicketManagementResource.SoldSeatStatusDisplay</p>
                 </div>
                 <div class="row">
                     <div class="seat-canvas d-inline-block" style="background-color: @SeatColor.GetSeatColor(EventSeatState.InBasket); width: 50px; height: 50px;" tabindex="0">
-                    </div> - @TicketManagementResource.HoldSeatStatusDisplay
+                    </div> 
+                    <p> - @TicketManagementResource.HoldSeatStatusDisplay</p>
                 </div>
             </div>
         </div>
@@ -194,13 +197,13 @@ if (User.Identity.IsAuthenticated && (User.IsInRole("event manager") || User.IsI
                                     <div class="popover-content" style="display: none;">
                                         X: @eventSeat.Number <br />
                                         Y: @eventSeat.Row <br />
-                                        @eventSeat.State <br />
 
                                     </div>
                                     @if (eventSeat.State == EventSeatState.Free)
                                     {
                                         <a class="nav-link" style="padding: 0; display: flex; align-items: center; justify-content: center" data-ajax="true" data-ajax-method="POST"
                                            data-ajax-success="OnSuccessAddToCart"
+                                           data-ajax-confirm="@TicketManagementResource.AddInBasket"
                                            href="@wvp.Url.Action("AddToCart", new {area = "", controller = "Event", seatId = eventSeat.Id})">
                                             <svg style="line-height: 100%;" width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-cart" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
                                                 <path fill-rule="evenodd" d="M0 1.5A.5.5 0 0 1 .5 1H2a.5.5 0 0 1 .485.379L2.89 3H14.5a.5.5 0 0 1 .491.592l-1.5 8A.5.5 0 0 1 13 12H4a.5.5 0 0 1-.491-.408L2.01 3.607 1.61 2H.5a.5.5 0 0 1-.5-.5zM3.102 4l1.313 7h8.17l1.313-7H3.102zM5 12a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm7 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm-7 1a1 1 0 1 0 0 2 1 1 0 0 0 0-2zm7 0a1 1 0 1 0 0 2 1 1 0 0 0 0-2z" />

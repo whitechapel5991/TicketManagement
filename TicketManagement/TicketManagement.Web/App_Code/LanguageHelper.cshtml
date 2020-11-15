@@ -9,8 +9,8 @@
     @foreach (var lang in Enum.GetValues(typeof(Language)))
     {
         using (wvp?.Ajax.BeginForm("ChangeLanguage",
-                new { controller = "Language" },
-                new AjaxOptions { HttpMethod = WebRequestMethods.Http.Post, OnSuccess = "reloadPage" },
+                new { controller = "Language", area="" },
+                new AjaxOptions { HttpMethod = WebRequestMethods.Http.Post, OnSuccess = "OnSuccessChangeLanguage" },
                 new { id = @lang }))
             {
                 <input type='submit' name='language' value='@lang' class='dropdown-item'>
