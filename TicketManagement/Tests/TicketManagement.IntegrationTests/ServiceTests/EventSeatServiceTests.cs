@@ -98,6 +98,17 @@ namespace TicketManagement.IntegrationTests.ServiceTests
                 new EventSeat() { Id = 18, State = EventSeatState.Free, EventAreaId = 4, Row = 1, Number = 3 },
                 new EventSeat() { Id = 19, State = EventSeatState.Free, EventAreaId = 4, Row = 1, Number = 4 },
                 new EventSeat() { Id = 20, State = EventSeatState.Free, EventAreaId = 4, Row = 1, Number = 5 },
+
+                new EventSeat() { Id = 21, State = EventSeatState.InBasket, EventAreaId = 1, Row = 2, Number = 6 },
+                new EventSeat() { Id = 22, State = EventSeatState.Sold, EventAreaId = 1, Row = 2, Number = 7 },
+                new EventSeat() { Id = 23, State = EventSeatState.Sold, EventAreaId = 1, Row = 2, Number = 8 },
+                new EventSeat() { Id = 24, State = EventSeatState.InBasket, EventAreaId = 1, Row = 2, Number = 9 },
+                new EventSeat() { Id = 25, State = EventSeatState.Sold, EventAreaId = 1, Row = 2, Number = 10 },
+                new EventSeat() { Id = 26, State = EventSeatState.Free, EventAreaId = 1, Row = 3, Number = 11 },
+                new EventSeat() { Id = 27, State = EventSeatState.Free, EventAreaId = 1, Row = 3, Number = 12 },
+                new EventSeat() { Id = 28, State = EventSeatState.Free, EventAreaId = 1, Row = 3, Number = 13 },
+                new EventSeat() { Id = 29, State = EventSeatState.InBasket, EventAreaId = 1, Row = 3, Number = 14 },
+                new EventSeat() { Id = 30, State = EventSeatState.Sold, EventAreaId = 1, Row = 3, Number = 15 },
             };
 
             // Act

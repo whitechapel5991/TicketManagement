@@ -41,7 +41,7 @@ namespace TicketManagement.IntegrationTests.ServiceTests.Identity
             var userDto = new TicketManagementUser
             {
                 Email = "sbaka1111@gmail.com",
-                Password = "adminadmin",
+                PasswordHash = "adminadmin",
                 UserName = "Den",
                 FirstName = "perec",
                 Surname = "paprika",
