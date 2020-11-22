@@ -6,12 +6,9 @@
 // ****************************************************************************
 
 using System;
-using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNet.Identity;
 using Microsoft.Owin.Security;
-using TicketManagement.Web.Constants;
-using TicketManagement.Web.Constants.Extension;
 using TicketManagement.Web.Exceptions.Account;
 using TicketManagement.Web.Interfaces;
 using TicketManagement.Web.Models.Account;
@@ -52,12 +49,6 @@ namespace TicketManagement.Web.Services
                 }, claimIdentity);
 
             return user.Id;
-        }
-
-        public async Task<bool> IsUserEventManagerAsync(int userId)
-        {
-            var roles = await this.userManager.GetRolesAsync(userId);
-            return roles.Any(x => x == Roles.UserManager.GetStringValue());
         }
 
         public void SignOut()

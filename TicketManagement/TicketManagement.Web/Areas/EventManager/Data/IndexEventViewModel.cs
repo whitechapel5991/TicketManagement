@@ -21,7 +21,6 @@ namespace TicketManagement.Web.Areas.EventManager.Data
 
         [Required]
         [DataType(DataType.Date)]
-        //[DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
         [Display(Name = "BeginDate", ResourceType = typeof(Resources.TicketManagementResource))]
         public DateTime BeginDate { get; set; }
 
@@ -32,7 +31,6 @@ namespace TicketManagement.Web.Areas.EventManager.Data
 
         [Required]
         [DataType(DataType.Date)]
-        //[DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
         [Display(Name = "EndDate", ResourceType = typeof(Resources.TicketManagementResource))]
         public DateTime EndDate { get; set; }
 

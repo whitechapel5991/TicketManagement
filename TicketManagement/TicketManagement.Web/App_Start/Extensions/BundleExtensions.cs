@@ -1,4 +1,11 @@
-﻿using System.Web.Optimization;
+﻿// ****************************************************************************
+// <copyright file="BundleExtensions.cs" company="EPAM Systems">
+// Copyright (c) EPAM Systems. All rights reserved.
+// Author Dzianis Shcharbakou.
+// </copyright>
+// ****************************************************************************
+
+using System.Web.Optimization;
 
 namespace TicketManagement.Web.Extensions
 {
