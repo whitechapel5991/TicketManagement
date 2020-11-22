@@ -15,6 +15,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TicketManagement.Integratio
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TicketManagement.Web", "TicketManagement.Web\TicketManagement.Web.csproj", "{64FDD61C-A15C-46D4-B868-BA92462DEB24}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TicketManagement.AuthenticationApi", "TicketManagement.AuthenticationApi\TicketManagement.AuthenticationApi.csproj", "{488B8720-BE90-4983-834B-210C07667605}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -41,6 +43,10 @@ Global
 		{64FDD61C-A15C-46D4-B868-BA92462DEB24}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{64FDD61C-A15C-46D4-B868-BA92462DEB24}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{64FDD61C-A15C-46D4-B868-BA92462DEB24}.Release|Any CPU.Build.0 = Release|Any CPU
+		{488B8720-BE90-4983-834B-210C07667605}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{488B8720-BE90-4983-834B-210C07667605}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{488B8720-BE90-4983-834B-210C07667605}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{488B8720-BE90-4983-834B-210C07667605}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
