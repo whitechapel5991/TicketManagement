@@ -26,6 +26,14 @@ namespace TicketManagement.BLL.Util
         private readonly int lockTime;
         private readonly string hangFireConnectionString;
 
+        public ServiceModule()
+        {
+            this.email = default;
+            this.emailPassword = default;
+            this.lockTime = default;
+            this.hangFireConnectionString = default;
+        }
+
         public ServiceModule(string email, string password, int lockTime, string hangFireConnectionString)
         {
             this.email = email;
@@ -101,12 +109,15 @@ namespace TicketManagement.BLL.Util
               .InstancePerLifetimeScope();
 
             // HangFire
-            this.HangFireConfig(this.hangFireConnectionString);
-            builder.RegisterType<BackgroundJobClient>().As<IBackgroundJobClient>().InstancePerLifetimeScope();
-            builder.Register(c => JobStorage.Current).As<JobStorage>().InstancePerLifetimeScope();
-            builder.RegisterType<SeatLocker>()
-                .As<ISeatLocker>()
-                .InstancePerLifetimeScope();
+            if (this.hangFireConnectionString != default)
+            {
+                this.HangFireConfig(this.hangFireConnectionString);
+                builder.RegisterType<BackgroundJobClient>().As<IBackgroundJobClient>().InstancePerLifetimeScope();
+                builder.Register(c => JobStorage.Current).As<JobStorage>().InstancePerLifetimeScope();
+                builder.RegisterType<SeatLocker>()
+                    .As<ISeatLocker>()
+                    .InstancePerLifetimeScope();
+            }
 
             builder.RegisterModule(new IdentityModule());
         }

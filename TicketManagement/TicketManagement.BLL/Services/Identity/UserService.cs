@@ -57,6 +57,11 @@ namespace TicketManagement.BLL.Services.Identity
             return this.userRepository.FindByNormalizedUserName(userName);
         }
 
+        public TicketManagementUser FindByEmail(string email)
+        {
+            return this.userRepository.FindByNormalizedEmail(email);
+        }
+
         public string GetPasswordHash(int userId)
         {
             return this.userRepository.GetById(userId).PasswordHash;

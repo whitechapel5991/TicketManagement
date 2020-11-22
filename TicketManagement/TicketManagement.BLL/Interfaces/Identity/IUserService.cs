@@ -14,6 +14,8 @@ namespace TicketManagement.BLL.Interfaces.Identity
     {
         TicketManagementUser FindByName(string userName);
 
+        TicketManagementUser FindByEmail(string email);
+
         TicketManagementUser FindById(int userId);
 
         int Add(TicketManagementUser userDto);
