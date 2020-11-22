@@ -165,49 +165,326 @@ namespace TicketManagement.IntegrationTests.ServiceTests
             };
             var expectedEventSeats = new List<EventSeat>
             {
-                new EventSeat() { Id = 1, State = EventSeatState.InBasket, EventAreaId = 1, Row = 1, Number = 1 },
-                new EventSeat() { Id = 2, State = EventSeatState.Sold, EventAreaId = 1, Row = 1, Number = 2 },
-                new EventSeat() { Id = 3, State = EventSeatState.Sold, EventAreaId = 1, Row = 1, Number = 3 },
-                new EventSeat() { Id = 4, State = EventSeatState.Free, EventAreaId = 1, Row = 1, Number = 4 },
-                new EventSeat() { Id = 5, State = EventSeatState.Free, EventAreaId = 1, Row = 1, Number = 5 },
-                new EventSeat() { Id = 6, State = EventSeatState.Free, EventAreaId = 2, Row = 1, Number = 1 },
-                new EventSeat() { Id = 7, State = EventSeatState.Free, EventAreaId = 2, Row = 1, Number = 2 },
-                new EventSeat() { Id = 8, State = EventSeatState.Free, EventAreaId = 2, Row = 1, Number = 3 },
-                new EventSeat() { Id = 9, State = EventSeatState.Free, EventAreaId = 2, Row = 1, Number = 4 },
-                new EventSeat() { Id = 10, State = EventSeatState.Free, EventAreaId = 2, Row = 1, Number = 5 },
-                new EventSeat() { Id = 31, State = EventSeatState.Free, EventAreaId = 5, Row = 1, Number = 1 },
-                new EventSeat() { Id = 32, State = EventSeatState.Free, EventAreaId = 5, Row = 1, Number = 2 },
-                new EventSeat() { Id = 33, State = EventSeatState.Free, EventAreaId = 5, Row = 1, Number = 3 },
-                new EventSeat() { Id = 34, State = EventSeatState.Free, EventAreaId = 5, Row = 1, Number = 4 },
-                new EventSeat() { Id = 35, State = EventSeatState.Free, EventAreaId = 5, Row = 1, Number = 5 },
-                new EventSeat() { Id = 46, State = EventSeatState.Free, EventAreaId = 6, Row = 1, Number = 1 },
-                new EventSeat() { Id = 47, State = EventSeatState.Free, EventAreaId = 6, Row = 1, Number = 2 },
-                new EventSeat() { Id = 48, State = EventSeatState.Free, EventAreaId = 6, Row = 1, Number = 3 },
-                new EventSeat() { Id = 49, State = EventSeatState.Free, EventAreaId = 6, Row = 1, Number = 4 },
-
-                new EventSeat() { Id = 21, State = EventSeatState.InBasket, EventAreaId = 1, Row = 2, Number = 6 },
-                new EventSeat() { Id = 22, State = EventSeatState.Sold, EventAreaId = 1, Row = 2, Number = 7 },
-                new EventSeat() { Id = 23, State = EventSeatState.Sold, EventAreaId = 1, Row = 2, Number = 8 },
-                new EventSeat() { Id = 24, State = EventSeatState.InBasket, EventAreaId = 1, Row = 2, Number = 9 },
-                new EventSeat() { Id = 25, State = EventSeatState.Sold, EventAreaId = 1, Row = 2, Number = 10 },
-                new EventSeat() { Id = 26, State = EventSeatState.Free, EventAreaId = 1, Row = 3, Number = 11 },
-                new EventSeat() { Id = 27, State = EventSeatState.Free, EventAreaId = 1, Row = 3, Number = 12 },
-                new EventSeat() { Id = 28, State = EventSeatState.Free, EventAreaId = 1, Row = 3, Number = 13 },
-                new EventSeat() { Id = 29, State = EventSeatState.InBasket, EventAreaId = 1, Row = 3, Number = 14 },
-                new EventSeat() { Id = 30, State = EventSeatState.Sold, EventAreaId = 1, Row = 3, Number = 15 },
-
-                new EventSeat() { Id = 50, State = EventSeatState.Free, EventAreaId = 6, Row = 1, Number = 5 },
-                new EventSeat() { Id = 36, State = EventSeatState.Free, EventAreaId = 5, Row = 2, Number = 6 },
-                new EventSeat() { Id = 37, State = EventSeatState.Free, EventAreaId = 5, Row = 2, Number = 7 },
-                new EventSeat() { Id = 38, State = EventSeatState.Free, EventAreaId = 5, Row = 2, Number = 8 },
-                new EventSeat() { Id = 39, State = EventSeatState.Free, EventAreaId = 5, Row = 2, Number = 9 },
-                new EventSeat() { Id = 40, State = EventSeatState.Free, EventAreaId = 5, Row = 2, Number = 10 },
-                new EventSeat() { Id = 41, State = EventSeatState.Free, EventAreaId = 5, Row = 3, Number = 11 },
-                new EventSeat() { Id = 42, State = EventSeatState.Free, EventAreaId = 5, Row = 3, Number = 12 },
-                new EventSeat() { Id = 43, State = EventSeatState.Free, EventAreaId = 5, Row = 3, Number = 13 },
-                new EventSeat() { Id = 44, State = EventSeatState.Free, EventAreaId = 5, Row = 3, Number = 14 },
-                new EventSeat() { Id = 45, State = EventSeatState.Free, EventAreaId = 5, Row = 3, Number = 15 },
-
+                new EventSeat()
+                {
+                    Id = 1,
+                    State = EventSeatState.InBasket,
+                    EventAreaId = 1,
+                    Row = 1,
+                    Number = 1,
+                },
+                new EventSeat()
+                {
+                    Id = 2,
+                    State = EventSeatState.Sold,
+                    EventAreaId = 1,
+                    Row = 1,
+                    Number = 2,
+                },
+                new EventSeat()
+                {
+                    Id = 3,
+                    State = EventSeatState.Sold,
+                    EventAreaId = 1,
+                    Row = 1,
+                    Number = 3,
+                },
+                new EventSeat()
+                {
+                    Id = 4,
+                    State = EventSeatState.Free,
+                    EventAreaId = 1,
+                    Row = 1,
+                    Number = 4,
+                },
+                new EventSeat()
+                {
+                    Id = 5,
+                    State = EventSeatState.Free,
+                    EventAreaId = 1,
+                    Row = 1,
+                    Number = 5,
+                },
+                new EventSeat()
+                {
+                    Id = 6,
+                    State = EventSeatState.Free,
+                    EventAreaId = 2,
+                    Row = 1,
+                    Number = 1,
+                },
+                new EventSeat()
+                {
+                    Id = 7,
+                    State = EventSeatState.Free,
+                    EventAreaId = 2,
+                    Row = 1,
+                    Number = 2,
+                },
+                new EventSeat()
+                {
+                    Id = 8,
+                    State = EventSeatState.Free,
+                    EventAreaId = 2,
+                    Row = 1,
+                    Number = 3,
+                },
+                new EventSeat()
+                {
+                    Id = 9,
+                    State = EventSeatState.Free,
+                    EventAreaId = 2,
+                    Row = 1,
+                    Number = 4,
+                },
+                new EventSeat()
+                {
+                    Id = 10,
+                    State = EventSeatState.Free,
+                    EventAreaId = 2,
+                    Row = 1,
+                    Number = 5,
+                },
+                new EventSeat()
+                {
+                    Id = 31,
+                    State = EventSeatState.Free,
+                    EventAreaId = 5,
+                    Row = 1,
+                    Number = 1,
+                },
+                new EventSeat()
+                {
+                    Id = 32,
+                    State = EventSeatState.Free,
+                    EventAreaId = 5,
+                    Row = 1,
+                    Number = 2,
+                },
+                new EventSeat()
+                {
+                    Id = 33,
+                    State = EventSeatState.Free,
+                    EventAreaId = 5,
+                    Row = 1,
+                    Number = 3,
+                },
+                new EventSeat()
+                {
+                    Id = 34,
+                    State = EventSeatState.Free,
+                    EventAreaId = 5,
+                    Row = 1,
+                    Number = 4,
+                },
+                new EventSeat()
+                {
+                    Id = 35,
+                    State = EventSeatState.Free,
+                    EventAreaId = 5,
+                    Row = 1,
+                    Number = 5,
+                },
+                new EventSeat()
+                {
+                    Id = 46,
+                    State = EventSeatState.Free,
+                    EventAreaId = 6,
+                    Row = 1,
+                    Number = 1,
+                },
+                new EventSeat()
+                {
+                    Id = 47,
+                    State = EventSeatState.Free,
+                    EventAreaId = 6,
+                    Row = 1,
+                    Number = 2,
+                },
+                new EventSeat()
+                {
+                    Id = 48,
+                    State = EventSeatState.Free,
+                    EventAreaId = 6,
+                    Row = 1,
+                    Number = 3,
+                },
+                new EventSeat()
+                {
+                    Id = 49,
+                    State = EventSeatState.Free,
+                    EventAreaId = 6,
+                    Row = 1,
+                    Number = 4,
+                },
+                new EventSeat()
+                {
+                    Id = 21,
+                    State = EventSeatState.InBasket,
+                    EventAreaId = 1,
+                    Row = 2,
+                    Number = 6,
+                },
+                new EventSeat()
+                {
+                    Id = 22,
+                    State = EventSeatState.Sold,
+                    EventAreaId = 1,
+                    Row = 2,
+                    Number = 7,
+                },
+                new EventSeat()
+                {
+                    Id = 23,
+                    State = EventSeatState.Sold,
+                    EventAreaId = 1,
+                    Row = 2,
+                    Number = 8,
+                },
+                new EventSeat()
+                {
+                    Id = 24,
+                    State = EventSeatState.InBasket,
+                    EventAreaId = 1,
+                    Row = 2,
+                    Number = 9,
+                },
+                new EventSeat()
+                {
+                    Id = 25,
+                    State = EventSeatState.Sold,
+                    EventAreaId = 1,
+                    Row = 2,
+                    Number = 10,
+                },
+                new EventSeat()
+                {
+                    Id = 26,
+                    State = EventSeatState.Free,
+                    EventAreaId = 1,
+                    Row = 3,
+                    Number = 11,
+                },
+                new EventSeat()
+                {
+                    Id = 27,
+                    State = EventSeatState.Free,
+                    EventAreaId = 1,
+                    Row = 3,
+                    Number = 12,
+                },
+                new EventSeat()
+                {
+                    Id = 28,
+                    State = EventSeatState.Free,
+                    EventAreaId = 1,
+                    Row = 3,
+                    Number = 13,
+                },
+                new EventSeat()
+                {
+                    Id = 29,
+                    State = EventSeatState.InBasket,
+                    EventAreaId = 1,
+                    Row = 3,
+                    Number = 14,
+                },
+                new EventSeat()
+                {
+                    Id = 30,
+                    State = EventSeatState.Sold,
+                    EventAreaId = 1,
+                    Row = 3,
+                    Number = 15,
+                },
+                new EventSeat()
+                {
+                    Id = 50,
+                    State = EventSeatState.Free,
+                    EventAreaId = 6,
+                    Row = 1,
+                    Number = 5,
+                },
+                new EventSeat()
+                {
+                    Id = 36,
+                    State = EventSeatState.Free,
+                    EventAreaId = 5,
+                    Row = 2,
+                    Number = 6,
+                },
+                new EventSeat()
+                {
+                    Id = 37,
+                    State = EventSeatState.Free,
+                    EventAreaId = 5,
+                    Row = 2,
+                    Number = 7,
+                },
+                new EventSeat()
+                {
+                    Id = 38,
+                    State = EventSeatState.Free,
+                    EventAreaId = 5,
+                    Row = 2,
+                    Number = 8,
+                },
+                new EventSeat()
+                {
+                    Id = 39,
+                    State = EventSeatState.Free,
+                    EventAreaId = 5,
+                    Row = 2,
+                    Number = 9,
+                },
+                new EventSeat()
+                {
+                    Id = 40,
+                    State = EventSeatState.Free,
+                    EventAreaId = 5,
+                    Row = 2,
+                    Number = 10,
+                },
+                new EventSeat()
+                {
+                    Id = 41,
+                    State = EventSeatState.Free,
+                    EventAreaId = 5,
+                    Row = 3,
+                    Number = 11,
+                },
+                new EventSeat()
+                {
+                    Id = 42,
+                    State = EventSeatState.Free,
+                    EventAreaId = 5,
+                    Row = 3,
+                    Number = 12,
+                },
+                new EventSeat()
+                {
+                    Id = 43,
+                    State = EventSeatState.Free,
+                    EventAreaId = 5,
+                    Row = 3,
+                    Number = 13,
+                },
+                new EventSeat()
+                {
+                    Id = 44,
+                    State = EventSeatState.Free,
+                    EventAreaId = 5,
+                    Row = 3,
+                    Number = 14,
+                },
+                new EventSeat()
+                {
+                    Id = 45,
+                    State = EventSeatState.Free,
+                    EventAreaId = 5,
+                    Row = 3,
+                    Number = 15,
+                },
             };
 
             // Act
