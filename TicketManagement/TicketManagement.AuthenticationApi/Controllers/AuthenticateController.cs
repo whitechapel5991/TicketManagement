@@ -7,6 +7,7 @@
 
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using TicketManagement.AuthenticationApi.Infrastructure;
 using TicketManagement.AuthenticationApi.Models;
@@ -25,8 +26,15 @@ namespace TicketManagement.AuthenticationApi.Controllers
             this.accountService = accountService;
         }
 
+        /// <summary>
+        /// Login into the system
+        /// </summary>
+        /// <returns>New access token</returns>
+        /// <response code="200">Returns the newly access token</response>
+        /// <response code="400">Wrong parameters</response>
         [AllowAnonymous]
         [HttpPost]
+        [Produces("application/json")]
         [Route("login")]
         public async Task<IActionResult> Login([FromBody] LoginModel model)
         {

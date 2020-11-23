@@ -5,6 +5,7 @@
 // </copyright>
 // ****************************************************************************
 
+using System;
 using System.Text;
 using Autofac;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -15,6 +16,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
+using Microsoft.OpenApi.Models;
 using TicketManagement.AuthenticationApi.Util;
 using IdentityRole = TicketManagement.AuthenticationApi.Services.Identity.IdentityRole;
 using TicketManagementUser = TicketManagement.AuthenticationApi.Services.Identity.TicketManagementUser;
@@ -62,6 +64,22 @@ namespace TicketManagement.AuthenticationApi
                     IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(this.Configuration["JWT:Secret"])),
                 };
             });
+
+            services.AddSwaggerGen(c =>
+            {
+                c.SwaggerDoc("v1", new OpenApiInfo
+                {
+                    Version = "v1",
+                    Title = "Authentication API",
+                    Description = "TicketManagement Authentication Web API",
+                });
+                c.IncludeXmlComments(GetXmlCommentsPath());
+            });
+        }
+
+        private static string GetXmlCommentsPath()
+        {
+            return $@"{AppDomain.CurrentDomain.BaseDirectory}\Swagger.TicketManagement.AuthenticationApi.xml";
         }
 
         public void ConfigureContainer(ContainerBuilder builder)
@@ -83,6 +101,12 @@ namespace TicketManagement.AuthenticationApi
             app.UseHttpsRedirection();
 
             app.UseRouting();
+
+            app.UseSwagger();
+            app.UseSwaggerUI(c =>
+            {
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "Authentication API V1");
+            });
 
             app.UseAuthentication();
             app.UseAuthorization();
