@@ -46,6 +46,11 @@ namespace TicketManagement.Web.Filters.Base
             try
             {
                 Locker.AcquireWriterLock(int.MaxValue);
+                if (!Directory.Exists(HttpContext.Current.Server.MapPath("~/Log")))
+                {
+                    Directory.CreateDirectory(HttpContext.Current.Server.MapPath("~/Log"));
+                }
+                
                 File.AppendAllText(HttpContext.Current.Server.MapPath("~/Log/LogExceptions.txt"), message);
             }
             finally

@@ -5,10 +5,8 @@
 // </copyright>
 // ****************************************************************************
 
-using System;
 using System.Threading.Tasks;
-using Microsoft.AspNet.Identity;
-using Microsoft.Owin.Security;
+using TicketManagement.Web.AuthenticationApi.Clients;
 using TicketManagement.Web.Exceptions.Account;
 using TicketManagement.Web.Interfaces;
 using TicketManagement.Web.Models.Account;
@@ -20,40 +18,32 @@ namespace TicketManagement.Web.Services
     {
         private readonly ApplicationUserManager userManager;
 
-        private readonly IAuthenticationManager authenticationManager;
-
-        public AccountService(ApplicationUserManager userManager, IAuthenticationManager authenticationManager)
+        public AccountService(ApplicationUserManager userManager)
         {
             this.userManager = userManager;
-            this.authenticationManager = authenticationManager;
         }
 
-        public async Task<int> SignInAsync(string userName, string password)
+        public string SignIn(string userName, string password)
         {
-            var user = await this.userManager.FindAsync(userName, password);
+            var apiClient = new AuthenticationClient();
+            var token = apiClient.Login(userName, password);
 
-            if (user == null)
-            {
-                throw new UserNameOrPasswordWrongException(Resources.TicketManagementResource.WrongCredentials);
-            }
+            //this.authenticationManager.SignOut();
+            //this.authenticationManager.SignIn(
+            //    new AuthenticationProperties()
+            //    {
+            //        AllowRefresh = true,
+            //        IsPersistent = true,
+            //        ExpiresUtc = DateTime.UtcNow.AddDays(7),
+            //    }, claimIdentity);
 
-            var claimIdentity = await this.userManager.CreateIdentityAsync(user, DefaultAuthenticationTypes.ApplicationCookie);
-
-            this.authenticationManager.SignOut(DefaultAuthenticationTypes.ApplicationCookie);
-            this.authenticationManager.SignIn(
-                new AuthenticationProperties()
-                {
-                    AllowRefresh = true,
-                    IsPersistent = true,
-                    ExpiresUtc = DateTime.UtcNow.AddDays(7),
-                }, claimIdentity);
-
-            return user.Id;
+            //return user.Id;
+            return token;
         }
 
         public void SignOut()
         {
-            this.authenticationManager.SignOut(DefaultAuthenticationTypes.ApplicationCookie);
+            //this.authenticationManager.SignOut(DefaultAuthenticationTypes.ApplicationCookie);
         }
 
         public async Task RegisterUserAsync(RegisterViewModel registerVm)

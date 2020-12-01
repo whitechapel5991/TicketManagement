@@ -35,9 +35,19 @@ namespace TicketManagement.Web.Controllers
 
         [HttpPost]
         [ValidateHeaderAntiForgeryToken]
-        public async Task<JsonResult> Login(LoginViewModel model)
+        public JsonResult Login(LoginViewModel model)
         {
-            await this.accountService.SignInAsync(model.UserName, model.Password);
+            var token = this.accountService.SignIn(model.UserName, model.Password);
+            if (!string.IsNullOrEmpty(token))
+            {
+                this.HttpContext.Response.Cookies.Remove("__RequestVerificationToken");
+                var cookie = new System.Web.HttpCookie("__RequestVerificationToken", token)
+                {
+                    HttpOnly = false,
+                };
+                this.Response.Cookies.Add(cookie);
+            }
+
             return this.Json(new { returnContentUrl = this.Url.Action("Events", "Event") });
         }
 
@@ -45,7 +55,8 @@ namespace TicketManagement.Web.Controllers
         [HttpPost]
         public JsonResult Logout()
         {
-            this.accountService.SignOut();
+            //this.accountService.SignOut();
+            this.HttpContext.Response.Cookies.Remove("__RequestVerificationToken");
             return this.Json(new { returnContentUrl = this.Url.Action("Login", "Account") });
         }
 

@@ -14,7 +14,7 @@ namespace TicketManagement.Web.Interfaces
     {
         void SignOut();
 
-        Task<int> SignInAsync(string userName, string password);
+        string SignIn(string userName, string password);
 
         Task RegisterUserAsync(RegisterViewModel registerVm);
     }
