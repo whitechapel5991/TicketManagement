@@ -15,5 +15,7 @@ namespace TicketManagement.AuthenticationApi.Services
         Task<string> SignInAsync(string userName, string password);
 
         Task RegisterUserAsync(RegisterModel registerVm);
+
+        string ValidateToken(string token);
     }
 }

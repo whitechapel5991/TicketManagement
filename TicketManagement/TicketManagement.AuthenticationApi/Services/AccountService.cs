@@ -63,18 +63,57 @@ namespace TicketManagement.AuthenticationApi.Services
             }
         }
 
-        private TicketManagementUser MapIdentityUser(RegisterModel viewModel)
+        public string ValidateToken(string token)
         {
-            return new TicketManagementUser
+            ClaimsPrincipal principal = this.GetPrincipal(token);
+            if (principal == default)
             {
-                UserName = viewModel.UserName,
-                Email = viewModel.Email,
-                Password = viewModel.Password,
-                FirstName = viewModel.FirstName,
-                Surname = viewModel.Surname,
-                Language = viewModel.Language,
-                TimeZone = viewModel.TimeZone,
-            };
+                return default;
+            }
+
+            ClaimsIdentity identity;
+            try
+            {
+                identity = (ClaimsIdentity)principal.Identity;
+            }
+            catch (NullReferenceException)
+            {
+                return default;
+            }
+
+            Claim usernameClaim = identity.FindFirst(ClaimTypes.Name);
+            string username = usernameClaim.Value;
+            return username;
+        }
+
+        private ClaimsPrincipal GetPrincipal(string token)
+        {
+            try
+            {
+                JwtSecurityTokenHandler tokenHandler = new JwtSecurityTokenHandler();
+                JwtSecurityToken jwtToken = (JwtSecurityToken)tokenHandler.ReadToken(token);
+                if (jwtToken == null)
+                {
+                    return default;
+                }
+                //byte[] key = Convert.FromBase64String(Secret);
+                var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(this.configuration["JWT:Secret"]));
+                TokenValidationParameters parameters = new TokenValidationParameters()
+                {
+                    RequireExpirationTime = true,
+                    ValidateIssuer = true,
+                    ValidateAudience = true,
+                    IssuerSigningKey = key,
+                    ValidAudience = this.configuration["JWT:ValidAudience"],
+                    ValidIssuer = this.configuration["JWT:ValidIssuer"],
+                };
+                ClaimsPrincipal principal = tokenHandler.ValidateToken(token, parameters, validatedToken: out _);
+                return principal;
+            }
+            catch
+            {
+                return default;
+            }
         }
 
         private string GenerateJwt(TicketManagementUser user, IList<string> roles)
@@ -102,6 +141,20 @@ namespace TicketManagement.AuthenticationApi.Services
                 signingCredentials: creds);
 
             return new JwtSecurityTokenHandler().WriteToken(token);
+        }
+
+        private TicketManagementUser MapIdentityUser(RegisterModel viewModel)
+        {
+            return new TicketManagementUser
+            {
+                UserName = viewModel.UserName,
+                Email = viewModel.Email,
+                Password = viewModel.Password,
+                FirstName = viewModel.FirstName,
+                Surname = viewModel.Surname,
+                Language = viewModel.Language,
+                TimeZone = viewModel.TimeZone,
+            };
         }
     }
 }
