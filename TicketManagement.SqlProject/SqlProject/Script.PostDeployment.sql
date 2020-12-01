@@ -429,3 +429,16 @@ GO
 
 SET IDENTITY_INSERT [dbo].[Orders] OFF
 GO
+
+DROP LOGIN AdminBD;
+GO
+
+CREATE LOGIN AdminBD WITH PASSWORD = '12ABCDEFGHI12!'
+GO
+
+IF NOT EXISTS (SELECT * FROM sys.database_principals WHERE name = N'AdminBD')
+BEGIN
+    CREATE USER [AdminTicketManagement] FOR LOGIN [AdminTicketManagement]
+    EXEC sp_addrolemember N'db_owner', N'AdminTicketManagement'
+END;
+GO

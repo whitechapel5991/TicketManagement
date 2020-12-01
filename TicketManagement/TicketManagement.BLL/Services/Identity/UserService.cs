@@ -112,5 +112,10 @@ namespace TicketManagement.BLL.Services.Identity
             user.Balance += money;
             this.userRepository.Update(user);
         }
+
+        public IList<TicketManagementUser> GetUsers()
+        {
+            return this.userRepository.GetAll().ToList();
+        }
     }
 }

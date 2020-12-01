@@ -43,5 +43,7 @@ namespace TicketManagement.BLL.Interfaces.Identity
         string GetSecurityStamp(int userId);
 
         void SetSecurityStamp(int userId, string stamp);
+
+        IList<TicketManagementUser> GetUsers();
     }
 }
