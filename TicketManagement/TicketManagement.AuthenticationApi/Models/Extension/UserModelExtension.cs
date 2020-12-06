@@ -1,4 +1,11 @@
-﻿using TicketManagement.DAL.Models.Identity;
+﻿// ****************************************************************************
+// <copyright file="UserModelExtension.cs" company="EPAM Systems">
+// Copyright (c) EPAM Systems. All rights reserved.
+// Author Dzianis Shcharbakou.
+// </copyright>
+// ****************************************************************************
+
+using TicketManagement.DAL.Models.Identity;
 
 namespace TicketManagement.AuthenticationApi.Models.Extension
 {

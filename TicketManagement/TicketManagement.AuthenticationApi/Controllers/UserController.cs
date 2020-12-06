@@ -1,4 +1,11 @@
-﻿using System.Threading.Tasks;
+﻿// ****************************************************************************
+// <copyright file="UserController.cs" company="EPAM Systems">
+// Copyright (c) EPAM Systems. All rights reserved.
+// Author Dzianis Shcharbakou.
+// </copyright>
+// ****************************************************************************
+
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.Annotations;
@@ -44,7 +51,7 @@ namespace TicketManagement.AuthenticationApi.Controllers
             var user = this.userService.FindById(id);
             if (user == null)
             {
-                return NotFound();
+                return this.NotFound();
             }
 
             return await Task.FromResult(this.Ok(user.ConvertToUserModel()));
@@ -73,7 +80,7 @@ namespace TicketManagement.AuthenticationApi.Controllers
         /// </summary>
         /// <param name="id">id - id user which need update.</param>
         /// <param name="editUser">editUser - new user data for updating.</param>
-        /// <response code="204">Successfull</response>
+        /// <response code="204">Successfully.</response>
         /// <response code="404">User with this id Not Found.</response>
         /// <response code="400">Wrong parameters.</response>
         [HttpPut("{id}")]
@@ -87,7 +94,7 @@ namespace TicketManagement.AuthenticationApi.Controllers
             var user = this.userService.FindById(id);
             if (user == null)
             {
-                return NotFound();
+                return this.NotFound();
             }
 
             var bdUser = editUser.ConvertToTicketManagementUser();
@@ -101,7 +108,7 @@ namespace TicketManagement.AuthenticationApi.Controllers
         /// Delete user.
         /// </summary>
         /// <param name="id">id - id user which need delete.</param>
-        /// <response code="204">Successfull</response>
+        /// <response code="204">Successfully.</response>
         /// <response code="404">User with this id Not Found.</response>
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(int id)
@@ -109,7 +116,7 @@ namespace TicketManagement.AuthenticationApi.Controllers
             var deleteUser = this.userService.FindById(id);
             if (deleteUser == null)
             {
-                return NotFound();
+                return this.NotFound();
             }
 
             this.userService.Delete(deleteUser);

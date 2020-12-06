@@ -96,7 +96,7 @@ namespace TicketManagement.AuthenticationApi.Services
                 {
                     return default;
                 }
-                //byte[] key = Convert.FromBase64String(Secret);
+
                 var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(this.configuration["JWT:Secret"]));
                 TokenValidationParameters parameters = new TokenValidationParameters()
                 {

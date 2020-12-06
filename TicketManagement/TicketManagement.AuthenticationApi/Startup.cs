@@ -8,7 +8,6 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
-using Autofac;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -19,7 +18,6 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
-using TicketManagement.AuthenticationApi.Util;
 using IdentityRole = TicketManagement.AuthenticationApi.Services.Identity.IdentityRole;
 using TicketManagementUser = TicketManagement.AuthenticationApi.Services.Identity.TicketManagementUser;
 
@@ -38,6 +36,36 @@ namespace TicketManagement.AuthenticationApi
         }
 
         private IConfiguration Configuration { get; }
+
+        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        {
+            if (env.IsDevelopment())
+            {
+                app.UseDeveloperExceptionPage();
+            }
+
+            app.UseExceptionHandler("/error");
+
+            app.UseCors(x => x.AllowAnyHeader().AllowAnyMethod().AllowCredentials());
+            app.UseHttpsRedirection();
+
+            app.UseRouting();
+
+            app.UseSwagger();
+            app.UseSwaggerUI(c =>
+            {
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "Authentication API V1");
+            });
+
+            app.UseAuthentication();
+            app.UseAuthorization();
+
+            app.UseEndpoints(endpoints =>
+            {
+                endpoints.MapControllers();
+            });
+        }
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
@@ -105,7 +133,6 @@ namespace TicketManagement.AuthenticationApi
                         Scheme = "oauth2",
                         Name = "Bearer",
                         In = ParameterLocation.Header,
-
                       },
                       new List<string>()
                     },
@@ -119,41 +146,6 @@ namespace TicketManagement.AuthenticationApi
         private static string GetXmlCommentsPath()
         {
             return $@"{AppDomain.CurrentDomain.BaseDirectory}\Swagger.TicketManagement.AuthenticationApi.xml";
-        }
-
-        public void ConfigureContainer(ContainerBuilder builder)
-        {
-            builder.RegisterModule(new WebIocModule(this.Configuration.GetConnectionString("TicketManagementTest:ConnectionString")));
-        }
-
-        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
-        {
-            if (env.IsDevelopment())
-            {
-                app.UseDeveloperExceptionPage();
-            }
-
-            app.UseExceptionHandler("/error");
-
-            app.UseCors(x => x.AllowAnyHeader().AllowAnyMethod().AllowCredentials());
-            app.UseHttpsRedirection();
-
-            app.UseRouting();
-
-            app.UseSwagger();
-            app.UseSwaggerUI(c =>
-            {
-                c.SwaggerEndpoint("/swagger/v1/swagger.json", "Authentication API V1");
-            });
-
-            app.UseAuthentication();
-            app.UseAuthorization();
-
-            app.UseEndpoints(endpoints =>
-            {
-                endpoints.MapControllers();
-            });
         }
     }
 }
