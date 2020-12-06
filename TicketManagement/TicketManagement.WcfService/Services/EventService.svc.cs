@@ -1,9 +1,17 @@
-﻿using System.Collections.Generic;
+﻿// ****************************************************************************
+// <copyright file="EventService.svc.cs" company="EPAM Systems">
+// Copyright (c) EPAM Systems. All rights reserved.
+// Author Dzianis Shcharbakou.
+// </copyright>
+// ****************************************************************************
+
+using System.Collections.Generic;
 using System.Linq;
 using TicketManagement.BLL.Interfaces;
-using EventWcfService.Extension;
+using TicketManagement.WcfService.Contracts;
+using TicketManagement.WcfService.Extensions;
 
-namespace EventWcfService
+namespace TicketManagement.WcfService.Services
 {
     // NOTE: You can use the "Rename" command on the "Refactor" menu to change the class name "EventService" in code, svc and config file together.
     // NOTE: In order to launch WCF Test Client for testing this service, please select EventService.svc or EventService.svc.cs at the Solution Explorer and start debugging.

@@ -19,7 +19,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TicketManagement.Authentica
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Services", "Services", "{1EC4818E-2476-4AD2-92E2-80EEB142CD64}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EventWcfService", "EventWcfService\EventWcfService.csproj", "{ED615F46-5270-41A5-AFE7-D6844C3F5C76}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TicketManagement.WcfService", "TicketManagement.WcfService\TicketManagement.WcfService.csproj", "{ED615F46-5270-41A5-AFE7-D6844C3F5C76}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

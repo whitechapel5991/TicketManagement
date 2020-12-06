@@ -1,9 +1,16 @@
-﻿using System;
+﻿// ****************************************************************************
+// <copyright file="IEventContract.cs" company="EPAM Systems">
+// Copyright (c) EPAM Systems. All rights reserved.
+// Author Dzianis Shcharbakou.
+// </copyright>
+// ****************************************************************************
+
+using System;
 using System.Collections.Generic;
 using System.Runtime.Serialization;
 using System.ServiceModel;
 
-namespace EventWcfService
+namespace TicketManagement.WcfService.Contracts
 {
     [ServiceContract]
     public interface IEventContract
@@ -70,14 +77,14 @@ namespace EventWcfService
         {
             return new TicketManagement.DAL.Models.Event()
             {
-                Id = Id,
-                Name = Name,
-                BeginDateUtc = BeginDateUtc,
-                EndDateUtc = EndDateUtc,
-                Description = Description,
-                Published = Published,
-                LayoutId = LayoutId,
-                ImageUrl = ImageUrl,
+                Id = this.Id,
+                Name = this.Name,
+                BeginDateUtc = this.BeginDateUtc,
+                EndDateUtc = this.EndDateUtc,
+                Description = this.Description,
+                Published = this.Published,
+                LayoutId = this.LayoutId,
+                ImageUrl = this.ImageUrl,
             };
         }
     }

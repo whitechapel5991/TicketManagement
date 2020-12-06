@@ -1,6 +1,15 @@
-﻿namespace EventWcfService.Extension
+﻿// ****************************************************************************
+// <copyright file="DalEventModelExtension.cs" company="EPAM Systems">
+// Copyright (c) EPAM Systems. All rights reserved.
+// Author Dzianis Shcharbakou.
+// </copyright>
+// ****************************************************************************
+
+using TicketManagement.WcfService.Contracts;
+
+namespace TicketManagement.WcfService.Extensions
 {
-    public static class BllEventExtension
+    public static class DalEventModelExtension
     {
         public static Event ConvertToWcfEvent(this TicketManagement.DAL.Models.Event bllEvent)
         {

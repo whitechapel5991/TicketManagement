@@ -1,16 +1,22 @@
-﻿using System;
+﻿// ****************************************************************************
+// <copyright file="Global.asax.cs" company="EPAM Systems">
+// Copyright (c) EPAM Systems. All rights reserved.
+// Author Dzianis Shcharbakou.
+// </copyright>
+// ****************************************************************************
+
+using System;
 using System.Configuration;
 using Autofac;
 using Autofac.Integration.Wcf;
-using EventWcfService.Util;
 using TicketManagement.BLL.Util;
 using TicketManagement.DAL.Util;
+using TicketManagement.WcfService.Util;
 
-namespace EventWcfService
+namespace TicketManagement.WcfService
 {
     public class Global : System.Web.HttpApplication
     {
-
         protected void Application_Start(object sender, EventArgs e)
         {
             var builder = new ContainerBuilder();
@@ -24,36 +30,6 @@ namespace EventWcfService
             // WCF services and REST-enabled services.
             var container = builder.Build();
             AutofacHostFactory.Container = container;
-        }
-
-        protected void Session_Start(object sender, EventArgs e)
-        {
-
-        }
-
-        protected void Application_BeginRequest(object sender, EventArgs e)
-        {
-
-        }
-
-        protected void Application_AuthenticateRequest(object sender, EventArgs e)
-        {
-
-        }
-
-        protected void Application_Error(object sender, EventArgs e)
-        {
-
-        }
-
-        protected void Session_End(object sender, EventArgs e)
-        {
-
-        }
-
-        protected void Application_End(object sender, EventArgs e)
-        {
-
         }
     }
 }
