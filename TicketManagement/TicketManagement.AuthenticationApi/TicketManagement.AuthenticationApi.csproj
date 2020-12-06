@@ -6,7 +6,7 @@
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
-    <DocumentationFile>D:\ChangeRoleToDeveloper\TicketManagement\TicketManagement\TicketManagement.AuthenticationApi\bin\Debug\netcoreapp3.0\Swagger.TicketManagement.AuthenticationApi.xml</DocumentationFile>
+    <DocumentationFile>bin\Debug\netcoreapp3.0\Swagger.TicketManagement.AuthenticationApi.xml</DocumentationFile>
     <OutputPath>bin\Debug\netcoreapp3.0\</OutputPath>
     <NoWarn>$(NoWarn);1591</NoWarn>
   </PropertyGroup>
