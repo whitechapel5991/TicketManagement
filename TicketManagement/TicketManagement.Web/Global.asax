@@ -1,1 +1,1 @@
-﻿<%@ Application Codebehind="Global.asax.cs" Inherits="TicketManagement.Web.MvcApplication" Language="C#" %>
+﻿<%@ Application Codebehind="MvcApplication.asax.cs" Inherits="TicketManagement.Web.MvcApplication" Language="C#" %>

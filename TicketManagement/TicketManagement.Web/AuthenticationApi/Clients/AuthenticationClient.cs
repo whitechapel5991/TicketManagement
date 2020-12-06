@@ -1,4 +1,11 @@
-﻿using RestSharp.Serialization.Json;
+﻿// ****************************************************************************
+// <copyright file="AuthenticationClient.cs" company="EPAM Systems">
+// Copyright (c) EPAM Systems. All rights reserved.
+// Author Dzianis Shcharbakou.
+// </copyright>
+// ****************************************************************************
+
+using RestSharp.Serialization.Json;
 using TicketManagement.Web.AuthenticationApi.Base;
 using TicketManagement.Web.AuthenticationApi.Models;
 using TicketManagement.Web.Exceptions.Account;

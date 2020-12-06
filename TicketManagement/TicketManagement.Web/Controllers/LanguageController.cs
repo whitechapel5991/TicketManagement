@@ -53,17 +53,17 @@ namespace TicketManagement.Web.Controllers
 
             return this.Json(
                 new
-            {
-                success = true,
-                redirectUrl = this.Url.Action("Index", "StartApp"),
-                updateContentUrl = this.Url.Action(
+                {
+                    success = true,
+                    redirectUrl = this.Url.Action("Index", "StartApp"),
+                    updateContentUrl = this.Url.Action(
                     AjaxContentUrlAttribute.ActionContentUrl,
                     controllerName: AjaxContentUrlAttribute.ControllerContentUrl,
                     new
                     {
                         area = AjaxContentUrlAttribute.AreaContentUrl,
                     }),
-            }, JsonRequestBehavior.AllowGet);
+                }, JsonRequestBehavior.AllowGet);
         }
     }
 }

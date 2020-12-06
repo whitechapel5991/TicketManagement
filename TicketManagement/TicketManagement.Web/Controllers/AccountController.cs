@@ -55,7 +55,7 @@ namespace TicketManagement.Web.Controllers
         [HttpPost]
         public JsonResult Logout()
         {
-            //this.accountService.SignOut();
+            // this.accountService.SignOut();
             this.HttpContext.Response.Cookies.Remove("__RequestVerificationToken");
             return this.Json(new { returnContentUrl = this.Url.Action("Login", "Account") });
         }

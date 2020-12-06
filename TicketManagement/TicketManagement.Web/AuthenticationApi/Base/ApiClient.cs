@@ -1,4 +1,11 @@
-﻿using System.Configuration;
+﻿// ****************************************************************************
+// <copyright file="ApiClient.cs" company="EPAM Systems">
+// Copyright (c) EPAM Systems. All rights reserved.
+// Author Dzianis Shcharbakou.
+// </copyright>
+// ****************************************************************************
+
+using System.Configuration;
 using RestSharp;
 
 namespace TicketManagement.Web.AuthenticationApi.Base
@@ -20,8 +27,7 @@ namespace TicketManagement.Web.AuthenticationApi.Base
 
         protected IRestResponse Post<T>(string route, T body)
         {
-            var request = new RestRequest(route, Method.POST);
-            request.RequestFormat = DataFormat.Json;
+            var request = new RestRequest(route, Method.POST) { RequestFormat = DataFormat.Json };
             request.AddJsonBody(body);
             return this.httpClient.Execute(request);
         }

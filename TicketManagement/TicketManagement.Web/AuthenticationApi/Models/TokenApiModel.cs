@@ -1,4 +1,11 @@
-﻿using Newtonsoft.Json;
+﻿// ****************************************************************************
+// <copyright file="TokenApiModel.cs" company="EPAM Systems">
+// Copyright (c) EPAM Systems. All rights reserved.
+// Author Dzianis Shcharbakou.
+// </copyright>
+// ****************************************************************************
+
+using Newtonsoft.Json;
 
 namespace TicketManagement.Web.AuthenticationApi.Models
 {

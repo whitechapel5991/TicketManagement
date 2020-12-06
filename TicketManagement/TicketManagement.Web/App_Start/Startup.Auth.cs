@@ -36,18 +36,9 @@ namespace TicketManagement.Web
 
                 Provider = new MvcJwtAuthProvider(),
             });
-            //app.UseCookieAuthentication(new CookieAuthenticationOptions
-        //{
-        //    CookieName = DefaultAuthenticationTypes.ApplicationCookie,
-        //    AuthenticationType = DefaultAuthenticationTypes.ApplicationCookie,
-        //    LoginPath = new PathString("/Account/Login"),
-        //    ExpireTimeSpan = TimeSpan.FromHours(4.0),
-        //});
+        }
 
-        //AntiForgeryConfig.UniqueClaimTypeIdentifier = ClaimTypes.NameIdentifier;
-    }
-
-        class MvcJwtAuthProvider : OAuthBearerAuthenticationProvider
+        private class MvcJwtAuthProvider : OAuthBearerAuthenticationProvider
         {
             public override Task RequestToken(OAuthRequestTokenContext context)
             {

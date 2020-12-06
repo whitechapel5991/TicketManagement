@@ -50,7 +50,7 @@ namespace TicketManagement.Web.Filters.Base
                 {
                     Directory.CreateDirectory(HttpContext.Current.Server.MapPath("~/Log"));
                 }
-                
+
                 File.AppendAllText(HttpContext.Current.Server.MapPath("~/Log/LogExceptions.txt"), message);
             }
             finally

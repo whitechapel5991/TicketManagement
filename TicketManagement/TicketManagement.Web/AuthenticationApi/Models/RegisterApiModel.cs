@@ -1,4 +1,11 @@
-﻿using Newtonsoft.Json;
+﻿// ****************************************************************************
+// <copyright file="RegisterApiModel.cs" company="EPAM Systems">
+// Copyright (c) EPAM Systems. All rights reserved.
+// Author Dzianis Shcharbakou.
+// </copyright>
+// ****************************************************************************
+
+using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 using TicketManagement.Web.Constants;
 

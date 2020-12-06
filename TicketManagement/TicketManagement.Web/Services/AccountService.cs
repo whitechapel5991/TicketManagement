@@ -28,22 +28,11 @@ namespace TicketManagement.Web.Services
             var apiClient = new AuthenticationClient();
             var token = apiClient.Login(userName, password);
 
-            //this.authenticationManager.SignOut();
-            //this.authenticationManager.SignIn(
-            //    new AuthenticationProperties()
-            //    {
-            //        AllowRefresh = true,
-            //        IsPersistent = true,
-            //        ExpiresUtc = DateTime.UtcNow.AddDays(7),
-            //    }, claimIdentity);
-
-            //return user.Id;
             return token;
         }
 
         public void SignOut()
         {
-            //this.authenticationManager.SignOut(DefaultAuthenticationTypes.ApplicationCookie);
         }
 
         public async Task RegisterUserAsync(RegisterViewModel registerVm)
