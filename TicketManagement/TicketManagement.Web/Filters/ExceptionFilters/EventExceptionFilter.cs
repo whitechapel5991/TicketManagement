@@ -7,8 +7,8 @@
 
 using System.Net;
 using System.Web.Mvc;
-using TicketManagement.BLL.Exceptions.OrderExceptions;
 using TicketManagement.Web.Filters.Base;
+using TicketManagement.Web.OrderService;
 
 namespace TicketManagement.Web.Filters.ExceptionFilters
 {

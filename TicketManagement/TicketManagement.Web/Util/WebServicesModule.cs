@@ -35,7 +35,7 @@ namespace TicketManagement.Web.Util
                 .As(typeof(IEventManagerEventService))
                 .InstancePerLifetimeScope();
 
-            builder.RegisterType<EventService>()
+            builder.RegisterType<Services.EventService>()
                 .As(typeof(IEventService))
                 .InstancePerLifetimeScope();
 

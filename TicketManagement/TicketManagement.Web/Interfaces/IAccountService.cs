@@ -16,6 +16,6 @@ namespace TicketManagement.Web.Interfaces
 
         string SignIn(string userName, string password);
 
-        Task RegisterUserAsync(RegisterViewModel registerVm);
+        void RegisterUser(RegisterViewModel registerVm);
     }
 }

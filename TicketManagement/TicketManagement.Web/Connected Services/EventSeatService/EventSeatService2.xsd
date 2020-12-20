@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:tns="http://schemas.datacontract.org/2004/07/TicketManagement.WcfService.Contracts" elementFormDefault="qualified" targetNamespace="http://schemas.datacontract.org/2004/07/TicketManagement.WcfService.Contracts" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:import schemaLocation="https://localhost/TicketManagement.WcfService/Services/EventSeatService.svc?xsd=xsd3" namespace="http://schemas.datacontract.org/2004/07/TicketManagement.DAL.Constants" />
+  <xs:complexType name="ArrayOfEventSeat">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="EventSeat" nillable="true" type="tns:EventSeat" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfEventSeat" nillable="true" type="tns:ArrayOfEventSeat" />
+  <xs:complexType name="EventSeat">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="EventAreaId" type="xs:int" />
+      <xs:element minOccurs="0" name="Id" type="xs:int" />
+      <xs:element minOccurs="0" name="Number" type="xs:int" />
+      <xs:element minOccurs="0" name="Row" type="xs:int" />
+      <xs:element xmlns:q1="http://schemas.datacontract.org/2004/07/TicketManagement.DAL.Constants" minOccurs="0" name="State" type="q1:EventSeatState" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="EventSeat" nillable="true" type="tns:EventSeat" />
+</xs:schema>

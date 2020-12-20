@@ -1,0 +1,272 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions xmlns:wsap="http://schemas.xmlsoap.org/ws/2004/08/addressing/policy" xmlns:wsa10="http://www.w3.org/2005/08/addressing" xmlns:tns="http://tempuri.org/" xmlns:msc="http://schemas.microsoft.com/ws/2005/12/wsdl/contract" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:wsx="http://schemas.xmlsoap.org/ws/2004/09/mex" xmlns:wsp="http://schemas.xmlsoap.org/ws/2004/09/policy" xmlns:wsam="http://www.w3.org/2007/05/addressing/metadata" xmlns:wsa="http://schemas.xmlsoap.org/ws/2004/08/addressing" xmlns:wsaw="http://www.w3.org/2006/05/addressing/wsdl" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd" xmlns:xsd="http://www.w3.org/2001/XMLSchema" name="LayoutService" targetNamespace="http://tempuri.org/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+  <wsp:Policy wsu:Id="WSHttpBinding_ILayoutContract_policy">
+    <wsp:ExactlyOne>
+      <wsp:All>
+        <sp:TransportBinding xmlns:sp="http://schemas.xmlsoap.org/ws/2005/07/securitypolicy">
+          <wsp:Policy>
+            <sp:TransportToken>
+              <wsp:Policy>
+                <sp:HttpsToken RequireClientCertificate="false" />
+              </wsp:Policy>
+            </sp:TransportToken>
+            <sp:AlgorithmSuite>
+              <wsp:Policy>
+                <sp:Basic256 />
+              </wsp:Policy>
+            </sp:AlgorithmSuite>
+            <sp:Layout>
+              <wsp:Policy>
+                <sp:Strict />
+              </wsp:Policy>
+            </sp:Layout>
+            <sp:IncludeTimestamp />
+          </wsp:Policy>
+        </sp:TransportBinding>
+        <sp:EndorsingSupportingTokens xmlns:sp="http://schemas.xmlsoap.org/ws/2005/07/securitypolicy">
+          <wsp:Policy>
+            <sp:SecureConversationToken sp:IncludeToken="http://schemas.xmlsoap.org/ws/2005/07/securitypolicy/IncludeToken/AlwaysToRecipient">
+              <wsp:Policy>
+                <sp:BootstrapPolicy>
+                  <wsp:Policy>
+                    <sp:SignedParts>
+                      <sp:Body />
+                      <sp:Header Name="To" Namespace="http://www.w3.org/2005/08/addressing" />
+                      <sp:Header Name="From" Namespace="http://www.w3.org/2005/08/addressing" />
+                      <sp:Header Name="FaultTo" Namespace="http://www.w3.org/2005/08/addressing" />
+                      <sp:Header Name="ReplyTo" Namespace="http://www.w3.org/2005/08/addressing" />
+                      <sp:Header Name="MessageID" Namespace="http://www.w3.org/2005/08/addressing" />
+                      <sp:Header Name="RelatesTo" Namespace="http://www.w3.org/2005/08/addressing" />
+                      <sp:Header Name="Action" Namespace="http://www.w3.org/2005/08/addressing" />
+                    </sp:SignedParts>
+                    <sp:EncryptedParts>
+                      <sp:Body />
+                    </sp:EncryptedParts>
+                    <sp:TransportBinding>
+                      <wsp:Policy>
+                        <sp:TransportToken>
+                          <wsp:Policy>
+                            <sp:HttpsToken RequireClientCertificate="false" />
+                          </wsp:Policy>
+                        </sp:TransportToken>
+                        <sp:AlgorithmSuite>
+                          <wsp:Policy>
+                            <sp:Basic256 />
+                          </wsp:Policy>
+                        </sp:AlgorithmSuite>
+                        <sp:Layout>
+                          <wsp:Policy>
+                            <sp:Strict />
+                          </wsp:Policy>
+                        </sp:Layout>
+                        <sp:IncludeTimestamp />
+                      </wsp:Policy>
+                    </sp:TransportBinding>
+                    <sp:SignedSupportingTokens>
+                      <wsp:Policy>
+                        <sp:UsernameToken sp:IncludeToken="http://schemas.xmlsoap.org/ws/2005/07/securitypolicy/IncludeToken/AlwaysToRecipient">
+                          <wsp:Policy>
+                            <sp:WssUsernameToken10 />
+                          </wsp:Policy>
+                        </sp:UsernameToken>
+                      </wsp:Policy>
+                    </sp:SignedSupportingTokens>
+                    <sp:Wss11>
+                      <wsp:Policy />
+                    </sp:Wss11>
+                    <sp:Trust10>
+                      <wsp:Policy>
+                        <sp:MustSupportIssuedTokens />
+                        <sp:RequireClientEntropy />
+                        <sp:RequireServerEntropy />
+                      </wsp:Policy>
+                    </sp:Trust10>
+                  </wsp:Policy>
+                </sp:BootstrapPolicy>
+              </wsp:Policy>
+            </sp:SecureConversationToken>
+          </wsp:Policy>
+        </sp:EndorsingSupportingTokens>
+        <sp:Wss11 xmlns:sp="http://schemas.xmlsoap.org/ws/2005/07/securitypolicy">
+          <wsp:Policy />
+        </sp:Wss11>
+        <sp:Trust10 xmlns:sp="http://schemas.xmlsoap.org/ws/2005/07/securitypolicy">
+          <wsp:Policy>
+            <sp:MustSupportIssuedTokens />
+            <sp:RequireClientEntropy />
+            <sp:RequireServerEntropy />
+          </wsp:Policy>
+        </sp:Trust10>
+        <wsaw:UsingAddressing />
+      </wsp:All>
+    </wsp:ExactlyOne>
+  </wsp:Policy>
+  <wsdl:types>
+    <xsd:schema targetNamespace="http://tempuri.org/Imports">
+      <xsd:import schemaLocation="https://localhost/TicketManagement.WcfService/Services/LayoutService.svc?xsd=xsd0" namespace="http://tempuri.org/" />
+      <xsd:import schemaLocation="https://localhost/TicketManagement.WcfService/Services/LayoutService.svc?xsd=xsd1" namespace="http://schemas.microsoft.com/2003/10/Serialization/" />
+      <xsd:import schemaLocation="https://localhost/TicketManagement.WcfService/Services/LayoutService.svc?xsd=xsd2" namespace="http://schemas.datacontract.org/2004/07/TicketManagement.WcfService.Contracts" />
+      <xsd:import schemaLocation="https://localhost/TicketManagement.WcfService/Services/LayoutService.svc?xsd=xsd3" namespace="http://schemas.datacontract.org/2004/07/TicketManagement.WcfService.Exceptions" />
+      <xsd:import schemaLocation="https://localhost/TicketManagement.WcfService/Services/LayoutService.svc?xsd=xsd4" namespace="http://schemas.datacontract.org/2004/07/TicketManagement.WcfService.Exceptions.Base" />
+      <xsd:import schemaLocation="https://localhost/TicketManagement.WcfService/Services/LayoutService.svc?xsd=xsd5" namespace="http://schemas.datacontract.org/2004/07/System" />
+      <xsd:import schemaLocation="https://localhost/TicketManagement.WcfService/Services/LayoutService.svc?xsd=xsd6" namespace="http://schemas.datacontract.org/2004/07/System.Reflection" />
+      <xsd:import schemaLocation="https://localhost/TicketManagement.WcfService/Services/LayoutService.svc?xsd=xsd7" namespace="http://schemas.microsoft.com/2003/10/Serialization/Arrays" />
+    </xsd:schema>
+  </wsdl:types>
+  <wsdl:message name="ILayoutContract_GetLayouts_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetLayouts" />
+  </wsdl:message>
+  <wsdl:message name="ILayoutContract_GetLayouts_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetLayoutsResponse" />
+  </wsdl:message>
+  <wsdl:message name="ILayoutContract_GetLayout_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetLayout" />
+  </wsdl:message>
+  <wsdl:message name="ILayoutContract_GetLayout_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetLayoutResponse" />
+  </wsdl:message>
+  <wsdl:message name="ILayoutContract_AddLayout_InputMessage">
+    <wsdl:part name="parameters" element="tns:AddLayout" />
+  </wsdl:message>
+  <wsdl:message name="ILayoutContract_AddLayout_OutputMessage">
+    <wsdl:part name="parameters" element="tns:AddLayoutResponse" />
+  </wsdl:message>
+  <wsdl:message name="ILayoutContract_AddLayout_EntityDoesNotExistExceptionFault_FaultMessage">
+    <wsdl:part xmlns:q1="http://schemas.datacontract.org/2004/07/TicketManagement.WcfService.Exceptions" name="detail" element="q1:EntityDoesNotExistException" />
+  </wsdl:message>
+  <wsdl:message name="ILayoutContract_AddLayout_LayoutWithSameNameInTheVenueExistExceptionFault_FaultMessage">
+    <wsdl:part xmlns:q2="http://schemas.datacontract.org/2004/07/TicketManagement.WcfService.Contracts" name="detail" element="q2:LayoutWithSameNameInTheVenueExistException" />
+  </wsdl:message>
+  <wsdl:message name="ILayoutContract_UpdateLayout_InputMessage">
+    <wsdl:part name="parameters" element="tns:UpdateLayout" />
+  </wsdl:message>
+  <wsdl:message name="ILayoutContract_UpdateLayout_OutputMessage">
+    <wsdl:part name="parameters" element="tns:UpdateLayoutResponse" />
+  </wsdl:message>
+  <wsdl:message name="ILayoutContract_UpdateLayout_EntityDoesNotExistExceptionFault_FaultMessage">
+    <wsdl:part xmlns:q3="http://schemas.datacontract.org/2004/07/TicketManagement.WcfService.Exceptions" name="detail" element="q3:EntityDoesNotExistException" />
+  </wsdl:message>
+  <wsdl:message name="ILayoutContract_UpdateLayout_LayoutWithSameNameInTheVenueExistExceptionFault_FaultMessage">
+    <wsdl:part xmlns:q4="http://schemas.datacontract.org/2004/07/TicketManagement.WcfService.Contracts" name="detail" element="q4:LayoutWithSameNameInTheVenueExistException" />
+  </wsdl:message>
+  <wsdl:message name="ILayoutContract_DeleteLayout_InputMessage">
+    <wsdl:part name="parameters" element="tns:DeleteLayout" />
+  </wsdl:message>
+  <wsdl:message name="ILayoutContract_DeleteLayout_OutputMessage">
+    <wsdl:part name="parameters" element="tns:DeleteLayoutResponse" />
+  </wsdl:message>
+  <wsdl:message name="ILayoutContract_GetLayoutsByLayoutIds_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetLayoutsByLayoutIds" />
+  </wsdl:message>
+  <wsdl:message name="ILayoutContract_GetLayoutsByLayoutIds_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetLayoutsByLayoutIdsResponse" />
+  </wsdl:message>
+  <wsdl:portType name="ILayoutContract">
+    <wsdl:operation name="GetLayouts">
+      <wsdl:input wsaw:Action="http://tempuri.org/ILayoutContract/GetLayouts" message="tns:ILayoutContract_GetLayouts_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/ILayoutContract/GetLayoutsResponse" message="tns:ILayoutContract_GetLayouts_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="GetLayout">
+      <wsdl:input wsaw:Action="http://tempuri.org/ILayoutContract/GetLayout" message="tns:ILayoutContract_GetLayout_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/ILayoutContract/GetLayoutResponse" message="tns:ILayoutContract_GetLayout_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="AddLayout">
+      <wsdl:input wsaw:Action="http://tempuri.org/ILayoutContract/AddLayout" message="tns:ILayoutContract_AddLayout_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/ILayoutContract/AddLayoutResponse" message="tns:ILayoutContract_AddLayout_OutputMessage" />
+      <wsdl:fault wsaw:Action="http://tempuri.org/ILayoutContract/AddLayoutEntityDoesNotExistExceptionFault" name="EntityDoesNotExistExceptionFault" message="tns:ILayoutContract_AddLayout_EntityDoesNotExistExceptionFault_FaultMessage" />
+      <wsdl:fault wsaw:Action="http://tempuri.org/ILayoutContract/AddLayoutLayoutWithSameNameInTheVenueExistExceptionFault" name="LayoutWithSameNameInTheVenueExistExceptionFault" message="tns:ILayoutContract_AddLayout_LayoutWithSameNameInTheVenueExistExceptionFault_FaultMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="UpdateLayout">
+      <wsdl:input wsaw:Action="http://tempuri.org/ILayoutContract/UpdateLayout" message="tns:ILayoutContract_UpdateLayout_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/ILayoutContract/UpdateLayoutResponse" message="tns:ILayoutContract_UpdateLayout_OutputMessage" />
+      <wsdl:fault wsaw:Action="http://tempuri.org/ILayoutContract/UpdateLayoutEntityDoesNotExistExceptionFault" name="EntityDoesNotExistExceptionFault" message="tns:ILayoutContract_UpdateLayout_EntityDoesNotExistExceptionFault_FaultMessage" />
+      <wsdl:fault wsaw:Action="http://tempuri.org/ILayoutContract/UpdateLayoutLayoutWithSameNameInTheVenueExistExceptionFault" name="LayoutWithSameNameInTheVenueExistExceptionFault" message="tns:ILayoutContract_UpdateLayout_LayoutWithSameNameInTheVenueExistExceptionFault_FaultMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="DeleteLayout">
+      <wsdl:input wsaw:Action="http://tempuri.org/ILayoutContract/DeleteLayout" message="tns:ILayoutContract_DeleteLayout_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/ILayoutContract/DeleteLayoutResponse" message="tns:ILayoutContract_DeleteLayout_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="GetLayoutsByLayoutIds">
+      <wsdl:input wsaw:Action="http://tempuri.org/ILayoutContract/GetLayoutsByLayoutIds" message="tns:ILayoutContract_GetLayoutsByLayoutIds_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/ILayoutContract/GetLayoutsByLayoutIdsResponse" message="tns:ILayoutContract_GetLayoutsByLayoutIds_OutputMessage" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="WSHttpBinding_ILayoutContract" type="tns:ILayoutContract">
+    <wsp:PolicyReference URI="#WSHttpBinding_ILayoutContract_policy" />
+    <soap12:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="GetLayouts">
+      <soap12:operation soapAction="http://tempuri.org/ILayoutContract/GetLayouts" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetLayout">
+      <soap12:operation soapAction="http://tempuri.org/ILayoutContract/GetLayout" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="AddLayout">
+      <soap12:operation soapAction="http://tempuri.org/ILayoutContract/AddLayout" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+      <wsdl:fault name="EntityDoesNotExistExceptionFault">
+        <soap12:fault use="literal" name="EntityDoesNotExistExceptionFault" namespace="" />
+      </wsdl:fault>
+      <wsdl:fault name="LayoutWithSameNameInTheVenueExistExceptionFault">
+        <soap12:fault use="literal" name="LayoutWithSameNameInTheVenueExistExceptionFault" namespace="" />
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="UpdateLayout">
+      <soap12:operation soapAction="http://tempuri.org/ILayoutContract/UpdateLayout" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+      <wsdl:fault name="EntityDoesNotExistExceptionFault">
+        <soap12:fault use="literal" name="EntityDoesNotExistExceptionFault" namespace="" />
+      </wsdl:fault>
+      <wsdl:fault name="LayoutWithSameNameInTheVenueExistExceptionFault">
+        <soap12:fault use="literal" name="LayoutWithSameNameInTheVenueExistExceptionFault" namespace="" />
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="DeleteLayout">
+      <soap12:operation soapAction="http://tempuri.org/ILayoutContract/DeleteLayout" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetLayoutsByLayoutIds">
+      <soap12:operation soapAction="http://tempuri.org/ILayoutContract/GetLayoutsByLayoutIds" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="LayoutService">
+    <wsdl:port name="WSHttpBinding_ILayoutContract" binding="tns:WSHttpBinding_ILayoutContract">
+      <soap12:address location="https://localhost/TicketManagement.WcfService/Services/LayoutService.svc" />
+      <wsa10:EndpointReference>
+        <wsa10:Address>https://localhost/TicketManagement.WcfService/Services/LayoutService.svc</wsa10:Address>
+      </wsa10:EndpointReference>
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

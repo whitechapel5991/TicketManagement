@@ -9,7 +9,6 @@ using System.Configuration;
 using System.Web.Mvc;
 using Autofac;
 using Autofac.Integration.Mvc;
-using Hangfire;
 using TicketManagement.Web.Util;
 
 namespace TicketManagement.Web
@@ -26,7 +25,6 @@ namespace TicketManagement.Web
                 ConfigurationManager.ConnectionStrings["TicketManagementTest"].ConnectionString));
 
             Container = builder.Build();
-            GlobalConfiguration.Configuration.UseAutofacActivator(Container);
             DependencyResolver.SetResolver(new AutofacDependencyResolver(Container));
         }
     }

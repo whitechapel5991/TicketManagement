@@ -8,56 +8,66 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
-using TicketManagement.BLL.Interfaces;
-using TicketManagement.DAL.Models;
 using TicketManagement.Web.Areas.EventManager.Data;
+using TicketManagement.Web.EventAreaService;
+using TicketManagement.Web.EventSeatService;
+using TicketManagement.Web.EventService;
 using TicketManagement.Web.Interfaces;
+using TicketManagement.Web.LayoutService;
 using TicketManagement.Web.Models.Event;
+using TicketManagement.Web.WcfInfrastructure;
 using EventViewModel = TicketManagement.Web.Areas.EventManager.Data.EventViewModel;
-using IEventService = TicketManagement.BLL.Interfaces.IEventService;
 
 namespace TicketManagement.Web.Services
 {
     internal class EventManagerEventService : IEventManagerEventService
     {
-        private readonly IEventService eventService;
-        private readonly ILayoutService layoutService;
-        private readonly IEventAreaService eventAreaService;
-        private readonly IEventSeatService eventSeatService;
         private readonly IImageService imageService;
 
         public EventManagerEventService(
-            IEventService eventService,
-            ILayoutService layoutService,
-            IEventAreaService eventAreaService,
-            IEventSeatService eventSeatService,
             IImageService imageService)
         {
-            this.eventService = eventService;
-            this.layoutService = layoutService;
-            this.eventAreaService = eventAreaService;
-            this.eventSeatService = eventSeatService;
             this.imageService = imageService;
         }
 
         public List<IndexEventViewModel> GetIndexEventViewModels()
         {
-            return this.MapToIndexEventViewModel(this.eventService.GetEvents().ToList());
+            using (var client = new EventContractClient())
+            {
+                client.AddClientCredentials();
+                return this.MapToIndexEventViewModel(client.GetEvents().ToList());
+            }
         }
 
         public EventViewModel GetEventViewModel()
         {
-            var layouts = this.layoutService.GetLayouts().ToList();
-            return new EventViewModel
+            using (var client = new LayoutContractClient())
             {
-                LayoutList = new SelectList(layouts, "Id", "Name", layouts.First()),
-            };
+                client.AddClientCredentials();
+                var layouts = client.GetLayouts().ToList();
+                return new EventViewModel
+                {
+                    LayoutList = new SelectList(layouts, "Id", "Name", layouts.First()),
+                };
+            }
         }
 
         public EventViewModel GetEventViewModel(int eventId)
         {
-            var eventDto = this.eventService.GetEvent(eventId);
-            var layouts = this.layoutService.GetLayouts().Distinct().ToDictionary(x => x.Id, x => x.Name);
+            Event eventDto = null;
+            Dictionary<int,string> layouts = null;
+
+            using (var client = new EventContractClient())
+            {
+                client.AddClientCredentials();
+                eventDto = client.GetEvent(eventId);
+            }
+
+            using (var client = new LayoutContractClient())
+            {
+                client.AddClientCredentials();
+                layouts = client.GetLayouts().Distinct().ToDictionary(x => x.Id, x => x.Name);
+            }
 
             return new EventViewModel
             {
@@ -91,8 +101,10 @@ namespace TicketManagement.Web.Services
                 imageUrl = this.imageService.GetImageUri(eventViewModel.IndexEventViewModel.Image.FileName);
             }
 
-            this.eventService.AddEvent(
-                new Event
+            using (var client = new EventContractClient())
+            {
+                client.AddClientCredentials();
+                client.AddEvent(new Event
                 {
                     Name = eventViewModel.IndexEventViewModel.Name,
                     BeginDateUtc = eventViewModel.IndexEventViewModel.GetBeginDate(),
@@ -101,6 +113,7 @@ namespace TicketManagement.Web.Services
                     LayoutId = eventViewModel.LayoutId,
                     ImageUrl = imageUrl,
                 });
+            }
         }
 
         public void UpdateEvent(EventViewModel eventViewModel)
@@ -114,50 +127,88 @@ namespace TicketManagement.Web.Services
                 imageUrl = this.imageService.GetImageUri(eventViewModel.IndexEventViewModel.Image.FileName);
             }
 
-            this.eventService.UpdateEvent(new Event
+            using (var client = new EventContractClient())
             {
-                Name = eventViewModel.IndexEventViewModel.Name,
-                BeginDateUtc = eventViewModel.IndexEventViewModel.GetBeginDate(),
-                EndDateUtc = eventViewModel.IndexEventViewModel.GetEndDate(),
-                Description = eventViewModel.IndexEventViewModel.Description,
-                LayoutId = eventViewModel.IndexEventViewModel.LayoutId,
-                Published = eventViewModel.IndexEventViewModel.Published,
-                Id = eventViewModel.IndexEventViewModel.Id,
-                ImageUrl = imageUrl,
-            });
+                client.AddClientCredentials();
+                client.UpdateEvent(new Event
+                {
+                    Name = eventViewModel.IndexEventViewModel.Name,
+                    BeginDateUtc = eventViewModel.IndexEventViewModel.GetBeginDate(),
+                    EndDateUtc = eventViewModel.IndexEventViewModel.GetEndDate(),
+                    Description = eventViewModel.IndexEventViewModel.Description,
+                    LayoutId = eventViewModel.IndexEventViewModel.LayoutId,
+                    Published = eventViewModel.IndexEventViewModel.Published,
+                    Id = eventViewModel.IndexEventViewModel.Id,
+                    ImageUrl = imageUrl,
+                });
+            }
         }
 
         public void DeleteEvent(int id)
         {
-            this.eventService.DeleteEvent(id);
+            using (var client = new EventContractClient())
+            {
+                client.AddClientCredentials();
+                client.DeleteEvent(id);
+            }
         }
 
         public void PublishEvent(int id)
         {
-            this.eventService.PublishEvent(id);
+            using (var client = new EventContractClient())
+            {
+                client.AddClientCredentials();
+                client.PublishEvent(id);
+            }
         }
 
         public AreaPriceViewModel GetAreaPriceViewModel(int areaId)
         {
-            return new AreaPriceViewModel
+            using (var client = new EventAreaContractClient())
             {
-                EventAreaId = areaId,
-                Price = this.eventAreaService.GetEventArea(areaId).Price,
-            };
+                client.AddClientCredentials();
+                return new AreaPriceViewModel
+                {
+                    EventAreaId = areaId,
+                    Price = client.GetEventArea(areaId).Price,
+                };
+            }
         }
 
         public void ChangeCost(AreaPriceViewModel areaPriceVm)
         {
-            var area = this.eventAreaService.GetEventArea(areaPriceVm.EventAreaId);
-            area.Price = areaPriceVm.Price;
-            this.eventAreaService.UpdateEventArea(area);
+            using (var client = new EventAreaContractClient())
+            {
+                client.AddClientCredentials();
+                var area = client.GetEventArea(areaPriceVm.EventAreaId);
+                area.Price = areaPriceVm.Price;
+                client.UpdateEventArea(area);
+            }
         }
 
         public EventDetailViewModel GetEventDetailViewModel(int eventId)
         {
-            var eventDetails = this.eventService.GetEvent(eventId);
-            var layout = this.layoutService.GetLayout(eventDetails.LayoutId);
-            var eventAreas = this.eventAreaService.GetEventAreasByEventId(eventId);
+            Event eventDetails = null;
+            Layout layout = null;
+            EventArea[] eventAreas = null;
+
+            using (var client = new EventContractClient())
+            {
+                client.AddClientCredentials();
+                eventDetails = client.GetEvent(eventId);
+            }
+
+            using (var client = new LayoutContractClient())
+            {
+                client.AddClientCredentials();
+                layout = client.GetLayout(eventDetails.LayoutId);
+            }
+
+            using (var client = new EventAreaContractClient())
+            {
+                client.AddClientCredentials();
+                eventAreas = client.GetEventAreasByEventId(eventId);
+            }
 
             var eventDetailVm = new EventDetailViewModel
             {
@@ -180,8 +231,20 @@ namespace TicketManagement.Web.Services
 
         public EventAreaDetailViewModel GetEventAreaDetailViewModel(int eventAreaId)
         {
-            var eventArea = this.eventAreaService.GetEventArea(eventAreaId);
-            var eventSeats = this.eventSeatService.GetEventSeatsByEventAreaId(eventAreaId);
+            EventArea eventArea = null;
+            EventSeat[] eventSeats = null;
+
+            using (var client = new EventAreaContractClient())
+            {
+                client.AddClientCredentials();
+                eventArea = client.GetEventArea(eventAreaId);
+            }
+
+            using (var client = new EventSeatContractClient())
+            {
+                client.AddClientCredentials();
+                eventSeats = client.GetEventSeatsByEventAreaId(eventAreaId);
+            }
 
             var eventAreaDetailVm = new EventAreaDetailViewModel
             {
@@ -208,22 +271,25 @@ namespace TicketManagement.Web.Services
 
         private List<IndexEventViewModel> MapToIndexEventViewModel(List<Event> eventList)
         {
-            var layouts = this.layoutService.GetLayoutsByLayoutIds(eventList.Select(x => x.LayoutId).ToArray()).Distinct().ToDictionary(x => x.Id, x => x.Name);
-
-            return eventList.Select(eventDto => new IndexEventViewModel
+            using (var client = new LayoutContractClient())
             {
-                Id = eventDto.Id,
-                BeginDate = eventDto.BeginDateUtc,
-                BeginTime = eventDto.BeginDateUtc,
-                Description = eventDto.Description,
-                EndDate = eventDto.EndDateUtc,
-                EndTime = eventDto.EndDateUtc,
-                LayoutId = eventDto.LayoutId,
-                Name = eventDto.Name,
-                Published = eventDto.Published,
-                LayoutName = layouts[eventDto.LayoutId],
-                ImagePath = eventDto.ImageUrl,
-            }).ToList();
+                client.AddClientCredentials();
+                var layouts = client.GetLayoutsByLayoutIds(eventList.Select(x => x.LayoutId).ToArray()).Distinct().ToDictionary(x => x.Id, x => x.Name);
+                return eventList.Select(eventDto => new IndexEventViewModel
+                {
+                    Id = eventDto.Id,
+                    BeginDate = eventDto.BeginDateUtc,
+                    BeginTime = eventDto.BeginDateUtc,
+                    Description = eventDto.Description,
+                    EndDate = eventDto.EndDateUtc,
+                    EndTime = eventDto.EndDateUtc,
+                    LayoutId = eventDto.LayoutId,
+                    Name = eventDto.Name,
+                    Published = eventDto.Published,
+                    LayoutName = layouts[eventDto.LayoutId],
+                    ImagePath = eventDto.ImageUrl,
+                }).ToList();
+            }
         }
 
         private EventAreaViewModel MapToEventAreaViewModel(EventArea eventArea)

@@ -40,5 +40,19 @@ namespace TicketManagement.Web.AuthenticationApi.Clients
                 throw new UserNameOrPasswordWrongException(Resources.TicketManagementResource.WrongCredentials);
             }
         }
+
+        public void Register(RegisterApiModel model)
+        {
+            var response = this.Post(RegisterUri, model);
+
+            if (response.StatusCode == System.Net.HttpStatusCode.OK)
+            {
+                return;
+            }
+            else
+            {
+                throw new RegisterUserWrongDataException("Wrong parameters.");
+            }
+        }
     }
 }

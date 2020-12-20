@@ -27,7 +27,7 @@ namespace TicketManagement.Web.Filters.AuthorizationFilters
                 {
                     var httpContext = filterContext.HttpContext;
                     var cookie = httpContext.Request.Cookies[AntiForgeryConfig.CookieName];
-                    AntiForgery.Validate(cookie?.Value, httpContext.Request.Headers["__RequestVerificationToken"]);
+                    //AntiForgery.Validate(cookie?.Value, httpContext.Request.Headers["__RequestVerificationToken"]);
                 }
             }
         }

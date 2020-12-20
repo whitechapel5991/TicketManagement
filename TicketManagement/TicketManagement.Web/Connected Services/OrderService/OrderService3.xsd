@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:tns="http://schemas.datacontract.org/2004/07/TicketManagement.WcfService.Contracts" elementFormDefault="qualified" targetNamespace="http://schemas.datacontract.org/2004/07/TicketManagement.WcfService.Contracts" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:import schemaLocation="https://localhost/TicketManagement.WcfService/Services/OrderService.svc?xsd=xsd3" namespace="http://schemas.datacontract.org/2004/07/TicketManagement.WcfService.Exceptions.Base" />
+  <xs:complexType name="SeatCurrentlySoldOrBlockedException">
+    <xs:complexContent mixed="false">
+      <xs:extension xmlns:q1="http://schemas.datacontract.org/2004/07/TicketManagement.WcfService.Exceptions.Base" base="q1:WcfException">
+        <xs:sequence />
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="SeatCurrentlySoldOrBlockedException" nillable="true" type="tns:SeatCurrentlySoldOrBlockedException" />
+  <xs:complexType name="NotEnoughMoneyException">
+    <xs:complexContent mixed="false">
+      <xs:extension xmlns:q2="http://schemas.datacontract.org/2004/07/TicketManagement.WcfService.Exceptions.Base" base="q2:WcfException">
+        <xs:sequence />
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="NotEnoughMoneyException" nillable="true" type="tns:NotEnoughMoneyException" />
+  <xs:complexType name="SeatIsNotInTheBasketException">
+    <xs:complexContent mixed="false">
+      <xs:extension xmlns:q3="http://schemas.datacontract.org/2004/07/TicketManagement.WcfService.Exceptions.Base" base="q3:WcfException">
+        <xs:sequence />
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="SeatIsNotInTheBasketException" nillable="true" type="tns:SeatIsNotInTheBasketException" />
+  <xs:complexType name="ArrayOfOrder">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="Order" nillable="true" type="tns:Order" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfOrder" nillable="true" type="tns:ArrayOfOrder" />
+  <xs:complexType name="Order">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="DateUtc" type="xs:dateTime" />
+      <xs:element minOccurs="0" name="EventSeatId" type="xs:int" />
+      <xs:element minOccurs="0" name="Id" type="xs:int" />
+      <xs:element minOccurs="0" name="UserId" type="xs:int" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="Order" nillable="true" type="tns:Order" />
+</xs:schema>

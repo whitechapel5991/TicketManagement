@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ReferenceGroup xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" ID="94045126-9190-43ad-a1b7-6943dc20fd8e" xmlns="urn:schemas-microsoft-com:xml-wcfservicemap">
+  <ClientOptions>
+    <GenerateAsynchronousMethods>false</GenerateAsynchronousMethods>
+    <GenerateTaskBasedAsynchronousMethod>true</GenerateTaskBasedAsynchronousMethod>
+    <EnableDataBinding>true</EnableDataBinding>
+    <ExcludedTypes />
+    <ImportXmlTypes>false</ImportXmlTypes>
+    <GenerateInternalTypes>false</GenerateInternalTypes>
+    <GenerateMessageContracts>false</GenerateMessageContracts>
+    <NamespaceMappings />
+    <CollectionMappings />
+    <GenerateSerializableTypes>true</GenerateSerializableTypes>
+    <Serializer>Auto</Serializer>
+    <UseSerializerForFaults>true</UseSerializerForFaults>
+    <ReferenceAllAssemblies>true</ReferenceAllAssemblies>
+    <ReferencedAssemblies />
+    <ReferencedDataContractTypes />
+    <ServiceContractMappings />
+  </ClientOptions>
+  <MetadataSources>
+    <MetadataSource Address="https://localhost/TicketManagement.WcfService/Services/LayoutService.svc" Protocol="http" SourceId="1" />
+  </MetadataSources>
+  <Metadata>
+    <MetadataFile FileName="LayoutService.xsd" MetadataType="Schema" ID="60be0ba2-538b-4eb6-8c81-c16f9a8db30b" SourceId="1" SourceUrl="https://localhost/TicketManagement.WcfService/Services/LayoutService.svc?xsd=xsd3" />
+    <MetadataFile FileName="LayoutService1.xsd" MetadataType="Schema" ID="1cd5889f-4bab-41c6-bab4-63e0c00634ef" SourceId="1" SourceUrl="https://localhost/TicketManagement.WcfService/Services/LayoutService.svc?xsd=xsd2" />
+    <MetadataFile FileName="LayoutService.wsdl" MetadataType="Wsdl" ID="de331daa-0007-4369-a4a5-b4e9ed106093" SourceId="1" SourceUrl="https://localhost/TicketManagement.WcfService/Services/LayoutService.svc?wsdl" />
+    <MetadataFile FileName="LayoutService4.xsd" MetadataType="Schema" ID="cecdab35-6a10-4051-a43c-a4e8ec7a5367" SourceId="1" SourceUrl="https://localhost/TicketManagement.WcfService/Services/LayoutService.svc?xsd=xsd4" />
+    <MetadataFile FileName="LayoutService41.xsd" MetadataType="Schema" ID="8832bedc-53be-4c75-9a72-0f0c1db5c4ae" SourceId="1" SourceUrl="https://localhost/TicketManagement.WcfService/Services/LayoutService.svc?xsd=xsd7" />
+    <MetadataFile FileName="LayoutService42.xsd" MetadataType="Schema" ID="c01dc755-cb9d-4012-8a31-1bf14a50fb79" SourceId="1" SourceUrl="https://localhost/TicketManagement.WcfService/Services/LayoutService.svc?xsd=xsd6" />
+    <MetadataFile FileName="LayoutService2.xsd" MetadataType="Schema" ID="300acb81-d59f-439b-bae2-06daa04ab0ce" SourceId="1" SourceUrl="https://localhost/TicketManagement.WcfService/Services/LayoutService.svc?xsd=xsd1" />
+    <MetadataFile FileName="LayoutService43.xsd" MetadataType="Schema" ID="5e252cb0-e88c-4375-ac92-02e072698081" SourceId="1" SourceUrl="https://localhost/TicketManagement.WcfService/Services/LayoutService.svc?xsd=xsd5" />
+    <MetadataFile FileName="LayoutService.disco" MetadataType="Disco" ID="88d58cd5-e7b1-430b-9e86-7daca693a8e9" SourceId="1" SourceUrl="https://localhost/TicketManagement.WcfService/Services/LayoutService.svc?disco" />
+    <MetadataFile FileName="LayoutService3.xsd" MetadataType="Schema" ID="81ddc414-ff33-4f47-9239-f055317477fa" SourceId="1" SourceUrl="https://localhost/TicketManagement.WcfService/Services/LayoutService.svc?xsd=xsd0" />
+  </Metadata>
+  <Extensions>
+    <ExtensionFile FileName="configuration91.svcinfo" Name="configuration91.svcinfo" />
+    <ExtensionFile FileName="configuration.svcinfo" Name="configuration.svcinfo" />
+  </Extensions>
+</ReferenceGroup>

@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ReferenceGroup xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" ID="c159ae40-98c7-4ed4-b60e-319ca3335774" xmlns="urn:schemas-microsoft-com:xml-wcfservicemap">
+  <ClientOptions>
+    <GenerateAsynchronousMethods>false</GenerateAsynchronousMethods>
+    <GenerateTaskBasedAsynchronousMethod>true</GenerateTaskBasedAsynchronousMethod>
+    <EnableDataBinding>true</EnableDataBinding>
+    <ExcludedTypes />
+    <ImportXmlTypes>false</ImportXmlTypes>
+    <GenerateInternalTypes>false</GenerateInternalTypes>
+    <GenerateMessageContracts>false</GenerateMessageContracts>
+    <NamespaceMappings />
+    <CollectionMappings />
+    <GenerateSerializableTypes>true</GenerateSerializableTypes>
+    <Serializer>Auto</Serializer>
+    <UseSerializerForFaults>true</UseSerializerForFaults>
+    <ReferenceAllAssemblies>true</ReferenceAllAssemblies>
+    <ReferencedAssemblies />
+    <ReferencedDataContractTypes />
+    <ServiceContractMappings />
+  </ClientOptions>
+  <MetadataSources>
+    <MetadataSource Address="https://localhost/TicketManagement.WcfService/Services/OrderService.svc" Protocol="http" SourceId="1" />
+  </MetadataSources>
+  <Metadata>
+    <MetadataFile FileName="OrderService.wsdl" MetadataType="Wsdl" ID="f97a28e0-b0ab-4ed0-943e-0e46c60a3c1e" SourceId="1" SourceUrl="https://localhost/TicketManagement.WcfService/Services/OrderService.svc?wsdl" />
+    <MetadataFile FileName="OrderService3.xsd" MetadataType="Schema" ID="bdaf9f8e-a318-4a0a-b4e1-38b40a7951bf" SourceId="1" SourceUrl="https://localhost/TicketManagement.WcfService/Services/OrderService.svc?xsd=xsd6" />
+    <MetadataFile FileName="OrderService2.xsd" MetadataType="Schema" ID="21fb03a0-b28d-4f5e-817b-972318d8e2b0" SourceId="1" SourceUrl="https://localhost/TicketManagement.WcfService/Services/OrderService.svc?xsd=xsd0" />
+    <MetadataFile FileName="OrderService1.xsd" MetadataType="Schema" ID="ac8cb4b0-fdc0-440f-a1fd-95572d0972a9" SourceId="1" SourceUrl="https://localhost/TicketManagement.WcfService/Services/OrderService.svc?xsd=xsd2" />
+    <MetadataFile FileName="OrderService31.xsd" MetadataType="Schema" ID="a18b248e-1090-4d9b-91c4-29c341a94148" SourceId="1" SourceUrl="https://localhost/TicketManagement.WcfService/Services/OrderService.svc?xsd=xsd5" />
+    <MetadataFile FileName="OrderService32.xsd" MetadataType="Schema" ID="563014ca-7b64-4e8a-9132-2c21f6da869c" SourceId="1" SourceUrl="https://localhost/TicketManagement.WcfService/Services/OrderService.svc?xsd=xsd4" />
+    <MetadataFile FileName="OrderService.disco" MetadataType="Disco" ID="fd292bbf-d855-4633-9787-81e8b6d9ad2a" SourceId="1" SourceUrl="https://localhost/TicketManagement.WcfService/Services/OrderService.svc?disco" />
+    <MetadataFile FileName="OrderService.xsd" MetadataType="Schema" ID="cec36984-8e12-4b23-8d93-7ad62abdd015" SourceId="1" SourceUrl="https://localhost/TicketManagement.WcfService/Services/OrderService.svc?xsd=xsd1" />
+    <MetadataFile FileName="OrderService33.xsd" MetadataType="Schema" ID="c9432359-e32e-49ed-855d-2c91b8c67b8d" SourceId="1" SourceUrl="https://localhost/TicketManagement.WcfService/Services/OrderService.svc?xsd=xsd3" />
+  </Metadata>
+  <Extensions>
+    <ExtensionFile FileName="configuration91.svcinfo" Name="configuration91.svcinfo" />
+    <ExtensionFile FileName="configuration.svcinfo" Name="configuration.svcinfo" />
+  </Extensions>
+</ReferenceGroup>

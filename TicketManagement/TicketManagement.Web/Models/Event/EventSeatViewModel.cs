@@ -6,7 +6,7 @@
 // ****************************************************************************
 
 using System.ComponentModel.DataAnnotations;
-using TicketManagement.DAL.Constants;
+using TicketManagement.Web.EventSeatService;
 
 namespace TicketManagement.Web.Models.Event
 {

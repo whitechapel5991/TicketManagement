@@ -12,6 +12,7 @@ using TicketManagement.Web.Filters.AuthorizationFilters;
 using TicketManagement.Web.Filters.ExceptionFilters;
 using TicketManagement.Web.Interfaces;
 using TicketManagement.Web.Models.Account;
+using TicketManagement.Web.WcfInfrastructure;
 
 namespace TicketManagement.Web.Controllers
 {
@@ -40,12 +41,13 @@ namespace TicketManagement.Web.Controllers
             var token = this.accountService.SignIn(model.UserName, model.Password);
             if (!string.IsNullOrEmpty(token))
             {
-                this.HttpContext.Response.Cookies.Remove("__RequestVerificationToken");
-                var cookie = new System.Web.HttpCookie("__RequestVerificationToken", token)
+                this.HttpContext.Response.Cookies.Remove("access_token");
+                var cookie = new System.Web.HttpCookie("access_token", token)
                 {
                     HttpOnly = false,
                 };
                 this.Response.Cookies.Add(cookie);
+                CredentialsContainer.Token = token;
             }
 
             return this.Json(new { returnContentUrl = this.Url.Action("Events", "Event") });
@@ -55,8 +57,8 @@ namespace TicketManagement.Web.Controllers
         [HttpPost]
         public JsonResult Logout()
         {
-            // this.accountService.SignOut();
-            this.HttpContext.Response.Cookies.Remove("__RequestVerificationToken");
+            this.accountService.SignOut();
+            //this.HttpContext.Response.Cookies.Remove("access_token");
             return this.Json(new { returnContentUrl = this.Url.Action("Login", "Account") });
         }
 
@@ -70,9 +72,9 @@ namespace TicketManagement.Web.Controllers
 
         [HttpPost]
         [ValidateHeaderAntiForgeryToken]
-        public async Task<JsonResult> Register(RegisterViewModel model)
+        public JsonResult Register(RegisterViewModel model)
         {
-            await this.accountService.RegisterUserAsync(model);
+            this.accountService.RegisterUser(model);
             return this.Json(new { returnContentUrl = this.Url.Action("Login", "Account") });
         }
     }

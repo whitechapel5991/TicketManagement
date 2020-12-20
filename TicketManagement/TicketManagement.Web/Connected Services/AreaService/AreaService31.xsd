@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:tns="http://schemas.datacontract.org/2004/07/TicketManagement.WcfService.Exceptions" elementFormDefault="qualified" targetNamespace="http://schemas.datacontract.org/2004/07/TicketManagement.WcfService.Exceptions" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:import schemaLocation="https://localhost/TicketManagement.WcfService/Services/AreaService.svc?xsd=xsd4" namespace="http://schemas.datacontract.org/2004/07/TicketManagement.WcfService.Exceptions.Base" />
+  <xs:complexType name="EntityDoesNotExistException">
+    <xs:complexContent mixed="false">
+      <xs:extension xmlns:q1="http://schemas.datacontract.org/2004/07/TicketManagement.WcfService.Exceptions.Base" base="q1:WcfException">
+        <xs:sequence />
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="EntityDoesNotExistException" nillable="true" type="tns:EntityDoesNotExistException" />
+  <xs:complexType name="AreaWithSameDescriptionInTheLayoutExistException">
+    <xs:complexContent mixed="false">
+      <xs:extension xmlns:q2="http://schemas.datacontract.org/2004/07/TicketManagement.WcfService.Exceptions.Base" base="q2:WcfException">
+        <xs:sequence />
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="AreaWithSameDescriptionInTheLayoutExistException" nillable="true" type="tns:AreaWithSameDescriptionInTheLayoutExistException" />
+</xs:schema>

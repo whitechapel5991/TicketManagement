@@ -10,72 +10,54 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNet.Identity;
-using TicketManagement.BLL.Interfaces;
-using TicketManagement.DAL.Models;
+using TicketManagement.Web.AuthenticationApi.Clients;
 using TicketManagement.Web.Constants;
+using TicketManagement.Web.EventAreaService;
+using TicketManagement.Web.EventSeatService;
+using TicketManagement.Web.EventService;
 using TicketManagement.Web.Exceptions.UserProfile;
 using TicketManagement.Web.Interfaces;
 using TicketManagement.Web.Models.UserProfile;
+using TicketManagement.Web.OrderService;
 using TicketManagement.Web.Services.Identity;
+using TicketManagement.Web.WcfInfrastructure;
 
 namespace TicketManagement.Web.Services
 {
     public class UserProfileService : IUserProfileService
     {
-        private readonly ApplicationUserManager userManager;
-        private readonly IOrderService orderService;
-        private readonly IEventSeatService eventSeatService;
-        private readonly IEventAreaService eventAreaService;
-        private readonly BLL.Interfaces.IEventService eventService;
+        private readonly UserClient userClient;
 
-        public UserProfileService(
-            ApplicationUserManager userManager,
-            IOrderService orderService,
-            IEventSeatService eventSeatService,
-            IEventAreaService eventAreaService,
-            BLL.Interfaces.IEventService eventService)
+        public UserProfileService()
         {
-            this.userManager = userManager;
-            this.orderService = orderService;
-            this.eventSeatService = eventSeatService;
-            this.eventAreaService = eventAreaService;
-            this.eventService = eventService;
+            this.userClient = new UserClient();
         }
 
         public UserProfileViewModel GetUserProfileViewModel(string userName)
         {
-            return this.MapToUserProfileViewModel(this.userManager.FindByName(userName));
+            return this.MapToUserProfileViewModel(this.userClient.FindByName(userName));
         }
 
         public EditUserProfileViewModel GetEditUserProfileViewModel(string userName)
         {
-            return this.MapToEditUserProfileViewModel(this.userManager.FindByName(userName));
+            return this.MapToEditUserProfileViewModel(this.userClient.FindByName(userName));
         }
 
-        public async Task UpdateAsync(string userName, EditUserProfileViewModel userProfile)
+        public void Update(string userName, EditUserProfileViewModel userProfile)
         {
-            var user = await this.userManager.FindByNameAsync(userName);
-
-            var result = await this.userManager.UpdateAsync(this.UpdateIdentityUserModel(user, userProfile));
-            if (!result.Succeeded)
-            {
-                throw new UpdateUserProfileException(string.Join(", ", result.Errors));
-            }
+            var user = this.userClient.FindByName(userName);
+            this.userClient.Update(this.UpdateIdentityUserModel(user, userProfile));
         }
 
-        public async Task ChangePasswordAsync(string userName, UserPasswordViewModel userPasswordModel)
+        public void ChangePassword(string userName, UserPasswordViewModel userPasswordModel)
         {
-            var user = await this.userManager.FindByNameAsync(userName);
-            var result = await this.userManager.ChangePasswordAsync(user.Id, userPasswordModel.OldPassword, userPasswordModel.Password);
-            if (!result.Succeeded)
-            {
-                throw new ChangePasswordException(string.Join(", ", result.Errors));
-            }
+            var user = this.userClient.FindByName(userName);
+            this.userClient.ChangePassword(user.Id, userPasswordModel.OldPassword, userPasswordModel.Password);
         }
 
-        public async Task<BalanceViewModel> GetBalanceViewModelAsync(string userName)
+        public BalanceViewModel GetBalanceViewModelAsync(string userName)
         {
-            var user = await this.userManager.FindByNameAsync(userName);
+            var user = this.userClient.FindByName(userName);
 
             return new BalanceViewModel
             {
@@ -85,7 +67,16 @@ namespace TicketManagement.Web.Services
 
         public PurchaseHistoryViewModel GetPurchaseHistoryViewModel(string userName)
         {
-            return this.MapToPurchaseHistoryViewModel(this.orderService.GetHistoryOrdersByName(userName).ToList());
+            using (var client = new OrderContractClient())
+            {
+                client.AddClientCredentials();
+                return this.MapToPurchaseHistoryViewModel(client.GetHistoryOrdersByName(userName).ToList());
+            }
+        }
+
+        public void IncreaseBalance(decimal balance, string userName)
+        {
+            this.userClient.IncreaseBalance(userName, balance);
         }
 
         private PurchaseHistoryViewModel MapToPurchaseHistoryViewModel(List<Order> orderList)
@@ -97,14 +88,32 @@ namespace TicketManagement.Web.Services
 
             var eventSeatIdArray = orderList.Select(x => x.EventSeatId).Distinct().ToArray();
 
-            var eventSeats = this.eventSeatService.GetEventSeatsByEventSeatIds(eventSeatIdArray).Distinct().ToList();
+            List<EventSeat> eventSeats = null;
 
-            var eventAreas = this.eventAreaService.GetEventAreasByEventSeatIds(eventSeatIdArray).Distinct().ToList();
+            List<EventArea> eventAreas = null;
+
+            using (var client = new EventSeatContractClient())
+            {
+                client.AddClientCredentials();
+                eventSeats = client.GetEventSeatsByEventSeatIds(eventSeatIdArray).Distinct().ToList();
+            }
+
+            using (var client = new EventAreaContractClient())
+            {
+                client.AddClientCredentials();
+                eventAreas = client.GetEventAreasByEventSeatIds(eventSeatIdArray).Distinct().ToList();
+            }
 
             // Event Area dictionary, Key is event seats array in cart which belong to the event area.
             var eventAreasDictionary = eventAreas.ToDictionary(x => eventSeats.Where(y => y.EventAreaId == x.Id).Select(z => z.Id), x => x);
 
-            var events = this.eventService.GetEventsByEventSeatIds(eventSeatIdArray).Distinct().ToList();
+            List<Event> events = null;
+
+            using (var client = new EventContractClient())
+            {
+                client.AddClientCredentials();
+                events = client.GetEventsByEventSeatIds(eventSeatIdArray).Distinct().ToList();
+            }
 
             // Event dictionary, Key is event seats array in cart which belong to the event.
             var eventDictionary = events.ToDictionary(x => eventSeats.Where(y => eventAreas.Any(z => z.EventId == x.Id && y.EventAreaId == z.Id)).Select(z => z.Id).ToArray(), x => x);

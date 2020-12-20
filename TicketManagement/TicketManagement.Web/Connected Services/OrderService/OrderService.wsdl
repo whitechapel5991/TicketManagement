@@ -1,0 +1,311 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions xmlns:wsap="http://schemas.xmlsoap.org/ws/2004/08/addressing/policy" xmlns:wsa10="http://www.w3.org/2005/08/addressing" xmlns:tns="http://tempuri.org/" xmlns:msc="http://schemas.microsoft.com/ws/2005/12/wsdl/contract" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:wsx="http://schemas.xmlsoap.org/ws/2004/09/mex" xmlns:wsp="http://schemas.xmlsoap.org/ws/2004/09/policy" xmlns:wsam="http://www.w3.org/2007/05/addressing/metadata" xmlns:wsa="http://schemas.xmlsoap.org/ws/2004/08/addressing" xmlns:wsaw="http://www.w3.org/2006/05/addressing/wsdl" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd" xmlns:xsd="http://www.w3.org/2001/XMLSchema" name="OrderService" targetNamespace="http://tempuri.org/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+  <wsp:Policy wsu:Id="WSHttpBinding_IOrderContract_policy">
+    <wsp:ExactlyOne>
+      <wsp:All>
+        <sp:TransportBinding xmlns:sp="http://schemas.xmlsoap.org/ws/2005/07/securitypolicy">
+          <wsp:Policy>
+            <sp:TransportToken>
+              <wsp:Policy>
+                <sp:HttpsToken RequireClientCertificate="false" />
+              </wsp:Policy>
+            </sp:TransportToken>
+            <sp:AlgorithmSuite>
+              <wsp:Policy>
+                <sp:Basic256 />
+              </wsp:Policy>
+            </sp:AlgorithmSuite>
+            <sp:Layout>
+              <wsp:Policy>
+                <sp:Strict />
+              </wsp:Policy>
+            </sp:Layout>
+            <sp:IncludeTimestamp />
+          </wsp:Policy>
+        </sp:TransportBinding>
+        <sp:EndorsingSupportingTokens xmlns:sp="http://schemas.xmlsoap.org/ws/2005/07/securitypolicy">
+          <wsp:Policy>
+            <sp:SecureConversationToken sp:IncludeToken="http://schemas.xmlsoap.org/ws/2005/07/securitypolicy/IncludeToken/AlwaysToRecipient">
+              <wsp:Policy>
+                <sp:BootstrapPolicy>
+                  <wsp:Policy>
+                    <sp:SignedParts>
+                      <sp:Body />
+                      <sp:Header Name="To" Namespace="http://www.w3.org/2005/08/addressing" />
+                      <sp:Header Name="From" Namespace="http://www.w3.org/2005/08/addressing" />
+                      <sp:Header Name="FaultTo" Namespace="http://www.w3.org/2005/08/addressing" />
+                      <sp:Header Name="ReplyTo" Namespace="http://www.w3.org/2005/08/addressing" />
+                      <sp:Header Name="MessageID" Namespace="http://www.w3.org/2005/08/addressing" />
+                      <sp:Header Name="RelatesTo" Namespace="http://www.w3.org/2005/08/addressing" />
+                      <sp:Header Name="Action" Namespace="http://www.w3.org/2005/08/addressing" />
+                    </sp:SignedParts>
+                    <sp:EncryptedParts>
+                      <sp:Body />
+                    </sp:EncryptedParts>
+                    <sp:TransportBinding>
+                      <wsp:Policy>
+                        <sp:TransportToken>
+                          <wsp:Policy>
+                            <sp:HttpsToken RequireClientCertificate="false" />
+                          </wsp:Policy>
+                        </sp:TransportToken>
+                        <sp:AlgorithmSuite>
+                          <wsp:Policy>
+                            <sp:Basic256 />
+                          </wsp:Policy>
+                        </sp:AlgorithmSuite>
+                        <sp:Layout>
+                          <wsp:Policy>
+                            <sp:Strict />
+                          </wsp:Policy>
+                        </sp:Layout>
+                        <sp:IncludeTimestamp />
+                      </wsp:Policy>
+                    </sp:TransportBinding>
+                    <sp:SignedSupportingTokens>
+                      <wsp:Policy>
+                        <sp:UsernameToken sp:IncludeToken="http://schemas.xmlsoap.org/ws/2005/07/securitypolicy/IncludeToken/AlwaysToRecipient">
+                          <wsp:Policy>
+                            <sp:WssUsernameToken10 />
+                          </wsp:Policy>
+                        </sp:UsernameToken>
+                      </wsp:Policy>
+                    </sp:SignedSupportingTokens>
+                    <sp:Wss11>
+                      <wsp:Policy />
+                    </sp:Wss11>
+                    <sp:Trust10>
+                      <wsp:Policy>
+                        <sp:MustSupportIssuedTokens />
+                        <sp:RequireClientEntropy />
+                        <sp:RequireServerEntropy />
+                      </wsp:Policy>
+                    </sp:Trust10>
+                  </wsp:Policy>
+                </sp:BootstrapPolicy>
+              </wsp:Policy>
+            </sp:SecureConversationToken>
+          </wsp:Policy>
+        </sp:EndorsingSupportingTokens>
+        <sp:Wss11 xmlns:sp="http://schemas.xmlsoap.org/ws/2005/07/securitypolicy">
+          <wsp:Policy />
+        </sp:Wss11>
+        <sp:Trust10 xmlns:sp="http://schemas.xmlsoap.org/ws/2005/07/securitypolicy">
+          <wsp:Policy>
+            <sp:MustSupportIssuedTokens />
+            <sp:RequireClientEntropy />
+            <sp:RequireServerEntropy />
+          </wsp:Policy>
+        </sp:Trust10>
+        <wsaw:UsingAddressing />
+      </wsp:All>
+    </wsp:ExactlyOne>
+  </wsp:Policy>
+  <wsdl:types>
+    <xsd:schema targetNamespace="http://tempuri.org/Imports">
+      <xsd:import schemaLocation="https://localhost/TicketManagement.WcfService/Services/OrderService.svc?xsd=xsd0" namespace="http://tempuri.org/" />
+      <xsd:import schemaLocation="https://localhost/TicketManagement.WcfService/Services/OrderService.svc?xsd=xsd2" namespace="http://schemas.datacontract.org/2004/07/TicketManagement.WcfService.Exceptions" />
+      <xsd:import schemaLocation="https://localhost/TicketManagement.WcfService/Services/OrderService.svc?xsd=xsd6" namespace="http://schemas.datacontract.org/2004/07/TicketManagement.WcfService.Contracts" />
+      <xsd:import schemaLocation="https://localhost/TicketManagement.WcfService/Services/OrderService.svc?xsd=xsd1" namespace="http://schemas.microsoft.com/2003/10/Serialization/" />
+      <xsd:import schemaLocation="https://localhost/TicketManagement.WcfService/Services/OrderService.svc?xsd=xsd3" namespace="http://schemas.datacontract.org/2004/07/TicketManagement.WcfService.Exceptions.Base" />
+      <xsd:import schemaLocation="https://localhost/TicketManagement.WcfService/Services/OrderService.svc?xsd=xsd4" namespace="http://schemas.datacontract.org/2004/07/System" />
+      <xsd:import schemaLocation="https://localhost/TicketManagement.WcfService/Services/OrderService.svc?xsd=xsd5" namespace="http://schemas.datacontract.org/2004/07/System.Reflection" />
+    </xsd:schema>
+  </wsdl:types>
+  <wsdl:message name="IOrderContract_AddToCart_InputMessage">
+    <wsdl:part name="parameters" element="tns:AddToCart" />
+  </wsdl:message>
+  <wsdl:message name="IOrderContract_AddToCart_OutputMessage">
+    <wsdl:part name="parameters" element="tns:AddToCartResponse" />
+  </wsdl:message>
+  <wsdl:message name="IOrderContract_AddToCart_EntityDoesNotExistExceptionFault_FaultMessage">
+    <wsdl:part xmlns:q1="http://schemas.datacontract.org/2004/07/TicketManagement.WcfService.Exceptions" name="detail" element="q1:EntityDoesNotExistException" />
+  </wsdl:message>
+  <wsdl:message name="IOrderContract_AddToCart_SeatCurrentlySoldOrBlockedExceptionFault_FaultMessage">
+    <wsdl:part xmlns:q2="http://schemas.datacontract.org/2004/07/TicketManagement.WcfService.Contracts" name="detail" element="q2:SeatCurrentlySoldOrBlockedException" />
+  </wsdl:message>
+  <wsdl:message name="IOrderContract_Buy_InputMessage">
+    <wsdl:part name="parameters" element="tns:Buy" />
+  </wsdl:message>
+  <wsdl:message name="IOrderContract_Buy_OutputMessage">
+    <wsdl:part name="parameters" element="tns:BuyResponse" />
+  </wsdl:message>
+  <wsdl:message name="IOrderContract_Buy_NotEnoughMoneyExceptionFault_FaultMessage">
+    <wsdl:part xmlns:q3="http://schemas.datacontract.org/2004/07/TicketManagement.WcfService.Contracts" name="detail" element="q3:NotEnoughMoneyException" />
+  </wsdl:message>
+  <wsdl:message name="IOrderContract_Buy_EntityDoesNotExistExceptionFault_FaultMessage">
+    <wsdl:part xmlns:q4="http://schemas.datacontract.org/2004/07/TicketManagement.WcfService.Exceptions" name="detail" element="q4:EntityDoesNotExistException" />
+  </wsdl:message>
+  <wsdl:message name="IOrderContract_Buy_SeatIsNotInTheBasketExceptionFault_FaultMessage">
+    <wsdl:part xmlns:q5="http://schemas.datacontract.org/2004/07/TicketManagement.WcfService.Contracts" name="detail" element="q5:SeatIsNotInTheBasketException" />
+  </wsdl:message>
+  <wsdl:message name="IOrderContract_DeleteFromCart_InputMessage">
+    <wsdl:part name="parameters" element="tns:DeleteFromCart" />
+  </wsdl:message>
+  <wsdl:message name="IOrderContract_DeleteFromCart_OutputMessage">
+    <wsdl:part name="parameters" element="tns:DeleteFromCartResponse" />
+  </wsdl:message>
+  <wsdl:message name="IOrderContract_DeleteFromCart_EntityDoesNotExistExceptionFault_FaultMessage">
+    <wsdl:part xmlns:q6="http://schemas.datacontract.org/2004/07/TicketManagement.WcfService.Exceptions" name="detail" element="q6:EntityDoesNotExistException" />
+  </wsdl:message>
+  <wsdl:message name="IOrderContract_DeleteFromCart_SeatIsNotInTheBasketExceptionFault_FaultMessage">
+    <wsdl:part xmlns:q7="http://schemas.datacontract.org/2004/07/TicketManagement.WcfService.Contracts" name="detail" element="q7:SeatIsNotInTheBasketException" />
+  </wsdl:message>
+  <wsdl:message name="IOrderContract_GetHistoryOrdersById_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetHistoryOrdersById" />
+  </wsdl:message>
+  <wsdl:message name="IOrderContract_GetHistoryOrdersById_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetHistoryOrdersByIdResponse" />
+  </wsdl:message>
+  <wsdl:message name="IOrderContract_GetHistoryOrdersByName_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetHistoryOrdersByName" />
+  </wsdl:message>
+  <wsdl:message name="IOrderContract_GetHistoryOrdersByName_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetHistoryOrdersByNameResponse" />
+  </wsdl:message>
+  <wsdl:message name="IOrderContract_GetCartOrdersById_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetCartOrdersById" />
+  </wsdl:message>
+  <wsdl:message name="IOrderContract_GetCartOrdersById_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetCartOrdersByIdResponse" />
+  </wsdl:message>
+  <wsdl:message name="IOrderContract_GetCartOrdersByName_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetCartOrdersByName" />
+  </wsdl:message>
+  <wsdl:message name="IOrderContract_GetCartOrdersByName_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetCartOrdersByNameResponse" />
+  </wsdl:message>
+  <wsdl:portType name="IOrderContract">
+    <wsdl:operation name="AddToCart">
+      <wsdl:input wsaw:Action="http://tempuri.org/IOrderContract/AddToCart" message="tns:IOrderContract_AddToCart_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IOrderContract/AddToCartResponse" message="tns:IOrderContract_AddToCart_OutputMessage" />
+      <wsdl:fault wsaw:Action="http://tempuri.org/IOrderContract/AddToCartEntityDoesNotExistExceptionFault" name="EntityDoesNotExistExceptionFault" message="tns:IOrderContract_AddToCart_EntityDoesNotExistExceptionFault_FaultMessage" />
+      <wsdl:fault wsaw:Action="http://tempuri.org/IOrderContract/AddToCartSeatCurrentlySoldOrBlockedExceptionFault" name="SeatCurrentlySoldOrBlockedExceptionFault" message="tns:IOrderContract_AddToCart_SeatCurrentlySoldOrBlockedExceptionFault_FaultMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="Buy">
+      <wsdl:input wsaw:Action="http://tempuri.org/IOrderContract/Buy" message="tns:IOrderContract_Buy_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IOrderContract/BuyResponse" message="tns:IOrderContract_Buy_OutputMessage" />
+      <wsdl:fault wsaw:Action="http://tempuri.org/IOrderContract/BuyNotEnoughMoneyExceptionFault" name="NotEnoughMoneyExceptionFault" message="tns:IOrderContract_Buy_NotEnoughMoneyExceptionFault_FaultMessage" />
+      <wsdl:fault wsaw:Action="http://tempuri.org/IOrderContract/BuyEntityDoesNotExistExceptionFault" name="EntityDoesNotExistExceptionFault" message="tns:IOrderContract_Buy_EntityDoesNotExistExceptionFault_FaultMessage" />
+      <wsdl:fault wsaw:Action="http://tempuri.org/IOrderContract/BuySeatIsNotInTheBasketExceptionFault" name="SeatIsNotInTheBasketExceptionFault" message="tns:IOrderContract_Buy_SeatIsNotInTheBasketExceptionFault_FaultMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="DeleteFromCart">
+      <wsdl:input wsaw:Action="http://tempuri.org/IOrderContract/DeleteFromCart" message="tns:IOrderContract_DeleteFromCart_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IOrderContract/DeleteFromCartResponse" message="tns:IOrderContract_DeleteFromCart_OutputMessage" />
+      <wsdl:fault wsaw:Action="http://tempuri.org/IOrderContract/DeleteFromCartEntityDoesNotExistExceptionFault" name="EntityDoesNotExistExceptionFault" message="tns:IOrderContract_DeleteFromCart_EntityDoesNotExistExceptionFault_FaultMessage" />
+      <wsdl:fault wsaw:Action="http://tempuri.org/IOrderContract/DeleteFromCartSeatIsNotInTheBasketExceptionFault" name="SeatIsNotInTheBasketExceptionFault" message="tns:IOrderContract_DeleteFromCart_SeatIsNotInTheBasketExceptionFault_FaultMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="GetHistoryOrdersById">
+      <wsdl:input wsaw:Action="http://tempuri.org/IOrderContract/GetHistoryOrdersById" message="tns:IOrderContract_GetHistoryOrdersById_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IOrderContract/GetHistoryOrdersByIdResponse" message="tns:IOrderContract_GetHistoryOrdersById_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="GetHistoryOrdersByName">
+      <wsdl:input wsaw:Action="http://tempuri.org/IOrderContract/GetHistoryOrdersByName" message="tns:IOrderContract_GetHistoryOrdersByName_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IOrderContract/GetHistoryOrdersByNameResponse" message="tns:IOrderContract_GetHistoryOrdersByName_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="GetCartOrdersById">
+      <wsdl:input wsaw:Action="http://tempuri.org/IOrderContract/GetCartOrdersById" message="tns:IOrderContract_GetCartOrdersById_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IOrderContract/GetCartOrdersByIdResponse" message="tns:IOrderContract_GetCartOrdersById_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="GetCartOrdersByName">
+      <wsdl:input wsaw:Action="http://tempuri.org/IOrderContract/GetCartOrdersByName" message="tns:IOrderContract_GetCartOrdersByName_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IOrderContract/GetCartOrdersByNameResponse" message="tns:IOrderContract_GetCartOrdersByName_OutputMessage" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="WSHttpBinding_IOrderContract" type="tns:IOrderContract">
+    <wsp:PolicyReference URI="#WSHttpBinding_IOrderContract_policy" />
+    <soap12:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="AddToCart">
+      <soap12:operation soapAction="http://tempuri.org/IOrderContract/AddToCart" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+      <wsdl:fault name="EntityDoesNotExistExceptionFault">
+        <soap12:fault use="literal" name="EntityDoesNotExistExceptionFault" namespace="" />
+      </wsdl:fault>
+      <wsdl:fault name="SeatCurrentlySoldOrBlockedExceptionFault">
+        <soap12:fault use="literal" name="SeatCurrentlySoldOrBlockedExceptionFault" namespace="" />
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="Buy">
+      <soap12:operation soapAction="http://tempuri.org/IOrderContract/Buy" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+      <wsdl:fault name="NotEnoughMoneyExceptionFault">
+        <soap12:fault use="literal" name="NotEnoughMoneyExceptionFault" namespace="" />
+      </wsdl:fault>
+      <wsdl:fault name="EntityDoesNotExistExceptionFault">
+        <soap12:fault use="literal" name="EntityDoesNotExistExceptionFault" namespace="" />
+      </wsdl:fault>
+      <wsdl:fault name="SeatIsNotInTheBasketExceptionFault">
+        <soap12:fault use="literal" name="SeatIsNotInTheBasketExceptionFault" namespace="" />
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="DeleteFromCart">
+      <soap12:operation soapAction="http://tempuri.org/IOrderContract/DeleteFromCart" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+      <wsdl:fault name="EntityDoesNotExistExceptionFault">
+        <soap12:fault use="literal" name="EntityDoesNotExistExceptionFault" namespace="" />
+      </wsdl:fault>
+      <wsdl:fault name="SeatIsNotInTheBasketExceptionFault">
+        <soap12:fault use="literal" name="SeatIsNotInTheBasketExceptionFault" namespace="" />
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="GetHistoryOrdersById">
+      <soap12:operation soapAction="http://tempuri.org/IOrderContract/GetHistoryOrdersById" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetHistoryOrdersByName">
+      <soap12:operation soapAction="http://tempuri.org/IOrderContract/GetHistoryOrdersByName" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetCartOrdersById">
+      <soap12:operation soapAction="http://tempuri.org/IOrderContract/GetCartOrdersById" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetCartOrdersByName">
+      <soap12:operation soapAction="http://tempuri.org/IOrderContract/GetCartOrdersByName" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="OrderService">
+    <wsdl:port name="WSHttpBinding_IOrderContract" binding="tns:WSHttpBinding_IOrderContract">
+      <soap12:address location="https://localhost/TicketManagement.WcfService/Services/OrderService.svc" />
+      <wsa10:EndpointReference>
+        <wsa10:Address>https://localhost/TicketManagement.WcfService/Services/OrderService.svc</wsa10:Address>
+      </wsa10:EndpointReference>
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

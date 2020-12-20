@@ -5,7 +5,6 @@
 // </copyright>
 // ****************************************************************************
 
-using Hangfire;
 using Microsoft.Owin;
 using Owin;
 
@@ -19,8 +18,6 @@ namespace TicketManagement.Web
         {
             app.UseAutofacMiddleware(IocContainerConfig.Container);
             app.UseAutofacMvc();
-            app.UseHangfireDashboard();
-            app.UseHangfireServer();
             this.ConfigureAuth(app);
         }
     }

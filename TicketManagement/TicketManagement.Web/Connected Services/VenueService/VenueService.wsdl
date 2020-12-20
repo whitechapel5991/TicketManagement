@@ -1,0 +1,237 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions xmlns:wsap="http://schemas.xmlsoap.org/ws/2004/08/addressing/policy" xmlns:wsa10="http://www.w3.org/2005/08/addressing" xmlns:tns="http://tempuri.org/" xmlns:msc="http://schemas.microsoft.com/ws/2005/12/wsdl/contract" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:wsx="http://schemas.xmlsoap.org/ws/2004/09/mex" xmlns:wsp="http://schemas.xmlsoap.org/ws/2004/09/policy" xmlns:wsam="http://www.w3.org/2007/05/addressing/metadata" xmlns:wsa="http://schemas.xmlsoap.org/ws/2004/08/addressing" xmlns:wsaw="http://www.w3.org/2006/05/addressing/wsdl" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd" xmlns:xsd="http://www.w3.org/2001/XMLSchema" name="VenueService" targetNamespace="http://tempuri.org/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+  <wsp:Policy wsu:Id="WSHttpBinding_IVenueContract_policy">
+    <wsp:ExactlyOne>
+      <wsp:All>
+        <sp:TransportBinding xmlns:sp="http://schemas.xmlsoap.org/ws/2005/07/securitypolicy">
+          <wsp:Policy>
+            <sp:TransportToken>
+              <wsp:Policy>
+                <sp:HttpsToken RequireClientCertificate="false" />
+              </wsp:Policy>
+            </sp:TransportToken>
+            <sp:AlgorithmSuite>
+              <wsp:Policy>
+                <sp:Basic256 />
+              </wsp:Policy>
+            </sp:AlgorithmSuite>
+            <sp:Layout>
+              <wsp:Policy>
+                <sp:Strict />
+              </wsp:Policy>
+            </sp:Layout>
+            <sp:IncludeTimestamp />
+          </wsp:Policy>
+        </sp:TransportBinding>
+        <sp:EndorsingSupportingTokens xmlns:sp="http://schemas.xmlsoap.org/ws/2005/07/securitypolicy">
+          <wsp:Policy>
+            <sp:SecureConversationToken sp:IncludeToken="http://schemas.xmlsoap.org/ws/2005/07/securitypolicy/IncludeToken/AlwaysToRecipient">
+              <wsp:Policy>
+                <sp:BootstrapPolicy>
+                  <wsp:Policy>
+                    <sp:SignedParts>
+                      <sp:Body />
+                      <sp:Header Name="To" Namespace="http://www.w3.org/2005/08/addressing" />
+                      <sp:Header Name="From" Namespace="http://www.w3.org/2005/08/addressing" />
+                      <sp:Header Name="FaultTo" Namespace="http://www.w3.org/2005/08/addressing" />
+                      <sp:Header Name="ReplyTo" Namespace="http://www.w3.org/2005/08/addressing" />
+                      <sp:Header Name="MessageID" Namespace="http://www.w3.org/2005/08/addressing" />
+                      <sp:Header Name="RelatesTo" Namespace="http://www.w3.org/2005/08/addressing" />
+                      <sp:Header Name="Action" Namespace="http://www.w3.org/2005/08/addressing" />
+                    </sp:SignedParts>
+                    <sp:EncryptedParts>
+                      <sp:Body />
+                    </sp:EncryptedParts>
+                    <sp:TransportBinding>
+                      <wsp:Policy>
+                        <sp:TransportToken>
+                          <wsp:Policy>
+                            <sp:HttpsToken RequireClientCertificate="false" />
+                          </wsp:Policy>
+                        </sp:TransportToken>
+                        <sp:AlgorithmSuite>
+                          <wsp:Policy>
+                            <sp:Basic256 />
+                          </wsp:Policy>
+                        </sp:AlgorithmSuite>
+                        <sp:Layout>
+                          <wsp:Policy>
+                            <sp:Strict />
+                          </wsp:Policy>
+                        </sp:Layout>
+                        <sp:IncludeTimestamp />
+                      </wsp:Policy>
+                    </sp:TransportBinding>
+                    <sp:SignedSupportingTokens>
+                      <wsp:Policy>
+                        <sp:UsernameToken sp:IncludeToken="http://schemas.xmlsoap.org/ws/2005/07/securitypolicy/IncludeToken/AlwaysToRecipient">
+                          <wsp:Policy>
+                            <sp:WssUsernameToken10 />
+                          </wsp:Policy>
+                        </sp:UsernameToken>
+                      </wsp:Policy>
+                    </sp:SignedSupportingTokens>
+                    <sp:Wss11>
+                      <wsp:Policy />
+                    </sp:Wss11>
+                    <sp:Trust10>
+                      <wsp:Policy>
+                        <sp:MustSupportIssuedTokens />
+                        <sp:RequireClientEntropy />
+                        <sp:RequireServerEntropy />
+                      </wsp:Policy>
+                    </sp:Trust10>
+                  </wsp:Policy>
+                </sp:BootstrapPolicy>
+              </wsp:Policy>
+            </sp:SecureConversationToken>
+          </wsp:Policy>
+        </sp:EndorsingSupportingTokens>
+        <sp:Wss11 xmlns:sp="http://schemas.xmlsoap.org/ws/2005/07/securitypolicy">
+          <wsp:Policy />
+        </sp:Wss11>
+        <sp:Trust10 xmlns:sp="http://schemas.xmlsoap.org/ws/2005/07/securitypolicy">
+          <wsp:Policy>
+            <sp:MustSupportIssuedTokens />
+            <sp:RequireClientEntropy />
+            <sp:RequireServerEntropy />
+          </wsp:Policy>
+        </sp:Trust10>
+        <wsaw:UsingAddressing />
+      </wsp:All>
+    </wsp:ExactlyOne>
+  </wsp:Policy>
+  <wsdl:types>
+    <xsd:schema targetNamespace="http://tempuri.org/Imports">
+      <xsd:import schemaLocation="https://localhost/TicketManagement.WcfService/Services/VenueService.svc?xsd=xsd0" namespace="http://tempuri.org/" />
+      <xsd:import schemaLocation="https://localhost/TicketManagement.WcfService/Services/VenueService.svc?xsd=xsd1" namespace="http://schemas.microsoft.com/2003/10/Serialization/" />
+      <xsd:import schemaLocation="https://localhost/TicketManagement.WcfService/Services/VenueService.svc?xsd=xsd2" namespace="http://schemas.datacontract.org/2004/07/TicketManagement.WcfService.Contracts" />
+      <xsd:import schemaLocation="https://localhost/TicketManagement.WcfService/Services/VenueService.svc?xsd=xsd3" namespace="http://schemas.datacontract.org/2004/07/TicketManagement.WcfService.Exceptions.Base" />
+      <xsd:import schemaLocation="https://localhost/TicketManagement.WcfService/Services/VenueService.svc?xsd=xsd4" namespace="http://schemas.datacontract.org/2004/07/System" />
+      <xsd:import schemaLocation="https://localhost/TicketManagement.WcfService/Services/VenueService.svc?xsd=xsd5" namespace="http://schemas.datacontract.org/2004/07/System.Reflection" />
+    </xsd:schema>
+  </wsdl:types>
+  <wsdl:message name="IVenueContract_GetVenues_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetVenues" />
+  </wsdl:message>
+  <wsdl:message name="IVenueContract_GetVenues_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetVenuesResponse" />
+  </wsdl:message>
+  <wsdl:message name="IVenueContract_GetVenue_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetVenue" />
+  </wsdl:message>
+  <wsdl:message name="IVenueContract_GetVenue_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetVenueResponse" />
+  </wsdl:message>
+  <wsdl:message name="IVenueContract_AddVenue_InputMessage">
+    <wsdl:part name="parameters" element="tns:AddVenue" />
+  </wsdl:message>
+  <wsdl:message name="IVenueContract_AddVenue_OutputMessage">
+    <wsdl:part name="parameters" element="tns:AddVenueResponse" />
+  </wsdl:message>
+  <wsdl:message name="IVenueContract_AddVenue_VenueWithThisNameExistExceptionFault_FaultMessage">
+    <wsdl:part xmlns:q1="http://schemas.datacontract.org/2004/07/TicketManagement.WcfService.Contracts" name="detail" element="q1:VenueWithThisNameExistException" />
+  </wsdl:message>
+  <wsdl:message name="IVenueContract_UpdateVenue_InputMessage">
+    <wsdl:part name="parameters" element="tns:UpdateVenue" />
+  </wsdl:message>
+  <wsdl:message name="IVenueContract_UpdateVenue_OutputMessage">
+    <wsdl:part name="parameters" element="tns:UpdateVenueResponse" />
+  </wsdl:message>
+  <wsdl:message name="IVenueContract_UpdateVenue_VenueWithThisNameExistExceptionFault_FaultMessage">
+    <wsdl:part xmlns:q2="http://schemas.datacontract.org/2004/07/TicketManagement.WcfService.Contracts" name="detail" element="q2:VenueWithThisNameExistException" />
+  </wsdl:message>
+  <wsdl:message name="IVenueContract_DeleteVenue_InputMessage">
+    <wsdl:part name="parameters" element="tns:DeleteVenue" />
+  </wsdl:message>
+  <wsdl:message name="IVenueContract_DeleteVenue_OutputMessage">
+    <wsdl:part name="parameters" element="tns:DeleteVenueResponse" />
+  </wsdl:message>
+  <wsdl:portType name="IVenueContract">
+    <wsdl:operation name="GetVenues">
+      <wsdl:input wsaw:Action="http://tempuri.org/IVenueContract/GetVenues" message="tns:IVenueContract_GetVenues_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IVenueContract/GetVenuesResponse" message="tns:IVenueContract_GetVenues_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="GetVenue">
+      <wsdl:input wsaw:Action="http://tempuri.org/IVenueContract/GetVenue" message="tns:IVenueContract_GetVenue_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IVenueContract/GetVenueResponse" message="tns:IVenueContract_GetVenue_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="AddVenue">
+      <wsdl:input wsaw:Action="http://tempuri.org/IVenueContract/AddVenue" message="tns:IVenueContract_AddVenue_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IVenueContract/AddVenueResponse" message="tns:IVenueContract_AddVenue_OutputMessage" />
+      <wsdl:fault wsaw:Action="http://tempuri.org/IVenueContract/AddVenueVenueWithThisNameExistExceptionFault" name="VenueWithThisNameExistExceptionFault" message="tns:IVenueContract_AddVenue_VenueWithThisNameExistExceptionFault_FaultMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="UpdateVenue">
+      <wsdl:input wsaw:Action="http://tempuri.org/IVenueContract/UpdateVenue" message="tns:IVenueContract_UpdateVenue_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IVenueContract/UpdateVenueResponse" message="tns:IVenueContract_UpdateVenue_OutputMessage" />
+      <wsdl:fault wsaw:Action="http://tempuri.org/IVenueContract/UpdateVenueVenueWithThisNameExistExceptionFault" name="VenueWithThisNameExistExceptionFault" message="tns:IVenueContract_UpdateVenue_VenueWithThisNameExistExceptionFault_FaultMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="DeleteVenue">
+      <wsdl:input wsaw:Action="http://tempuri.org/IVenueContract/DeleteVenue" message="tns:IVenueContract_DeleteVenue_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IVenueContract/DeleteVenueResponse" message="tns:IVenueContract_DeleteVenue_OutputMessage" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="WSHttpBinding_IVenueContract" type="tns:IVenueContract">
+    <wsp:PolicyReference URI="#WSHttpBinding_IVenueContract_policy" />
+    <soap12:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="GetVenues">
+      <soap12:operation soapAction="http://tempuri.org/IVenueContract/GetVenues" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetVenue">
+      <soap12:operation soapAction="http://tempuri.org/IVenueContract/GetVenue" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="AddVenue">
+      <soap12:operation soapAction="http://tempuri.org/IVenueContract/AddVenue" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+      <wsdl:fault name="VenueWithThisNameExistExceptionFault">
+        <soap12:fault use="literal" name="VenueWithThisNameExistExceptionFault" namespace="" />
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="UpdateVenue">
+      <soap12:operation soapAction="http://tempuri.org/IVenueContract/UpdateVenue" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+      <wsdl:fault name="VenueWithThisNameExistExceptionFault">
+        <soap12:fault use="literal" name="VenueWithThisNameExistExceptionFault" namespace="" />
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="DeleteVenue">
+      <soap12:operation soapAction="http://tempuri.org/IVenueContract/DeleteVenue" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="VenueService">
+    <wsdl:port name="WSHttpBinding_IVenueContract" binding="tns:WSHttpBinding_IVenueContract">
+      <soap12:address location="https://localhost/TicketManagement.WcfService/Services/VenueService.svc" />
+      <wsa10:EndpointReference>
+        <wsa10:Address>https://localhost/TicketManagement.WcfService/Services/VenueService.svc</wsa10:Address>
+      </wsa10:EndpointReference>
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

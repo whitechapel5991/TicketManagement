@@ -8,48 +8,46 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using TicketManagement.BLL.Interfaces;
-using TicketManagement.DAL.Models;
+using TicketManagement.Web.EventAreaService;
+using TicketManagement.Web.EventSeatService;
+using TicketManagement.Web.EventService;
 using TicketManagement.Web.Interfaces;
 using TicketManagement.Web.Models.Cart;
+using TicketManagement.Web.OrderService;
+using TicketManagement.Web.WcfInfrastructure;
 
 namespace TicketManagement.Web.Services
 {
     internal class CartService : ICartService
     {
-        private readonly IOrderService orderService;
-        private readonly IEventSeatService eventSeatService;
-        private readonly IEventAreaService eventAreaService;
-        private readonly BLL.Interfaces.IEventService eventService;
-
-        public CartService(
-            IOrderService orderService,
-            IEventSeatService eventSeatService,
-            IEventAreaService eventAreaService,
-            BLL.Interfaces.IEventService eventService)
-        {
-            this.orderService = orderService;
-            this.eventSeatService = eventSeatService;
-            this.eventAreaService = eventAreaService;
-            this.eventService = eventService;
-        }
-
         public void Buy(int orderId)
         {
-            this.orderService.Buy(orderId);
+            using (var client = new OrderContractClient())
+            {
+                client.AddClientCredentials();
+                client.Buy(orderId);
+            }
         }
 
         public void Delete(int orderId)
         {
-            this.orderService.DeleteFromCart(orderId);
+            using (var client = new OrderContractClient())
+            {
+                client.AddClientCredentials();
+                client.DeleteFromCart(orderId);
+            }
         }
 
         public CartViewModel GetCartViewModelByUserName(string userName)
         {
-            return this.MapToCartViewModel(this.orderService.GetCartOrdersByName(userName).ToList());
+            using (var client = new OrderContractClient())
+            {
+                client.AddClientCredentials();
+                return this.MapToCartViewModel(client.GetCartOrdersByName(userName).ToList());
+            }
         }
 
-        private CartViewModel MapToCartViewModel(List<Order> userCartOrders)
+        private CartViewModel MapToCartViewModel(List<OrderService.Order> userCartOrders)
         {
             var purchaseHistoryVm = new CartViewModel()
             {
@@ -58,14 +56,29 @@ namespace TicketManagement.Web.Services
 
             var eventSeatIdArray = userCartOrders.Select(x => x.EventSeatId).Distinct().ToArray();
 
-            var eventSeats = this.eventSeatService.GetEventSeatsByEventSeatIds(eventSeatIdArray).Distinct().ToList();
+            List<EventSeat> eventSeats = null;
+            List<EventArea> eventAreas = null;
+            List<Event> events = null;
+            using (var client = new EventSeatContractClient())
+            {
+                client.AddClientCredentials();
+                eventSeats = client.GetEventSeatsByEventSeatIds(eventSeatIdArray).Distinct().ToList();
+            }
 
-            var eventAreas = this.eventAreaService.GetEventAreasByEventSeatIds(eventSeatIdArray).Distinct().ToList();
+            using (var client = new EventAreaContractClient())
+            {
+                client.AddClientCredentials();
+                eventAreas = client.GetEventAreasByEventSeatIds(eventSeatIdArray).Distinct().ToList();
+            }
 
             // Event Area dictionary, Key is event seats array in cart which belong to the event area.
             var eventAreasDictionary = eventAreas.ToDictionary(x => eventSeats.Where(y => y.EventAreaId == x.Id).Select(z => z.Id), x => x);
 
-            var events = this.eventService.GetEventsByEventSeatIds(eventSeatIdArray).Distinct().ToList();
+            using (var client = new EventContractClient())
+            {
+                client.AddClientCredentials();
+                events = client.GetEventsByEventSeatIds(eventSeatIdArray).Distinct().ToList();
+            }
 
             // Event dictionary, Key is event seats array in cart which belong to the event.
             var eventDictionary = events.ToDictionary(

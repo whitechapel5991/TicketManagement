@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ReferenceGroup xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" ID="79514c69-ca3a-4176-8716-b467057814d9" xmlns="urn:schemas-microsoft-com:xml-wcfservicemap">
+  <ClientOptions>
+    <GenerateAsynchronousMethods>false</GenerateAsynchronousMethods>
+    <GenerateTaskBasedAsynchronousMethod>true</GenerateTaskBasedAsynchronousMethod>
+    <EnableDataBinding>true</EnableDataBinding>
+    <ExcludedTypes />
+    <ImportXmlTypes>false</ImportXmlTypes>
+    <GenerateInternalTypes>false</GenerateInternalTypes>
+    <GenerateMessageContracts>false</GenerateMessageContracts>
+    <NamespaceMappings />
+    <CollectionMappings />
+    <GenerateSerializableTypes>true</GenerateSerializableTypes>
+    <Serializer>Auto</Serializer>
+    <UseSerializerForFaults>true</UseSerializerForFaults>
+    <ReferenceAllAssemblies>true</ReferenceAllAssemblies>
+    <ReferencedAssemblies />
+    <ReferencedDataContractTypes />
+    <ServiceContractMappings />
+  </ClientOptions>
+  <MetadataSources>
+    <MetadataSource Address="https://localhost/TicketManagement.WcfService/Services/VenueService.svc" Protocol="http" SourceId="1" />
+  </MetadataSources>
+  <Metadata>
+    <MetadataFile FileName="VenueService2.xsd" MetadataType="Schema" ID="bc87aad3-e5e0-4794-a1c6-8d143ddfb713" SourceId="1" SourceUrl="https://localhost/TicketManagement.WcfService/Services/VenueService.svc?xsd=xsd1" />
+    <MetadataFile FileName="VenueService1.xsd" MetadataType="Schema" ID="d42c7d97-5230-4230-8351-17e3a2dbb7c1" SourceId="1" SourceUrl="https://localhost/TicketManagement.WcfService/Services/VenueService.svc?xsd=xsd2" />
+    <MetadataFile FileName="VenueService3.xsd" MetadataType="Schema" ID="ea8855df-952c-4202-b8f6-32ce0412b193" SourceId="1" SourceUrl="https://localhost/TicketManagement.WcfService/Services/VenueService.svc?xsd=xsd5" />
+    <MetadataFile FileName="VenueService.wsdl" MetadataType="Wsdl" ID="16fb1393-d678-4992-9f38-37f877c77aec" SourceId="1" SourceUrl="https://localhost/TicketManagement.WcfService/Services/VenueService.svc?wsdl" />
+    <MetadataFile FileName="VenueService.xsd" MetadataType="Schema" ID="2df5db4d-393f-4660-a789-31c22da27213" SourceId="1" SourceUrl="https://localhost/TicketManagement.WcfService/Services/VenueService.svc?xsd=xsd0" />
+    <MetadataFile FileName="VenueService31.xsd" MetadataType="Schema" ID="7ecdb983-2012-4a21-a826-bae297adb17e" SourceId="1" SourceUrl="https://localhost/TicketManagement.WcfService/Services/VenueService.svc?xsd=xsd4" />
+    <MetadataFile FileName="VenueService32.xsd" MetadataType="Schema" ID="deda2e5d-8cdd-4d2f-bdfd-659b819db20c" SourceId="1" SourceUrl="https://localhost/TicketManagement.WcfService/Services/VenueService.svc?xsd=xsd3" />
+    <MetadataFile FileName="VenueService.disco" MetadataType="Disco" ID="3fd0e954-0ebf-4cb2-a109-eaafe2811f9e" SourceId="1" SourceUrl="https://localhost/TicketManagement.WcfService/Services/VenueService.svc?disco" />
+  </Metadata>
+  <Extensions>
+    <ExtensionFile FileName="configuration91.svcinfo" Name="configuration91.svcinfo" />
+    <ExtensionFile FileName="configuration.svcinfo" Name="configuration.svcinfo" />
+  </Extensions>
+</ReferenceGroup>

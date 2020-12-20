@@ -43,12 +43,12 @@ $(function () {
 
 });
 
-var AddAntiForgeryToken = function() {
-    var formData = new FormData($(selectorConstants.PostForm).get(0));
-    let token = $(selectorConstants.RequestVerificationToken).val();
-    formData.append(requestConstants.RequestVerificationToken, token);
-    return formData;
-};
+//var AddAntiForgeryToken = function() {
+//    var formData = new FormData($(selectorConstants.PostForm).get(0));
+//    let token = $(selectorConstants.RequestVerificationToken).val();
+//    formData.append(requestConstants.RequestVerificationToken, token);
+//    return formData;
+//};
 
 var updateContentWithMenu = function(contentUrl) {
     updateContent(contentUrl);
@@ -283,7 +283,7 @@ var postRequest = function() {
                             contentType: false, // Not to set any content header  
                             processData: false, // Not to process data  
                             async: true,
-                            data: AddAntiForgeryToken(this),
+                            //data: AddAntiForgeryToken(this),
                             success: function(data) {
                                 $(selectorConstants.PostForm + ' ' + selectorConstants.Loader).hide();
                                 $(selectorConstants.PostForm + ' ' + selectorConstants.ValidationSummary).removeClass("validation-summary-errors");

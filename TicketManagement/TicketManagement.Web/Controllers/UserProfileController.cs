@@ -7,7 +7,6 @@
 
 using System.Threading.Tasks;
 using System.Web.Mvc;
-using TicketManagement.BLL.Interfaces.Identity;
 using TicketManagement.Web.Filters.ActionFilters;
 using TicketManagement.Web.Filters.ExceptionFilters;
 using TicketManagement.Web.Interfaces;
@@ -19,14 +18,11 @@ namespace TicketManagement.Web.Controllers
     [UserProfileExceptionFilter]
     public class UserProfileController : Controller
     {
-        private readonly IUserService userService;
         private readonly IUserProfileService userProfileService;
 
         public UserProfileController(
-            IUserService userService,
             IUserProfileService userProfileService)
         {
-            this.userService = userService;
             this.userProfileService = userProfileService;
         }
 
@@ -47,7 +43,7 @@ namespace TicketManagement.Web.Controllers
         [HttpPost]
         public async Task<JsonResult> Edit(EditUserProfileViewModel userProfile)
         {
-            await this.userProfileService.UpdateAsync(this.User.Identity.Name, userProfile);
+            this.userProfileService.Update(this.User.Identity.Name, userProfile);
             return this.Json(new { returnContentUrl = this.Url.Action("Index", "UserProfile") });
         }
 
@@ -61,7 +57,7 @@ namespace TicketManagement.Web.Controllers
         [HttpPost]
         public async Task<JsonResult> ChangePassword(UserPasswordViewModel userPasswordModel)
         {
-            await this.userProfileService.ChangePasswordAsync(this.User.Identity.Name, userPasswordModel);
+            this.userProfileService.ChangePassword(this.User.Identity.Name, userPasswordModel);
             return this.Json(new { returnContentUrl = this.Url.Action("Index", "UserProfile") });
         }
 
@@ -74,7 +70,7 @@ namespace TicketManagement.Web.Controllers
         [HttpPost]
         public JsonResult IncreaseBalance(BalanceViewModel balanceModel)
         {
-            this.userService.IncreaseBalance(balanceModel.Balance, this.User.Identity.Name);
+            this.userProfileService.IncreaseBalance(balanceModel.Balance, this.User.Identity.Name);
             return this.Json(new { returnContentUrl = this.Url.Action("Index", "UserProfile") });
         }
 

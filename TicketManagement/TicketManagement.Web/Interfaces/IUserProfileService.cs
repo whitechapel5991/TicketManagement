@@ -16,12 +16,14 @@ namespace TicketManagement.Web.Interfaces
 
         EditUserProfileViewModel GetEditUserProfileViewModel(string userName);
 
-        Task UpdateAsync(string userName, EditUserProfileViewModel userProfile);
+        void Update(string userName, EditUserProfileViewModel userProfile);
 
-        Task ChangePasswordAsync(string userName, UserPasswordViewModel userPasswordModel);
+        void ChangePassword(string userName, UserPasswordViewModel userPasswordModel);
 
-        Task<BalanceViewModel> GetBalanceViewModelAsync(string userName);
+        BalanceViewModel GetBalanceViewModelAsync(string userName);
 
         PurchaseHistoryViewModel GetPurchaseHistoryViewModel(string userName);
+
+        void IncreaseBalance(decimal balance, string userName);
     }
 }

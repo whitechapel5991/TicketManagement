@@ -7,7 +7,7 @@
 
 using System.Net;
 using System.Web.Mvc;
-using TicketManagement.BLL.Exceptions.EventExceptions;
+using TicketManagement.Web.EventService;
 using TicketManagement.Web.Filters.Base;
 
 namespace TicketManagement.Web.Filters.ExceptionFilters

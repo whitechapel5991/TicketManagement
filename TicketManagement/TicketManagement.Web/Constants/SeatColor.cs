@@ -5,7 +5,7 @@
 // </copyright>
 // ****************************************************************************
 
-using TicketManagement.DAL.Constants;
+using TicketManagement.Web.EventSeatService;
 
 namespace TicketManagement.Web.Constants
 {

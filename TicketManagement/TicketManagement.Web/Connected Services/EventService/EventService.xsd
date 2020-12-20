@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:tns="http://schemas.datacontract.org/2004/07/TicketManagement.WcfService.Contracts" elementFormDefault="qualified" targetNamespace="http://schemas.datacontract.org/2004/07/TicketManagement.WcfService.Contracts" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:import schemaLocation="https://localhost/TicketManagement.WcfService/Services/EventService.svc?xsd=xsd4" namespace="http://schemas.datacontract.org/2004/07/TicketManagement.WcfService.Exceptions.Base" />
+  <xs:complexType name="ArrayOfEvent">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="Event" nillable="true" type="tns:Event" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfEvent" nillable="true" type="tns:ArrayOfEvent" />
+  <xs:complexType name="Event">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="BeginDateUtc" type="xs:dateTime" />
+      <xs:element minOccurs="0" name="Description" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="EndDateUtc" type="xs:dateTime" />
+      <xs:element minOccurs="0" name="Id" type="xs:int" />
+      <xs:element minOccurs="0" name="ImageUrl" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="LayoutId" type="xs:int" />
+      <xs:element minOccurs="0" name="Name" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="Published" type="xs:boolean" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="Event" nillable="true" type="tns:Event" />
+  <xs:complexType name="EventInPastException">
+    <xs:complexContent mixed="false">
+      <xs:extension xmlns:q1="http://schemas.datacontract.org/2004/07/TicketManagement.WcfService.Exceptions.Base" base="q1:WcfException">
+        <xs:sequence />
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="EventInPastException" nillable="true" type="tns:EventInPastException" />
+  <xs:complexType name="BeginDateLongerThenEndDateException">
+    <xs:complexContent mixed="false">
+      <xs:extension xmlns:q2="http://schemas.datacontract.org/2004/07/TicketManagement.WcfService.Exceptions.Base" base="q2:WcfException">
+        <xs:sequence />
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="BeginDateLongerThenEndDateException" nillable="true" type="tns:BeginDateLongerThenEndDateException" />
+  <xs:complexType name="EventExistInTheLayoutInThisTimeException">
+    <xs:complexContent mixed="false">
+      <xs:extension xmlns:q3="http://schemas.datacontract.org/2004/07/TicketManagement.WcfService.Exceptions.Base" base="q3:WcfException">
+        <xs:sequence />
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="EventExistInTheLayoutInThisTimeException" nillable="true" type="tns:EventExistInTheLayoutInThisTimeException" />
+  <xs:complexType name="LayoutHasNotAreaException">
+    <xs:complexContent mixed="false">
+      <xs:extension xmlns:q4="http://schemas.datacontract.org/2004/07/TicketManagement.WcfService.Exceptions.Base" base="q4:WcfException">
+        <xs:sequence />
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="LayoutHasNotAreaException" nillable="true" type="tns:LayoutHasNotAreaException" />
+  <xs:complexType name="LayoutHasNotSeatException">
+    <xs:complexContent mixed="false">
+      <xs:extension xmlns:q5="http://schemas.datacontract.org/2004/07/TicketManagement.WcfService.Exceptions.Base" base="q5:WcfException">
+        <xs:sequence />
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="LayoutHasNotSeatException" nillable="true" type="tns:LayoutHasNotSeatException" />
+  <xs:complexType name="LayoutHasSoldSeatAndCouldNotBeChangeException">
+    <xs:complexContent mixed="false">
+      <xs:extension xmlns:q6="http://schemas.datacontract.org/2004/07/TicketManagement.WcfService.Exceptions.Base" base="q6:WcfException">
+        <xs:sequence />
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="LayoutHasSoldSeatAndCouldNotBeChangeException" nillable="true" type="tns:LayoutHasSoldSeatAndCouldNotBeChangeException" />
+  <xs:complexType name="EventAlreadyPublishedException">
+    <xs:complexContent mixed="false">
+      <xs:extension xmlns:q7="http://schemas.datacontract.org/2004/07/TicketManagement.WcfService.Exceptions.Base" base="q7:WcfException">
+        <xs:sequence />
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="EventAlreadyPublishedException" nillable="true" type="tns:EventAlreadyPublishedException" />
+  <xs:complexType name="SomeAreaHasNotPriceException">
+    <xs:complexContent mixed="false">
+      <xs:extension xmlns:q8="http://schemas.datacontract.org/2004/07/TicketManagement.WcfService.Exceptions.Base" base="q8:WcfException">
+        <xs:sequence />
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="SomeAreaHasNotPriceException" nillable="true" type="tns:SomeAreaHasNotPriceException" />
+</xs:schema>

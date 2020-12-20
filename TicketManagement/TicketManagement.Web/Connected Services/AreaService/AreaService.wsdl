@@ -1,0 +1,252 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions xmlns:wsap="http://schemas.xmlsoap.org/ws/2004/08/addressing/policy" xmlns:wsa10="http://www.w3.org/2005/08/addressing" xmlns:tns="http://tempuri.org/" xmlns:msc="http://schemas.microsoft.com/ws/2005/12/wsdl/contract" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:wsx="http://schemas.xmlsoap.org/ws/2004/09/mex" xmlns:wsp="http://schemas.xmlsoap.org/ws/2004/09/policy" xmlns:wsam="http://www.w3.org/2007/05/addressing/metadata" xmlns:wsa="http://schemas.xmlsoap.org/ws/2004/08/addressing" xmlns:wsaw="http://www.w3.org/2006/05/addressing/wsdl" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd" xmlns:xsd="http://www.w3.org/2001/XMLSchema" name="AreaService" targetNamespace="http://tempuri.org/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+  <wsp:Policy wsu:Id="WSHttpBinding_IAreaContract_policy">
+    <wsp:ExactlyOne>
+      <wsp:All>
+        <sp:TransportBinding xmlns:sp="http://schemas.xmlsoap.org/ws/2005/07/securitypolicy">
+          <wsp:Policy>
+            <sp:TransportToken>
+              <wsp:Policy>
+                <sp:HttpsToken RequireClientCertificate="false" />
+              </wsp:Policy>
+            </sp:TransportToken>
+            <sp:AlgorithmSuite>
+              <wsp:Policy>
+                <sp:Basic256 />
+              </wsp:Policy>
+            </sp:AlgorithmSuite>
+            <sp:Layout>
+              <wsp:Policy>
+                <sp:Strict />
+              </wsp:Policy>
+            </sp:Layout>
+            <sp:IncludeTimestamp />
+          </wsp:Policy>
+        </sp:TransportBinding>
+        <sp:EndorsingSupportingTokens xmlns:sp="http://schemas.xmlsoap.org/ws/2005/07/securitypolicy">
+          <wsp:Policy>
+            <sp:SecureConversationToken sp:IncludeToken="http://schemas.xmlsoap.org/ws/2005/07/securitypolicy/IncludeToken/AlwaysToRecipient">
+              <wsp:Policy>
+                <sp:BootstrapPolicy>
+                  <wsp:Policy>
+                    <sp:SignedParts>
+                      <sp:Body />
+                      <sp:Header Name="To" Namespace="http://www.w3.org/2005/08/addressing" />
+                      <sp:Header Name="From" Namespace="http://www.w3.org/2005/08/addressing" />
+                      <sp:Header Name="FaultTo" Namespace="http://www.w3.org/2005/08/addressing" />
+                      <sp:Header Name="ReplyTo" Namespace="http://www.w3.org/2005/08/addressing" />
+                      <sp:Header Name="MessageID" Namespace="http://www.w3.org/2005/08/addressing" />
+                      <sp:Header Name="RelatesTo" Namespace="http://www.w3.org/2005/08/addressing" />
+                      <sp:Header Name="Action" Namespace="http://www.w3.org/2005/08/addressing" />
+                    </sp:SignedParts>
+                    <sp:EncryptedParts>
+                      <sp:Body />
+                    </sp:EncryptedParts>
+                    <sp:TransportBinding>
+                      <wsp:Policy>
+                        <sp:TransportToken>
+                          <wsp:Policy>
+                            <sp:HttpsToken RequireClientCertificate="false" />
+                          </wsp:Policy>
+                        </sp:TransportToken>
+                        <sp:AlgorithmSuite>
+                          <wsp:Policy>
+                            <sp:Basic256 />
+                          </wsp:Policy>
+                        </sp:AlgorithmSuite>
+                        <sp:Layout>
+                          <wsp:Policy>
+                            <sp:Strict />
+                          </wsp:Policy>
+                        </sp:Layout>
+                        <sp:IncludeTimestamp />
+                      </wsp:Policy>
+                    </sp:TransportBinding>
+                    <sp:SignedSupportingTokens>
+                      <wsp:Policy>
+                        <sp:UsernameToken sp:IncludeToken="http://schemas.xmlsoap.org/ws/2005/07/securitypolicy/IncludeToken/AlwaysToRecipient">
+                          <wsp:Policy>
+                            <sp:WssUsernameToken10 />
+                          </wsp:Policy>
+                        </sp:UsernameToken>
+                      </wsp:Policy>
+                    </sp:SignedSupportingTokens>
+                    <sp:Wss11>
+                      <wsp:Policy />
+                    </sp:Wss11>
+                    <sp:Trust10>
+                      <wsp:Policy>
+                        <sp:MustSupportIssuedTokens />
+                        <sp:RequireClientEntropy />
+                        <sp:RequireServerEntropy />
+                      </wsp:Policy>
+                    </sp:Trust10>
+                  </wsp:Policy>
+                </sp:BootstrapPolicy>
+              </wsp:Policy>
+            </sp:SecureConversationToken>
+          </wsp:Policy>
+        </sp:EndorsingSupportingTokens>
+        <sp:Wss11 xmlns:sp="http://schemas.xmlsoap.org/ws/2005/07/securitypolicy">
+          <wsp:Policy />
+        </sp:Wss11>
+        <sp:Trust10 xmlns:sp="http://schemas.xmlsoap.org/ws/2005/07/securitypolicy">
+          <wsp:Policy>
+            <sp:MustSupportIssuedTokens />
+            <sp:RequireClientEntropy />
+            <sp:RequireServerEntropy />
+          </wsp:Policy>
+        </sp:Trust10>
+        <wsaw:UsingAddressing />
+      </wsp:All>
+    </wsp:ExactlyOne>
+  </wsp:Policy>
+  <wsdl:types>
+    <xsd:schema targetNamespace="http://tempuri.org/Imports">
+      <xsd:import schemaLocation="https://localhost/TicketManagement.WcfService/Services/AreaService.svc?xsd=xsd0" namespace="http://tempuri.org/" />
+      <xsd:import schemaLocation="https://localhost/TicketManagement.WcfService/Services/AreaService.svc?xsd=xsd1" namespace="http://schemas.microsoft.com/2003/10/Serialization/" />
+      <xsd:import schemaLocation="https://localhost/TicketManagement.WcfService/Services/AreaService.svc?xsd=xsd2" namespace="http://schemas.datacontract.org/2004/07/TicketManagement.WcfService.Contracts" />
+      <xsd:import schemaLocation="https://localhost/TicketManagement.WcfService/Services/AreaService.svc?xsd=xsd3" namespace="http://schemas.datacontract.org/2004/07/TicketManagement.WcfService.Exceptions" />
+      <xsd:import schemaLocation="https://localhost/TicketManagement.WcfService/Services/AreaService.svc?xsd=xsd4" namespace="http://schemas.datacontract.org/2004/07/TicketManagement.WcfService.Exceptions.Base" />
+      <xsd:import schemaLocation="https://localhost/TicketManagement.WcfService/Services/AreaService.svc?xsd=xsd5" namespace="http://schemas.datacontract.org/2004/07/System" />
+      <xsd:import schemaLocation="https://localhost/TicketManagement.WcfService/Services/AreaService.svc?xsd=xsd6" namespace="http://schemas.datacontract.org/2004/07/System.Reflection" />
+    </xsd:schema>
+  </wsdl:types>
+  <wsdl:message name="IAreaContract_GetAreas_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetAreas" />
+  </wsdl:message>
+  <wsdl:message name="IAreaContract_GetAreas_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetAreasResponse" />
+  </wsdl:message>
+  <wsdl:message name="IAreaContract_GetArea_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetArea" />
+  </wsdl:message>
+  <wsdl:message name="IAreaContract_GetArea_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetAreaResponse" />
+  </wsdl:message>
+  <wsdl:message name="IAreaContract_AddArea_InputMessage">
+    <wsdl:part name="parameters" element="tns:AddArea" />
+  </wsdl:message>
+  <wsdl:message name="IAreaContract_AddArea_OutputMessage">
+    <wsdl:part name="parameters" element="tns:AddAreaResponse" />
+  </wsdl:message>
+  <wsdl:message name="IAreaContract_AddArea_EntityDoesNotExistExceptionFault_FaultMessage">
+    <wsdl:part xmlns:q1="http://schemas.datacontract.org/2004/07/TicketManagement.WcfService.Exceptions" name="detail" element="q1:EntityDoesNotExistException" />
+  </wsdl:message>
+  <wsdl:message name="IAreaContract_AddArea_AreaWithSameDescriptionInTheLayoutExistExceptionFault_FaultMessage">
+    <wsdl:part xmlns:q2="http://schemas.datacontract.org/2004/07/TicketManagement.WcfService.Exceptions" name="detail" element="q2:AreaWithSameDescriptionInTheLayoutExistException" />
+  </wsdl:message>
+  <wsdl:message name="IAreaContract_UpdateArea_InputMessage">
+    <wsdl:part name="parameters" element="tns:UpdateArea" />
+  </wsdl:message>
+  <wsdl:message name="IAreaContract_UpdateArea_OutputMessage">
+    <wsdl:part name="parameters" element="tns:UpdateAreaResponse" />
+  </wsdl:message>
+  <wsdl:message name="IAreaContract_UpdateArea_EntityDoesNotExistExceptionFault_FaultMessage">
+    <wsdl:part xmlns:q3="http://schemas.datacontract.org/2004/07/TicketManagement.WcfService.Exceptions" name="detail" element="q3:EntityDoesNotExistException" />
+  </wsdl:message>
+  <wsdl:message name="IAreaContract_UpdateArea_AreaWithSameDescriptionInTheLayoutExistExceptionFault_FaultMessage">
+    <wsdl:part xmlns:q4="http://schemas.datacontract.org/2004/07/TicketManagement.WcfService.Exceptions" name="detail" element="q4:AreaWithSameDescriptionInTheLayoutExistException" />
+  </wsdl:message>
+  <wsdl:message name="IAreaContract_DeleteArea_InputMessage">
+    <wsdl:part name="parameters" element="tns:DeleteArea" />
+  </wsdl:message>
+  <wsdl:message name="IAreaContract_DeleteArea_OutputMessage">
+    <wsdl:part name="parameters" element="tns:DeleteAreaResponse" />
+  </wsdl:message>
+  <wsdl:portType name="IAreaContract">
+    <wsdl:operation name="GetAreas">
+      <wsdl:input wsaw:Action="http://tempuri.org/IAreaContract/GetAreas" message="tns:IAreaContract_GetAreas_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IAreaContract/GetAreasResponse" message="tns:IAreaContract_GetAreas_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="GetArea">
+      <wsdl:input wsaw:Action="http://tempuri.org/IAreaContract/GetArea" message="tns:IAreaContract_GetArea_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IAreaContract/GetAreaResponse" message="tns:IAreaContract_GetArea_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="AddArea">
+      <wsdl:input wsaw:Action="http://tempuri.org/IAreaContract/AddArea" message="tns:IAreaContract_AddArea_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IAreaContract/AddAreaResponse" message="tns:IAreaContract_AddArea_OutputMessage" />
+      <wsdl:fault wsaw:Action="http://tempuri.org/IAreaContract/AddAreaEntityDoesNotExistExceptionFault" name="EntityDoesNotExistExceptionFault" message="tns:IAreaContract_AddArea_EntityDoesNotExistExceptionFault_FaultMessage" />
+      <wsdl:fault wsaw:Action="http://tempuri.org/IAreaContract/AddAreaAreaWithSameDescriptionInTheLayoutExistExceptionFault" name="AreaWithSameDescriptionInTheLayoutExistExceptionFault" message="tns:IAreaContract_AddArea_AreaWithSameDescriptionInTheLayoutExistExceptionFault_FaultMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="UpdateArea">
+      <wsdl:input wsaw:Action="http://tempuri.org/IAreaContract/UpdateArea" message="tns:IAreaContract_UpdateArea_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IAreaContract/UpdateAreaResponse" message="tns:IAreaContract_UpdateArea_OutputMessage" />
+      <wsdl:fault wsaw:Action="http://tempuri.org/IAreaContract/UpdateAreaEntityDoesNotExistExceptionFault" name="EntityDoesNotExistExceptionFault" message="tns:IAreaContract_UpdateArea_EntityDoesNotExistExceptionFault_FaultMessage" />
+      <wsdl:fault wsaw:Action="http://tempuri.org/IAreaContract/UpdateAreaAreaWithSameDescriptionInTheLayoutExistExceptionFault" name="AreaWithSameDescriptionInTheLayoutExistExceptionFault" message="tns:IAreaContract_UpdateArea_AreaWithSameDescriptionInTheLayoutExistExceptionFault_FaultMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="DeleteArea">
+      <wsdl:input wsaw:Action="http://tempuri.org/IAreaContract/DeleteArea" message="tns:IAreaContract_DeleteArea_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IAreaContract/DeleteAreaResponse" message="tns:IAreaContract_DeleteArea_OutputMessage" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="WSHttpBinding_IAreaContract" type="tns:IAreaContract">
+    <wsp:PolicyReference URI="#WSHttpBinding_IAreaContract_policy" />
+    <soap12:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="GetAreas">
+      <soap12:operation soapAction="http://tempuri.org/IAreaContract/GetAreas" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetArea">
+      <soap12:operation soapAction="http://tempuri.org/IAreaContract/GetArea" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="AddArea">
+      <soap12:operation soapAction="http://tempuri.org/IAreaContract/AddArea" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+      <wsdl:fault name="EntityDoesNotExistExceptionFault">
+        <soap12:fault use="literal" name="EntityDoesNotExistExceptionFault" namespace="" />
+      </wsdl:fault>
+      <wsdl:fault name="AreaWithSameDescriptionInTheLayoutExistExceptionFault">
+        <soap12:fault use="literal" name="AreaWithSameDescriptionInTheLayoutExistExceptionFault" namespace="" />
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="UpdateArea">
+      <soap12:operation soapAction="http://tempuri.org/IAreaContract/UpdateArea" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+      <wsdl:fault name="EntityDoesNotExistExceptionFault">
+        <soap12:fault use="literal" name="EntityDoesNotExistExceptionFault" namespace="" />
+      </wsdl:fault>
+      <wsdl:fault name="AreaWithSameDescriptionInTheLayoutExistExceptionFault">
+        <soap12:fault use="literal" name="AreaWithSameDescriptionInTheLayoutExistExceptionFault" namespace="" />
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="DeleteArea">
+      <soap12:operation soapAction="http://tempuri.org/IAreaContract/DeleteArea" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="AreaService">
+    <wsdl:port name="WSHttpBinding_IAreaContract" binding="tns:WSHttpBinding_IAreaContract">
+      <soap12:address location="https://localhost/TicketManagement.WcfService/Services/AreaService.svc" />
+      <wsa10:EndpointReference>
+        <wsa10:Address>https://localhost/TicketManagement.WcfService/Services/AreaService.svc</wsa10:Address>
+      </wsa10:EndpointReference>
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>
