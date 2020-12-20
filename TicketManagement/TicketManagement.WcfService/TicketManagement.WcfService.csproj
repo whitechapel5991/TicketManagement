@@ -53,12 +53,36 @@
     <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.SqlServer.dll</HintPath>
     </Reference>
+    <Reference Include="Hangfire.Autofac, Version=2.3.1.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Hangfire.Autofac.2.3.1\lib\net45\Hangfire.Autofac.dll</HintPath>
+    </Reference>
+    <Reference Include="Hangfire.Core, Version=1.7.18.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Hangfire.Core.1.7.18\lib\net46\Hangfire.Core.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.Bcl.AsyncInterfaces, Version=5.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.Bcl.AsyncInterfaces.5.0.0\lib\net461\Microsoft.Bcl.AsyncInterfaces.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
+    <Reference Include="Microsoft.IdentityModel.JsonWebTokens, Version=6.8.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.IdentityModel.JsonWebTokens.6.8.0\lib\net461\Microsoft.IdentityModel.JsonWebTokens.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.IdentityModel.Logging, Version=6.8.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.IdentityModel.Logging.6.8.0\lib\net461\Microsoft.IdentityModel.Logging.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.IdentityModel.Tokens, Version=6.8.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.IdentityModel.Tokens.6.8.0\lib\net461\Microsoft.IdentityModel.Tokens.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Owin, Version=4.0.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Owin.4.0.1\lib\net45\Microsoft.Owin.dll</HintPath>
+    </Reference>
     <Reference Include="Newtonsoft.Json, Version=12.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\packages\Newtonsoft.Json.12.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="Owin, Version=1.0.0.0, Culture=neutral, PublicKeyToken=f0ebd12fd5e55cc5, processorArchitecture=MSIL">
+      <HintPath>..\packages\Owin.1.0\lib\net40\Owin.dll</HintPath>
+    </Reference>
+    <Reference Include="RestSharp, Version=106.11.7.0, Culture=neutral, PublicKeyToken=598062e77f915f75, processorArchitecture=MSIL">
+      <HintPath>..\packages\RestSharp.106.11.7\lib\net452\RestSharp.dll</HintPath>
     </Reference>
     <Reference Include="System.Buffers, Version=4.0.3.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
       <HintPath>..\packages\System.Buffers.4.5.1\lib\net461\System.Buffers.dll</HintPath>
@@ -67,9 +91,14 @@
     <Reference Include="System.Diagnostics.DiagnosticSource, Version=5.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
       <HintPath>..\packages\System.Diagnostics.DiagnosticSource.5.0.0\lib\net46\System.Diagnostics.DiagnosticSource.dll</HintPath>
     </Reference>
+    <Reference Include="System.IdentityModel" />
+    <Reference Include="System.IdentityModel.Tokens.Jwt, Version=6.8.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.IdentityModel.Tokens.Jwt.6.8.0\lib\net461\System.IdentityModel.Tokens.Jwt.dll</HintPath>
+    </Reference>
     <Reference Include="System.Memory, Version=4.0.1.1, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
       <HintPath>..\packages\System.Memory.4.5.4\lib\net461\System.Memory.dll</HintPath>
     </Reference>
+    <Reference Include="System.Net.Http" />
     <Reference Include="System.Numerics" />
     <Reference Include="System.Numerics.Vectors, Version=4.1.4.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <HintPath>..\packages\System.Numerics.Vectors.4.5.0\lib\net46\System.Numerics.Vectors.dll</HintPath>
@@ -112,6 +141,29 @@
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Exceptions\SeatWithSameRowAndNumberInTheAreaExistException.cs" />
+    <Compile Include="Exceptions\NotEnoughMoneyException.cs" />
+    <Compile Include="Exceptions\SeatCurrentlySoldOrBlockedException.cs" />
+    <Compile Include="Exceptions\SeatIsNotInTheBasketException.cs" />
+    <Compile Include="Exceptions\LayoutWithSameNameInTheVenueExistException.cs" />
+    <Compile Include="Exceptions\BeginDateLongerThenEndDateException.cs" />
+    <Compile Include="Exceptions\EventAlreadyPublishedException.cs" />
+    <Compile Include="Exceptions\EventExistInTheLayoutInThisTimeException.cs" />
+    <Compile Include="Exceptions\EventInPastException.cs" />
+    <Compile Include="Exceptions\LayoutHasNotAreaException.cs" />
+    <Compile Include="Exceptions\LayoutHasNotSeatException.cs" />
+    <Compile Include="Exceptions\LayoutHasSoldSeatAndCouldNotBeChangeException.cs" />
+    <Compile Include="Contracts\Models\Event.cs" />
+    <Compile Include="Contracts\Models\EventArea.cs" />
+    <Compile Include="Contracts\Models\EventSeat.cs" />
+    <Compile Include="Contracts\Models\Layout.cs" />
+    <Compile Include="Contracts\Models\Area.cs" />
+    <Compile Include="Contracts\Models\Order.cs" />
+    <Compile Include="Contracts\Models\Seat.cs" />
+    <Compile Include="Contracts\Models\Venue.cs" />
+    <Compile Include="Exceptions\SomeAreaHasNotPriceException.cs" />
+    <Compile Include="Exceptions\AreaWithSameDescriptionInTheLayoutExistException.cs" />
+    <Compile Include="Exceptions\EntityDoesNotExistException.cs" />
     <Compile Include="Contracts\IAreaContract.cs" />
     <Compile Include="Contracts\IEventAreaContract.cs" />
     <Compile Include="Contracts\IEventSeatContract.cs" />
@@ -119,6 +171,7 @@
     <Compile Include="Contracts\IOrderContract.cs" />
     <Compile Include="Contracts\ISeatContract.cs" />
     <Compile Include="Contracts\IVenueContract.cs" />
+    <Compile Include="Exceptions\Base\WcfException.cs" />
     <Compile Include="Extensions\DalAreaModelExtension.cs" />
     <Compile Include="Extensions\DalEventAreaModelExtension.cs" />
     <Compile Include="Extensions\DalEventSeatModelExtension.cs" />
@@ -126,6 +179,9 @@
     <Compile Include="Extensions\DalOrderModelExtension.cs" />
     <Compile Include="Extensions\DalSeatModelExtension.cs" />
     <Compile Include="Extensions\DalVenueModelExtension.cs" />
+    <Compile Include="Security\CustomUserNameAndPasswordValidator.cs" />
+    <Compile Include="Security\InitializerModule.cs" />
+    <Compile Include="Security\TokenApiModel.cs" />
     <Compile Include="Services\AreaService.svc.cs">
       <DependentUpon>AreaService.svc</DependentUpon>
     </Compile>
@@ -156,6 +212,7 @@
     <Compile Include="Services\VenueService.svc.cs">
       <DependentUpon>VenueService.svc</DependentUpon>
     </Compile>
+    <Compile Include="Startup.cs" />
     <Compile Include="Util\WcfModule.cs" />
   </ItemGroup>
   <ItemGroup>

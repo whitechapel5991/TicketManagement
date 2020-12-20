@@ -5,10 +5,11 @@
 // </copyright>
 // ****************************************************************************
 
-using System;
 using System.Collections.Generic;
-using System.Runtime.Serialization;
 using System.ServiceModel;
+//using TicketManagement.BLL.Exceptions.Base;
+//using TicketManagement.BLL.Exceptions.OrderExceptions;
+using EntityDoesNotExistException = TicketManagement.WcfService.Exceptions.EntityDoesNotExistException;
 
 namespace TicketManagement.WcfService.Contracts
 {
@@ -16,12 +17,19 @@ namespace TicketManagement.WcfService.Contracts
     public interface IOrderContract
     {
         [OperationContract]
+        [FaultContract(typeof(EntityDoesNotExistException))]
+        [FaultContract(typeof(SeatCurrentlySoldOrBlockedException))]
         void AddToCart(int eventSeatId, int userId);
 
         [OperationContract]
+        [FaultContract(typeof(NotEnoughMoneyException))]
+        [FaultContract(typeof(EntityDoesNotExistException))]
+        [FaultContract(typeof(SeatIsNotInTheBasketException))]
         void Buy(int orderId);
 
         [OperationContract]
+        [FaultContract(typeof(EntityDoesNotExistException))]
+        [FaultContract(typeof(SeatIsNotInTheBasketException))]
         void DeleteFromCart(int orderId);
 
         [OperationContract]
@@ -35,32 +43,5 @@ namespace TicketManagement.WcfService.Contracts
 
         [OperationContract]
         IEnumerable<Order> GetCartOrdersByName(string userName);
-    }
-
-    [DataContract]
-    public class Order
-    {
-        [DataMember]
-        public int Id { get; set; }
-
-        [DataMember]
-        public int UserId { get; set; }
-
-        [DataMember]
-        public int EventSeatId { get; set; }
-
-        [DataMember]
-        public DateTime DateUtc { get; set; }
-
-        public TicketManagement.DAL.Models.Order ConvertToBllOrder()
-        {
-            return new TicketManagement.DAL.Models.Order()
-            {
-                Id = this.Id,
-                UserId = this.UserId,
-                EventSeatId = this.EventSeatId,
-                DateUtc = this.DateUtc,
-            };
-        }
     }
 }

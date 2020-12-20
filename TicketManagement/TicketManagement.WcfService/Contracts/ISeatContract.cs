@@ -6,8 +6,8 @@
 // ****************************************************************************
 
 using System.Collections.Generic;
-using System.Runtime.Serialization;
 using System.ServiceModel;
+using EntityDoesNotExistException = TicketManagement.WcfService.Exceptions.EntityDoesNotExistException;
 
 namespace TicketManagement.WcfService.Contracts
 {
@@ -21,39 +21,16 @@ namespace TicketManagement.WcfService.Contracts
         Seat GetSeat(int id);
 
         [OperationContract]
+        [FaultContract(typeof(EntityDoesNotExistException))]
+        [FaultContract(typeof(SeatWithSameRowAndNumberInTheAreaExistException))]
         int AddSeat(Seat entity);
 
         [OperationContract]
+        [FaultContract(typeof(EntityDoesNotExistException))]
+        [FaultContract(typeof(SeatWithSameRowAndNumberInTheAreaExistException))]
         void UpdateSeat(Seat entity);
 
         [OperationContract]
         void DeleteSeat(int id);
-    }
-
-    [DataContract]
-    public class Seat
-    {
-        [DataMember]
-        public int Id { get; set; }
-
-        [DataMember]
-        public int Row { get; set; }
-
-        [DataMember]
-        public int Number { get; set; }
-
-        [DataMember]
-        public int AreaId { get; set; }
-
-        public TicketManagement.DAL.Models.Seat ConvertToBllSeat()
-        {
-            return new TicketManagement.DAL.Models.Seat()
-            {
-                Id = this.Id,
-                Row = this.Row,
-                Number = this.Number,
-                AreaId = this.AreaId,
-            };
-        }
     }
 }

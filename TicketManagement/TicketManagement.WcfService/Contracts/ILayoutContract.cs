@@ -6,8 +6,8 @@
 // ****************************************************************************
 
 using System.Collections.Generic;
-using System.Runtime.Serialization;
 using System.ServiceModel;
+using EntityDoesNotExistException = TicketManagement.WcfService.Exceptions.EntityDoesNotExistException;
 
 namespace TicketManagement.WcfService.Contracts
 {
@@ -21,9 +21,13 @@ namespace TicketManagement.WcfService.Contracts
         Layout GetLayout(int id);
 
         [OperationContract]
+        [FaultContract(typeof(EntityDoesNotExistException))]
+        [FaultContract(typeof(LayoutWithSameNameInTheVenueExistException))]
         int AddLayout(Layout entity);
 
         [OperationContract]
+        [FaultContract(typeof(EntityDoesNotExistException))]
+        [FaultContract(typeof(LayoutWithSameNameInTheVenueExistException))]
         void UpdateLayout(Layout entity);
 
         [OperationContract]
@@ -31,32 +35,5 @@ namespace TicketManagement.WcfService.Contracts
 
         [OperationContract]
         IEnumerable<Layout> GetLayoutsByLayoutIds(int[] layoutIdArray);
-    }
-
-    [DataContract]
-    public class Layout
-    {
-        [DataMember]
-        public int Id { get; set; }
-
-        [DataMember]
-        public string Name { get; set; }
-
-        [DataMember]
-        public string Description { get; set; }
-
-        [DataMember]
-        public int VenueId { get; set; }
-
-        public TicketManagement.DAL.Models.Layout ConvertToBllLayout()
-        {
-            return new TicketManagement.DAL.Models.Layout()
-            {
-                Id = this.Id,
-                Name = this.Name,
-                Description = this.Description,
-                VenueId = this.VenueId,
-            };
-        }
     }
 }

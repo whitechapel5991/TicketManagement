@@ -6,8 +6,8 @@
 // ****************************************************************************
 
 using System.Collections.Generic;
-using System.Runtime.Serialization;
 using System.ServiceModel;
+using TicketManagement.WcfService.Exceptions;
 
 namespace TicketManagement.WcfService.Contracts
 {
@@ -21,43 +21,16 @@ namespace TicketManagement.WcfService.Contracts
         Area GetArea(int id);
 
         [OperationContract]
+        [FaultContract(typeof(EntityDoesNotExistException))]
+        [FaultContract(typeof(AreaWithSameDescriptionInTheLayoutExistException))]
         int AddArea(Area entity);
 
         [OperationContract]
+        [FaultContract(typeof(EntityDoesNotExistException))]
+        [FaultContract(typeof(AreaWithSameDescriptionInTheLayoutExistException))]
         void UpdateArea(Area entity);
 
         [OperationContract]
         void DeleteArea(int id);
-    }
-
-    [DataContract]
-    public class Area
-    {
-        [DataMember]
-        public int Id { get; set; }
-
-        [DataMember]
-        public string Description { get; set; }
-
-        [DataMember]
-        public int CoordinateX { get; set; }
-
-        [DataMember]
-        public int CoordinateY { get; set; }
-
-        [DataMember]
-        public int LayoutId { get; set; }
-
-        public TicketManagement.DAL.Models.Area ConvertToBllArea()
-        {
-            return new TicketManagement.DAL.Models.Area()
-            {
-                Id = this.Id,
-                Description = this.Description,
-                CoordinateX = this.CoordinateX,
-                CoordinateY = this.CoordinateY,
-                LayoutId = this.LayoutId,
-            };
-        }
     }
 }

@@ -8,6 +8,7 @@
 using System.Collections.Generic;
 using System.Runtime.Serialization;
 using System.ServiceModel;
+using TicketManagement.WcfService.Exceptions.Base;
 
 namespace TicketManagement.WcfService.Contracts
 {
@@ -21,9 +22,11 @@ namespace TicketManagement.WcfService.Contracts
         Venue GetVenue(int id);
 
         [OperationContract]
+        [FaultContract(typeof(VenueWithThisNameExistException))]
         int AddVenue(Venue entity);
 
         [OperationContract]
+        [FaultContract(typeof(VenueWithThisNameExistException))]
         void UpdateVenue(Venue entity);
 
         [OperationContract]
@@ -31,33 +34,11 @@ namespace TicketManagement.WcfService.Contracts
     }
 
     [DataContract]
-    public class Venue
+    public class VenueWithThisNameExistException : WcfException
     {
-        [DataMember]
-        public int Id { get; set; }
-
-        [DataMember]
-        public string Name { get; set; }
-
-        [DataMember]
-        public string Description { get; set; }
-
-        [DataMember]
-        public string Address { get; set; }
-
-        [DataMember]
-        public string Phone { get; set; }
-
-        public TicketManagement.DAL.Models.Venue ConvertToBllVenue()
+        public VenueWithThisNameExistException()
+            : base(typeof(BLL.Exceptions.VenueExceptions.VenueWithThisNameExistException))
         {
-            return new TicketManagement.DAL.Models.Venue()
-            {
-                Id = this.Id,
-                Name = this.Name,
-                Description = this.Description,
-                Address = this.Address,
-                Phone = this.Phone,
-            };
         }
     }
 }

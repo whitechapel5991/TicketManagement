@@ -5,10 +5,9 @@
 // </copyright>
 // ****************************************************************************
 
-using System;
 using System.Collections.Generic;
-using System.Runtime.Serialization;
 using System.ServiceModel;
+using EntityDoesNotExistException = TicketManagement.WcfService.Exceptions.EntityDoesNotExistException;
 
 namespace TicketManagement.WcfService.Contracts
 {
@@ -22,15 +21,31 @@ namespace TicketManagement.WcfService.Contracts
         Event GetEvent(int id);
 
         [OperationContract]
+        [FaultContract(typeof(EntityDoesNotExistException))]
+        [FaultContract(typeof(EventInPastException))]
+        [FaultContract(typeof(BeginDateLongerThenEndDateException))]
+        [FaultContract(typeof(EventExistInTheLayoutInThisTimeException))]
+        [FaultContract(typeof(LayoutHasNotAreaException))]
+        [FaultContract(typeof(LayoutHasNotSeatException))]
         int AddEvent(Event entity);
 
         [OperationContract]
+        [FaultContract(typeof(LayoutHasSoldSeatAndCouldNotBeChangeException))]
+        [FaultContract(typeof(EntityDoesNotExistException))]
+        [FaultContract(typeof(EventInPastException))]
+        [FaultContract(typeof(BeginDateLongerThenEndDateException))]
+        [FaultContract(typeof(EventExistInTheLayoutInThisTimeException))]
+        [FaultContract(typeof(LayoutHasNotAreaException))]
+        [FaultContract(typeof(LayoutHasNotSeatException))]
         void UpdateEvent(Event entity);
 
         [OperationContract]
+        [FaultContract(typeof(LayoutHasSoldSeatAndCouldNotBeChangeException))]
         void DeleteEvent(int id);
 
         [OperationContract]
+        [FaultContract(typeof(EventAlreadyPublishedException))]
+        [FaultContract(typeof(SomeAreaHasNotPriceException))]
         void PublishEvent(int id);
 
         [OperationContract]
@@ -44,48 +59,5 @@ namespace TicketManagement.WcfService.Contracts
 
         [OperationContract]
         IEnumerable<Event> GetEventsByEventSeatIds(int[] eventSeatIdArray);
-    }
-
-    [DataContract]
-    public class Event
-    {
-        [DataMember]
-        public int Id { get; set; }
-
-        [DataMember]
-        public string Name { get; set; }
-
-        [DataMember]
-        public DateTime BeginDateUtc { get; set; }
-
-        [DataMember]
-        public DateTime EndDateUtc { get; set; }
-
-        [DataMember]
-        public string Description { get; set; }
-
-        [DataMember]
-        public bool Published { get; set; }
-
-        [DataMember]
-        public int LayoutId { get; set; }
-
-        [DataMember]
-        public string ImageUrl { get; set; }
-
-        public TicketManagement.DAL.Models.Event ConvertToBllEvent()
-        {
-            return new TicketManagement.DAL.Models.Event()
-            {
-                Id = this.Id,
-                Name = this.Name,
-                BeginDateUtc = this.BeginDateUtc,
-                EndDateUtc = this.EndDateUtc,
-                Description = this.Description,
-                Published = this.Published,
-                LayoutId = this.LayoutId,
-                ImageUrl = this.ImageUrl,
-            };
-        }
     }
 }

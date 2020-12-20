@@ -7,6 +7,8 @@
 
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Permissions;
+using System.ServiceModel.Activation;
 using TicketManagement.BLL.Interfaces;
 using TicketManagement.WcfService.Contracts;
 using TicketManagement.WcfService.Extensions;
@@ -15,6 +17,7 @@ namespace TicketManagement.WcfService.Services
 {
     // NOTE: You can use the "Rename" command on the "Refactor" menu to change the class name "EventService" in code, svc and config file together.
     // NOTE: In order to launch WCF Test Client for testing this service, please select EventService.svc or EventService.svc.cs at the Solution Explorer and start debugging.
+    [AspNetCompatibilityRequirements(RequirementsMode = AspNetCompatibilityRequirementsMode.Allowed)]
     public class EventService : IEventContract
     {
         private readonly IEventService eventService;
@@ -59,6 +62,7 @@ namespace TicketManagement.WcfService.Services
             return this.eventService.GetEventsByEventSeatIds(eventSeatIdArray).Select(entity => entity.ConvertToWcfEvent());
         }
 
+        [PrincipalPermission(SecurityAction.Demand, Role = "user")]
         public IEnumerable<Event> GetPublishEvents()
         {
             return this.eventService.GetPublishEvents().Select(entity => entity.ConvertToWcfEvent());
