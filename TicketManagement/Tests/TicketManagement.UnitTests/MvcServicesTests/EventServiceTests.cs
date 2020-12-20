@@ -228,28 +228,28 @@ namespace TicketManagement.UnitTests.MvcServicesTests
                         Id = 1,
                         Row = 1,
                         Number = 5,
-                        State = EventSeatState.Free,
+                        State = (Web.EventSeatService.EventSeatState)EventSeatState.Free,
                     },
                     new EventSeatViewModel
                     {
                         Id = 2,
                         Row = 1,
                         Number = 1,
-                        State = EventSeatState.InBasket,
+                        State = (Web.EventSeatService.EventSeatState)EventSeatState.InBasket,
                     },
                     new EventSeatViewModel
                     {
                         Id = 3,
                         Row = 1,
                         Number = 2,
-                        State = EventSeatState.Sold,
+                        State = (Web.EventSeatService.EventSeatState)EventSeatState.Sold,
                     },
                     new EventSeatViewModel
                     {
                         Id = 4,
                         Row = 1,
                         Number = 3,
-                        State = EventSeatState.InBasket,
+                        State = (Web.EventSeatService.EventSeatState)EventSeatState.InBasket,
                     },
                 },
             };
