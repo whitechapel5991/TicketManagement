@@ -12,7 +12,7 @@ namespace TicketManagement.AuthenticationApi.Exceptions
 {
     public class BaseApiException : Exception
     {
-        public BaseApiException(HttpStatusCode status, string message)
+        protected BaseApiException(HttpStatusCode status, string message)
             : base(message)
         {
             this.Status = status;

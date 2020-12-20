@@ -5,7 +5,7 @@
 // </copyright>
 // ****************************************************************************
 
-using TicketManagement.DAL.Models.Identity;
+using TicketManagement.AuthenticationApi.Services.Identity;
 
 namespace TicketManagement.AuthenticationApi.Models.Extension
 {

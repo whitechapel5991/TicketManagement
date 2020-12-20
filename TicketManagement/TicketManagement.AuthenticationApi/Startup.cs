@@ -7,7 +7,10 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
+using Autofac;
+using Autofac.Extensions.DependencyInjection;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -18,6 +21,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using TicketManagement.AuthenticationApi.Util;
 using IdentityRole = TicketManagement.AuthenticationApi.Services.Identity.IdentityRole;
 using TicketManagementUser = TicketManagement.AuthenticationApi.Services.Identity.TicketManagementUser;
 
@@ -37,6 +41,8 @@ namespace TicketManagement.AuthenticationApi
 
         private IConfiguration Configuration { get; }
 
+        public ILifetimeScope AutofacContainer { get; private set; }
+
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
@@ -44,6 +50,8 @@ namespace TicketManagement.AuthenticationApi
             {
                 app.UseDeveloperExceptionPage();
             }
+
+            this.AutofacContainer = app.ApplicationServices.GetAutofacRoot();
 
             app.UseExceptionHandler("/error");
 
@@ -55,7 +63,7 @@ namespace TicketManagement.AuthenticationApi
             app.UseSwagger();
             app.UseSwaggerUI(c =>
             {
-                c.SwaggerEndpoint("/swagger/v1/swagger.json", "Authentication API V1");
+                c.SwaggerEndpoint("v1/swagger.json", "Authentication API V1");
             });
 
             app.UseAuthentication();
@@ -67,9 +75,23 @@ namespace TicketManagement.AuthenticationApi
             });
         }
 
+        public void ConfigureContainer(ContainerBuilder builder)
+        {
+            // Register your own things directly with Autofac here. Don't
+            // call builder.Populate(), that happens in AutofacServiceProviderFactory
+            // for you.
+            builder.RegisterModule(new WebIocModule(this.Configuration["ConnectionStrings:TicketManagement:ConnectionString"]));
+        }
+
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddOptions();
+            //var builder = new ContainerBuilder();
+            //builder.Populate(services);
+            //builder.RegisterModule(new WebIocModule(this.Configuration.GetConnectionString("TicketManagement")));
+            //this.AutofacContainer = builder.Build();
+
             services.AddCors();
             services.AddControllers();
             services.AddIdentity<TicketManagementUser, IdentityRole>()
@@ -84,7 +106,7 @@ namespace TicketManagement.AuthenticationApi
             .AddJwtBearer(JwtBearerDefaults.AuthenticationScheme, options =>
             {
                 options.SaveToken = true;
-                options.RequireHttpsMetadata = false;
+                options.RequireHttpsMetadata = true;
                 options.TokenValidationParameters = new TokenValidationParameters()
                 {
                     ValidateIssuer = true,
@@ -92,6 +114,7 @@ namespace TicketManagement.AuthenticationApi
                     ValidAudience = this.Configuration["JWT:ValidAudience"],
                     ValidIssuer = this.Configuration["JWT:ValidIssuer"],
                     IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(this.Configuration["JWT:Secret"])),
+                    ValidateIssuerSigningKey = true,
                 };
             });
 
@@ -118,6 +141,7 @@ namespace TicketManagement.AuthenticationApi
                     In = ParameterLocation.Header,
                     Type = SecuritySchemeType.ApiKey,
                     Scheme = "Bearer",
+                    BearerFormat = "JWT",
                 });
 
                 c.AddSecurityRequirement(new OpenApiSecurityRequirement()
@@ -130,9 +154,9 @@ namespace TicketManagement.AuthenticationApi
                             Type = ReferenceType.SecurityScheme,
                             Id = "Bearer",
                           },
-                        Scheme = "oauth2",
-                        Name = "Bearer",
-                        In = ParameterLocation.Header,
+                        //Scheme = "oauth2",
+                        //Name = "Bearer",
+                        //In = ParameterLocation.Header,
                       },
                       new List<string>()
                     },
@@ -140,6 +164,7 @@ namespace TicketManagement.AuthenticationApi
 
                 c.EnableAnnotations();
                 c.IncludeXmlComments(GetXmlCommentsPath());
+                c.ResolveConflictingActions(a => a.First());
             });
         }
 

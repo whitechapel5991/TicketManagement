@@ -21,11 +21,11 @@ namespace TicketManagement.AuthenticationApi.Services.Identity
         IUserEmailStore<TicketManagementUser>,
         IUserRoleStore<TicketManagementUser>
     {
-        private readonly IUserService userService;
+        private readonly BLL.Interfaces.Identity.IUserService userService;
         private readonly IUserLoginsService userLoginService;
 
         public UserStore(
-            IUserService userService,
+            BLL.Interfaces.Identity.IUserService userService,
             IUserLoginsService userLoginService)
         {
             this.userService = userService;
@@ -102,7 +102,13 @@ namespace TicketManagement.AuthenticationApi.Services.Identity
         public Task<IdentityResult> UpdateAsync(TicketManagementUser user, CancellationToken cancellationToken)
         {
             cancellationToken.ThrowIfCancellationRequested();
-            this.userService.Update(this.GetTicketManagementUser(user));
+            var dbUser = this.userService.FindById(user.Id);
+            var userForUpdate = this.GetTicketManagementUser(user);
+            userForUpdate.Password = user.Password ?? dbUser.Password;
+            userForUpdate.EmailConfirmed = dbUser.EmailConfirmed;
+            userForUpdate.PasswordHash = user.PasswordHash ?? dbUser.PasswordHash;
+            userForUpdate.SecurityStamp = user.SecurityStamp ?? dbUser.SecurityStamp;
+            this.userService.Update(userForUpdate);
             return Task.FromResult(IdentityResult.Success);
         }
 

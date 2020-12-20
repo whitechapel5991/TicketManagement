@@ -1,9 +1,9 @@
 {
   "iisSettings": {
-    "windowsAuthentication": false,
+    "windowsAuthentication": true,
     "anonymousAuthentication": true,
     "iis": {
-      "applicationUrl": "http://localhost/TicketManagement.AuthenticationApi",
+      "applicationUrl": "https://localhost/TicketManagement.AuthenticationApi/",
       "sslPort": 0
     },
     "iisExpress": {
@@ -14,7 +14,7 @@
   "$schema": "http://json.schemastore.org/launchsettings.json",
   "profiles": {
     "IIS Express": {
-      "commandName": "IISExpress",
+      "commandName": "IIS",
       "launchBrowser": true,
       "launchUrl": "swagger",
       "environmentVariables": {
@@ -29,6 +29,15 @@
         "ASPNETCORE_ENVIRONMENT": "Development"
       },
       "applicationUrl": "https://localhost:5001;http://localhost:5000"
+    },
+    "IIS": {
+      "commandName": "IIS",
+      "workingDirectory": "D:\\.net&aspnet\\ChangeRoleToDeveloper\\Project\\TicketManagement\\TicketManagement",
+      "launchBrowser": true,
+      "launchUrl": "https://localhost/TicketManagement.AuthenticationApi/",
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development"
+      }
     }
   }
 }

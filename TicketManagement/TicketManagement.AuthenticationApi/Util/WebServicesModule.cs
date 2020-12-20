@@ -15,7 +15,11 @@ namespace TicketManagement.AuthenticationApi.Util
         protected override void Load(ContainerBuilder builder)
         {
             builder.RegisterType<AccountService>()
-                .As(typeof(IAccountService))
+                .As<IAccountService>()
+                .InstancePerLifetimeScope();
+
+            builder.RegisterType<UserService>()
+                .As<IUserService>()
                 .InstancePerLifetimeScope();
         }
     }

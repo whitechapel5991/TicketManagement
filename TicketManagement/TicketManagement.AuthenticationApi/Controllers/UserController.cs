@@ -5,13 +5,15 @@
 // </copyright>
 // ****************************************************************************
 
+using System;
+using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.Annotations;
 using TicketManagement.AuthenticationApi.Models;
 using TicketManagement.AuthenticationApi.Models.Extension;
-using TicketManagement.BLL.Interfaces.Identity;
+using TicketManagement.AuthenticationApi.Services;
 
 namespace TicketManagement.AuthenticationApi.Controllers
 {
@@ -36,7 +38,7 @@ namespace TicketManagement.AuthenticationApi.Controllers
         [HttpGet]
         public async Task<IActionResult> Get()
         {
-            return await Task.FromResult(this.Ok(this.userService.GetUsers().ConvertToListUserModel()));
+            return await Task.FromResult(this.Ok(this.userService.GetUsers()));
         }
 
         /// <summary>
@@ -54,7 +56,25 @@ namespace TicketManagement.AuthenticationApi.Controllers
                 return this.NotFound();
             }
 
-            return await Task.FromResult(this.Ok(user.ConvertToUserModel()));
+            return await Task.FromResult(this.Ok(user));
+        }
+
+        /// <summary>
+        /// Get user by userName.
+        /// </summary>
+        /// <param name="userName">userName - User Name.</param>
+        /// <response code="200">Returns user.</response>
+        /// <response code="404">User with this userName not found.</response>
+        [HttpGet("find/{userName}")]
+        public async Task<IActionResult> Get(string userName)
+        {
+            var user = this.userService.FindByName(userName);
+            if (user == null)
+            {
+                return this.NotFound();
+            }
+
+            return await Task.FromResult(this.Ok(user));
         }
 
         /// <summary>
@@ -71,7 +91,12 @@ namespace TicketManagement.AuthenticationApi.Controllers
                 return await Task.FromResult(this.BadRequest());
             }
 
-            this.userService.Add(newUser.ConvertToTicketManagementUser());
+            var result = this.userService.Add(newUser);
+            if (!result.Succeeded)
+            {
+                return await Task.FromResult(this.BadRequest(string.Join(", ", result.Errors)));
+            }
+
             return await Task.FromResult(this.NoContent());
         }
 
@@ -83,7 +108,8 @@ namespace TicketManagement.AuthenticationApi.Controllers
         /// <response code="204">Successfully.</response>
         /// <response code="404">User with this id Not Found.</response>
         /// <response code="400">Wrong parameters.</response>
-        [HttpPut("{id}")]
+        [HttpPut()]
+        [Route("{id:int}")]
         public async Task<IActionResult> Put(int id, [FromBody] UserModel editUser)
         {
             if (editUser == null)
@@ -97,10 +123,63 @@ namespace TicketManagement.AuthenticationApi.Controllers
                 return this.NotFound();
             }
 
-            var bdUser = editUser.ConvertToTicketManagementUser();
-            bdUser.Id = id;
+            var result = this.userService.Update(id, editUser);
+            if (!result.Succeeded)
+            {
+                return await Task.FromResult(this.BadRequest(string.Join(", ", result.Errors)));
+            }
 
-            this.userService.Update(bdUser);
+            return await Task.FromResult(this.NoContent());
+        }
+
+        /// <summary>
+        /// Change password.
+        /// </summary>
+        /// <param name="userId">userId - id user which need change password.</param>
+        /// <param name="oldPassword">oldPassword - old user password.</param>
+        /// <param name="newPassword">newPassword - new user password.</param>
+        /// <response code="204">Successfully.</response>
+        /// <response code="404">User with this id Not Found.</response>
+        /// <response code="400">Wrong parameters.</response>
+        [HttpPut("{userId}/Password/{oldPassword}/{newPassword}")]
+        public async Task<IActionResult> ChangePassword(int userId, string oldPassword, string newPassword)
+        {
+            if (oldPassword == null || newPassword == null)
+            {
+                return await Task.FromResult(this.BadRequest());
+            }
+
+            var user = this.userService.FindById(userId);
+            if (user == null)
+            {
+                return this.NotFound();
+            }
+
+            var result = await this.userService.ChangePassword(userId, oldPassword, newPassword);
+            if (!result.Succeeded)
+            {
+                return await Task.FromResult(this.BadRequest(string.Join(Environment.NewLine, result.Errors.Select(x => x.Description))));
+            }
+
+            return await Task.FromResult(this.NoContent());
+        }
+
+        /// <summary>
+        /// Increase user balance.
+        /// </summary>
+        /// <param name="userName">userName - Username which balance need increase.</param>
+        /// <param name="balance">balance - additional balance.</param>
+        /// <response code="204">Successfully.</response>
+        /// <response code="400">Wrong parameters.</response>
+        [HttpPut("{userName}/{balance}")]
+        public async Task<IActionResult> IncreaseBalance(string userName, decimal balance)
+        {
+            if (userName == null)
+            {
+                return await Task.FromResult(this.BadRequest());
+            }
+
+            this.userService.IncreaseBalance(balance, userName);
             return await Task.FromResult(this.NoContent());
         }
 
@@ -119,8 +198,7 @@ namespace TicketManagement.AuthenticationApi.Controllers
                 return this.NotFound();
             }
 
-            this.userService.Delete(deleteUser);
-
+            this.userService.Delete(id);
             return await Task.FromResult(this.NoContent());
         }
     }

@@ -7,7 +7,7 @@
 
 using System.Collections.Generic;
 using System.Linq;
-using TicketManagement.DAL.Models.Identity;
+using TicketManagement.AuthenticationApi.Services.Identity;
 
 namespace TicketManagement.AuthenticationApi.Models.Extension
 {
@@ -28,7 +28,7 @@ namespace TicketManagement.AuthenticationApi.Models.Extension
             };
         }
 
-        public static IList<UserModel> ConvertToListUserModel(this IList<TicketManagementUser> userList)
+        public static List<UserModel> ConvertToListUserModel(this List<TicketManagementUser> userList)
         {
             return userList.Select(tmUser => new UserModel
             {
